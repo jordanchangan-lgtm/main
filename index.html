@@ -91,16 +91,34 @@
       text-shadow: 0 2px 10px rgba(0,0,0,0.85);
       font-weight: 300;
     }
-    .float-img {
-      /* soft drop-shadow only — no colored glow that would re-create a card feel */
-      filter: drop-shadow(0 12px 35px rgba(0,0,0,0.55));
-    }
+    /* Image edges dissolve into the void as if made of drifting particles —
+       no frame, no shadow plate. Achieved with two layered effects on the
+       <img> itself: an SVG fractal-noise displacement filter (#particleEdge)
+       distorts the pixels, and a radial mask fades the perimeter to
+       transparent and dots it with noise. The SVG filter's seed animates
+       slowly so the particles look alive. */
+    .float-img { /* no filter on the wrapper — the <img> handles everything */ }
     .float-img img {
       width: 100%;
       height: 100%;
       display: block;
       object-fit: contain;
-      /* no border-radius, no background — let the image be free in space */
+      filter: url(#particleEdge);
+      /* Mask: solid in the centre, fades to transparent at the perimeter,
+         multiplied with a noise texture so the fade looks granular */
+      -webkit-mask-image:
+        radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, transparent 100%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.5 -0.4'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      mask-image:
+        radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, transparent 100%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.5 -0.4'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+      animation: particleDrift 40s linear infinite;
+    }
+    @keyframes particleDrift {
+      0%   { -webkit-mask-position: 0 0,   0 0;     mask-position: 0 0,   0 0; }
+      100% { -webkit-mask-position: 0 0, 320px 320px; mask-position: 0 0, 320px 320px; }
     }
 
     /* Color accents per slide for subtle text glow only */
@@ -162,6 +180,19 @@
   </style>
 </head>
 <body>
+
+  <!-- SVG filter that gives image edges a slowly-drifting "made of particles"
+       look. Referenced by .float-img img via filter: url(#particleEdge). -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="particleEdge" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.025 0.04" numOctaves="2" seed="3" result="noise">
+          <animate attributeName="seed" values="3;25;3" dur="40s" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
 
   <canvas id="starfield"></canvas>
   <div class="void-vignette"></div>
@@ -420,7 +451,8 @@
         const galaxyDisc = new THREE.Points(gGeo, starMat);
         galaxyGroup.add(galaxyDisc);
 
-        // Bright glowing core (additive sprite, lavender-tinted)
+        // Subtle core highlight — small enough that the spiral disc is the
+        // dominant feature (no more "planet body" look). Halo sprite removed.
         const coreTex = makeNebulaTexture(
           Math.min(255, colArr[0] + 90),
           Math.min(255, colArr[1] + 80),
@@ -432,22 +464,10 @@
           blending: THREE.AdditiveBlending,
           transparent: true,
           depthWrite: false,
-          opacity: 0.9
+          opacity: 0.65
         }));
-        core.scale.set(outerR * 0.8, outerR * 0.8, 1);
+        core.scale.set(outerR * 0.32, outerR * 0.32, 1);
         galaxyGroup.add(core);
-
-        // Outer wispy halo so the galaxy bleeds into the void
-        const haloTex = makeNebulaTexture(colArr[0], colArr[1], colArr[2], rand);
-        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: haloTex,
-          blending: THREE.AdditiveBlending,
-          transparent: true,
-          depthWrite: false,
-          opacity: 0.4
-        }));
-        halo.scale.set(outerR * 2.6, outerR * 2.6, 1);
-        galaxyGroup.add(halo);
 
         // Slow rotation around its own up-axis (the disc's local Y)
         galaxyGroup.userData.spinSpeed = (rand() - 0.5) * 0.0015;

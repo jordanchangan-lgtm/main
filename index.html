@@ -21,6 +21,52 @@
       overflow-x: hidden;
     }
 
+    /* CSS-only fallback starfield — animated dots painted with multiple
+       radial gradients. Always renders behind everything, on every section,
+       even if Three.js stalls. Sits at z-index -1 so the WebGL canvas
+       stacks on top. */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-color: #060a1f;
+      background-image:
+        radial-gradient(2px 2px at 12% 18%, rgba(200,220,255,0.85), transparent 60%),
+        radial-gradient(1.5px 1.5px at 28% 64%, rgba(180,200,255,0.7), transparent 60%),
+        radial-gradient(2px 2px at 41% 22%, rgba(220,230,255,0.9), transparent 60%),
+        radial-gradient(1px 1px at 56% 73%, rgba(160,180,255,0.6), transparent 60%),
+        radial-gradient(2px 2px at 68% 34%, rgba(220,235,255,0.85), transparent 60%),
+        radial-gradient(1.5px 1.5px at 82% 80%, rgba(180,210,255,0.7), transparent 60%),
+        radial-gradient(1px 1px at 91% 12%, rgba(150,180,255,0.5), transparent 60%),
+        radial-gradient(2px 2px at 7% 88%, rgba(200,220,255,0.7), transparent 60%),
+        radial-gradient(1.5px 1.5px at 38% 47%, rgba(180,200,255,0.7), transparent 60%),
+        radial-gradient(1px 1px at 60% 95%, rgba(160,190,255,0.5), transparent 60%),
+        radial-gradient(2px 2px at 75% 8%, rgba(220,235,255,0.85), transparent 60%),
+        radial-gradient(1px 1px at 22% 36%, rgba(180,210,255,0.65), transparent 60%);
+      background-size: 100% 100%;
+      animation: cssDotDrift 80s linear infinite;
+    }
+    @keyframes cssDotDrift {
+      0%   { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position:
+        20px -30px, -25px 40px, 30px 25px, -40px -15px, 50px 35px, -30px -50px,
+        25px 40px, -20px 30px, 45px -25px, -35px 50px, 30px -40px, -25px 35px; }
+    }
+
+    /* Tiny build stamp so we can confirm which version is live in your browser. */
+    .build-stamp {
+      position: fixed;
+      bottom: 4px; right: 8px;
+      z-index: 6;
+      color: rgba(255,255,255,0.18);
+      font-family: monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      pointer-events: none;
+      user-select: none;
+    }
+
     #starfield {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0; pointer-events: none;
@@ -349,6 +395,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
+  <div class="build-stamp">build a67fba4 + dots fallback</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -995,9 +1042,9 @@
       const edges = new THREE.EdgesGeometry(geo);
       const ePos  = edges.attributes.position.array;
       const edgeCount = ePos.length / 6;          // each edge = 2 vertices
-      const PER_EDGE = 110;                        // particles spaced along each edge
-      const INTERIOR = 280;                        // inner "gem" particles
-      const HALO     = 160;                        // outer hovering motes
+      const PER_EDGE = 220;                        // many tiny particles along each edge — dense
+      const INTERIOR = 600;                        // inner "gem" sparkle, denser
+      const HALO     = 320;                        // outer hovering motes
 
       // Engraving — particles tracing a 2D pattern on the crystal's front face
       const engLines  = engraving ? getEngravingLines(engraving) : [];
@@ -1032,7 +1079,7 @@
           const cc = palette[(Math.random() * palette.length) | 0];
           tmp.setRGB(cc[0]/255, cc[1]/255, cc[2]/255);
           pCol[p*3] = tmp.r; pCol[p*3+1] = tmp.g; pCol[p*3+2] = tmp.b;
-          pSiz[p]   = 0.55 + Math.random() * 0.55;     // very small
+          pSiz[p]   = 0.85 + Math.random() * 0.7;     // small, but visible
           p++;
         }
       }

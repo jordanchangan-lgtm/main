@@ -395,7 +395,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build stars-bidir v4</div>
+  <div class="build-stamp">build crystal-dive v5</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -868,7 +868,7 @@
         // Mini Three.js scene per crystal — particles around a wire-frame solid
         initCrystal(canvasEl, c.shape, card, c.engraving);
 
-        card.addEventListener('click', () => activatePath(c.path));
+        card.addEventListener('click', () => enterCrystal(card, c.path));
         row.appendChild(card);
       });
 
@@ -1215,23 +1215,70 @@
       card.addEventListener('pointerenter', () => { hoverTarget = 1; });
       card.addEventListener('pointerleave', () => { hoverTarget = 0; });
 
+      // Per-crystal entry "flavour" — randomised so each path's fly-in
+      // looks different (different rotation axis, zoom curve, spin direction).
+      const flavour = {
+        axis: ['x', 'y', 'z'][Math.floor(Math.random() * 3)],
+        spinDir: Math.random() > 0.5 ? 1 : -1,
+        spinAccel: 0.7 + Math.random() * 1.6,
+        zoomCurve: 1.5 + Math.random() * 1.5,
+        wobble: Math.random() * 0.6
+      };
+
+      let entering = false;
+      let enterStart = 0;
+      let enterCamFromZ = 5;
+      card.addEventListener('crystal-enter', () => {
+        entering = true;
+        enterStart = performance.now();
+        enterCamFromZ = cam.position.z;
+      });
+      card.addEventListener('crystal-reset', () => {
+        entering = false;
+        cam.position.z = 5;
+        points.position.set(0, 0, 0);
+        points.rotation.set(0, 0, 0);
+        points.scale.set(1, 1, 1);
+      });
+
       const start = performance.now();
       function tick() {
         const t = (performance.now() - start) * 0.001;
         hover += (hoverTarget - hover) * 0.10;
         pMat.uniforms.uTime.value  = t;
-        pMat.uniforms.uHover.value = hover;
+        pMat.uniforms.uHover.value = entering ? 1 : hover;
 
-        // Idle bob + intensified bob on hover
-        const bobAmp = 0.06 + hover * 0.18;
-        points.position.y = Math.sin(t * 1.6) * bobAmp;
+        if (entering) {
+          // Fly-through: camera zooms from ~5 toward -2.5 on an ease-in curve
+          const dt = (performance.now() - enterStart) / 1000;
+          const k  = Math.min(dt / 1.6, 1);
+          const eased = Math.pow(k, flavour.zoomCurve);
+          cam.position.z = enterCamFromZ + (-2.5 - enterCamFromZ) * eased;
 
-        // Gentle rotation, faster on hover
-        const rotSpeed = 0.35 + hover * 0.9;
-        points.rotation.x = t * 0.18;
-        points.rotation.y = t * rotSpeed * 0.45;
+          // Spin on the chosen axis, accelerating
+          const spin = flavour.spinDir * flavour.spinAccel * (0.04 + eased * 0.06);
+          if (flavour.axis === 'x') points.rotation.x += spin;
+          else if (flavour.axis === 'y') points.rotation.y += spin;
+          else points.rotation.z += spin;
+          // gentle off-axis wobble for variety
+          points.rotation.z += flavour.wobble * 0.01 * Math.sin(t * 2.0);
 
-        cam.position.z = 5 - hover * 0.5;
+          // Particles bloom outward as we pass through them
+          const sx = 1 + eased * 0.7;
+          points.scale.set(sx, sx, sx);
+        } else {
+          // Idle bob + intensified bob on hover
+          const bobAmp = 0.06 + hover * 0.18;
+          points.position.y = Math.sin(t * 1.6) * bobAmp;
+
+          // Gentle rotation, faster on hover
+          const rotSpeed = 0.35 + hover * 0.9;
+          points.rotation.x = t * 0.18;
+          points.rotation.y = t * rotSpeed * 0.45;
+
+          cam.position.z = 5 - hover * 0.5;
+        }
+
         r.render(sc, cam);
         requestAnimationFrame(tick);
       }
@@ -1276,6 +1323,78 @@
           window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: 'instant' });
         }
       });
+    }
+
+    // ===== Click crystal → cinematic entry =====
+    // The clicked crystal isolates: the other two crystals + their labels
+    // fade away. The chosen one lifts to z-index 99, scales up to fill the
+    // viewport, and its inner mini-scene plays a "fly-through" animation
+    // (camera dives from z=5 to z=-2.5 along a randomised curve, particles
+    // spin on a per-crystal random axis and bloom outward). The main
+    // starfield keeps animating underneath the whole time. After the dive,
+    // fadeNavigate() takes the user into the path.
+    function enterCrystal(card, targetPath) {
+      if (window._crystalEntering) return;
+      window._crystalEntering = true;
+
+      const allCards = Array.from(document.querySelectorAll('.crystal-card'));
+      const others = allCards.filter(c => c !== card);
+
+      // Hide other crystals' canvases AND their labels
+      others.forEach(c => {
+        gsap.to(c, { opacity: 0, scale: 0.4, duration: 0.7, ease: 'power2.in' });
+      });
+
+      // Move chosen crystal to viewport centre and scale up
+      card.style.zIndex = '99';
+      card.style.position = 'relative';
+      const rect = card.getBoundingClientRect();
+      const dx = window.innerWidth / 2  - (rect.left + rect.width / 2);
+      const dy = window.innerHeight / 2 - (rect.top  + rect.height / 2);
+
+      gsap.to(card, {
+        x: dx,
+        y: dy,
+        scale: 4.5,
+        duration: 1.5,
+        ease: 'power3.inOut'
+      });
+      // Slowly fade label too — they're going behind the camera as we dive in
+      const sub = card.querySelector('.crystal-sub');
+      const lbl = card.querySelector('.crystal-label');
+      if (sub) gsap.to(sub, { opacity: 0, y: 30, duration: 0.7, delay: 0.5, ease: 'power2.in' });
+      if (lbl) gsap.to(lbl, { opacity: 0, y: 30, duration: 0.7, delay: 0.5, ease: 'power2.in' });
+
+      // Fire the inner Three.js dive animation
+      card.dispatchEvent(new CustomEvent('crystal-enter'));
+
+      // After ~1.7s, fade to navy + load the path
+      setTimeout(() => {
+        fadeNavigate(() => {
+          ALL_PATHS.forEach(p => document.body.classList.remove(`active-${p}`));
+          document.body.classList.add(`active-${targetPath}`);
+          const target = document.querySelector(`.slide[data-path="${targetPath}"]`);
+          if (target) {
+            window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: 'instant' });
+          }
+        });
+
+        // Reset crystals after the fade fully covers them. The user won't see
+        // the snap-back because the navy overlay is opaque at this moment.
+        setTimeout(() => {
+          allCards.forEach(c => {
+            c.style.zIndex = '';
+            c.style.position = '';
+            c.dispatchEvent(new CustomEvent('crystal-reset'));
+            gsap.set(c, { x: 0, y: 0, scale: 1, opacity: 1 });
+            const s = c.querySelector('.crystal-sub');
+            const l = c.querySelector('.crystal-label');
+            if (s) gsap.set(s, { opacity: 1, y: 0 });
+            if (l) gsap.set(l, { opacity: 1, y: 0 });
+          });
+          window._crystalEntering = false;
+        }, 700);
+      }, 1700);
     }
     function deactivatePath() {
       fadeNavigate(() => {

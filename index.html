@@ -173,7 +173,7 @@
     const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 6000);
     camera.position.set(0, 0, 0);
 
-    const STAR_COUNT = 6000;
+    const STAR_COUNT = 9000;
     const SPACE_DEPTH = 4500;
     const SPACE_RADIUS = 1400;
 
@@ -242,7 +242,7 @@
     scene.add(stars);
 
     // ===== Per-slide universes — each slide gets its own nebula cluster, =====
-    //       sometimes planets, and a black-hole portal between it and the next.
+    //       sometimes spiral galaxies, and a black-hole portal between it and the next.
     //       Camera flies through them all on a single forward path.
 
     const SLIDE_COUNT_3D = (window.SLIDES || []).length || 32;
@@ -296,7 +296,7 @@
     }
 
     const nebulae = [];
-    const planets = [];
+    const galaxies = [];
     const portals = [];
     const slideAnchors = [];   // per-slide camera reference data
 
@@ -350,43 +350,119 @@
         nebulae.push(sp);
       }
 
-      // Some slides get planets (0–3 deterministically), in same colour theme
-      const planetCount = Math.floor(rand() * 3.6);
-      for (let p = 0; p < planetCount; p++) {
-        const radius = 35 + rand() * 90;
-        const geo = new THREE.IcosahedronGeometry(radius, 1);
-        const colArr = [c1, c2, c3][p % 3];
-        const baseColor = new THREE.Color(colArr[0]/255, colArr[1]/255, colArr[2]/255);
-        const mat = new THREE.MeshBasicMaterial({
-          color: baseColor.clone().multiplyScalar(0.55),
-          transparent: true,
-          opacity: 0.9
-        });
-        const planet = new THREE.Mesh(geo, mat);
-        planet.position.set(
+      // Some slides get spiral galaxies (0–3 deterministically), in same colour theme.
+      // Each galaxy = bright core sprite + ~1800 particles arranged on spiral arms
+      // in a thin disc, with a wispy halo. Tilted at a random attitude.
+      const galCount = Math.floor(rand() * 3.6);
+      for (let g = 0; g < galCount; g++) {
+        const colArr  = [c1, c2, c3][g % 3];
+        const accent  = [c1, c2, c3][(g + 1) % 3];
+        const coreCol = new THREE.Color(
+          Math.min(1, colArr[0]/255 + 0.35),
+          Math.min(1, colArr[1]/255 + 0.30),
+          Math.min(1, colArr[2]/255 + 0.40)
+        );
+        const edgeCol = new THREE.Color(accent[0]/255, accent[1]/255, accent[2]/255).multiplyScalar(0.6);
+
+        const galaxyGroup = new THREE.Group();
+        galaxyGroup.position.set(
           (rand() - 0.5) * 1100,
           (rand() - 0.5) * 750,
           slideZ + (rand() - 0.4) * SLIDE_DEPTH * 0.55
         );
-        planet.userData.rotSpeed = new THREE.Vector3(
-          (rand() - 0.5) * 0.003,
-          (rand() - 0.5) * 0.005,
-          (rand() - 0.5) * 0.002
+        // random galaxy attitude — face-on, edge-on, or anything in between
+        galaxyGroup.rotation.set(
+          (rand() - 0.5) * Math.PI,
+          (rand() - 0.5) * Math.PI,
+          (rand() - 0.5) * Math.PI
         );
-        // Glow halo around the planet (additive sprite, same theme colour)
+
+        const outerR    = 180 + rand() * 280;       // disc radius
+        const innerR    = outerR * 0.04;
+        const numArms   = 2 + Math.floor(rand() * 3);  // 2-4 arms
+        const tightness = 4 + rand() * 4;             // spiral pitch
+        const thickness = outerR * 0.03;
+        const PARTICLES = 1800 + Math.floor(rand() * 800);
+
+        const gPos = new Float32Array(PARTICLES * 3);
+        const gCol = new Float32Array(PARTICLES * 3);
+        const gSiz = new Float32Array(PARTICLES);
+        const tmp  = new THREE.Color();
+
+        for (let i = 0; i < PARTICLES; i++) {
+          const arm = i % numArms;
+          const tBase = Math.pow(rand(), 0.6);   // bias toward edge so disc isn't core-heavy
+          const t = tBase;
+          const armAngle = arm * (Math.PI * 2 / numArms);
+          const angle = t * tightness + armAngle + (rand() - 0.5) * 0.45;
+          const radial = innerR + t * (outerR - innerR);
+          // perpendicular spread from the arm, narrower on the outside
+          const armSpread = (rand() - 0.5) * outerR * 0.18 * (1 - t * 0.5);
+          const r = radial + armSpread;
+          const ax = Math.cos(angle) * r;
+          const az = Math.sin(angle) * r;
+          // disc thickness — falls off toward edge so galaxy looks flat
+          const ay = (rand() - 0.5) * thickness * (1 - Math.pow(t, 0.7));
+
+          gPos[i*3]     = ax;
+          gPos[i*3 + 1] = ay;
+          gPos[i*3 + 2] = az;
+
+          // colour: bright core → dim edge, with grey/violet variation per particle
+          tmp.copy(coreCol).lerp(edgeCol, t);
+          // sprinkle grey stars for variation
+          if (rand() < 0.12) {
+            tmp.setRGB(0.7 + rand() * 0.2, 0.7 + rand() * 0.2, 0.78 + rand() * 0.2);
+          }
+          gCol[i*3]     = tmp.r;
+          gCol[i*3 + 1] = tmp.g;
+          gCol[i*3 + 2] = tmp.b;
+
+          gSiz[i] = (2.4 - t * 1.6) * (0.6 + rand() * 0.8);
+        }
+
+        const gGeo = new THREE.BufferGeometry();
+        gGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3));
+        gGeo.setAttribute('color',    new THREE.BufferAttribute(gCol, 3));
+        gGeo.setAttribute('aSize',    new THREE.BufferAttribute(gSiz, 1));
+        const galaxyDisc = new THREE.Points(gGeo, starMat);
+        galaxyGroup.add(galaxyDisc);
+
+        // Bright glowing core (additive sprite, lavender-tinted)
+        const coreTex = makeNebulaTexture(
+          Math.min(255, colArr[0] + 90),
+          Math.min(255, colArr[1] + 80),
+          Math.min(255, colArr[2] + 100),
+          rand
+        );
+        const core = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: coreTex,
+          blending: THREE.AdditiveBlending,
+          transparent: true,
+          depthWrite: false,
+          opacity: 0.9
+        }));
+        core.scale.set(outerR * 0.8, outerR * 0.8, 1);
+        galaxyGroup.add(core);
+
+        // Outer wispy halo so the galaxy bleeds into the void
         const haloTex = makeNebulaTexture(colArr[0], colArr[1], colArr[2], rand);
-        const haloMat = new THREE.SpriteMaterial({
+        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
           map: haloTex,
           blending: THREE.AdditiveBlending,
           transparent: true,
           depthWrite: false,
-          opacity: 0.55
-        });
-        const halo = new THREE.Sprite(haloMat);
-        halo.scale.set(radius * 4.5, radius * 4.5, 1);
-        planet.add(halo);
-        scene.add(planet);
-        planets.push(planet);
+          opacity: 0.4
+        }));
+        halo.scale.set(outerR * 2.6, outerR * 2.6, 1);
+        galaxyGroup.add(halo);
+
+        // Slow rotation around its own up-axis (the disc's local Y)
+        galaxyGroup.userData.spinSpeed = (rand() - 0.5) * 0.0015;
+        galaxyGroup.userData.disc = galaxyDisc;
+
+        scene.add(galaxyGroup);
+        galaxies.push(galaxyGroup);
       }
 
       // Black-hole portal between this slide and the next one
@@ -505,11 +581,11 @@
         n.position.y = n.userData.basePos.y + Math.cos(phase * 0.7) * 22;
         n.material.opacity = n.userData.baseOpacity * (0.85 + 0.15 * Math.sin(time * 0.4 + n.position.z * 0.001));
       }
-      // Planets rotate idly
-      for (const p of planets) {
-        p.rotation.x += p.userData.rotSpeed.x;
-        p.rotation.y += p.userData.rotSpeed.y;
-        p.rotation.z += p.userData.rotSpeed.z;
+      // Galaxies rotate slowly around their own up-axis (the disc spins)
+      for (const g of galaxies) {
+        if (g.userData.disc) {
+          g.userData.disc.rotation.y += g.userData.spinSpeed;
+        }
       }
       // Portals spin; ring glow pulses brighter when camera is near
       for (const portal of portals) {

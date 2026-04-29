@@ -395,7 +395,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build gpu-stars v8</div>
+  <div class="build-stamp">build logo-fix v9</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -510,6 +510,44 @@
     const stars = new THREE.Points(starGeo, starMat);
     scene.add(stars);
 
+    // Static-position additive shader for any Points cloud whose particles
+    // are anchored in world space (the Mallouk logo, etc.) — does NOT use
+    // the camera-shell trick that starMat applies.
+    const staticPointsMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uPixelRatio: { value: renderer.getPixelRatio() },
+        uTime:       { value: 0.0 }
+      },
+      vertexColors: true,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexShader: `
+        attribute float aSize;
+        varying vec3 vColor;
+        uniform float uPixelRatio;
+        uniform float uTime;
+        void main() {
+          vColor = color;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_Position = projectionMatrix * mv;
+          float perspective = 320.0 / max(1.0, -mv.z);
+          float twinkle = 0.85 + 0.15 * sin(uTime * 2.0 + position.x * 0.3 + position.y * 0.5);
+          gl_PointSize = aSize * perspective * uPixelRatio * twinkle;
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vColor;
+        void main() {
+          vec2 c = gl_PointCoord - 0.5;
+          float d = length(c);
+          float core  = smoothstep(0.5, 0.0, d);
+          float halo  = smoothstep(0.5, 0.15, d) * 0.4;
+          gl_FragColor = vec4(vColor, core + halo);
+        }
+      `
+    });
+
     // ===== Per-slide universes — each slide gets its own nebula cluster, =====
     //       sometimes spiral galaxies, and a black-hole portal between it and the next.
     //       Camera flies through them all on a single forward path.
@@ -601,6 +639,7 @@
     function tick(t) {
       const time = t * 0.001;
       starMat.uniforms.uTime.value = time;
+      staticPointsMat.uniforms.uTime.value = time;
 
       // Global scroll → position along the flight path
       const sp = getScrollProgress();
@@ -1292,7 +1331,12 @@
         document.body.classList.add(`active-${path}`);
         const target = document.querySelector(`.slide[data-path="${path}"]`);
         if (target) {
-          window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: 'instant' });
+          // Land DIRECTLY on the readable text by scrolling into the slide's
+          // HOLD phase (~40% in), not the slide's top where text is still
+          // invisible because the timeline is at 0% emerge.
+          const slideTop = target.getBoundingClientRect().top + window.scrollY;
+          const targetY  = slideTop + target.offsetHeight * 0.40;
+          window.scrollTo({ top: targetY, behavior: 'instant' });
         }
       });
     }
@@ -1358,7 +1402,10 @@
           document.body.classList.add(`active-${targetPath}`);
           const target = document.querySelector(`.slide[data-path="${targetPath}"]`);
           if (target) {
-            window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: 'instant' });
+            // Land directly on the readable text — middle of slide's hold phase
+            const slideTop = target.getBoundingClientRect().top + window.scrollY;
+            const targetY  = slideTop + target.offsetHeight * 0.40;
+            window.scrollTo({ top: targetY, behavior: 'instant' });
           }
         });
 
@@ -1491,7 +1538,9 @@
       geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
       geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(col), 3));
       geo.setAttribute('aSize',    new THREE.BufferAttribute(new Float32Array(siz), 1));
-      const points = new THREE.Points(geo, starMat);  // share star shader for additive glow
+      // Use the static-position additive material so the logo particles
+      // stay where we sampled them (NOT tethered to the camera shell).
+      const points = new THREE.Points(geo, staticPointsMat);
       points.userData.targets = new Float32Array(target);
       points.userData.count = pos.length / 3;
       points.userData.phase = new Float32Array(points.userData.count);

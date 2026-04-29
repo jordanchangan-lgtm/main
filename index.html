@@ -243,6 +243,18 @@
       0%   { -webkit-mask-position: 0 0,   0 0;     mask-position: 0 0,   0 0; }
       100% { -webkit-mask-position: 0 0, 320px 320px; mask-position: 0 0, 320px 320px; }
     }
+    /* Full-screen fade used during path enter/exit transitions.
+       Three.js starfield keeps rendering underneath the overlay. */
+    .transition-overlay {
+      position: fixed;
+      inset: 0;
+      background: #060a1f;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      transition: opacity 0.5s ease;
+    }
+
     /* Continuous float-in-place for any text that has emerged. The .float-el
        wrapper carries GSAP transforms; the inner .float-bob carries a CSS
        transform — they don't fight because they're on different elements. */
@@ -728,13 +740,31 @@
       row.className = 'crystal-row float-el';
       row.dataset.depth = 1100; row.dataset.idx = 3;
 
+      // Multi-ring crystal geometries — same shape family as the reference
+      // image (top apex / upper ring / wide equator / lower ring / bottom
+      // apex). Each path varies the proportions for visual distinction.
       const crystals = [
-        { path: 'path-1', label: 'Automotive',     subtitle: 'Path 1',
-          shape: { sides: 6, height: 1.7, radius: 0.7 },  engraving: 'car' },
+        { path: 'path-1', label: 'Automotive', subtitle: 'Path 1',
+          engraving: 'car',
+          shape: {
+            sides: 8,
+            topY: 1.7, upperY: 0.55, equatorY: 0.0, lowerY: -0.65, bottomY: -2.0,
+            upperR: 0.45, equatorR: 0.85, lowerR: 0.55, twist: Math.PI / 8
+          } },
         { path: 'path-2', label: 'Diversification', subtitle: 'Path 2',
-          shape: { sides: 8, height: 1.4, radius: 0.85 }, engraving: 'tree' },
+          engraving: 'tree',
+          shape: {
+            sides: 10,
+            topY: 1.55, upperY: 0.6, equatorY: 0.0, lowerY: -0.7, bottomY: -1.8,
+            upperR: 0.55, equatorR: 0.95, lowerR: 0.6, twist: 0
+          } },
         { path: 'path-3', label: 'Global Strategy', subtitle: 'Path 3',
-          shape: { sides: 4, height: 1.9, radius: 0.65 }, engraving: 'globe' },
+          engraving: 'globe',
+          shape: {
+            sides: 6,
+            topY: 1.9, upperY: 0.5, equatorY: -0.05, lowerY: -0.6, bottomY: -2.1,
+            upperR: 0.4, equatorR: 0.78, lowerR: 0.5, twist: Math.PI / 6
+          } },
       ];
 
       crystals.forEach((c, ci) => {
@@ -774,27 +804,93 @@
     }
 
     // Build a custom bipyramid (gem-cut crystal) — top apex + middle ring +
-    // bottom apex, with N sides. Returns a BufferGeometry with proper indices
-    // so EdgesGeometry can extract the edge skeleton.
+    // bottom apex, with N sides. Returns a BufferGeometry with proper indices.
     function makeBipyramidGeometry(sides, radius, height) {
       const positions = [];
       const indices = [];
-      // Apex vertices
       positions.push(0,  height, 0);     // 0 — top apex
       positions.push(0, -height, 0);     // 1 — bottom apex
-      // Middle ring
       for (let i = 0; i < sides; i++) {
         const a = (i / sides) * Math.PI * 2;
-        positions.push(Math.cos(a) * radius, 0, Math.sin(a) * radius);  // 2 + i
+        positions.push(Math.cos(a) * radius, 0, Math.sin(a) * radius);
       }
-      // Top face triangles
       for (let i = 0; i < sides; i++) {
         indices.push(0, 2 + i, 2 + ((i + 1) % sides));
       }
-      // Bottom face triangles
       for (let i = 0; i < sides; i++) {
         indices.push(1, 2 + ((i + 1) % sides), 2 + i);
       }
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      g.setIndex(indices);
+      g.computeVertexNormals();
+      return g;
+    }
+
+    // Multi-ring faceted crystal — top apex, upper ring (narrow), equator
+    // (widest), lower ring (medium), bottom apex. This produces a real
+    // gemstone / pendant-cut silhouette like the reference image, with
+    // multiple facet bands so EdgesGeometry produces a rich skeleton.
+    function makeFacetedCrystalGeometry(sides, opts) {
+      opts = opts || {};
+      const topY     = opts.topY     ?? 1.7;
+      const upperY   = opts.upperY   ?? 0.55;
+      const equatorY = opts.equatorY ?? 0.0;
+      const lowerY   = opts.lowerY   ?? -0.65;
+      const bottomY  = opts.bottomY  ?? -1.95;
+      const upperR   = opts.upperR   ?? 0.45;
+      const equatorR = opts.equatorR ?? 0.85;
+      const lowerR   = opts.lowerR   ?? 0.55;
+      const twist    = opts.twist    ?? 0.0;     // half-step rotation between rings
+
+      const positions = [];
+      const indices = [];
+
+      positions.push(0, topY, 0);     // 0 — top apex
+      positions.push(0, bottomY, 0);  // 1 — bottom apex
+
+      // ring offsets (start indices in the position list)
+      const upperStart   = 2;
+      const equatorStart = upperStart   + sides;
+      const lowerStart   = equatorStart + sides;
+
+      const ringAt = (y, r, phaseOffset) => {
+        for (let i = 0; i < sides; i++) {
+          const a = (i / sides) * Math.PI * 2 + phaseOffset;
+          positions.push(Math.cos(a) * r, y, Math.sin(a) * r);
+        }
+      };
+      ringAt(upperY,   upperR,   0);
+      ringAt(equatorY, equatorR, twist);
+      ringAt(lowerY,   lowerR,   0);
+
+      // top apex → upper ring
+      for (let i = 0; i < sides; i++) {
+        indices.push(0, upperStart + i, upperStart + ((i + 1) % sides));
+      }
+      // upper → equator (quad split into 2 triangles)
+      for (let i = 0; i < sides; i++) {
+        const u1 = upperStart + i;
+        const u2 = upperStart + ((i + 1) % sides);
+        const e1 = equatorStart + i;
+        const e2 = equatorStart + ((i + 1) % sides);
+        indices.push(u1, e1, e2);
+        indices.push(u1, e2, u2);
+      }
+      // equator → lower
+      for (let i = 0; i < sides; i++) {
+        const e1 = equatorStart + i;
+        const e2 = equatorStart + ((i + 1) % sides);
+        const l1 = lowerStart + i;
+        const l2 = lowerStart + ((i + 1) % sides);
+        indices.push(e1, l1, l2);
+        indices.push(e1, l2, e2);
+      }
+      // lower → bottom apex
+      for (let i = 0; i < sides; i++) {
+        indices.push(1, lowerStart + ((i + 1) % sides), lowerStart + i);
+      }
+
       const g = new THREE.BufferGeometry();
       g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
       g.setIndex(indices);
@@ -879,7 +975,20 @@
       // Bipyramid (gem cut). Backwards-compat: if shape is a string we fall
       // back to a default hex bipyramid.
       const sp = (typeof shape === 'object' && shape) ? shape : { sides: 6, radius: 0.7, height: 1.6 };
-      const geo = makeBipyramidGeometry(sp.sides, sp.radius, sp.height);
+      // Use the multi-ring faceted crystal geometry (real gem cut).
+      // sp.sides controls facet count; the rest is set per-crystal in the
+      // calling code (different proportions = different crystals).
+      const geo = makeFacetedCrystalGeometry(sp.sides, {
+        topY:     sp.topY,
+        upperY:   sp.upperY,
+        equatorY: sp.equatorY,
+        lowerY:   sp.lowerY,
+        bottomY:  sp.bottomY,
+        upperR:   sp.upperR,
+        equatorR: sp.equatorR,
+        lowerR:   sp.lowerR,
+        twist:    sp.twist
+      });
 
       // Sample many tiny particles along the bipyramid's edges (the
       // skeleton of the crystal) plus a few inside / floating around.
@@ -899,7 +1008,14 @@
       const pPos = new Float32Array(TOTAL * 3);
       const pCol = new Float32Array(TOTAL * 3);
       const pSiz = new Float32Array(TOTAL);
-      const palette = [[136,182,255],[180,210,255],[220,230,255]];
+      // Violet / purple / lavender palette to match the reference crystal.
+      const palette = [
+        [180, 165, 255],   // light violet
+        [155, 130, 240],   // pure violet
+        [120, 100, 220],   // deep violet
+        [200, 195, 255],   // lavender white
+        [120, 150, 255]    // crystal blue accent
+      ];
       const tmp = new THREE.Color();
       let p = 0;
 
@@ -958,7 +1074,7 @@
       // Engraving particles — sit just in front of the crystal face. Brighter
       // and slightly larger than crystal body particles so they read as
       // a glowing scratch on the surface. They rotate WITH the crystal.
-      const engZ = sp.radius + 0.06;        // slightly outside the equator
+      const engZ = (sp.equatorR ?? sp.radius ?? 0.7) + 0.08;  // just outside equator
       for (const seg of engLines) {
         const [x1, y1, x2, y2] = seg;
         for (let i = 0; i < PER_ENG; i++) {
@@ -1044,30 +1160,42 @@
 
     // ===== Path routing — show only the chosen path's scenes =====
     const ALL_PATHS = ['path-1', 'path-2', 'path-3'];
+
+    // Full-screen navy fade overlay used to wrap path entry / exit so the
+    // transition feels like a smooth back-forth jump instead of an abrupt
+    // scroll. The Three.js starfield keeps rendering underneath.
+    const transitionOverlay = document.createElement('div');
+    transitionOverlay.className = 'transition-overlay';
+    document.body.appendChild(transitionOverlay);
+
+    function fadeNavigate(navFn) {
+      // Phase 1: fade to navy
+      transitionOverlay.style.opacity = '1';
+      setTimeout(() => {
+        // Phase 2: navigation runs while screen is dark
+        navFn();
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
+        // Phase 3: fade back in to the new scene
+        setTimeout(() => { transitionOverlay.style.opacity = '0'; }, 80);
+      }, 480);
+    }
+
     function activatePath(path) {
-      ALL_PATHS.forEach(p => document.body.classList.remove(`active-${p}`));
-      document.body.classList.add(`active-${path}`);
-      // refresh ScrollTrigger because section visibility (and total scrollable
-      // height) just changed
-      if (window.ScrollTrigger) requestAnimationFrame(() => ScrollTrigger.refresh());
-      // Scroll to the first scene of the chosen path
-      requestAnimationFrame(() => {
+      fadeNavigate(() => {
+        ALL_PATHS.forEach(p => document.body.classList.remove(`active-${p}`));
+        document.body.classList.add(`active-${path}`);
         const target = document.querySelector(`.slide[data-path="${path}"]`);
         if (target) {
-          const top = target.getBoundingClientRect().top + window.scrollY;
-          window.scrollTo({ top, behavior: 'smooth' });
+          window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: 'instant' });
         }
       });
     }
     function deactivatePath() {
-      ALL_PATHS.forEach(p => document.body.classList.remove(`active-${p}`));
-      if (window.ScrollTrigger) requestAnimationFrame(() => ScrollTrigger.refresh());
-      // Scroll back to the menu scene
-      requestAnimationFrame(() => {
+      fadeNavigate(() => {
+        ALL_PATHS.forEach(p => document.body.classList.remove(`active-${p}`));
         const menu = document.querySelector('.menu-scene');
         if (menu) {
-          const top = menu.getBoundingClientRect().top + window.scrollY;
-          window.scrollTo({ top, behavior: 'smooth' });
+          window.scrollTo({ top: menu.getBoundingClientRect().top + window.scrollY, behavior: 'instant' });
         }
       });
     }

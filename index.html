@@ -395,7 +395,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build no-cull v10</div>
+  <div class="build-stamp">build crystal-logo v11</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1517,13 +1517,15 @@
 
       const data = ctx.getImageData(0, 0, cv.width, cv.height).data;
       const pos = [], col = [], siz = [], target = [];
-      // Theme palette: cyan / pale-blue / white — same family as the
-      // circuit dots so the logo reads as part of the field.
+      // Match the crystal palette exactly — violet / lavender / deep
+      // purple / lavender-white / crystal-blue. So the logo reads as a
+      // crystal of the same family as the path crystals.
       const logoPalette = [
-        [136, 182, 255],   // accent circuit
-        [180, 210, 255],   // light blue
-        [220, 230, 255],   // near white
-        [90, 130, 220]     // deeper blue accent
+        [180, 165, 255],   // light violet
+        [155, 130, 240],   // pure violet
+        [120, 100, 220],   // deep violet
+        [200, 195, 255],   // lavender white
+        [120, 150, 255]    // crystal blue accent
       ];
       for (let py = 0; py < cv.height; py += sampleStep) {
         for (let px = 0; px < cv.width; px += sampleStep) {
@@ -1536,7 +1538,9 @@
             target.push(wx, wy, anchor.z);
             const c = logoPalette[(Math.random() * logoPalette.length) | 0];
             col.push(c[0]/255, c[1]/255, c[2]/255);
-            siz.push(1.4 + Math.random() * 1.6);
+            // Match crystal-edge particle density (smaller dots) so the logo
+            // reads as a crystal of the same family as the menu crystals.
+            siz.push(0.9 + Math.random() * 0.9);
           }
         }
       }

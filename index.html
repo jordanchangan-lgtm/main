@@ -134,6 +134,10 @@
     .crystal-canvas {
       width: 220px; height: 280px;
       display: block;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      outline: none;
     }
     .crystal-sub {
       font-size: 0.7rem;
@@ -343,7 +347,7 @@
     renderer.setClearColor(0x060a1f, 1);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x060a1f, 0.0005);
+    scene.fog = new THREE.FogExp2(0x060a1f, 0.00025);
 
     const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 6000);
     camera.position.set(0, 0, 0);
@@ -366,7 +370,8 @@
       const angle = Math.random() * Math.PI * 2;
       positions[i3]     = Math.cos(angle) * radius;
       positions[i3 + 1] = Math.sin(angle) * radius;
-      positions[i3 + 2] = -Math.random() * SPACE_DEPTH + 200;
+      // Bias initial z toward the near band (so the field looks dense from frame 1)
+      positions[i3 + 2] = 100 - Math.pow(Math.random(), 0.6) * 2000;
       // Cool-white palette: navy / violet / off-white, occasional warm spec
       const warm = Math.random() < 0.05;
       const hue = warm ? 0.04 + Math.random() * 0.08 : 0.6 + Math.random() * 0.18;
@@ -563,13 +568,13 @@
       const camZ = camera.position.z;
       const camX = camera.position.x;
       const camY = camera.position.y;
-      const recycleBehind = 250;     // z distance behind cam at which we recycle
-      const aheadStart    = SPACE_DEPTH;
+      const recycleBehind = 200;     // z distance behind cam at which we recycle
       let needsUpdate = false;
       for (let i = 0; i < STAR_COUNT; i++) {
         const i3 = i * 3;
         if (starArr[i3 + 2] > camZ + recycleBehind) {
-          // re-spawn ahead of camera in the same close-or-far distribution
+          // Spawn the recycled star CLOSE to camera (between 50 and 1800 ahead)
+          // so it's already visible — no waiting for it to "drift in" through fog.
           const close = Math.random() < 0.35;
           const radius = close
             ? 40 + Math.pow(Math.random(), 1.4) * 240
@@ -577,7 +582,7 @@
           const angle = Math.random() * Math.PI * 2;
           starArr[i3]     = camX + Math.cos(angle) * radius;
           starArr[i3 + 1] = camY + Math.sin(angle) * radius;
-          starArr[i3 + 2] = camZ - aheadStart - Math.random() * 200;
+          starArr[i3 + 2] = camZ - 50 - Math.pow(Math.random(), 0.5) * 1800;
           needsUpdate = true;
         }
       }
@@ -1079,14 +1084,17 @@
       if (!slides.length) return;
       const last = slides[slides.length - 1];
       const lastBottom = last.getBoundingClientRect().top + window.scrollY + last.offsetHeight;
-      // Trigger when user is within the final viewport of the last scene
-      const trigger = lastBottom - window.innerHeight * 0.4;
-      if (window.scrollY > trigger) {
+      // The bottom edge of the viewport — when this passes the last slide's
+      // bottom (minus a small buffer) we know the user has reached the end.
+      const viewportBottom = window.scrollY + window.innerHeight;
+      const trigger = lastBottom - window.innerHeight * 0.30;  // last 30% of last slide
+      if (viewportBottom > trigger) {
         if (!pathLoopHandled) {
           pathLoopHandled = true;
           deactivatePath();
         }
-      } else {
+      } else if (viewportBottom < trigger - window.innerHeight * 0.5) {
+        // user has scrolled comfortably away — re-arm the trigger
         pathLoopHandled = false;
       }
     }, { passive: true });

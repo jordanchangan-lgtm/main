@@ -32,22 +32,33 @@
       background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.55) 100%);
     }
 
-    /* Each slide takes ~2.5 viewport scrolls to fully cross — gives the 3D
-       universe time to develop around you */
+    /* Each slide is 500vh tall — 5 viewport scrolls. Inside, a sticky pin
+       holds a viewport-sized frame fixed in place while the user scrolls
+       through the slide, so text/images stay centred long enough to read. */
     .slide {
       position: relative;
       width: 100%;
-      height: 250vh;
+      height: 500vh;
       z-index: 2;
     }
 
-    /* Stage matches PDF aspect ratio. With slide height of 250vh, the stage
-       is anchored at the slide's vertical centre and naturally scrolls through
-       the viewport, so float-element ScrollTriggers fire as expected. */
+    .slide-pin {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    /* Stage matches the original PDF aspect ratio. It is NOT absolute now —
+       it is centred inside the sticky pin and stays in the viewport while
+       the slide is being scrolled through. */
     .slide-stage {
-      position: absolute;
-      left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
+      position: relative;
+      pointer-events: auto;
       /* width and height set by JS based on PDF page aspect & viewport */
     }
 
@@ -131,6 +142,7 @@
     /* Mobile: drop the absolute % layout, let elements flow vertically */
     @media (max-width: 760px) {
       .slide { height: auto; min-height: 100vh; padding: 10vh 6vw; }
+      .slide-pin { position: relative; height: auto; }
       .slide-stage {
         position: relative; left: auto; top: auto;
         transform: none;
@@ -173,9 +185,9 @@
     const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 6000);
     camera.position.set(0, 0, 0);
 
-    const STAR_COUNT = 9000;
-    const SPACE_DEPTH = 4500;
-    const SPACE_RADIUS = 1400;
+    const STAR_COUNT = 12000;
+    const SPACE_DEPTH = 3500;     // shorter slab — stars get recycled in tick()
+    const SPACE_RADIUS = 900;     // tighter cylinder so stars fly past closer
 
     const positions = new Float32Array(STAR_COUNT * 3);
     const colors    = new Float32Array(STAR_COUNT * 3);
@@ -183,14 +195,21 @@
     const tmpColor = new THREE.Color();
     for (let i = 0; i < STAR_COUNT; i++) {
       const i3 = i * 3;
-      positions[i3]     = (Math.random() - 0.5) * SPACE_RADIUS * 2;
-      positions[i3 + 1] = (Math.random() - 0.5) * SPACE_RADIUS * 2;
+      // Mix of close-flyby stars and far-background stars so you visibly pass through
+      const close = Math.random() < 0.35;
+      const radius = close
+        ? 40 + Math.pow(Math.random(), 1.4) * 240   // close band — these whip past you
+        : 240 + Math.pow(Math.random(), 0.7) * SPACE_RADIUS;
+      const angle = Math.random() * Math.PI * 2;
+      positions[i3]     = Math.cos(angle) * radius;
+      positions[i3 + 1] = Math.sin(angle) * radius;
       positions[i3 + 2] = -Math.random() * SPACE_DEPTH + 200;
-      const warm = Math.random() < 0.08;
-      const hue = warm ? 0.05 + Math.random() * 0.1 : 0.55 + Math.random() * 0.2;
-      tmpColor.setHSL(hue, 0.7, 0.55 + Math.random() * 0.4);
+      // Cool-white palette: navy / violet / off-white, occasional warm spec
+      const warm = Math.random() < 0.05;
+      const hue = warm ? 0.04 + Math.random() * 0.08 : 0.6 + Math.random() * 0.18;
+      tmpColor.setHSL(hue, 0.55, 0.6 + Math.random() * 0.4);
       colors[i3] = tmpColor.r; colors[i3 + 1] = tmpColor.g; colors[i3 + 2] = tmpColor.b;
-      sizes[i] = Math.random() * 2.2 + 0.6;
+      sizes[i] = (close ? 1.4 : 1.0) + Math.random() * 1.6;
     }
     const starGeo = new THREE.BufferGeometry();
     starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -320,40 +339,11 @@
         driftYFreq: 0.03 + rand() * 0.06,
       });
 
-      // 5–9 nebula sprites clustered around this slide's anchor
-      const nebCount = 5 + Math.floor(rand() * 5);
-      for (let i = 0; i < nebCount; i++) {
-        const c = [c1, c2, c3][i % 3];
-        const tex = makeNebulaTexture(c[0], c[1], c[2], rand);
-        const mat = new THREE.SpriteMaterial({
-          map: tex,
-          blending: THREE.AdditiveBlending,
-          transparent: true,
-          depthWrite: false,
-          opacity: 0.5
-        });
-        const sp = new THREE.Sprite(mat);
-        const scale = 600 + rand() * 1500;
-        sp.scale.set(scale, scale, 1);
-        sp.position.set(
-          (rand() - 0.5) * 1600,
-          (rand() - 0.5) * 1200,
-          slideZ + (rand() - 0.5) * SLIDE_DEPTH * 0.8
-        );
-        sp.userData.spin = (rand() - 0.5) * 0.0008;
-        sp.userData.baseOpacity = 0.3 + rand() * 0.4;
-        sp.userData.driftPhase = rand() * Math.PI * 2;
-        sp.userData.driftSpeed = 0.08 + rand() * 0.12;
-        sp.userData.basePos = sp.position.clone();
-        sp.material.opacity = sp.userData.baseOpacity;
-        scene.add(sp);
-        nebulae.push(sp);
-      }
+      // (Foggy nebula sprites removed — each universe is now defined by its
+      // single galaxy + the deep-void starfield. No more square fog blobs.)
 
-      // Some slides get spiral galaxies (0–3 deterministically), in same colour theme.
-      // Each galaxy = bright core sprite + ~1800 particles arranged on spiral arms
-      // in a thin disc, with a wispy halo. Tilted at a random attitude.
-      const galCount = Math.floor(rand() * 3.6);
+      // Each universe contains exactly one spiral galaxy in its theme colours.
+      const galCount = 1;
       for (let g = 0; g < galCount; g++) {
         const colArr  = [c1, c2, c3][g % 3];
         const accent  = [c1, c2, c3][(g + 1) % 3];
@@ -365,19 +355,21 @@
         const edgeCol = new THREE.Color(accent[0]/255, accent[1]/255, accent[2]/255).multiplyScalar(0.6);
 
         const galaxyGroup = new THREE.Group();
+        // Position closer to the camera path so the galaxy is the centrepiece
+        // of the universe rather than an off-screen prop
         galaxyGroup.position.set(
-          (rand() - 0.5) * 1100,
-          (rand() - 0.5) * 750,
-          slideZ + (rand() - 0.4) * SLIDE_DEPTH * 0.55
+          (rand() - 0.5) * 700,
+          (rand() - 0.5) * 450,
+          slideZ + (rand() - 0.5) * SLIDE_DEPTH * 0.4
         );
-        // random galaxy attitude — face-on, edge-on, or anything in between
+        // Random galaxy attitude — face-on, edge-on, or anything in between
         galaxyGroup.rotation.set(
           (rand() - 0.5) * Math.PI,
           (rand() - 0.5) * Math.PI,
           (rand() - 0.5) * Math.PI
         );
 
-        const outerR    = 180 + rand() * 280;       // disc radius
+        const outerR    = 320 + rand() * 280;          // bigger disc — only 1 per slide
         const innerR    = outerR * 0.04;
         const numArms   = 2 + Math.floor(rand() * 3);  // 2-4 arms
         const tightness = 4 + rand() * 4;             // spiral pitch
@@ -545,8 +537,10 @@
 
       // Transition weight peaks ~70-90% through each slide (when you're falling
       // toward the black hole) — drives FOV pulse, warp, and roll.
-      const enterPullWeight = Math.pow(Math.max(0, subP - 0.5) * 2, 2.2);
-      const blackHolePull = enterPullWeight;
+      // Smooth pull curve (smoothstep) — kicks in around 65% of the slide
+      // and reaches 1 at the boundary. No abrupt acceleration.
+      const pullX = Math.max(0, Math.min(1, (subP - 0.65) / 0.35));
+      const blackHolePull = pullX * pullX * (3 - 2 * pullX);
 
       // Camera Z runs the full depth of all slide universes
       camera.position.z = -sp * (TOTAL_DEPTH - SLIDE_DEPTH);
@@ -566,21 +560,41 @@
 
       // FOV narrows during the pull (tunnel-vision into the hole), then snaps
       // back at the start of the next slide
-      const targetFOV = baseFOV - blackHolePull * 22;
-      camera.fov += (targetFOV - camera.fov) * 0.08;
+      const targetFOV = baseFOV - blackHolePull * 18;
+      camera.fov += (targetFOV - camera.fov) * 0.05;   // gentler lerp, smoother feel
       camera.updateProjectionMatrix();
 
       // Star streaks intensify as you fall in
       starMat.uniforms.uVelocity.value = scrollVel + blackHolePull * 2.6;
 
-      // Animate nebulae: gentle drift around their base position + opacity pulse
-      for (const n of nebulae) {
-        n.material.rotation += n.userData.spin;
-        const phase = time * n.userData.driftSpeed + n.userData.driftPhase;
-        n.position.x = n.userData.basePos.x + Math.sin(phase) * 28;
-        n.position.y = n.userData.basePos.y + Math.cos(phase * 0.7) * 22;
-        n.material.opacity = n.userData.baseOpacity * (0.85 + 0.15 * Math.sin(time * 0.4 + n.position.z * 0.001));
+      // Recycle stars: any star that has slipped behind the camera gets
+      // teleported far ahead of the camera so the user always feels like
+      // they're flying through a fresh field. Without this, after the first
+      // slab of stars passes the camera you'd be flying through empty space.
+      const starPos = stars.geometry.attributes.position;
+      const starArr = starPos.array;
+      const camZ = camera.position.z;
+      const camX = camera.position.x;
+      const camY = camera.position.y;
+      const recycleBehind = 250;     // z distance behind cam at which we recycle
+      const aheadStart    = SPACE_DEPTH;
+      let needsUpdate = false;
+      for (let i = 0; i < STAR_COUNT; i++) {
+        const i3 = i * 3;
+        if (starArr[i3 + 2] > camZ + recycleBehind) {
+          // re-spawn ahead of camera in the same close-or-far distribution
+          const close = Math.random() < 0.35;
+          const radius = close
+            ? 40 + Math.pow(Math.random(), 1.4) * 240
+            : 240 + Math.pow(Math.random(), 0.7) * SPACE_RADIUS;
+          const angle = Math.random() * Math.PI * 2;
+          starArr[i3]     = camX + Math.cos(angle) * radius;
+          starArr[i3 + 1] = camY + Math.sin(angle) * radius;
+          starArr[i3 + 2] = camZ - aheadStart - Math.random() * 200;
+          needsUpdate = true;
+        }
       }
+      if (needsUpdate) starPos.needsUpdate = true;
       // Galaxies rotate slowly around their own up-axis (the disc spins)
       for (const g of galaxies) {
         if (g.userData.disc) {
@@ -665,7 +679,12 @@
         stage.appendChild(div);
       });
 
-      sec.appendChild(stage);
+      // Wrap stage in a sticky pin so text/images stay visible in the centre
+      // of the viewport while the user scrolls through this slide.
+      const pin = document.createElement('div');
+      pin.className = 'slide-pin';
+      pin.appendChild(stage);
+      sec.appendChild(pin);
       slidesRoot.appendChild(sec);
     });
 
@@ -798,7 +817,8 @@
         stage.style.width  = w + 'px';
         stage.style.height = h + 'px';
 
-        const pageWpts = parseFloat(stage.parentElement.dataset.pageW) || 1152;
+        const slideEl = stage.closest('.slide');
+        const pageWpts = parseFloat(slideEl && slideEl.dataset.pageW) || 1152;
         stage.querySelectorAll('[data-fs]').forEach(el => {
           const fs = parseFloat(el.dataset.fs);
           // px = pt × stageWidth / pageWidth
@@ -812,45 +832,61 @@
     // ---------- Continuous emerge-from-void animation per element ----------
     gsap.registerPlugin(ScrollTrigger);
 
-    document.querySelectorAll('.float-el').forEach((el) => {
-      const depth = parseFloat(el.dataset.depth) || 800;
+    // Per-slide master timeline. Slide is 500vh; the sticky pin keeps the
+    // stage in the middle of the viewport while the timeline runs.
+    //   0  – 25 %  EMERGE  text & images come out of the void into the centre
+    //   25 – 70 %  HOLD    everything is sharp and centred — read time
+    //   70 – 100 % DISSOLVE elements scale up + blur away into the next universe
+    document.querySelectorAll('.slide').forEach((slide) => {
+      const elements = Array.from(slide.querySelectorAll('.float-el'));
+      if (!elements.length) return;
 
-      // Each element animates relative to ITSELF (not the slide), so the timing
-      // is continuous across the whole page — no per-slide fade cycle.
-      gsap.fromTo(el,
-        {
-          opacity: 0,
-          scale: Math.max(0.25, 1 - depth / 2400),
-          y: () => Math.min(window.innerHeight * 0.4, depth * 0.18),
-          filter: `blur(${Math.min(28, depth / 38)}px)`
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top bottom',     // start when element top enters viewport
-            end:   'top 55%',        // settled by the time element top hits 55% from top
-            scrub: 1.2
-          }
-        }
-      );
-
-      // Very gentle trailing fade as element scrolls past viewport top, so it
-      // dissolves into the void instead of hard-cutting at the slide boundary.
-      gsap.to(el, {
-        opacity: 0,
-        filter: 'blur(8px)',
-        ease: 'power2.in',
+      const tl = gsap.timeline({
+        defaults: { ease: 'power2.out' },
         scrollTrigger: {
-          trigger: el,
-          start: 'bottom 18%',       // begin to dissolve only near top of viewport
-          end:   'bottom -10%',
+          trigger: slide,
+          start: 'top top',
+          end:   'bottom bottom',
           scrub: 1.2
         }
+      });
+
+      // EMERGE: 0 → 0.25
+      elements.forEach((el, i) => {
+        const depth = parseFloat(el.dataset.depth) || 800;
+        const stagger = i * 0.008;     // tight stagger so they emerge as a group
+        tl.fromTo(el,
+          {
+            opacity: 0,
+            scale: Math.max(0.3, 1 - depth / 2400),
+            y: 60,
+            filter: `blur(${Math.min(26, depth / 40)}px)`
+          },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 0.18
+          },
+          0.02 + stagger
+        );
+      });
+
+      // HOLD: a no-op tween from 0.25 → 0.70 (timeline pads the gap automatically
+      // because the next group of tweens starts at 0.70)
+
+      // DISSOLVE: 0.70 → 1.0 — fade and blow up into the next universe
+      elements.forEach((el, i) => {
+        const stagger = i * 0.005;
+        tl.to(el, {
+          opacity: 0,
+          scale: 1.45,
+          y: -90,
+          filter: 'blur(22px)',
+          duration: 0.22,
+          ease: 'power2.in'
+        }, 0.72 + stagger);
       });
     });
 
@@ -880,28 +916,11 @@
     window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', updateProgress);
 
-    // ---------- First-load: gentle entrance for first slide's elements ----------
+    // ---------- First-load: re-layout & refresh ScrollTriggers once images load ----------
+    // (No per-element entrance here — the per-slide timeline handles emergence
+    // as soon as the user starts scrolling.)
     window.addEventListener('load', () => {
       layoutStages();
-      const firstSlide = document.querySelector('.slide');
-      const firstFloats = firstSlide ? firstSlide.querySelectorAll('.float-el') : [];
-      firstFloats.forEach((el, i) => {
-        const depth = parseFloat(el.dataset.depth) || 800;
-        gsap.fromTo(el,
-          {
-            opacity: 0,
-            scale: Math.max(0.25, 1 - depth / 2400),
-            y: depth * 0.12,
-            filter: `blur(${Math.min(28, depth / 38)}px)`
-          },
-          {
-            opacity: 1, scale: 1, y: 0, filter: 'blur(0px)',
-            duration: 1.6,
-            delay: 0.08 * i,
-            ease: 'power3.out'
-          }
-        );
-      });
       updateProgress();
       ScrollTrigger.refresh();
     });

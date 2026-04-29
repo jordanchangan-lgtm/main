@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MALLOUK GROUP — Space Portal Landing</title>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
@@ -178,67 +179,217 @@
   <div class="scroll-hint">scroll to enter</div>
 
   <script>
-    // ---------- Starfield ----------
+    // ---------- 3D Starfield + Nebula (Three.js) ----------
     const canvas = document.getElementById('starfield');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000007, 1);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000010, 0.00045);
+
+    const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 6000);
+    camera.position.set(0, 0, 0);
+
+    // ---- Stars (Points + custom shader for glow + velocity-based size) ----
+    const STAR_COUNT = 6000;
+    const SPACE_DEPTH = 4500;        // total z-range stars are spread over
+    const SPACE_RADIUS = 1400;       // x/y spread
+
+    const positions = new Float32Array(STAR_COUNT * 3);
+    const colors    = new Float32Array(STAR_COUNT * 3);
+    const sizes     = new Float32Array(STAR_COUNT);
+    const tmpColor = new THREE.Color();
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const i3 = i * 3;
+      // distribute stars in a cylinder around the camera flight path
+      positions[i3]     = (Math.random() - 0.5) * SPACE_RADIUS * 2;
+      positions[i3 + 1] = (Math.random() - 0.5) * SPACE_RADIUS * 2;
+      positions[i3 + 2] = -Math.random() * SPACE_DEPTH + 200; // a few in front of start, most ahead
+      // hue: blue → violet → pink, with occasional warm star
+      const warm = Math.random() < 0.08;
+      const hue = warm ? 0.05 + Math.random() * 0.1 : 0.55 + Math.random() * 0.2;
+      tmpColor.setHSL(hue, 0.7, 0.55 + Math.random() * 0.4);
+      colors[i3] = tmpColor.r; colors[i3 + 1] = tmpColor.g; colors[i3 + 2] = tmpColor.b;
+      sizes[i] = Math.random() * 2.2 + 0.6;
     }
-    function spawnStars(n = 1400) {
-      stars = [];
-      for (let i = 0; i < n; i++) {
-        stars.push({
-          x: Math.random() * canvas.width - canvas.width / 2,
-          y: Math.random() * canvas.height - canvas.height / 2,
-          z: Math.random() * 1500,
-          size: Math.random() * 1.5 + 0.5,
-          speed: Math.random() * 0.6 + 0.2,
-          color: `hsl(${Math.random() * 60 + 200}, 80%, ${Math.random() * 40 + 60}%)`
-        });
-      }
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    starGeo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
+    starGeo.setAttribute('aSize',    new THREE.BufferAttribute(sizes, 1));
+
+    const starMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uPixelRatio: { value: renderer.getPixelRatio() },
+        uVelocity:   { value: 0.0 },
+        uTime:       { value: 0.0 }
+      },
+      vertexColors: true,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexShader: `
+        attribute float aSize;
+        varying vec3 vColor;
+        varying float vAlpha;
+        uniform float uPixelRatio;
+        uniform float uVelocity;
+        uniform float uTime;
+        void main() {
+          vColor = color;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_Position = projectionMatrix * mv;
+          float perspective = 320.0 / max(1.0, -mv.z);
+          float twinkle = 0.85 + 0.15 * sin(uTime * 2.0 + position.x * 0.3 + position.y * 0.5);
+          float warp = 1.0 + abs(uVelocity) * 0.8;
+          gl_PointSize = aSize * perspective * uPixelRatio * twinkle * warp;
+          vAlpha = clamp(1.0 - smoothstep(2500.0, 5500.0, -mv.z), 0.0, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vColor;
+        varying float vAlpha;
+        void main() {
+          vec2 c = gl_PointCoord - 0.5;
+          float d = length(c);
+          float core  = smoothstep(0.5, 0.0, d);
+          float halo  = smoothstep(0.5, 0.15, d) * 0.4;
+          float a = (core + halo) * vAlpha;
+          gl_FragColor = vec4(vColor, a);
+        }
+      `
+    });
+
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+
+    // ---- Nebula clouds (additive sprites at varying depth) ----
+    function makeNebulaTexture(r, g, b) {
+      const cv = document.createElement('canvas');
+      cv.width = cv.height = 256;
+      const x = cv.getContext('2d');
+      const grad = x.createRadialGradient(128, 128, 0, 128, 128, 128);
+      grad.addColorStop(0,    `rgba(${r},${g},${b},0.95)`);
+      grad.addColorStop(0.35, `rgba(${r},${g},${b},0.35)`);
+      grad.addColorStop(0.7,  `rgba(${r},${g},${b},0.08)`);
+      grad.addColorStop(1,    `rgba(${r},${g},${b},0)`);
+      x.fillStyle = grad;
+      x.fillRect(0, 0, 256, 256);
+      return new THREE.CanvasTexture(cv);
     }
+    const nebulaPalette = [
+      [108, 99, 255],
+      [0, 210, 255],
+      [255, 111, 216],
+      [0, 255, 135],
+      [255, 80, 140],
+      [120, 70, 220],
+      [40, 200, 255],
+    ];
+    const nebulae = [];
+    const NEBULA_COUNT = 14;
+    for (let i = 0; i < NEBULA_COUNT; i++) {
+      const c = nebulaPalette[i % nebulaPalette.length];
+      const tex = makeNebulaTexture(c[0], c[1], c[2]);
+      const mat = new THREE.SpriteMaterial({
+        map: tex,
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+        depthWrite: false,
+        opacity: 0.55
+      });
+      const sp = new THREE.Sprite(mat);
+      const scale = 800 + Math.random() * 1200;
+      sp.scale.set(scale, scale, 1);
+      sp.position.set(
+        (Math.random() - 0.5) * 1800,
+        (Math.random() - 0.5) * 1400,
+        -300 - i * (SPACE_DEPTH / NEBULA_COUNT) - Math.random() * 200
+      );
+      sp.userData.spin = (Math.random() - 0.5) * 0.0008;
+      sp.userData.baseOpacity = 0.35 + Math.random() * 0.35;
+      sp.material.opacity = sp.userData.baseOpacity;
+      scene.add(sp);
+      nebulae.push(sp);
+    }
+
+    // ---- Distant galaxy disc (flat spiral of points off to one side) ----
+    const GAL_COUNT = 1500;
+    const galPos = new Float32Array(GAL_COUNT * 3);
+    const galCol = new Float32Array(GAL_COUNT * 3);
+    const galSiz = new Float32Array(GAL_COUNT);
+    for (let i = 0; i < GAL_COUNT; i++) {
+      const i3 = i * 3;
+      const arm = i % 3;
+      const t = Math.random();
+      const angle = t * Math.PI * 4 + arm * (Math.PI * 2 / 3) + (Math.random() - 0.5) * 0.4;
+      const r = 60 + t * 520 + (Math.random() - 0.5) * 40;
+      galPos[i3]     = Math.cos(angle) * r;
+      galPos[i3 + 1] = (Math.random() - 0.5) * 30;
+      galPos[i3 + 2] = Math.sin(angle) * r;
+      tmpColor.setHSL(0.6 + Math.random() * 0.15, 0.8, 0.55 + Math.random() * 0.3);
+      galCol[i3] = tmpColor.r; galCol[i3 + 1] = tmpColor.g; galCol[i3 + 2] = tmpColor.b;
+      galSiz[i] = Math.random() * 2 + 0.8;
+    }
+    const galGeo = new THREE.BufferGeometry();
+    galGeo.setAttribute('position', new THREE.BufferAttribute(galPos, 3));
+    galGeo.setAttribute('color',    new THREE.BufferAttribute(galCol, 3));
+    galGeo.setAttribute('aSize',    new THREE.BufferAttribute(galSiz, 1));
+    const galaxy = new THREE.Points(galGeo, starMat); // share shader
+    galaxy.position.set(-900, 200, -2400);
+    galaxy.rotation.x = -0.5;
+    galaxy.rotation.z = 0.3;
+    scene.add(galaxy);
+
+    // ---- Scroll-driven camera + warp velocity ----
     let scrollVel = 0;
     let lastY = window.scrollY;
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
-      scrollVel = Math.min(8, Math.max(-8, (y - lastY) * 0.05));
+      scrollVel += (y - lastY) * 0.0025;
+      scrollVel = Math.max(-3, Math.min(3, scrollVel));
       lastY = y;
     }, { passive: true });
 
-    function draw() {
-      ctx.fillStyle = 'rgba(0,0,0,0.18)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      const cx = canvas.width / 2, cy = canvas.height / 2;
-      const speedBoost = 1 + Math.abs(scrollVel) * 0.5;
-      for (const s of stars) {
-        s.z -= s.speed * speedBoost;
-        if (s.z <= 0) {
-          s.x = Math.random() * canvas.width - cx;
-          s.y = Math.random() * canvas.height - cy;
-          s.z = 1500;
-        }
-        const f = 300 / s.z;
-        const sx = s.x * f + cx;
-        const sy = s.y * f + cy;
-        const sz = Math.max(0.2, s.size * f * 0.5);
-        if (sx >= 0 && sx <= canvas.width && sy >= 0 && sy <= canvas.height) {
-          const a = Math.max(0.2, 1 - (s.z / 1500));
-          ctx.beginPath();
-          ctx.arc(sx, sy, sz, 0, Math.PI * 2);
-          ctx.fillStyle = s.color;
-          ctx.globalAlpha = a;
-          ctx.fill();
-          ctx.globalAlpha = 1;
-        }
-      }
-      // decay scroll velocity so it eases back to normal speed
-      scrollVel *= 0.92;
-      requestAnimationFrame(draw);
+    function getScrollProgress() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      return max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
     }
-    resize(); spawnStars(); draw();
-    window.addEventListener('resize', () => { resize(); spawnStars(); });
+
+    function tick(t) {
+      const time = t * 0.001;
+      starMat.uniforms.uTime.value = time;
+      starMat.uniforms.uVelocity.value = scrollVel;
+
+      const sp = getScrollProgress();
+      // fly forward through space as we scroll down
+      camera.position.z = -sp * (SPACE_DEPTH - 400);
+      // gentle drift + roll based on scroll velocity for the "warp" feel
+      camera.position.x = Math.sin(time * 0.07) * 25;
+      camera.position.y = Math.cos(time * 0.05) * 18;
+      camera.rotation.z = Math.sin(time * 0.1) * 0.03 + scrollVel * 0.04;
+
+      // nebulae slowly rotate
+      for (const n of nebulae) {
+        n.material.rotation += n.userData.spin;
+        // pulse opacity slightly
+        n.material.opacity = n.userData.baseOpacity * (0.85 + 0.15 * Math.sin(time * 0.4 + n.position.z * 0.001));
+      }
+      galaxy.rotation.y += 0.0008;
+
+      scrollVel *= 0.92;
+      renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      starMat.uniforms.uPixelRatio.value = renderer.getPixelRatio();
+    });
 
     // ---------- Slide data (32 PDF pages) ----------
     const slideTitles = [

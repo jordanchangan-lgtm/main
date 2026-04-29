@@ -14,7 +14,7 @@ window.SLIDES = [
     "title": "Early Automotive Foundation",
     "subtitle": "Path 1 · Automotive Ecosystem",
     "body": "Economic blockade phase (1981), followed by establishment of Mallouk Trading Company in 1991. Transition into expansion with motorcycle SKD factories — Honda, Yamaha, Suzuki.",
-    "images": []
+    "images": ["assets/images/path1-early-automotive.png"]
   },
   {
     "path": "path-1",

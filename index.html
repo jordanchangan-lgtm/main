@@ -136,14 +136,36 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      align-items: center;
       gap: 24px;
       margin-top: 30px;
       width: 100%;
     }
     .scene-gallery .float-img {
-      flex: 0 1 280px;
-      max-height: 38vh;
-      aspect-ratio: 16 / 10;
+      flex: 0 1 auto;
+      max-height: 50vh;
+      max-width: 30vw;
+    }
+    .scene-gallery .float-img img {
+      max-height: 50vh;
+      width: auto;
+      height: auto;
+    }
+    /* Clean mode: bypass the particle-edge SVG filter and the noisy radial
+       mask so transparent PNGs render with their native alpha intact. */
+    .float-img.clean img {
+      filter: none !important;
+      -webkit-mask-image: none !important;
+      mask-image: none !important;
+      animation: none;
+    }
+    /* Inside an image wrapper, .float-bob fills the wrapper and carries the
+       up-down drift (CSS keyframe) — independent of GSAP transforms on the
+       outer .float-el. */
+    .float-img .float-bob {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
 
     /* ===== Menu scene with 3 path crystals ===== */
@@ -395,7 +417,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build logo-revert v12</div>
+  <div class="build-stamp">build path1-img v13</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -763,15 +785,25 @@
         gallery.className = 'scene-gallery';
         slide.images.forEach((src, gi) => {
           const wrap = document.createElement('div');
-          wrap.className = 'float-el float-img';
+          // `clean` skips the particle-edge mask + SVG filter so transparent
+          // PNGs render with their native alpha intact.
+          wrap.className = 'float-el float-img clean';
           wrap.dataset.depth = 1200 + gi * 200;
           wrap.dataset.idx = 3 + gi;
+          // Inner .float-bob takes care of the in-place up/down drift
+          // (CSS keyframe), independent of GSAP's emerge/dissolve transform
+          // applied to the outer wrap. Random delay so each image bobs out
+          // of phase with its neighbours.
+          const bob = document.createElement('div');
+          bob.className = 'float-bob';
+          bob.style.animationDelay = (-Math.random() * 4).toFixed(2) + 's';
           const img = document.createElement('img');
           img.src = src;
           img.loading = 'lazy';
           img.alt = '';
           img.onerror = () => { wrap.style.display = 'none'; };
-          wrap.appendChild(img);
+          bob.appendChild(img);
+          wrap.appendChild(bob);
           gallery.appendChild(wrap);
         });
         stage.appendChild(gallery);

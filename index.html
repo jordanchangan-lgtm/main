@@ -32,16 +32,18 @@
       background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.55) 100%);
     }
 
-    /* Slide section is just a 100vh anchor — no border, no overflow clip, no portal frame */
+    /* Each slide takes ~2.5 viewport scrolls to fully cross — gives the 3D
+       universe time to develop around you */
     .slide {
       position: relative;
       width: 100%;
-      height: 100vh;
+      height: 250vh;
       z-index: 2;
     }
 
-    /* Stage matches PDF aspect ratio so elements land where they did in the deck.
-       The stage itself is invisible — no background, no outline, no shadow. */
+    /* Stage matches PDF aspect ratio. With slide height of 250vh, the stage
+       is anchored at the slide's vertical centre and naturally scrolls through
+       the viewport, so float-element ScrollTriggers fire as expected. */
     .slide-stage {
       position: absolute;
       left: 50%; top: 50%;
@@ -239,68 +241,206 @@
     const stars = new THREE.Points(starGeo, starMat);
     scene.add(stars);
 
-    function makeNebulaTexture(r, g, b) {
+    // ===== Per-slide universes — each slide gets its own nebula cluster, =====
+    //       sometimes planets, and a black-hole portal between it and the next.
+    //       Camera flies through them all on a single forward path.
+
+    const SLIDE_COUNT_3D = (window.SLIDES || []).length || 32;
+    const SLIDE_DEPTH = 1500;                              // z-units per slide
+    const TOTAL_DEPTH = SLIDE_COUNT_3D * SLIDE_DEPTH;      // total flight distance
+
+    // Palette: navy + purple + grey only, with a few intra-family shades
+    const NEBULA_PALETTE = [
+      [22, 28, 70],     // deep navy
+      [40, 50, 110],    // navy
+      [70, 90, 170],    // navy-light
+      [60, 30, 110],    // deep purple
+      [100, 60, 170],   // purple
+      [150, 100, 220],  // purple-light
+      [80, 80, 100],    // cool grey
+      [130, 130, 150],  // grey
+      [180, 180, 200],  // light grey
+    ];
+
+    // Wispier nebula: base radial gradient + a handful of random sub-blobs
+    function makeNebulaTexture(r, g, b, randFn) {
+      const rand = randFn || Math.random;
       const cv = document.createElement('canvas');
       cv.width = cv.height = 256;
       const x = cv.getContext('2d');
-      const grad = x.createRadialGradient(128, 128, 0, 128, 128, 128);
-      grad.addColorStop(0,    `rgba(${r},${g},${b},0.95)`);
-      grad.addColorStop(0.35, `rgba(${r},${g},${b},0.35)`);
-      grad.addColorStop(0.7,  `rgba(${r},${g},${b},0.08)`);
-      grad.addColorStop(1,    `rgba(${r},${g},${b},0)`);
-      x.fillStyle = grad;
-      x.fillRect(0, 0, 256, 256);
+      const g1 = x.createRadialGradient(128, 128, 0, 128, 128, 128);
+      g1.addColorStop(0,    `rgba(${r},${g},${b},0.95)`);
+      g1.addColorStop(0.3,  `rgba(${r},${g},${b},0.45)`);
+      g1.addColorStop(0.7,  `rgba(${r},${g},${b},0.08)`);
+      g1.addColorStop(1,    `rgba(${r},${g},${b},0)`);
+      x.fillStyle = g1; x.fillRect(0, 0, 256, 256);
+      for (let i = 0; i < 18; i++) {
+        const px = 30 + rand() * 196;
+        const py = 30 + rand() * 196;
+        const pr = 20 + rand() * 50;
+        const grad = x.createRadialGradient(px, py, 0, px, py, pr);
+        grad.addColorStop(0, `rgba(${r},${g},${b},${0.25 + rand() * 0.35})`);
+        grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        x.fillStyle = grad; x.fillRect(0, 0, 256, 256);
+      }
       return new THREE.CanvasTexture(cv);
     }
-    const nebulaPalette = [[108,99,255],[0,210,255],[255,111,216],[0,255,135],[255,80,140],[120,70,220],[40,200,255]];
+
+    // Deterministic PRNG so each slide's universe is stable across reloads
+    function srand(seed) {
+      let s = seed | 0;
+      return function() {
+        s = (s * 1664525 + 1013904223) | 0;
+        return ((s >>> 0) % 100000) / 100000;
+      };
+    }
+
     const nebulae = [];
-    const NEBULA_COUNT = 14;
-    for (let i = 0; i < NEBULA_COUNT; i++) {
-      const c = nebulaPalette[i % nebulaPalette.length];
-      const tex = makeNebulaTexture(c[0], c[1], c[2]);
-      const mat = new THREE.SpriteMaterial({ map: tex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0.55 });
-      const sp = new THREE.Sprite(mat);
-      const scale = 800 + Math.random() * 1200;
-      sp.scale.set(scale, scale, 1);
-      sp.position.set(
-        (Math.random() - 0.5) * 1800,
-        (Math.random() - 0.5) * 1400,
-        -300 - i * (SPACE_DEPTH / NEBULA_COUNT) - Math.random() * 200
-      );
-      sp.userData.spin = (Math.random() - 0.5) * 0.0008;
-      sp.userData.baseOpacity = 0.35 + Math.random() * 0.35;
-      sp.material.opacity = sp.userData.baseOpacity;
-      scene.add(sp);
-      nebulae.push(sp);
+    const planets = [];
+    const portals = [];
+    const slideAnchors = [];   // per-slide camera reference data
+
+    for (let s = 0; s < SLIDE_COUNT_3D; s++) {
+      const rand = srand(s * 977 + 31);
+      const slideZ = -s * SLIDE_DEPTH;
+
+      // Pick 3 colours from the palette deterministically
+      const c1 = NEBULA_PALETTE[Math.floor(rand() * NEBULA_PALETTE.length)];
+      const c2 = NEBULA_PALETTE[Math.floor(rand() * NEBULA_PALETTE.length)];
+      const c3 = NEBULA_PALETTE[Math.floor(rand() * NEBULA_PALETTE.length)];
+
+      // Random "entrance flavour" so each slide approach feels different
+      slideAnchors.push({
+        z: slideZ,
+        rollSeed: rand() * Math.PI * 2,
+        rollDir: rand() > 0.5 ? 1 : -1,
+        driftXAmp: 30 + rand() * 90,
+        driftYAmp: 20 + rand() * 70,
+        driftXFreq: 0.04 + rand() * 0.07,
+        driftYFreq: 0.03 + rand() * 0.06,
+      });
+
+      // 5–9 nebula sprites clustered around this slide's anchor
+      const nebCount = 5 + Math.floor(rand() * 5);
+      for (let i = 0; i < nebCount; i++) {
+        const c = [c1, c2, c3][i % 3];
+        const tex = makeNebulaTexture(c[0], c[1], c[2], rand);
+        const mat = new THREE.SpriteMaterial({
+          map: tex,
+          blending: THREE.AdditiveBlending,
+          transparent: true,
+          depthWrite: false,
+          opacity: 0.5
+        });
+        const sp = new THREE.Sprite(mat);
+        const scale = 600 + rand() * 1500;
+        sp.scale.set(scale, scale, 1);
+        sp.position.set(
+          (rand() - 0.5) * 1600,
+          (rand() - 0.5) * 1200,
+          slideZ + (rand() - 0.5) * SLIDE_DEPTH * 0.8
+        );
+        sp.userData.spin = (rand() - 0.5) * 0.0008;
+        sp.userData.baseOpacity = 0.3 + rand() * 0.4;
+        sp.userData.driftPhase = rand() * Math.PI * 2;
+        sp.userData.driftSpeed = 0.08 + rand() * 0.12;
+        sp.userData.basePos = sp.position.clone();
+        sp.material.opacity = sp.userData.baseOpacity;
+        scene.add(sp);
+        nebulae.push(sp);
+      }
+
+      // Some slides get planets (0–3 deterministically), in same colour theme
+      const planetCount = Math.floor(rand() * 3.6);
+      for (let p = 0; p < planetCount; p++) {
+        const radius = 35 + rand() * 90;
+        const geo = new THREE.IcosahedronGeometry(radius, 1);
+        const colArr = [c1, c2, c3][p % 3];
+        const baseColor = new THREE.Color(colArr[0]/255, colArr[1]/255, colArr[2]/255);
+        const mat = new THREE.MeshBasicMaterial({
+          color: baseColor.clone().multiplyScalar(0.55),
+          transparent: true,
+          opacity: 0.9
+        });
+        const planet = new THREE.Mesh(geo, mat);
+        planet.position.set(
+          (rand() - 0.5) * 1100,
+          (rand() - 0.5) * 750,
+          slideZ + (rand() - 0.4) * SLIDE_DEPTH * 0.55
+        );
+        planet.userData.rotSpeed = new THREE.Vector3(
+          (rand() - 0.5) * 0.003,
+          (rand() - 0.5) * 0.005,
+          (rand() - 0.5) * 0.002
+        );
+        // Glow halo around the planet (additive sprite, same theme colour)
+        const haloTex = makeNebulaTexture(colArr[0], colArr[1], colArr[2], rand);
+        const haloMat = new THREE.SpriteMaterial({
+          map: haloTex,
+          blending: THREE.AdditiveBlending,
+          transparent: true,
+          depthWrite: false,
+          opacity: 0.55
+        });
+        const halo = new THREE.Sprite(haloMat);
+        halo.scale.set(radius * 4.5, radius * 4.5, 1);
+        planet.add(halo);
+        scene.add(planet);
+        planets.push(planet);
+      }
+
+      // Black-hole portal between this slide and the next one
+      if (s < SLIDE_COUNT_3D - 1) {
+        const portalZ = slideZ - SLIDE_DEPTH * 0.85; // sits just before the next slide's nebula
+        const grp = new THREE.Group();
+        grp.position.set(
+          (rand() - 0.5) * 220,
+          (rand() - 0.5) * 160,
+          portalZ
+        );
+        // Random tilt — gives every portal a unique entry attitude
+        grp.rotation.set(
+          (rand() - 0.5) * 0.7,
+          (rand() - 0.5) * 0.7,
+          rand() * Math.PI * 2
+        );
+        // Event horizon — dark sphere
+        const core = new THREE.Mesh(
+          new THREE.SphereGeometry(38, 32, 32),
+          new THREE.MeshBasicMaterial({ color: 0x000004, transparent: true, opacity: 0.97 })
+        );
+        grp.add(core);
+        // Accretion ring (additive torus glow)
+        const ringCol = NEBULA_PALETTE[Math.floor(rand() * NEBULA_PALETTE.length)];
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(58, 4, 16, 100),
+          new THREE.MeshBasicMaterial({
+            color: new THREE.Color(ringCol[0]/255, ringCol[1]/255, ringCol[2]/255),
+            transparent: true,
+            opacity: 0.9
+          })
+        );
+        ring.rotation.x = Math.PI / 2;
+        grp.add(ring);
+        // Outer wispy halo
+        const haloTex = makeNebulaTexture(ringCol[0], ringCol[1], ringCol[2], rand);
+        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: haloTex,
+          blending: THREE.AdditiveBlending,
+          transparent: true,
+          depthWrite: false,
+          opacity: 0.7
+        }));
+        halo.scale.set(300, 300, 1);
+        grp.add(halo);
+        grp.userData.spin = 0.01 + rand() * 0.025;
+        grp.userData.ringRef = ring;
+        scene.add(grp);
+        portals.push(grp);
+      }
     }
 
-    const GAL_COUNT = 1500;
-    const galPos = new Float32Array(GAL_COUNT * 3);
-    const galCol = new Float32Array(GAL_COUNT * 3);
-    const galSiz = new Float32Array(GAL_COUNT);
-    for (let i = 0; i < GAL_COUNT; i++) {
-      const i3 = i * 3;
-      const arm = i % 3;
-      const t = Math.random();
-      const angle = t * Math.PI * 4 + arm * (Math.PI * 2 / 3) + (Math.random() - 0.5) * 0.4;
-      const r = 60 + t * 520 + (Math.random() - 0.5) * 40;
-      galPos[i3]     = Math.cos(angle) * r;
-      galPos[i3 + 1] = (Math.random() - 0.5) * 30;
-      galPos[i3 + 2] = Math.sin(angle) * r;
-      tmpColor.setHSL(0.6 + Math.random() * 0.15, 0.8, 0.55 + Math.random() * 0.3);
-      galCol[i3] = tmpColor.r; galCol[i3 + 1] = tmpColor.g; galCol[i3 + 2] = tmpColor.b;
-      galSiz[i] = Math.random() * 2 + 0.8;
-    }
-    const galGeo = new THREE.BufferGeometry();
-    galGeo.setAttribute('position', new THREE.BufferAttribute(galPos, 3));
-    galGeo.setAttribute('color',    new THREE.BufferAttribute(galCol, 3));
-    galGeo.setAttribute('aSize',    new THREE.BufferAttribute(galSiz, 1));
-    const galaxy = new THREE.Points(galGeo, starMat);
-    galaxy.position.set(-900, 200, -2400);
-    galaxy.rotation.x = -0.5;
-    galaxy.rotation.z = 0.3;
-    scene.add(galaxy);
-
+    // ===== Camera flight + black-hole transition feel =====
     let scrollVel = 0;
     let lastY = window.scrollY;
     window.addEventListener('scroll', () => {
@@ -315,20 +455,73 @@
       return max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
     }
 
+    const baseFOV = 72;
+
     function tick(t) {
       const time = t * 0.001;
       starMat.uniforms.uTime.value = time;
-      starMat.uniforms.uVelocity.value = scrollVel;
+
+      // Global scroll → position along the flight path
       const sp = getScrollProgress();
-      camera.position.z = -sp * (SPACE_DEPTH - 400);
-      camera.position.x = Math.sin(time * 0.07) * 25;
-      camera.position.y = Math.cos(time * 0.05) * 18;
-      camera.rotation.z = Math.sin(time * 0.1) * 0.03 + scrollVel * 0.04;
+      const slideF = sp * Math.max(1, SLIDE_COUNT_3D - 1);
+      const slideIdx = Math.min(SLIDE_COUNT_3D - 1, Math.floor(slideF));
+      const subP = slideF - slideIdx;     // 0..1 within the current slide
+
+      // Transition weight peaks ~70-90% through each slide (when you're falling
+      // toward the black hole) — drives FOV pulse, warp, and roll.
+      const enterPullWeight = Math.pow(Math.max(0, subP - 0.5) * 2, 2.2);
+      const blackHolePull = enterPullWeight;
+
+      // Camera Z runs the full depth of all slide universes
+      camera.position.z = -sp * (TOTAL_DEPTH - SLIDE_DEPTH);
+
+      // Per-slide drift profile (the "randomized entrance" — every slide
+      // approaches with a slightly different roll/x/y signature)
+      const a = slideAnchors[slideIdx] || slideAnchors[0];
+      camera.position.x = Math.sin(time * a.driftXFreq + a.rollSeed) * a.driftXAmp
+                       + Math.sin(time * 0.07 + slideIdx * 0.9) * blackHolePull * 60;
+      camera.position.y = Math.cos(time * a.driftYFreq + a.rollSeed * 0.7) * a.driftYAmp
+                       + Math.cos(time * 0.05 + slideIdx * 1.3) * blackHolePull * 45;
+
+      // Roll spirals as you approach a black hole — direction varies per slide
+      camera.rotation.z = Math.sin(time * 0.1) * 0.04
+                        + scrollVel * 0.04
+                        + a.rollDir * Math.pow(blackHolePull, 1.4) * 0.55;
+
+      // FOV narrows during the pull (tunnel-vision into the hole), then snaps
+      // back at the start of the next slide
+      const targetFOV = baseFOV - blackHolePull * 22;
+      camera.fov += (targetFOV - camera.fov) * 0.08;
+      camera.updateProjectionMatrix();
+
+      // Star streaks intensify as you fall in
+      starMat.uniforms.uVelocity.value = scrollVel + blackHolePull * 2.6;
+
+      // Animate nebulae: gentle drift around their base position + opacity pulse
       for (const n of nebulae) {
         n.material.rotation += n.userData.spin;
+        const phase = time * n.userData.driftSpeed + n.userData.driftPhase;
+        n.position.x = n.userData.basePos.x + Math.sin(phase) * 28;
+        n.position.y = n.userData.basePos.y + Math.cos(phase * 0.7) * 22;
         n.material.opacity = n.userData.baseOpacity * (0.85 + 0.15 * Math.sin(time * 0.4 + n.position.z * 0.001));
       }
-      galaxy.rotation.y += 0.0008;
+      // Planets rotate idly
+      for (const p of planets) {
+        p.rotation.x += p.userData.rotSpeed.x;
+        p.rotation.y += p.userData.rotSpeed.y;
+        p.rotation.z += p.userData.rotSpeed.z;
+      }
+      // Portals spin; ring glow pulses brighter when camera is near
+      for (const portal of portals) {
+        portal.rotation.z += portal.userData.spin;
+        const dz = camera.position.z - portal.position.z;
+        const near = Math.max(0, 1 - Math.abs(dz) / (SLIDE_DEPTH * 0.7));
+        if (portal.userData.ringRef) {
+          portal.userData.ringRef.material.opacity = 0.55 + 0.45 * near;
+          portal.userData.ringRef.scale.setScalar(1 + near * 0.4);
+        }
+      }
+
       scrollVel *= 0.92;
       renderer.render(scene, camera);
       requestAnimationFrame(tick);
@@ -399,6 +592,114 @@
       sec.appendChild(stage);
       slidesRoot.appendChild(sec);
     });
+
+    // ===== 3D particle logo for slide 1 (replaces the HTML title) =====
+    // Hide the HTML title on slide 1 — the 3D particles are the title now.
+    (function hideSlide1Title() {
+      const first = document.querySelector('.slide[data-index="0"]');
+      if (!first) return;
+      first.querySelectorAll('.float-title').forEach(t => { t.style.display = 'none'; });
+    })();
+
+    // Build a particle cloud from rasterised text
+    function makeParticleLogo(text, opts) {
+      opts = opts || {};
+      const fontPx     = opts.fontPx     || 140;
+      const sampleStep = opts.sampleStep || 3;          // smaller = more particles
+      const worldScale = opts.worldScale || 0.55;       // px → world unit
+      const anchor     = opts.anchor     || new THREE.Vector3(0, 0, -200);
+      const lineGap    = opts.lineGap    || 1.18;
+
+      // Render text on a hidden 2D canvas — supports multi-line
+      const lines = Array.isArray(text) ? text : [text];
+      const cv = document.createElement('canvas');
+      cv.width  = 1600;
+      cv.height = Math.max(280, fontPx * lines.length * lineGap + 80);
+      const ctx = cv.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.font = `800 ${fontPx}px system-ui, -apple-system, "Segoe UI", Roboto, Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const totalH = fontPx * lines.length * lineGap;
+      lines.forEach((line, idx) => {
+        const y = (cv.height - totalH) / 2 + (idx + 0.5) * fontPx * lineGap;
+        ctx.fillText(line, cv.width / 2, y);
+      });
+
+      const data = ctx.getImageData(0, 0, cv.width, cv.height).data;
+      const pos = [], col = [], siz = [], target = [];
+      // Theme palette: navy / purple / grey
+      const logoPalette = [
+        [150, 110, 220],
+        [80, 100, 190],
+        [200, 200, 220],
+        [70, 60, 140]
+      ];
+      for (let py = 0; py < cv.height; py += sampleStep) {
+        for (let px = 0; px < cv.width; px += sampleStep) {
+          const i = (py * cv.width + px) * 4;
+          if (data[i + 3] > 128) {
+            const wx = (px - cv.width / 2)  * worldScale + anchor.x;
+            const wy = -(py - cv.height / 2) * worldScale + anchor.y;
+            const wz = anchor.z + (Math.random() - 0.5) * 14;
+            pos.push(wx, wy, wz);
+            target.push(wx, wy, anchor.z);
+            const c = logoPalette[(Math.random() * logoPalette.length) | 0];
+            col.push(c[0]/255, c[1]/255, c[2]/255);
+            siz.push(1.4 + Math.random() * 1.6);
+          }
+        }
+      }
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+      geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(col), 3));
+      geo.setAttribute('aSize',    new THREE.BufferAttribute(new Float32Array(siz), 1));
+      const points = new THREE.Points(geo, starMat);  // share star shader for additive glow
+      points.userData.targets = new Float32Array(target);
+      points.userData.count = pos.length / 3;
+      points.userData.phase = new Float32Array(points.userData.count);
+      for (let i = 0; i < points.userData.count; i++) {
+        points.userData.phase[i] = Math.random() * Math.PI * 2;
+      }
+      return points;
+    }
+
+    // Place logo near the front of the camera path (slide 1 anchor at z=0)
+    const logoZ = -260;     // slightly ahead of camera start so it's visible at scroll=0
+    const malloukLogo = makeParticleLogo(
+      ['MALLOUK', 'GROUP'],
+      {
+        fontPx: 180,
+        sampleStep: 3,
+        worldScale: 0.55,
+        anchor: new THREE.Vector3(0, 0, logoZ),
+        lineGap: 1.05
+      }
+    );
+    scene.add(malloukLogo);
+
+    // Idle drift animation for the logo particles — runs in the existing tick loop
+    // via this hook (added so we don't need to edit tick() again)
+    (function attachLogoDrift() {
+      const positions = malloukLogo.geometry.attributes.position;
+      const targets   = malloukLogo.userData.targets;
+      const phases    = malloukLogo.userData.phase;
+      const count     = malloukLogo.userData.count;
+      function loop(now) {
+        const t = now * 0.001;
+        const arr = positions.array;
+        for (let i = 0; i < count; i++) {
+          const ph = phases[i];
+          arr[i*3]     = targets[i*3]     + Math.sin(t * 0.6 + ph)        * 2.0;
+          arr[i*3 + 1] = targets[i*3 + 1] + Math.cos(t * 0.5 + ph * 1.3)  * 2.0;
+          arr[i*3 + 2] = targets[i*3 + 2] + Math.sin(t * 0.35 + ph * 0.7) * 3.0;
+        }
+        positions.needsUpdate = true;
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    })();
 
     // ---------- Stage sizing: match PDF aspect to viewport, scale fonts ----------
     function layoutStages() {

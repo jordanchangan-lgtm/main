@@ -8,6 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="assets/slides-data.js"></script>
 
   <style>
     :root { --bg: #000; --text: #fff; }
@@ -41,27 +42,52 @@
       z-index: 2;
     }
 
-    .slide-card {
-      position: relative;
-      max-width: min(92vw, 1280px);
-      max-height: 86vh;
-      aspect-ratio: 16 / 9;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      will-change: transform, opacity;
+    /* Floating elements that drift in the void — no card, no panel */
+    .float-el {
+      position: absolute;
+      will-change: transform, opacity, filter;
+      transform-origin: center center;
+      pointer-events: none;
+      z-index: 3;
     }
-    .slide-card img {
+    .float-title {
+      font-size: clamp(1.6rem, 4vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1.15;
+      color: #fff;
+      text-shadow:
+        0 0 24px var(--accent1, #6C63FF),
+        0 0 60px rgba(0,0,0,0.8);
+      text-align: center;
+      transform: translateX(-50%);
+    }
+    .float-text {
+      font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+      line-height: 1.6;
+      color: rgba(255,255,255,0.94);
+      text-shadow: 0 2px 14px rgba(0,0,0,0.85), 0 0 30px rgba(0,0,0,0.6);
+      font-weight: 400;
+    }
+    .float-cn {
+      font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+      line-height: 1.7;
+      color: rgba(255,255,255,0.78);
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.85);
+      font-weight: 300;
+    }
+    .float-img {
+      filter: drop-shadow(0 20px 50px rgba(0,0,0,0.7))
+              drop-shadow(0 0 35px var(--accent1, #6C63FF));
+    }
+    .float-img img {
       width: 100%;
-      height: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      max-height: 60vh;
       object-fit: contain;
-      border-radius: 14px;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.06),
-        0 30px 80px rgba(0,0,0,0.7),
-        0 0 60px var(--accent1, #6C63FF);
-      background: rgba(10, 10, 30, 0.6);
     }
 
     .slide-title {
@@ -161,10 +187,20 @@
     }
     @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 6px); } }
 
-    @media (max-width: 700px) {
-      .slide-card { max-width: 94vw; max-height: 70vh; }
+    @media (max-width: 760px) {
+      .slide { height: auto; min-height: 100vh; padding: 12vh 6vw; }
       .slide-title { font-size: 0.75rem; letter-spacing: 2px; top: 3vh; }
       .portal-ring { width: 90vmin; height: 90vmin; }
+      /* On phones, drop the absolute % layout and let elements flow */
+      .float-el {
+        position: relative !important;
+        left: auto !important; top: auto !important;
+        max-width: 100% !important;
+        margin: 14px 0;
+        transform: none;
+      }
+      .float-title { transform: none !important; text-align: left; }
+      .float-img img { max-height: 40vh; }
     }
   </style>
 </head>
@@ -391,122 +427,135 @@
       starMat.uniforms.uPixelRatio.value = renderer.getPixelRatio();
     });
 
-    // ---------- Slide data (32 PDF pages) ----------
-    const slideTitles = [
-      "Mallouk Group",
-      "Earlier Business",
-      "Automotive Trading & Distributorship",
-      "Global Sales & Service Network",
-      "Remarkable Achievement — Jordan",
-      "Remarkable Achievement in Jordan Market",
-      "Distinguished Partnerships",
-      "Honors & Awards",
-      "Automotive Manufacturing",
-      "Automotive Manufacturing",
-      "Component Sourcing",
-      "Automotive Manufacturing",
-      "Strategic Location Advantages",
-      "Strategic Location Advantages",
-      "Reconstruction Government Tenders",
-      "Used Car Trading",
-      "Finance Services",
-      "Public Transportation Services",
-      "Public Transportation Services",
-      "Property Development & Construction",
-      "Al Shafi Hospital Project",
-      "Al TAL Development Project",
-      "Phoenix Advanced Systems Ltd",
-      "Al Ghad Al Moshreq Hygienic",
-      "Renewable Energy — Solar Power Storage",
-      "Subsidiaries — Hong Kong / Shanghai / Jiangsu",
-      "Future Investment — Reconstruction",
-      "Future Investment — Levant University",
-      "Future Investment — Fly Syria",
-      "Contact Us",
-      "Mallouk Group",
-      "Thank You"
-    ];
-
+    // ---------- Build slides from window.SLIDES (auto-generated from PDF) ----------
     const slidesRoot = document.getElementById('slidesRoot');
-    slideTitles.forEach((title, i) => {
+    const SLIDES = window.SLIDES || [];
+    const TOTAL = SLIDES.length;
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    SLIDES.forEach((slide, i) => {
       const num = String(i + 1).padStart(2, '0');
-      const src = `assets/pages/slide-${num}.jpg`;
       const sec = document.createElement('section');
       sec.className = 'slide';
       sec.setAttribute('data-index', i);
-      sec.innerHTML = `
+
+      let inner = `
         <div class="nebula-glow"></div>
         <div class="portal-ring" aria-hidden="true"></div>
         <div class="slide-title">
-          <span class="num">${num} / 32</span>
-          <span class="name">${title}</span>
-        </div>
-        <div class="slide-card">
-          <img src="${src}" alt="${title}" loading="lazy"
-               onerror="this.onerror=null; this.src='https://placehold.co/1280x720/0a0a1f/ffffff?text=${encodeURIComponent(title)}';">
+          <span class="num">${num} / ${String(TOTAL).padStart(2,'0')}</span>
         </div>
       `;
+
+      slide.elements.forEach((el, ei) => {
+        const styleBase = `left:${el.x}%; top:${el.y}%; max-width:${el.maxW}vw;`;
+        const depth = el.depth || 800;
+        const dataAttrs = `data-depth="${depth}" data-idx="${ei}"`;
+        if (el.type === 'title') {
+          inner += `<div class="float-el float-title" style="${styleBase}" ${dataAttrs}>${escapeHtml(el.text)}</div>`;
+        } else if (el.type === 'cn') {
+          inner += `<div class="float-el float-cn" style="${styleBase}" ${dataAttrs}>${escapeHtml(el.text)}</div>`;
+        } else if (el.type === 'text') {
+          inner += `<div class="float-el float-text" style="${styleBase}" ${dataAttrs}>${escapeHtml(el.text)}</div>`;
+        } else if (el.type === 'img') {
+          inner += `<div class="float-el float-img" style="${styleBase}" ${dataAttrs}>
+            <img src="${el.src}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
+          </div>`;
+        }
+      });
+
+      sec.innerHTML = inner;
       slidesRoot.appendChild(sec);
     });
 
-    // ---------- Scroll animations ----------
+    // ---------- Scroll animations: emerge from void ----------
     gsap.registerPlugin(ScrollTrigger);
     const slides = document.querySelectorAll('.slide');
 
-    slides.forEach((slide, idx) => {
-      const card = slide.querySelector('.slide-card');
+    slides.forEach((slide) => {
       const ring = slide.querySelector('.portal-ring');
       const glow = slide.querySelector('.nebula-glow');
-      const titleEl = slide.querySelector('.slide-title');
+      const titleNum = slide.querySelector('.slide-title');
+      const floats = slide.querySelectorAll('.float-el');
 
-      // Card travels through the portal: enters small, lands at 1, exits scaling up & fading
-      gsap.fromTo(card,
-        { opacity: 0, scale: 0.6, y: 80, rotation: -1 },
-        {
-          opacity: 1, scale: 1, y: 0, rotation: 0,
+      floats.forEach((el) => {
+        const depth = parseFloat(el.dataset.depth) || 800;
+        const idx = parseInt(el.dataset.idx) || 0;
+        // staggered enter window per element so they emerge sequentially from deep space
+        const enterStart = `top ${95 - Math.min(idx * 1.2, 12)}%`;
+        const enterEnd   = `top ${48 - Math.min(idx * 0.8, 10)}%`;
+
+        // From-state: deep in the void — small, blurred, slightly offset, dim
+        const fromState = {
+          opacity: 0,
+          scale: Math.max(0.18, 1 - depth / 2400),
+          y: depth * 0.10,
+          filter: `blur(${Math.min(40, depth / 35)}px)`
+        };
+        const toState = {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          filter: 'blur(0px)',
           ease: 'power2.out',
-          scrollTrigger: { trigger: slide, start: 'top 95%', end: 'top 30%', scrub: 1 }
+          scrollTrigger: { trigger: slide, start: enterStart, end: enterEnd, scrub: 1 }
+        };
+
+        // Title gets translateX(-50%) baked in, so animate y/scale only
+        if (el.classList.contains('float-title')) {
+          gsap.set(el, { xPercent: -50 });
         }
-      );
-      gsap.to(card, {
-        opacity: 0, scale: 1.35, y: -120, rotation: 1,
-        ease: 'power2.in',
-        scrollTrigger: { trigger: slide, start: 'bottom 80%', end: 'bottom 10%', scrub: 1 }
+
+        gsap.fromTo(el, fromState, toState);
+
+        // Recede back into the void as you scroll past
+        gsap.to(el, {
+          opacity: 0,
+          scale: 1.35,
+          y: -depth * 0.12,
+          filter: `blur(${Math.min(30, depth / 50)}px)`,
+          ease: 'power2.in',
+          scrollTrigger: {
+            trigger: slide,
+            start: `bottom ${75 - Math.min(idx * 1.0, 8)}%`,
+            end:   `bottom ${15 - Math.min(idx * 0.5, 5)}%`,
+            scrub: 1
+          }
+        });
       });
 
-      // Title bar fade in / out
-      gsap.fromTo(titleEl,
+      // Slide-number label
+      gsap.fromTo(titleNum,
         { opacity: 0, y: -20 },
-        {
-          opacity: 1, y: 0,
-          scrollTrigger: { trigger: slide, start: 'top 90%', end: 'top 50%', scrub: 1 }
-        }
+        { opacity: 1, y: 0,
+          scrollTrigger: { trigger: slide, start: 'top 90%', end: 'top 50%', scrub: 1 } }
       );
-      gsap.to(titleEl, {
+      gsap.to(titleNum, {
         opacity: 0, y: -20,
         scrollTrigger: { trigger: slide, start: 'bottom 70%', end: 'bottom 30%', scrub: 1 }
       });
 
-      // Portal ring expands then keeps growing as you exit (the "passing through" feel)
+      // Portal ring (ambient — keeps the entering-portal feel)
       gsap.fromTo(ring,
         { opacity: 0, scale: 0.1 },
-        {
-          opacity: 0.7, scale: 1.4,
-          scrollTrigger: { trigger: slide, start: 'top 95%', end: 'top 25%', scrub: 1 }
-        }
+        { opacity: 0.55, scale: 1.4,
+          scrollTrigger: { trigger: slide, start: 'top 95%', end: 'top 25%', scrub: 1 } }
       );
       gsap.to(ring, {
         opacity: 0, scale: 5,
         scrollTrigger: { trigger: slide, start: 'top 25%', end: 'bottom -10%', scrub: 1 }
       });
 
-      // Nebula glow brightens at slide center
+      // Nebula glow
       gsap.fromTo(glow,
         { opacity: 0 },
-        {
-          opacity: 0.4,
-          scrollTrigger: { trigger: slide, start: 'top 70%', end: 'top 30%', scrub: 1 }
-        }
+        { opacity: 0.35,
+          scrollTrigger: { trigger: slide, start: 'top 70%', end: 'top 30%', scrub: 1 } }
       );
       gsap.to(glow, {
         opacity: 0,
@@ -540,12 +589,26 @@
     window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', updateProgress);
 
-    // ---------- First-load entrance ----------
+    // ---------- First-load entrance: first slide emerges from void ----------
     window.addEventListener('load', () => {
-      const firstCard = slides[0]?.querySelector('.slide-card');
-      const firstTitle = slides[0]?.querySelector('.slide-title');
-      if (firstCard) gsap.fromTo(firstCard, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 1.4, ease: 'power3.out' });
-      if (firstTitle) gsap.fromTo(firstTitle, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 1, delay: 0.4, ease: 'power3.out' });
+      const firstFloats = slides[0]?.querySelectorAll('.float-el') || [];
+      firstFloats.forEach((el, i) => {
+        const depth = parseFloat(el.dataset.depth) || 800;
+        gsap.fromTo(el,
+          {
+            opacity: 0,
+            scale: Math.max(0.2, 1 - depth / 2400),
+            y: depth * 0.08,
+            filter: `blur(${Math.min(30, depth / 40)}px)`
+          },
+          {
+            opacity: 1, scale: 1, y: 0, filter: 'blur(0px)',
+            duration: 1.6,
+            delay: 0.15 * i,
+            ease: 'power3.out'
+          }
+        );
+      });
       updateProgress();
       ScrollTrigger.refresh();
     });

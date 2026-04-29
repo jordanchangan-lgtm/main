@@ -11,7 +11,7 @@
   <script src="assets/slides-data.js"></script>
 
   <style>
-    :root { --bg: #000; --text: #fff; }
+    :root { --bg: #060a1f; --text: #fff; --accent-circuit: #88b6ff; }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
@@ -32,13 +32,13 @@
       background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.55) 100%);
     }
 
-    /* Each slide is 500vh tall — 5 viewport scrolls. Inside, a sticky pin
-       holds a viewport-sized frame fixed in place while the user scrolls
-       through the slide, so text/images stay centred long enough to read. */
+    /* Each slide takes ~2 scrolls to fully cross. Sticky pin keeps a
+       viewport-sized frame fixed while the user scrolls through, so text
+       stays centred long enough to read before fading into the next world. */
     .slide {
       position: relative;
       width: 100%;
-      height: 500vh;
+      height: 200vh;
       z-index: 2;
     }
 
@@ -98,6 +98,90 @@
       flex: 0 1 280px;
       max-height: 38vh;
       aspect-ratio: 16 / 10;
+    }
+
+    /* ===== Menu scene with 3 path crystals ===== */
+    .menu-stage { gap: 28px; }
+    .crystal-row {
+      display: flex;
+      gap: clamp(20px, 4vw, 60px);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      pointer-events: auto;
+    }
+    .crystal-card {
+      background: transparent;
+      border: 1px solid rgba(136, 182, 255, 0.18);
+      border-radius: 14px;
+      padding: 14px 12px 18px;
+      cursor: pointer;
+      color: inherit;
+      font: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.3s, transform 0.3s, background 0.3s, box-shadow 0.3s;
+      pointer-events: auto;
+    }
+    .crystal-card:hover {
+      border-color: rgba(136, 182, 255, 0.55);
+      background: rgba(136, 182, 255, 0.04);
+      transform: translateY(-4px);
+      box-shadow: 0 0 60px rgba(136, 182, 255, 0.18);
+    }
+    .crystal-canvas {
+      width: 220px; height: 280px;
+      display: block;
+    }
+    .crystal-sub {
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+    }
+    .crystal-label {
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.92);
+      font-weight: 600;
+    }
+
+    /* ===== Path routing — hide the paths the user hasn't entered ===== */
+    /* Default: only overview + menu visible. Once user clicks a crystal,
+       body.active-path-N reveals that path's scenes. */
+    .slide[data-path="path-1"],
+    .slide[data-path="path-2"],
+    .slide[data-path="path-3"] {
+      display: none;
+    }
+    body.active-path-1 .slide[data-path="path-1"] { display: block; }
+    body.active-path-2 .slide[data-path="path-2"] { display: block; }
+    body.active-path-3 .slide[data-path="path-3"] { display: block; }
+
+    /* "Back to crystals" pill — visible once a path is active */
+    .back-to-menu {
+      position: fixed; top: 14px; right: 14px; z-index: 6;
+      padding: 8px 14px;
+      background: rgba(8, 14, 38, 0.65);
+      border: 1px solid rgba(136, 182, 255, 0.35);
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 12px; letter-spacing: 2px;
+      cursor: pointer; opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+    body.active-path-1 .back-to-menu,
+    body.active-path-2 .back-to-menu,
+    body.active-path-3 .back-to-menu {
+      opacity: 1; pointer-events: auto;
+    }
+    .back-to-menu:hover {
+      background: rgba(136, 182, 255, 0.15);
+      border-color: rgba(136, 182, 255, 0.7);
     }
 
     .float-title {
@@ -236,6 +320,7 @@
 
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into the void</div>
+  <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -243,10 +328,10 @@
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000007, 1);
+    renderer.setClearColor(0x060a1f, 1);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000010, 0.00045);
+    scene.fog = new THREE.FogExp2(0x060a1f, 0.0005);
 
     const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 6000);
     camera.position.set(0, 0, 0);
@@ -380,190 +465,24 @@
       };
     }
 
-    const nebulae = [];
-    const galaxies = [];
-    const portals = [];
-    const slideAnchors = [];   // per-slide camera reference data
+    const slideAnchors = [];   // per-slide camera flight data
 
+    // Build a slim per-slide entrance profile. No galaxies, no portals — the
+    // background is a uniform navy void with circuit-style moving dots only.
     for (let s = 0; s < SLIDE_COUNT_3D; s++) {
       const rand = srand(s * 977 + 31);
-      const slideZ = -s * SLIDE_DEPTH;
-
-      // Pick 3 colours from the palette deterministically
-      const c1 = NEBULA_PALETTE[Math.floor(rand() * NEBULA_PALETTE.length)];
-      const c2 = NEBULA_PALETTE[Math.floor(rand() * NEBULA_PALETTE.length)];
-      const c3 = NEBULA_PALETTE[Math.floor(rand() * NEBULA_PALETTE.length)];
-
-      // Random "entrance flavour" so each slide approach feels different
       slideAnchors.push({
-        z: slideZ,
+        z: -s * SLIDE_DEPTH,
         rollSeed: rand() * Math.PI * 2,
         rollDir: rand() > 0.5 ? 1 : -1,
-        driftXAmp: 30 + rand() * 90,
-        driftYAmp: 20 + rand() * 70,
+        driftXAmp: 25 + rand() * 70,
+        driftYAmp: 18 + rand() * 50,
         driftXFreq: 0.04 + rand() * 0.07,
         driftYFreq: 0.03 + rand() * 0.06,
       });
-
-      // (Foggy nebula sprites removed — each universe is now defined by its
-      // single galaxy + the deep-void starfield. No more square fog blobs.)
-
-      // Each universe contains exactly one spiral galaxy in its theme colours.
-      const galCount = 1;
-      for (let g = 0; g < galCount; g++) {
-        const colArr  = [c1, c2, c3][g % 3];
-        const accent  = [c1, c2, c3][(g + 1) % 3];
-        const coreCol = new THREE.Color(
-          Math.min(1, colArr[0]/255 + 0.35),
-          Math.min(1, colArr[1]/255 + 0.30),
-          Math.min(1, colArr[2]/255 + 0.40)
-        );
-        const edgeCol = new THREE.Color(accent[0]/255, accent[1]/255, accent[2]/255).multiplyScalar(0.6);
-
-        const galaxyGroup = new THREE.Group();
-        // Position closer to the camera path so the galaxy is the centrepiece
-        // of the universe rather than an off-screen prop
-        galaxyGroup.position.set(
-          (rand() - 0.5) * 700,
-          (rand() - 0.5) * 450,
-          slideZ + (rand() - 0.5) * SLIDE_DEPTH * 0.4
-        );
-        // Random galaxy attitude — face-on, edge-on, or anything in between
-        galaxyGroup.rotation.set(
-          (rand() - 0.5) * Math.PI,
-          (rand() - 0.5) * Math.PI,
-          (rand() - 0.5) * Math.PI
-        );
-
-        const outerR    = 320 + rand() * 280;          // bigger disc — only 1 per slide
-        const innerR    = outerR * 0.04;
-        const numArms   = 2 + Math.floor(rand() * 3);  // 2-4 arms
-        const tightness = 4 + rand() * 4;             // spiral pitch
-        const thickness = outerR * 0.03;
-        const PARTICLES = 1800 + Math.floor(rand() * 800);
-
-        const gPos = new Float32Array(PARTICLES * 3);
-        const gCol = new Float32Array(PARTICLES * 3);
-        const gSiz = new Float32Array(PARTICLES);
-        const tmp  = new THREE.Color();
-
-        for (let i = 0; i < PARTICLES; i++) {
-          const arm = i % numArms;
-          const tBase = Math.pow(rand(), 0.6);   // bias toward edge so disc isn't core-heavy
-          const t = tBase;
-          const armAngle = arm * (Math.PI * 2 / numArms);
-          const angle = t * tightness + armAngle + (rand() - 0.5) * 0.45;
-          const radial = innerR + t * (outerR - innerR);
-          // perpendicular spread from the arm, narrower on the outside
-          const armSpread = (rand() - 0.5) * outerR * 0.18 * (1 - t * 0.5);
-          const r = radial + armSpread;
-          const ax = Math.cos(angle) * r;
-          const az = Math.sin(angle) * r;
-          // disc thickness — falls off toward edge so galaxy looks flat
-          const ay = (rand() - 0.5) * thickness * (1 - Math.pow(t, 0.7));
-
-          gPos[i*3]     = ax;
-          gPos[i*3 + 1] = ay;
-          gPos[i*3 + 2] = az;
-
-          // colour: bright core → dim edge, with grey/violet variation per particle
-          tmp.copy(coreCol).lerp(edgeCol, t);
-          // sprinkle grey stars for variation
-          if (rand() < 0.12) {
-            tmp.setRGB(0.7 + rand() * 0.2, 0.7 + rand() * 0.2, 0.78 + rand() * 0.2);
-          }
-          gCol[i*3]     = tmp.r;
-          gCol[i*3 + 1] = tmp.g;
-          gCol[i*3 + 2] = tmp.b;
-
-          gSiz[i] = (2.4 - t * 1.6) * (0.6 + rand() * 0.8);
-        }
-
-        const gGeo = new THREE.BufferGeometry();
-        gGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3));
-        gGeo.setAttribute('color',    new THREE.BufferAttribute(gCol, 3));
-        gGeo.setAttribute('aSize',    new THREE.BufferAttribute(gSiz, 1));
-        const galaxyDisc = new THREE.Points(gGeo, starMat);
-        galaxyGroup.add(galaxyDisc);
-
-        // Subtle core highlight — small enough that the spiral disc is the
-        // dominant feature (no more "planet body" look). Halo sprite removed.
-        const coreTex = makeNebulaTexture(
-          Math.min(255, colArr[0] + 90),
-          Math.min(255, colArr[1] + 80),
-          Math.min(255, colArr[2] + 100),
-          rand
-        );
-        const core = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: coreTex,
-          blending: THREE.AdditiveBlending,
-          transparent: true,
-          depthWrite: false,
-          opacity: 0.65
-        }));
-        core.scale.set(outerR * 0.32, outerR * 0.32, 1);
-        galaxyGroup.add(core);
-
-        // Slow rotation around its own up-axis (the disc's local Y)
-        galaxyGroup.userData.spinSpeed = (rand() - 0.5) * 0.0015;
-        galaxyGroup.userData.disc = galaxyDisc;
-
-        scene.add(galaxyGroup);
-        galaxies.push(galaxyGroup);
-      }
-
-      // Black-hole portal between this slide and the next one
-      if (s < SLIDE_COUNT_3D - 1) {
-        const portalZ = slideZ - SLIDE_DEPTH * 0.85; // sits just before the next slide's nebula
-        const grp = new THREE.Group();
-        grp.position.set(
-          (rand() - 0.5) * 220,
-          (rand() - 0.5) * 160,
-          portalZ
-        );
-        // Random tilt — gives every portal a unique entry attitude
-        grp.rotation.set(
-          (rand() - 0.5) * 0.7,
-          (rand() - 0.5) * 0.7,
-          rand() * Math.PI * 2
-        );
-        // Event horizon — dark sphere
-        const core = new THREE.Mesh(
-          new THREE.SphereGeometry(38, 32, 32),
-          new THREE.MeshBasicMaterial({ color: 0x000004, transparent: true, opacity: 0.97 })
-        );
-        grp.add(core);
-        // Accretion ring (additive torus glow)
-        const ringCol = NEBULA_PALETTE[Math.floor(rand() * NEBULA_PALETTE.length)];
-        const ring = new THREE.Mesh(
-          new THREE.TorusGeometry(58, 4, 16, 100),
-          new THREE.MeshBasicMaterial({
-            color: new THREE.Color(ringCol[0]/255, ringCol[1]/255, ringCol[2]/255),
-            transparent: true,
-            opacity: 0.9
-          })
-        );
-        ring.rotation.x = Math.PI / 2;
-        grp.add(ring);
-        // Outer wispy halo
-        const haloTex = makeNebulaTexture(ringCol[0], ringCol[1], ringCol[2], rand);
-        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: haloTex,
-          blending: THREE.AdditiveBlending,
-          transparent: true,
-          depthWrite: false,
-          opacity: 0.7
-        }));
-        halo.scale.set(300, 300, 1);
-        grp.add(halo);
-        grp.userData.spin = 0.01 + rand() * 0.025;
-        grp.userData.ringRef = ring;
-        scene.add(grp);
-        portals.push(grp);
-      }
     }
 
-    // ===== Camera flight + black-hole transition feel =====
+    // ===== Camera flight =====
     let scrollVel = 0;
     let lastY = window.scrollY;
     window.addEventListener('scroll', () => {
@@ -611,12 +530,13 @@
       // Roll spirals as you approach a black hole — direction varies per slide
       camera.rotation.z = Math.sin(time * 0.1) * 0.04
                         + scrollVel * 0.04
-                        + a.rollDir * Math.pow(blackHolePull, 1.4) * 0.55;
+                        + a.rollDir * Math.pow(blackHolePull, 1.4) * 0.18;
 
       // FOV narrows during the pull (tunnel-vision into the hole), then snaps
       // back at the start of the next slide
-      const targetFOV = baseFOV - blackHolePull * 18;
-      camera.fov += (targetFOV - camera.fov) * 0.05;   // gentler lerp, smoother feel
+      // Mild FOV nudge between worlds — no more black-hole pull
+      const targetFOV = baseFOV - blackHolePull * 6;
+      camera.fov += (targetFOV - camera.fov) * 0.05;
       camera.updateProjectionMatrix();
 
       // Star streaks intensify as you fall in
@@ -649,23 +569,15 @@
           needsUpdate = true;
         }
       }
-      if (needsUpdate) starPos.needsUpdate = true;
-      // Galaxies rotate slowly around their own up-axis (the disc spins)
-      for (const g of galaxies) {
-        if (g.userData.disc) {
-          g.userData.disc.rotation.y += g.userData.spinSpeed;
-        }
+      // Add gentle Brownian drift to every dot so the field feels alive even
+      // when the user isn't scrolling — circuit-board energy.
+      for (let i = 0; i < STAR_COUNT; i++) {
+        const i3 = i * 3;
+        const ph = i * 0.137;
+        starArr[i3]     += Math.sin(time * 0.7 + ph) * 0.18;
+        starArr[i3 + 1] += Math.cos(time * 0.6 + ph * 1.3) * 0.18;
       }
-      // Portals spin; ring glow pulses brighter when camera is near
-      for (const portal of portals) {
-        portal.rotation.z += portal.userData.spin;
-        const dz = camera.position.z - portal.position.z;
-        const near = Math.max(0, 1 - Math.abs(dz) / (SLIDE_DEPTH * 0.7));
-        if (portal.userData.ringRef) {
-          portal.userData.ringRef.material.opacity = 0.55 + 0.45 * near;
-          portal.userData.ringRef.scale.setScalar(1 + near * 0.4);
-        }
-      }
+      starPos.needsUpdate = true;
 
       scrollVel *= 0.92;
       renderer.render(scene, camera);
@@ -760,7 +672,229 @@
       pin.appendChild(stage);
       sec.appendChild(pin);
       slidesRoot.appendChild(sec);
+
+      // After the overview scene, insert the menu (3 path crystals)
+      if (slide.path === 'overview') {
+        const menu = buildMenuSection();
+        slidesRoot.appendChild(menu);
+      }
     });
+
+    // ===== Menu section with 3 clickable particle crystals =====
+    function buildMenuSection() {
+      const sec = document.createElement('section');
+      sec.className = 'slide menu-scene';
+      sec.dataset.path = 'menu';
+      sec.dataset.id = 'menu';
+
+      const pin = document.createElement('div');
+      pin.className = 'slide-pin';
+
+      const stage = document.createElement('div');
+      stage.className = 'slide-stage stage-centred menu-stage';
+
+      const subtitle = document.createElement('div');
+      subtitle.className = 'float-el float-subtitle';
+      subtitle.dataset.depth = 500; subtitle.dataset.idx = 0;
+      subtitle.textContent = 'Choose your path';
+      stage.appendChild(subtitle);
+
+      const heading = document.createElement('div');
+      heading.className = 'float-el float-title';
+      heading.dataset.depth = 700; heading.dataset.idx = 1;
+      heading.textContent = 'Three Worlds';
+      stage.appendChild(heading);
+
+      const blurb = document.createElement('div');
+      blurb.className = 'float-el float-text';
+      blurb.dataset.depth = 900; blurb.dataset.idx = 2;
+      blurb.textContent = 'Each crystal opens a different chapter of the Mallouk Group story. Hover to see, click to enter.';
+      stage.appendChild(blurb);
+
+      const row = document.createElement('div');
+      row.className = 'crystal-row float-el';
+      row.dataset.depth = 1100; row.dataset.idx = 3;
+
+      const crystals = [
+        { path: 'path-1', label: 'Automotive',     subtitle: 'Path 1', shape: 'octahedron' },
+        { path: 'path-2', label: 'Diversification', subtitle: 'Path 2', shape: 'icosahedron' },
+        { path: 'path-3', label: 'Global Strategy', subtitle: 'Path 3', shape: 'dodecahedron' },
+      ];
+
+      crystals.forEach((c, ci) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'crystal-card';
+        card.dataset.target = c.path;
+        card.setAttribute('aria-label', `Open ${c.label} path`);
+
+        const canvasEl = document.createElement('canvas');
+        canvasEl.className = 'crystal-canvas';
+        canvasEl.width = 260;
+        canvasEl.height = 320;
+        card.appendChild(canvasEl);
+
+        const subL = document.createElement('div');
+        subL.className = 'crystal-sub';
+        subL.textContent = c.subtitle;
+        card.appendChild(subL);
+
+        const lbl = document.createElement('div');
+        lbl.className = 'crystal-label';
+        lbl.textContent = c.label;
+        card.appendChild(lbl);
+
+        // Mini Three.js scene per crystal — particles around a wire-frame solid
+        initCrystal(canvasEl, c.shape, card);
+
+        card.addEventListener('click', () => activatePath(c.path));
+        row.appendChild(card);
+      });
+
+      stage.appendChild(row);
+      pin.appendChild(stage);
+      sec.appendChild(pin);
+      return sec;
+    }
+
+    // Build a tiny Three.js scene inside a canvas: a wire-frame crystal solid
+    // with a particle aura. Hover state speeds up rotation + brightens.
+    function initCrystal(canvas, shape, card) {
+      const w = canvas.width, h = canvas.height;
+      const r = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      r.setSize(w, h, false);
+      r.setClearColor(0x000000, 0);
+
+      const sc = new THREE.Scene();
+      const cam = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
+      cam.position.set(0, 0, 5);
+
+      // Wire-frame crystal core
+      const geo =
+        shape === 'icosahedron'  ? new THREE.IcosahedronGeometry(1.2, 0) :
+        shape === 'dodecahedron' ? new THREE.DodecahedronGeometry(1.2, 0) :
+                                   new THREE.OctahedronGeometry(1.3, 0);
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: 0x88b6ff, wireframe: true, transparent: true, opacity: 0.55
+      });
+      const mesh = new THREE.Mesh(geo, wireMat);
+      sc.add(mesh);
+
+      // Particle aura sampled around the surface
+      const PCOUNT = 600;
+      const pPos = new Float32Array(PCOUNT * 3);
+      const pCol = new Float32Array(PCOUNT * 3);
+      const pSiz = new Float32Array(PCOUNT);
+      const tmp  = new THREE.Color();
+      // Sample by jittering the geometry's vertices outward
+      const verts = geo.attributes.position.array;
+      const vCount = verts.length / 3;
+      for (let i = 0; i < PCOUNT; i++) {
+        const v = (Math.random() * vCount) | 0;
+        const ox = verts[v*3], oy = verts[v*3+1], oz = verts[v*3+2];
+        const len = Math.hypot(ox, oy, oz) || 1;
+        const dist = 0.95 + Math.random() * 0.6;
+        // jitter outward + small lateral offset
+        pPos[i*3]     = (ox / len) * dist + (Math.random() - 0.5) * 0.15;
+        pPos[i*3 + 1] = (oy / len) * dist + (Math.random() - 0.5) * 0.15;
+        pPos[i*3 + 2] = (oz / len) * dist + (Math.random() - 0.5) * 0.15;
+        const palette = [[136,182,255],[180,210,255],[220,230,255]];
+        const cc = palette[(Math.random()*palette.length)|0];
+        tmp.setRGB(cc[0]/255, cc[1]/255, cc[2]/255);
+        pCol[i*3] = tmp.r; pCol[i*3+1] = tmp.g; pCol[i*3+2] = tmp.b;
+        pSiz[i] = 1 + Math.random() * 1.6;
+      }
+      const pGeo = new THREE.BufferGeometry();
+      pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      pGeo.setAttribute('color',    new THREE.BufferAttribute(pCol, 3));
+      pGeo.setAttribute('aSize',    new THREE.BufferAttribute(pSiz, 1));
+
+      // Reuse the main shader for additive glow
+      const pMat = new THREE.ShaderMaterial({
+        uniforms: { uPixelRatio: { value: r.getPixelRatio() }, uVelocity: { value: 0 }, uTime: { value: 0 } },
+        vertexColors: true, transparent: true, depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        vertexShader: `
+          attribute float aSize;
+          varying vec3 vColor;
+          uniform float uPixelRatio;
+          uniform float uTime;
+          void main() {
+            vColor = color;
+            vec4 mv = modelViewMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * mv;
+            float twinkle = 0.85 + 0.15 * sin(uTime * 3.0 + position.x * 4.0);
+            gl_PointSize = aSize * (180.0 / max(1.0, -mv.z)) * uPixelRatio * twinkle;
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vColor;
+          void main() {
+            vec2 c = gl_PointCoord - 0.5;
+            float d = length(c);
+            float a = smoothstep(0.5, 0.0, d);
+            gl_FragColor = vec4(vColor, a);
+          }
+        `
+      });
+      const points = new THREE.Points(pGeo, pMat);
+      sc.add(points);
+
+      // Hover state — smooth approach
+      let hover = 0, hoverTarget = 0;
+      card.addEventListener('pointerenter', () => { hoverTarget = 1; });
+      card.addEventListener('pointerleave', () => { hoverTarget = 0; });
+
+      // Render on its own RAF loop
+      const start = performance.now();
+      function tick() {
+        const t = (performance.now() - start) * 0.001;
+        hover += (hoverTarget - hover) * 0.12;
+        pMat.uniforms.uTime.value = t;
+        const rotSpeed = 0.4 + hover * 1.2;
+        mesh.rotation.x = t * 0.18;
+        mesh.rotation.y = t * rotSpeed * 0.4;
+        points.rotation.x = t * 0.18;
+        points.rotation.y = t * rotSpeed * 0.4;
+        wireMat.opacity = 0.45 + hover * 0.4;
+        cam.position.z = 5 - hover * 0.6;
+        r.render(sc, cam);
+        requestAnimationFrame(tick);
+      }
+      tick();
+    }
+
+    // ===== Path routing — show only the chosen path's scenes =====
+    const ALL_PATHS = ['path-1', 'path-2', 'path-3'];
+    function activatePath(path) {
+      ALL_PATHS.forEach(p => document.body.classList.remove(`active-${p}`));
+      document.body.classList.add(`active-${path}`);
+      // refresh ScrollTrigger because section visibility (and total scrollable
+      // height) just changed
+      if (window.ScrollTrigger) requestAnimationFrame(() => ScrollTrigger.refresh());
+      // Scroll to the first scene of the chosen path
+      requestAnimationFrame(() => {
+        const target = document.querySelector(`.slide[data-path="${path}"]`);
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    }
+    function deactivatePath() {
+      ALL_PATHS.forEach(p => document.body.classList.remove(`active-${p}`));
+      if (window.ScrollTrigger) requestAnimationFrame(() => ScrollTrigger.refresh());
+      // Scroll back to the menu scene
+      requestAnimationFrame(() => {
+        const menu = document.querySelector('.menu-scene');
+        if (menu) {
+          const top = menu.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    }
+    document.querySelector('.back-to-menu')?.addEventListener('click', deactivatePath);
 
     // ===== 3D particle logo for slide 1 (replaces the HTML title) =====
     // Hide the HTML title on slide 1 — the 3D particles are the title now.
@@ -797,12 +931,13 @@
 
       const data = ctx.getImageData(0, 0, cv.width, cv.height).data;
       const pos = [], col = [], siz = [], target = [];
-      // Theme palette: navy / purple / grey
+      // Theme palette: cyan / pale-blue / white — same family as the
+      // circuit dots so the logo reads as part of the field.
       const logoPalette = [
-        [150, 110, 220],
-        [80, 100, 190],
-        [200, 200, 220],
-        [70, 60, 140]
+        [136, 182, 255],   // accent circuit
+        [180, 210, 255],   // light blue
+        [220, 230, 255],   // near white
+        [90, 130, 220]     // deeper blue accent
       ];
       for (let py = 0; py < cv.height; py += sampleStep) {
         for (let px = 0; px < cv.width; px += sampleStep) {

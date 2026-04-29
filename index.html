@@ -395,7 +395,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build crystal-readable v3</div>
+  <div class="build-stamp">build stars-bidir v4</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -627,21 +627,30 @@
       const camZ = camera.position.z;
       const camX = camera.position.x;
       const camY = camera.position.y;
-      const recycleBehind = 200;     // z distance behind cam at which we recycle
+      // BIDIRECTIONAL recycle:
+      //   - if a star drifted behind the camera (z > camZ + 200) → respawn ahead
+      //   - if a star is too far ahead (z < camZ - 2400) → respawn closer
+      // The "too far ahead" case is what was breaking the field after every
+      // fadeNavigate() — the camera teleports along Z while the stars stay
+      // where they were, leaving the user staring into empty fog.
+      const recycleBehind = 200;
+      const tooFarAhead   = -2400;
+      const respawn = (i3) => {
+        const close = Math.random() < 0.35;
+        const radius = close
+          ? 40 + Math.pow(Math.random(), 1.4) * 240
+          : 240 + Math.pow(Math.random(), 0.7) * SPACE_RADIUS;
+        const angle = Math.random() * Math.PI * 2;
+        starArr[i3]     = camX + Math.cos(angle) * radius;
+        starArr[i3 + 1] = camY + Math.sin(angle) * radius;
+        starArr[i3 + 2] = camZ - 50 - Math.pow(Math.random(), 0.5) * 1800;
+      };
       let needsUpdate = false;
       for (let i = 0; i < STAR_COUNT; i++) {
         const i3 = i * 3;
-        if (starArr[i3 + 2] > camZ + recycleBehind) {
-          // Spawn the recycled star CLOSE to camera (between 50 and 1800 ahead)
-          // so it's already visible — no waiting for it to "drift in" through fog.
-          const close = Math.random() < 0.35;
-          const radius = close
-            ? 40 + Math.pow(Math.random(), 1.4) * 240
-            : 240 + Math.pow(Math.random(), 0.7) * SPACE_RADIUS;
-          const angle = Math.random() * Math.PI * 2;
-          starArr[i3]     = camX + Math.cos(angle) * radius;
-          starArr[i3 + 1] = camY + Math.sin(angle) * radius;
-          starArr[i3 + 2] = camZ - 50 - Math.pow(Math.random(), 0.5) * 1800;
+        const dz = starArr[i3 + 2] - camZ;
+        if (dz > recycleBehind || dz < tooFarAhead) {
+          respawn(i3);
           needsUpdate = true;
         }
       }
@@ -660,6 +669,25 @@
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
+
+    // Force-reseed every star around the current camera position. Called by
+    // fadeNavigate() after a scroll teleport so the field never feels empty.
+    window.reseedStarsAroundCamera = function () {
+      const arr = stars.geometry.attributes.position.array;
+      const cz = camera.position.z, cx = camera.position.x, cy = camera.position.y;
+      for (let i = 0; i < STAR_COUNT; i++) {
+        const i3 = i * 3;
+        const close = Math.random() < 0.35;
+        const radius = close
+          ? 40 + Math.pow(Math.random(), 1.4) * 240
+          : 240 + Math.pow(Math.random(), 0.7) * SPACE_RADIUS;
+        const angle = Math.random() * Math.PI * 2;
+        arr[i3]     = cx + Math.cos(angle) * radius;
+        arr[i3 + 1] = cy + Math.sin(angle) * radius;
+        arr[i3 + 2] = cz - 50 - Math.pow(Math.random(), 0.5) * 1800;
+      }
+      stars.geometry.attributes.position.needsUpdate = true;
+    };
 
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -1227,6 +1255,13 @@
         // Phase 2: navigation runs while screen is dark
         navFn();
         if (window.ScrollTrigger) ScrollTrigger.refresh();
+        // Reseed every star around the new camera Z so the field is dense
+        // immediately when the overlay clears (no slow per-frame catch-up).
+        if (typeof window.reseedStarsAroundCamera === 'function') {
+          // Give the scroll/class swap one frame to settle so camera.z reflects
+          // the new scrollY before we reseed around it.
+          requestAnimationFrame(() => requestAnimationFrame(window.reseedStarsAroundCamera));
+        }
         // Phase 3: fade back in to the new scene
         setTimeout(() => { transitionOverlay.style.opacity = '0'; }, 80);
       }, 480);

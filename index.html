@@ -395,7 +395,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build logo-fix v9</div>
+  <div class="build-stamp">build no-cull v10</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -508,6 +508,13 @@
       `
     });
     const stars = new THREE.Points(starGeo, starMat);
+    // CRITICAL: positions are computed in the shader from uCamPos, NOT from
+    // the geometry's position attribute (which is a zero-filled dummy). The
+    // dummy makes Three.js compute a 0-radius bounding sphere at origin and
+    // frustum-cull the entire Points object as soon as the camera moves
+    // away from (0, 0, 0). Disabling frustum culling forces a draw every
+    // frame so the GPU shell actually renders.
+    stars.frustumCulled = false;
     scene.add(stars);
 
     // Static-position additive shader for any Points cloud whose particles

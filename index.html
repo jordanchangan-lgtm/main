@@ -691,70 +691,6 @@
       }
     });
 
-    // ===== Outro: 2 frameless particle crystals linking to Instagram =====
-    (function buildOutroSection() {
-      const sec = document.createElement('section');
-      sec.className = 'slide outro-scene';
-      sec.dataset.path = 'outro';
-      sec.dataset.id = 'outro';
-
-      const pin = document.createElement('div');
-      pin.className = 'slide-pin';
-
-      const stage = document.createElement('div');
-      stage.className = 'slide-stage stage-centred menu-stage';
-
-      const wrapText = (klass, depth, idx, text, delay) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'float-el ' + klass;
-        wrap.dataset.depth = depth; wrap.dataset.idx = idx;
-        const inner = document.createElement('span');
-        inner.className = 'float-bob';
-        if (delay) inner.style.animationDelay = delay + 's';
-        inner.textContent = text;
-        wrap.appendChild(inner);
-        return wrap;
-      };
-      stage.appendChild(wrapText('float-subtitle', 500, 0, 'The brands', 0));
-      stage.appendChild(wrapText('float-title', 700, 1, 'Follow the journey', -1.5));
-
-      const row = document.createElement('div');
-      row.className = 'crystal-row float-el';
-      row.dataset.depth = 1100; row.dataset.idx = 2;
-
-      const igCrystals = [
-        { url: 'https://www.instagram.com/changanjo/',     label: 'Changan',  subtitle: 'Jordan', shape: 'octahedron' },
-        { url: 'https://www.instagram.com/avatr.jordan/',  label: 'AVATR',    subtitle: 'Jordan', shape: 'icosahedron' },
-      ];
-      igCrystals.forEach((c) => {
-        const card = document.createElement('a');
-        card.href = c.url;
-        card.target = '_blank';
-        card.rel = 'noopener noreferrer';
-        card.className = 'crystal-card';
-        card.setAttribute('aria-label', `Open ${c.label} ${c.subtitle} on Instagram`);
-        const cv = document.createElement('canvas');
-        cv.className = 'crystal-canvas';
-        cv.width = 220; cv.height = 280;
-        card.appendChild(cv);
-        const subL = document.createElement('div');
-        subL.className = 'crystal-sub';
-        subL.textContent = c.subtitle;
-        card.appendChild(subL);
-        const lbl = document.createElement('div');
-        lbl.className = 'crystal-label';
-        lbl.textContent = c.label;
-        card.appendChild(lbl);
-        initCrystal(cv, c.shape, card);
-        row.appendChild(card);
-      });
-
-      stage.appendChild(row);
-      pin.appendChild(stage);
-      sec.appendChild(pin);
-      slidesRoot.appendChild(sec);
-    })();
-
     // ===== Menu section with 3 clickable particle crystals =====
     function buildMenuSection() {
       const sec = document.createElement('section');
@@ -788,9 +724,12 @@
       row.dataset.depth = 1100; row.dataset.idx = 3;
 
       const crystals = [
-        { path: 'path-1', label: 'Automotive',     subtitle: 'Path 1', shape: 'octahedron' },
-        { path: 'path-2', label: 'Diversification', subtitle: 'Path 2', shape: 'icosahedron' },
-        { path: 'path-3', label: 'Global Strategy', subtitle: 'Path 3', shape: 'dodecahedron' },
+        { path: 'path-1', label: 'Automotive',     subtitle: 'Path 1',
+          shape: { sides: 6, height: 1.7, radius: 0.7 },  engraving: 'car' },
+        { path: 'path-2', label: 'Diversification', subtitle: 'Path 2',
+          shape: { sides: 8, height: 1.4, radius: 0.85 }, engraving: 'tree' },
+        { path: 'path-3', label: 'Global Strategy', subtitle: 'Path 3',
+          shape: { sides: 4, height: 1.9, radius: 0.65 }, engraving: 'globe' },
       ];
 
       crystals.forEach((c, ci) => {
@@ -817,7 +756,7 @@
         card.appendChild(lbl);
 
         // Mini Three.js scene per crystal — particles around a wire-frame solid
-        initCrystal(canvasEl, c.shape, card);
+        initCrystal(canvasEl, c.shape, card, c.engraving);
 
         card.addEventListener('click', () => activatePath(c.path));
         row.appendChild(card);
@@ -829,9 +768,99 @@
       return sec;
     }
 
-    // Build a tiny Three.js scene inside a canvas: a wire-frame crystal solid
-    // with a particle aura. Hover state speeds up rotation + brightens.
-    function initCrystal(canvas, shape, card) {
+    // Build a custom bipyramid (gem-cut crystal) — top apex + middle ring +
+    // bottom apex, with N sides. Returns a BufferGeometry with proper indices
+    // so EdgesGeometry can extract the edge skeleton.
+    function makeBipyramidGeometry(sides, radius, height) {
+      const positions = [];
+      const indices = [];
+      // Apex vertices
+      positions.push(0,  height, 0);     // 0 — top apex
+      positions.push(0, -height, 0);     // 1 — bottom apex
+      // Middle ring
+      for (let i = 0; i < sides; i++) {
+        const a = (i / sides) * Math.PI * 2;
+        positions.push(Math.cos(a) * radius, 0, Math.sin(a) * radius);  // 2 + i
+      }
+      // Top face triangles
+      for (let i = 0; i < sides; i++) {
+        indices.push(0, 2 + i, 2 + ((i + 1) % sides));
+      }
+      // Bottom face triangles
+      for (let i = 0; i < sides; i++) {
+        indices.push(1, 2 + ((i + 1) % sides), 2 + i);
+      }
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      g.setIndex(indices);
+      g.computeVertexNormals();
+      return g;
+    }
+
+    // 2D engraving line patterns — each list is segments [x1,y1,x2,y2] in
+    // a -1..1 normalized space, drawn on the crystal's "front face".
+    function getEngravingLines(kind) {
+      const segs = [];
+      const arc = (cx, cy, rx, ry, a0, a1, n=14) => {
+        let prevX = cx + Math.cos(a0) * rx, prevY = cy + Math.sin(a0) * ry;
+        for (let i = 1; i <= n; i++) {
+          const t = a0 + (a1 - a0) * (i / n);
+          const x = cx + Math.cos(t) * rx, y = cy + Math.sin(t) * ry;
+          segs.push([prevX, prevY, x, y]); prevX = x; prevY = y;
+        }
+      };
+      if (kind === 'car') {
+        // Car silhouette (side view)
+        // Body lower line
+        segs.push([-0.55, -0.05, 0.55, -0.05]);
+        // Roof slope
+        segs.push([-0.40, 0.18, -0.18, 0.34]);
+        segs.push([-0.18, 0.34,  0.18, 0.34]);
+        segs.push([ 0.18, 0.34,  0.40, 0.18]);
+        // Body sides connecting roof to lower line (hood + trunk)
+        segs.push([-0.55, -0.05, -0.40, 0.18]);
+        segs.push([ 0.55, -0.05,  0.40, 0.18]);
+        // Wheel arches
+        arc(-0.30, -0.05, 0.16, 0.16, Math.PI, 0, 10);
+        arc( 0.30, -0.05, 0.16, 0.16, Math.PI, 0, 10);
+        // Wheels
+        arc(-0.30, -0.20, 0.13, 0.13, 0, Math.PI * 2, 14);
+        arc( 0.30, -0.20, 0.13, 0.13, 0, Math.PI * 2, 14);
+      } else if (kind === 'tree') {
+        // Branching tree (diversification)
+        segs.push([0, -0.55, 0, -0.10]);                // trunk
+        segs.push([0, -0.10, -0.40, 0.30]);              // left main
+        segs.push([0, -0.10,  0.40, 0.30]);              // right main
+        segs.push([0,  0.05, -0.20, 0.50]);              // mid-left
+        segs.push([0,  0.05,  0.20, 0.50]);              // mid-right
+        segs.push([0,  0.20,  0.0,  0.65]);              // top trunk
+        segs.push([-0.40, 0.30, -0.55, 0.50]);           // outer twigs
+        segs.push([ 0.40, 0.30,  0.55, 0.50]);
+        segs.push([-0.20, 0.50, -0.32, 0.65]);
+        segs.push([ 0.20, 0.50,  0.32, 0.65]);
+      } else if (kind === 'globe') {
+        const R = 0.55;
+        // Outer circle
+        arc(0, 0, R, R, 0, Math.PI * 2, 28);
+        // Equator
+        segs.push([-R, 0, R, 0]);
+        // Latitudes (horizontal-ish)
+        for (const yLat of [-0.30, 0.30]) {
+          const ry = Math.sqrt(R*R - yLat*yLat);
+          segs.push([-ry, yLat, ry, yLat]);
+        }
+        // Two longitude curves (vertical ellipses with squashed x)
+        for (const phi of [0.0, Math.PI / 3]) {
+          const sx = Math.cos(phi) * R;
+          arc(0, 0, sx, R,  Math.PI / 2,  Math.PI * 1.5, 14);
+        }
+      }
+      return segs;
+    }
+
+    // Build a tiny Three.js scene inside a canvas: a particle-only crystal
+    // (no mesh, no wireframe) with a glowing engraving on its front face.
+    function initCrystal(canvas, shape, card, engraving) {
       const w = canvas.width, h = canvas.height;
       const r = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -842,22 +871,25 @@
       const cam = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
       cam.position.set(0, 0, 5);
 
-      // Polyhedron the crystal traces (no mesh added to the scene — only
-      // particles are drawn, so there is no surface fill or wireframe).
-      const geo =
-        shape === 'icosahedron'  ? new THREE.IcosahedronGeometry(1.4, 0) :
-        shape === 'dodecahedron' ? new THREE.DodecahedronGeometry(1.4, 0) :
-                                   new THREE.OctahedronGeometry(1.5, 0);
+      // Bipyramid (gem cut). Backwards-compat: if shape is a string we fall
+      // back to a default hex bipyramid.
+      const sp = (typeof shape === 'object' && shape) ? shape : { sides: 6, radius: 0.7, height: 1.6 };
+      const geo = makeBipyramidGeometry(sp.sides, sp.radius, sp.height);
 
-      // Sample many tiny particles along the polyhedron's edges (the
+      // Sample many tiny particles along the bipyramid's edges (the
       // skeleton of the crystal) plus a few inside / floating around.
       const edges = new THREE.EdgesGeometry(geo);
       const ePos  = edges.attributes.position.array;
       const edgeCount = ePos.length / 6;          // each edge = 2 vertices
       const PER_EDGE = 110;                        // particles spaced along each edge
-      const INTERIOR = 350;                        // inner "gem" particles
-      const HALO     = 200;                        // outer hovering motes
-      const TOTAL    = edgeCount * PER_EDGE + INTERIOR + HALO;
+      const INTERIOR = 280;                        // inner "gem" particles
+      const HALO     = 160;                        // outer hovering motes
+
+      // Engraving — particles tracing a 2D pattern on the crystal's front face
+      const engLines  = engraving ? getEngravingLines(engraving) : [];
+      const PER_ENG   = 24;                        // particles per engraving segment
+      const ENG_COUNT = engLines.length * PER_ENG;
+      const TOTAL     = edgeCount * PER_EDGE + INTERIOR + HALO + ENG_COUNT;
 
       const pPos = new Float32Array(TOTAL * 3);
       const pCol = new Float32Array(TOTAL * 3);
@@ -916,6 +948,27 @@
         pCol[p*3] = tmp.r; pCol[p*3+1] = tmp.g; pCol[p*3+2] = tmp.b;
         pSiz[p]   = 0.45 + Math.random() * 0.6;
         p++;
+      }
+
+      // Engraving particles — sit just in front of the crystal face. Brighter
+      // and slightly larger than crystal body particles so they read as
+      // a glowing scratch on the surface. They rotate WITH the crystal.
+      const engZ = sp.radius + 0.06;        // slightly outside the equator
+      for (const seg of engLines) {
+        const [x1, y1, x2, y2] = seg;
+        for (let i = 0; i < PER_ENG; i++) {
+          const t = i / (PER_ENG - 1);
+          const jit = 0.012;
+          pPos[p*3]     = x1 + (x2 - x1) * t + (Math.random() - 0.5) * jit;
+          pPos[p*3 + 1] = y1 + (y2 - y1) * t + (Math.random() - 0.5) * jit;
+          pPos[p*3 + 2] = engZ + (Math.random() - 0.5) * 0.025;
+          // bright cyan-white
+          pCol[p*3]     = 0.85 + Math.random() * 0.15;
+          pCol[p*3 + 1] = 0.95;
+          pCol[p*3 + 2] = 1.0;
+          pSiz[p]       = 0.7 + Math.random() * 0.5;
+          p++;
+        }
       }
 
       const pGeo = new THREE.BufferGeometry();
@@ -1014,6 +1067,29 @@
       });
     }
     document.querySelector('.back-to-menu')?.addEventListener('click', deactivatePath);
+
+    // When scrolling past the last scene of the active path, loop back to the
+    // crystal menu automatically. Throttle with a "handled" guard so we only
+    // fire once per overshoot.
+    let pathLoopHandled = false;
+    window.addEventListener('scroll', () => {
+      const activePath = ALL_PATHS.find(p => document.body.classList.contains(`active-${p}`));
+      if (!activePath) { pathLoopHandled = false; return; }
+      const slides = document.querySelectorAll(`.slide[data-path="${activePath}"]`);
+      if (!slides.length) return;
+      const last = slides[slides.length - 1];
+      const lastBottom = last.getBoundingClientRect().top + window.scrollY + last.offsetHeight;
+      // Trigger when user is within the final viewport of the last scene
+      const trigger = lastBottom - window.innerHeight * 0.4;
+      if (window.scrollY > trigger) {
+        if (!pathLoopHandled) {
+          pathLoopHandled = true;
+          deactivatePath();
+        }
+      } else {
+        pathLoopHandled = false;
+      }
+    }, { passive: true });
 
     // ===== 3D particle logo for slide 1 (replaces the HTML title) =====
     // Hide the HTML title on slide 1 — the 3D particles are the title now.

@@ -395,7 +395,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build star-shell v6</div>
+  <div class="build-stamp">build dive-fullscreen v7</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1244,6 +1244,15 @@
         points.rotation.set(0, 0, 0);
         points.scale.set(1, 1, 1);
       });
+      // Resize hook — used by enterCrystal() to make this canvas span the
+      // entire viewport during the dive, removing the visible canvas frame.
+      card.addEventListener('crystal-resize', (e) => {
+        const cw = e.detail.width;
+        const ch = e.detail.height;
+        r.setSize(cw, ch, false);
+        cam.aspect = cw / ch;
+        cam.updateProjectionMatrix();
+      });
 
       const start = performance.now();
       function tick() {
@@ -1344,35 +1353,46 @@
       const allCards = Array.from(document.querySelectorAll('.crystal-card'));
       const others = allCards.filter(c => c !== card);
 
-      // Hide other crystals' canvases AND their labels
+      // Fade everything menu-related: other crystals, labels, all menu text
       others.forEach(c => {
-        gsap.to(c, { opacity: 0, scale: 0.4, duration: 0.7, ease: 'power2.in' });
+        gsap.to(c, { opacity: 0, scale: 0.4, duration: 0.5, ease: 'power2.in' });
       });
-
-      // Move chosen crystal to viewport centre and scale up
-      card.style.zIndex = '99';
-      card.style.position = 'relative';
-      const rect = card.getBoundingClientRect();
-      const dx = window.innerWidth / 2  - (rect.left + rect.width / 2);
-      const dy = window.innerHeight / 2 - (rect.top  + rect.height / 2);
-
-      gsap.to(card, {
-        x: dx,
-        y: dy,
-        scale: 4.5,
-        duration: 1.5,
-        ease: 'power3.inOut'
-      });
-      // Slowly fade label too — they're going behind the camera as we dive in
+      const menuScene = document.querySelector('.menu-scene');
+      const menuText = menuScene
+        ? menuScene.querySelectorAll('.float-subtitle, .float-title, .float-text')
+        : [];
+      menuText.forEach(el => gsap.to(el, { opacity: 0, duration: 0.4, ease: 'power2.in' }));
       const sub = card.querySelector('.crystal-sub');
       const lbl = card.querySelector('.crystal-label');
-      if (sub) gsap.to(sub, { opacity: 0, y: 30, duration: 0.7, delay: 0.5, ease: 'power2.in' });
-      if (lbl) gsap.to(lbl, { opacity: 0, y: 30, duration: 0.7, delay: 0.5, ease: 'power2.in' });
+      if (sub) gsap.to(sub, { opacity: 0, duration: 0.3, ease: 'power2.in' });
+      if (lbl) gsap.to(lbl, { opacity: 0, duration: 0.3, ease: 'power2.in' });
 
-      // Fire the inner Three.js dive animation
+      // === Take the canvas out of its card and pin it to fill the entire
+      //     viewport. No more square frame — the dive plays edge-to-edge. ===
+      const canvas = card.querySelector('.crystal-canvas');
+      const stash = {
+        parent: canvas.parentNode,
+        next: canvas.nextSibling,
+        cssText: canvas.getAttribute('style') || ''
+      };
+      document.body.appendChild(canvas);   // detach from card
+      // Use !important to override the .crystal-canvas size rules
+      canvas.style.cssText =
+        'position:fixed!important;left:0!important;top:0!important;' +
+        'width:100vw!important;height:100vh!important;z-index:60!important;' +
+        'pointer-events:none!important;background:transparent!important;' +
+        'border:none!important;box-shadow:none!important;outline:none!important;';
+
+      // Resize the inner Three.js renderer to viewport
+      card.dispatchEvent(new CustomEvent('crystal-resize', {
+        detail: { width: window.innerWidth, height: window.innerHeight }
+      }));
+
+      // Trigger the dive animation inside the canvas (camera zooms forward,
+      // particles spin and bloom on a randomised axis)
       card.dispatchEvent(new CustomEvent('crystal-enter'));
 
-      // After ~1.7s, fade to navy + load the path
+      // After ~1.7s, the navy overlay covers + path loads
       setTimeout(() => {
         fadeNavigate(() => {
           ALL_PATHS.forEach(p => document.body.classList.remove(`active-${p}`));
@@ -1383,19 +1403,31 @@
           }
         });
 
-        // Reset crystals after the fade fully covers them. The user won't see
-        // the snap-back because the navy overlay is opaque at this moment.
+        // Once the overlay is fully opaque, restore the canvas back into its
+        // card and reset every visual.
         setTimeout(() => {
+          // Move canvas back to where it was
+          if (stash.next) stash.parent.insertBefore(canvas, stash.next);
+          else            stash.parent.appendChild(canvas);
+          canvas.setAttribute('style', stash.cssText);
+
+          // Reset renderer to small canvas size
+          card.dispatchEvent(new CustomEvent('crystal-resize', {
+            detail: { width: 260, height: 320 }
+          }));
+
+          // Reset Three.js state inside crystal
+          card.dispatchEvent(new CustomEvent('crystal-reset'));
+
+          // Restore visuals on every card
           allCards.forEach(c => {
-            c.style.zIndex = '';
-            c.style.position = '';
-            c.dispatchEvent(new CustomEvent('crystal-reset'));
             gsap.set(c, { x: 0, y: 0, scale: 1, opacity: 1 });
             const s = c.querySelector('.crystal-sub');
             const l = c.querySelector('.crystal-label');
             if (s) gsap.set(s, { opacity: 1, y: 0 });
             if (l) gsap.set(l, { opacity: 1, y: 0 });
           });
+          menuText.forEach(el => gsap.set(el, { opacity: 1 }));
           window._crystalEntering = false;
         }, 700);
       }, 1700);

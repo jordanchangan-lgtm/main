@@ -25,197 +25,140 @@
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0; pointer-events: none;
     }
-    .portal-overlay {
+    /* Very gentle vignette — no hard frame */
+    .void-vignette {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       z-index: 1; pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.75) 100%);
+      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.55) 100%);
     }
 
+    /* Slide section is just a 100vh anchor — no border, no overflow clip, no portal frame */
     .slide {
       position: relative;
       width: 100%;
       height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
       z-index: 2;
     }
 
-    /* Floating elements that drift in the void — no card, no panel */
+    /* Stage matches PDF aspect ratio so elements land where they did in the deck.
+       The stage itself is invisible — no background, no outline, no shadow. */
+    .slide-stage {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      /* width and height set by JS based on PDF page aspect & viewport */
+    }
+
     .float-el {
       position: absolute;
       will-change: transform, opacity, filter;
       transform-origin: center center;
       pointer-events: none;
-      z-index: 3;
     }
+
     .float-title {
-      font-size: clamp(1.6rem, 4vw, 3.4rem);
       font-weight: 700;
       letter-spacing: 0.5px;
-      line-height: 1.15;
+      line-height: 1.1;
       color: #fff;
       text-shadow:
-        0 0 24px var(--accent1, #6C63FF),
-        0 0 60px rgba(0,0,0,0.8);
-      text-align: center;
-      transform: translateX(-50%);
+        0 0 20px var(--accent1, #6C63FF),
+        0 0 50px rgba(0,0,0,0.85);
     }
     .float-text {
-      font-size: clamp(0.95rem, 1.3vw, 1.15rem);
-      line-height: 1.6;
+      line-height: 1.4;
       color: rgba(255,255,255,0.94);
-      text-shadow: 0 2px 14px rgba(0,0,0,0.85), 0 0 30px rgba(0,0,0,0.6);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.85), 0 0 20px rgba(0,0,0,0.55);
       font-weight: 400;
     }
     .float-cn {
-      font-size: clamp(0.9rem, 1.2vw, 1.05rem);
-      line-height: 1.7;
-      color: rgba(255,255,255,0.78);
-      letter-spacing: 0.5px;
-      text-shadow: 0 2px 14px rgba(0,0,0,0.85);
+      line-height: 1.5;
+      color: rgba(255,255,255,0.82);
+      letter-spacing: 0.3px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.85);
       font-weight: 300;
     }
     .float-img {
-      filter: drop-shadow(0 20px 50px rgba(0,0,0,0.7))
-              drop-shadow(0 0 35px var(--accent1, #6C63FF));
+      /* soft drop-shadow only — no colored glow that would re-create a card feel */
+      filter: drop-shadow(0 12px 35px rgba(0,0,0,0.55));
     }
     .float-img img {
       width: 100%;
-      height: auto;
+      height: 100%;
       display: block;
-      border-radius: 10px;
-      max-height: 60vh;
       object-fit: contain;
+      /* no border-radius, no background — let the image be free in space */
     }
 
-    .slide-title {
-      position: absolute;
-      top: 6vh; left: 6vw; right: 6vw;
-      z-index: 3;
-      font-size: clamp(0.85rem, 1.6vw, 1.1rem);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.85);
-      text-shadow: 0 0 20px var(--accent1, #6C63FF);
-      pointer-events: none;
-      will-change: transform, opacity;
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .slide-title .num { opacity: 0.6; }
-    .slide-title .name { font-weight: 600; }
-
-    /* Portal ring sits behind the slide card */
-    .portal-ring {
-      position: absolute;
-      width: 60vmin;
-      height: 60vmin;
-      border-radius: 50%;
-      border: 2px solid var(--accent1, #6C63FF);
-      box-shadow: 0 0 80px var(--accent1, #6C63FF), inset 0 0 60px var(--accent1, #6C63FF);
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0);
-      left: 50%; top: 50%;
-      pointer-events: none;
-      z-index: 1;
-      will-change: transform, opacity;
-    }
-    .portal-ring::before, .portal-ring::after {
-      content: '';
-      position: absolute;
-      border-radius: 50%;
-    }
-    .portal-ring::before {
-      inset: -10px;
-      border: 1px solid var(--accent2, #3F3D9E);
-      animation: portalSpin 8s linear infinite;
-      opacity: 0.55;
-    }
-    .portal-ring::after {
-      inset: 18px;
-      border: 1px dashed var(--accent1, #6C63FF);
-      animation: portalSpin 12s linear infinite reverse;
-      opacity: 0.35;
-    }
-    @keyframes portalSpin { to { transform: rotate(360deg); } }
-
-    .nebula-glow {
-      position: absolute; inset: 0;
-      background: radial-gradient(circle at center, var(--accent1, #6C63FF) 0%, transparent 55%);
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0;
-      filter: blur(80px);
-      mix-blend-mode: screen;
-      will-change: opacity;
-    }
-
-    /* 32-slide accent palette (cycles around the wheel) */
-    .slide:nth-child(15n+1)  { --accent1: #6C63FF; --accent2: #3F3D9E; }
-    .slide:nth-child(15n+2)  { --accent1: #00D2FF; --accent2: #0083B0; }
-    .slide:nth-child(15n+3)  { --accent1: #FF6FD8; --accent2: #9B3DB5; }
-    .slide:nth-child(15n+4)  { --accent1: #00FF87; --accent2: #00A86B; }
-    .slide:nth-child(15n+5)  { --accent1: #FFD700; --accent2: #FF8C00; }
-    .slide:nth-child(15n+6)  { --accent1: #FF4444; --accent2: #CC0000; }
-    .slide:nth-child(15n+7)  { --accent1: #00FFFF; --accent2: #008B8B; }
-    .slide:nth-child(15n+8)  { --accent1: #FF69B4; --accent2: #C71585; }
-    .slide:nth-child(15n+9)  { --accent1: #ADFF2F; --accent2: #6B8E23; }
-    .slide:nth-child(15n+10) { --accent1: #FF6347; --accent2: #B22222; }
-    .slide:nth-child(15n+11) { --accent1: #7B68EE; --accent2: #483D8B; }
-    .slide:nth-child(15n+12) { --accent1: #40E0D0; --accent2: #20B2AA; }
-    .slide:nth-child(15n+13) { --accent1: #FF1493; --accent2: #8B0A50; }
-    .slide:nth-child(15n+14) { --accent1: #00FA9A; --accent2: #2E8B57; }
-    .slide:nth-child(15n+15) { --accent1: #DA70D6; --accent2: #9932CC; }
+    /* Color accents per slide for subtle text glow only */
+    .slide:nth-child(15n+1)  { --accent1: #6C63FF; }
+    .slide:nth-child(15n+2)  { --accent1: #00D2FF; }
+    .slide:nth-child(15n+3)  { --accent1: #FF6FD8; }
+    .slide:nth-child(15n+4)  { --accent1: #00FF87; }
+    .slide:nth-child(15n+5)  { --accent1: #FFD700; }
+    .slide:nth-child(15n+6)  { --accent1: #FF4444; }
+    .slide:nth-child(15n+7)  { --accent1: #00FFFF; }
+    .slide:nth-child(15n+8)  { --accent1: #FF69B4; }
+    .slide:nth-child(15n+9)  { --accent1: #ADFF2F; }
+    .slide:nth-child(15n+10) { --accent1: #FF6347; }
+    .slide:nth-child(15n+11) { --accent1: #7B68EE; }
+    .slide:nth-child(15n+12) { --accent1: #40E0D0; }
+    .slide:nth-child(15n+13) { --accent1: #FF1493; }
+    .slide:nth-child(15n+14) { --accent1: #00FA9A; }
+    .slide:nth-child(15n+15) { --accent1: #DA70D6; }
 
     .slide-counter {
       position: fixed; top: 14px; left: 14px; z-index: 5;
-      color: #fff; font-family: monospace; letter-spacing: 2px;
-      background: rgba(0,0,0,0.45);
-      padding: 6px 10px; border-radius: 6px;
-      font-size: 12px;
-      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.85);
+      font-family: monospace; letter-spacing: 2px;
+      background: rgba(0,0,0,0.4);
+      padding: 5px 10px; border-radius: 6px;
+      font-size: 11px;
+      border: 1px solid rgba(255,255,255,0.08);
     }
     .scroll-hint {
       position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
-      z-index: 5; color: rgba(255,255,255,0.7);
-      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      z-index: 5; color: rgba(255,255,255,0.65);
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
       animation: bob 2s ease-in-out infinite;
       pointer-events: none;
+      transition: opacity 0.6s;
     }
     @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 6px); } }
 
+    /* Mobile: drop the absolute % layout, let elements flow vertically */
     @media (max-width: 760px) {
-      .slide { height: auto; min-height: 100vh; padding: 12vh 6vw; }
-      .slide-title { font-size: 0.75rem; letter-spacing: 2px; top: 3vh; }
-      .portal-ring { width: 90vmin; height: 90vmin; }
-      /* On phones, drop the absolute % layout and let elements flow */
+      .slide { height: auto; min-height: 100vh; padding: 10vh 6vw; }
+      .slide-stage {
+        position: relative; left: auto; top: auto;
+        transform: none;
+        width: 100% !important; height: auto !important;
+      }
       .float-el {
         position: relative !important;
         left: auto !important; top: auto !important;
-        max-width: 100% !important;
-        margin: 14px 0;
-        transform: none;
+        width: 100% !important;
+        margin: 12px 0;
       }
-      .float-title { transform: none !important; text-align: left; }
-      .float-img img { max-height: 40vh; }
+      .float-title { font-size: 1.6rem !important; }
+      .float-text, .float-cn { font-size: 1rem !important; }
+      .float-img { height: auto !important; }
+      .float-img img { max-height: 38vh; }
     }
   </style>
 </head>
 <body>
 
   <canvas id="starfield"></canvas>
-  <div class="portal-overlay"></div>
+  <div class="void-vignette"></div>
 
   <div id="slidesRoot"></div>
 
   <div class="slide-counter">01 / 32</div>
-  <div class="scroll-hint">scroll to enter</div>
+  <div class="scroll-hint">scroll into the void</div>
 
   <script>
-    // ---------- 3D Starfield + Nebula (Three.js) ----------
+    // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
     const canvas = document.getElementById('starfield');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -228,10 +171,9 @@
     const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 6000);
     camera.position.set(0, 0, 0);
 
-    // ---- Stars (Points + custom shader for glow + velocity-based size) ----
     const STAR_COUNT = 6000;
-    const SPACE_DEPTH = 4500;        // total z-range stars are spread over
-    const SPACE_RADIUS = 1400;       // x/y spread
+    const SPACE_DEPTH = 4500;
+    const SPACE_RADIUS = 1400;
 
     const positions = new Float32Array(STAR_COUNT * 3);
     const colors    = new Float32Array(STAR_COUNT * 3);
@@ -239,11 +181,9 @@
     const tmpColor = new THREE.Color();
     for (let i = 0; i < STAR_COUNT; i++) {
       const i3 = i * 3;
-      // distribute stars in a cylinder around the camera flight path
       positions[i3]     = (Math.random() - 0.5) * SPACE_RADIUS * 2;
       positions[i3 + 1] = (Math.random() - 0.5) * SPACE_RADIUS * 2;
-      positions[i3 + 2] = -Math.random() * SPACE_DEPTH + 200; // a few in front of start, most ahead
-      // hue: blue → violet → pink, with occasional warm star
+      positions[i3 + 2] = -Math.random() * SPACE_DEPTH + 200;
       const warm = Math.random() < 0.08;
       const hue = warm ? 0.05 + Math.random() * 0.1 : 0.55 + Math.random() * 0.2;
       tmpColor.setHSL(hue, 0.7, 0.55 + Math.random() * 0.4);
@@ -296,11 +236,9 @@
         }
       `
     });
-
     const stars = new THREE.Points(starGeo, starMat);
     scene.add(stars);
 
-    // ---- Nebula clouds (additive sprites at varying depth) ----
     function makeNebulaTexture(r, g, b) {
       const cv = document.createElement('canvas');
       cv.width = cv.height = 256;
@@ -314,27 +252,13 @@
       x.fillRect(0, 0, 256, 256);
       return new THREE.CanvasTexture(cv);
     }
-    const nebulaPalette = [
-      [108, 99, 255],
-      [0, 210, 255],
-      [255, 111, 216],
-      [0, 255, 135],
-      [255, 80, 140],
-      [120, 70, 220],
-      [40, 200, 255],
-    ];
+    const nebulaPalette = [[108,99,255],[0,210,255],[255,111,216],[0,255,135],[255,80,140],[120,70,220],[40,200,255]];
     const nebulae = [];
     const NEBULA_COUNT = 14;
     for (let i = 0; i < NEBULA_COUNT; i++) {
       const c = nebulaPalette[i % nebulaPalette.length];
       const tex = makeNebulaTexture(c[0], c[1], c[2]);
-      const mat = new THREE.SpriteMaterial({
-        map: tex,
-        blending: THREE.AdditiveBlending,
-        transparent: true,
-        depthWrite: false,
-        opacity: 0.55
-      });
+      const mat = new THREE.SpriteMaterial({ map: tex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0.55 });
       const sp = new THREE.Sprite(mat);
       const scale = 800 + Math.random() * 1200;
       sp.scale.set(scale, scale, 1);
@@ -350,7 +274,6 @@
       nebulae.push(sp);
     }
 
-    // ---- Distant galaxy disc (flat spiral of points off to one side) ----
     const GAL_COUNT = 1500;
     const galPos = new Float32Array(GAL_COUNT * 3);
     const galCol = new Float32Array(GAL_COUNT * 3);
@@ -372,13 +295,12 @@
     galGeo.setAttribute('position', new THREE.BufferAttribute(galPos, 3));
     galGeo.setAttribute('color',    new THREE.BufferAttribute(galCol, 3));
     galGeo.setAttribute('aSize',    new THREE.BufferAttribute(galSiz, 1));
-    const galaxy = new THREE.Points(galGeo, starMat); // share shader
+    const galaxy = new THREE.Points(galGeo, starMat);
     galaxy.position.set(-900, 200, -2400);
     galaxy.rotation.x = -0.5;
     galaxy.rotation.z = 0.3;
     scene.add(galaxy);
 
-    // ---- Scroll-driven camera + warp velocity ----
     let scrollVel = 0;
     let lastY = window.scrollY;
     window.addEventListener('scroll', () => {
@@ -397,23 +319,16 @@
       const time = t * 0.001;
       starMat.uniforms.uTime.value = time;
       starMat.uniforms.uVelocity.value = scrollVel;
-
       const sp = getScrollProgress();
-      // fly forward through space as we scroll down
       camera.position.z = -sp * (SPACE_DEPTH - 400);
-      // gentle drift + roll based on scroll velocity for the "warp" feel
       camera.position.x = Math.sin(time * 0.07) * 25;
       camera.position.y = Math.cos(time * 0.05) * 18;
       camera.rotation.z = Math.sin(time * 0.1) * 0.03 + scrollVel * 0.04;
-
-      // nebulae slowly rotate
       for (const n of nebulae) {
         n.material.rotation += n.userData.spin;
-        // pulse opacity slightly
         n.material.opacity = n.userData.baseOpacity * (0.85 + 0.15 * Math.sin(time * 0.4 + n.position.z * 0.001));
       }
       galaxy.rotation.y += 0.0008;
-
       scrollVel *= 0.92;
       renderer.render(scene, camera);
       requestAnimationFrame(tick);
@@ -427,10 +342,10 @@
       starMat.uniforms.uPixelRatio.value = renderer.getPixelRatio();
     });
 
-    // ---------- Build slides from window.SLIDES (auto-generated from PDF) ----------
-    const slidesRoot = document.getElementById('slidesRoot');
+    // ---------- Build slides from window.SLIDES (PyMuPDF-positioned) ----------
     const SLIDES = window.SLIDES || [];
     const TOTAL = SLIDES.length;
+    const slidesRoot = document.getElementById('slidesRoot');
 
     function escapeHtml(s) {
       return String(s)
@@ -439,134 +354,133 @@
     }
 
     SLIDES.forEach((slide, i) => {
-      const num = String(i + 1).padStart(2, '0');
       const sec = document.createElement('section');
       sec.className = 'slide';
       sec.setAttribute('data-index', i);
+      sec.dataset.pageW = slide.pageW;
+      sec.dataset.pageH = slide.pageH;
 
-      let inner = `
-        <div class="nebula-glow"></div>
-        <div class="portal-ring" aria-hidden="true"></div>
-        <div class="slide-title">
-          <span class="num">${num} / ${String(TOTAL).padStart(2,'0')}</span>
-        </div>
-      `;
+      const stage = document.createElement('div');
+      stage.className = 'slide-stage';
+      stage.dataset.ar = (slide.pageW / slide.pageH).toFixed(4);
 
       slide.elements.forEach((el, ei) => {
-        const styleBase = `left:${el.x}%; top:${el.y}%; max-width:${el.maxW}vw;`;
-        const depth = el.depth || 800;
-        const dataAttrs = `data-depth="${depth}" data-idx="${ei}"`;
-        if (el.type === 'title') {
-          inner += `<div class="float-el float-title" style="${styleBase}" ${dataAttrs}>${escapeHtml(el.text)}</div>`;
-        } else if (el.type === 'cn') {
-          inner += `<div class="float-el float-cn" style="${styleBase}" ${dataAttrs}>${escapeHtml(el.text)}</div>`;
-        } else if (el.type === 'text') {
-          inner += `<div class="float-el float-text" style="${styleBase}" ${dataAttrs}>${escapeHtml(el.text)}</div>`;
-        } else if (el.type === 'img') {
-          inner += `<div class="float-el float-img" style="${styleBase}" ${dataAttrs}>
-            <img src="${el.src}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
-          </div>`;
+        const div = document.createElement('div');
+        div.className = 'float-el ' + (
+          el.type === 'title' ? 'float-title' :
+          el.type === 'cn'    ? 'float-cn'    :
+          el.type === 'img'   ? 'float-img'   : 'float-text'
+        );
+        div.style.left  = el.x + '%';
+        div.style.top   = el.y + '%';
+        div.style.width = el.w + '%';
+        if (el.type === 'img' && el.h) {
+          div.style.height = el.h + '%';
         }
+        if (el.fs != null) {
+          div.dataset.fs = el.fs;          // PDF point size, used to compute px on layout
+        }
+        div.dataset.depth = el.depth || 800;
+        div.dataset.idx = ei;
+
+        if (el.type === 'img') {
+          const img = document.createElement('img');
+          img.src = el.src;
+          img.loading = 'lazy';
+          img.alt = '';
+          img.onerror = () => { div.style.display = 'none'; };
+          div.appendChild(img);
+        } else {
+          div.textContent = el.text;
+        }
+        stage.appendChild(div);
       });
 
-      sec.innerHTML = inner;
+      sec.appendChild(stage);
       slidesRoot.appendChild(sec);
     });
 
-    // ---------- Scroll animations: emerge from void ----------
+    // ---------- Stage sizing: match PDF aspect to viewport, scale fonts ----------
+    function layoutStages() {
+      const isMobile = window.innerWidth <= 760;
+      if (isMobile) {
+        // CSS handles flow layout; only need to clear inline sizes
+        document.querySelectorAll('.slide-stage').forEach(s => {
+          s.style.width = ''; s.style.height = '';
+        });
+        document.querySelectorAll('[data-fs]').forEach(el => { el.style.fontSize = ''; });
+        return;
+      }
+      const maxW = window.innerWidth * 0.92;
+      const maxH = window.innerHeight * 0.86;
+      document.querySelectorAll('.slide-stage').forEach(stage => {
+        const ar = parseFloat(stage.dataset.ar) || 1.333;
+        let w, h;
+        if (maxW / ar <= maxH) { w = maxW; h = maxW / ar; }
+        else                   { h = maxH; w = maxH * ar; }
+        stage.style.width  = w + 'px';
+        stage.style.height = h + 'px';
+
+        const pageWpts = parseFloat(stage.parentElement.dataset.pageW) || 1152;
+        stage.querySelectorAll('[data-fs]').forEach(el => {
+          const fs = parseFloat(el.dataset.fs);
+          // px = pt × stageWidth / pageWidth
+          el.style.fontSize = (fs * w / pageWpts).toFixed(2) + 'px';
+        });
+      });
+    }
+    layoutStages();
+    window.addEventListener('resize', layoutStages);
+
+    // ---------- Continuous emerge-from-void animation per element ----------
     gsap.registerPlugin(ScrollTrigger);
-    const slides = document.querySelectorAll('.slide');
 
-    slides.forEach((slide) => {
-      const ring = slide.querySelector('.portal-ring');
-      const glow = slide.querySelector('.nebula-glow');
-      const titleNum = slide.querySelector('.slide-title');
-      const floats = slide.querySelectorAll('.float-el');
+    document.querySelectorAll('.float-el').forEach((el) => {
+      const depth = parseFloat(el.dataset.depth) || 800;
 
-      floats.forEach((el) => {
-        const depth = parseFloat(el.dataset.depth) || 800;
-        const idx = parseInt(el.dataset.idx) || 0;
-        // staggered enter window per element so they emerge sequentially from deep space
-        const enterStart = `top ${95 - Math.min(idx * 1.2, 12)}%`;
-        const enterEnd   = `top ${48 - Math.min(idx * 0.8, 10)}%`;
-
-        // From-state: deep in the void — small, blurred, slightly offset, dim
-        const fromState = {
+      // Each element animates relative to ITSELF (not the slide), so the timing
+      // is continuous across the whole page — no per-slide fade cycle.
+      gsap.fromTo(el,
+        {
           opacity: 0,
-          scale: Math.max(0.18, 1 - depth / 2400),
-          y: depth * 0.10,
-          filter: `blur(${Math.min(40, depth / 35)}px)`
-        };
-        const toState = {
+          scale: Math.max(0.25, 1 - depth / 2400),
+          y: () => Math.min(window.innerHeight * 0.4, depth * 0.18),
+          filter: `blur(${Math.min(28, depth / 38)}px)`
+        },
+        {
           opacity: 1,
           scale: 1,
           y: 0,
           filter: 'blur(0px)',
           ease: 'power2.out',
-          scrollTrigger: { trigger: slide, start: enterStart, end: enterEnd, scrub: 1 }
-        };
-
-        // Title gets translateX(-50%) baked in, so animate y/scale only
-        if (el.classList.contains('float-title')) {
-          gsap.set(el, { xPercent: -50 });
-        }
-
-        gsap.fromTo(el, fromState, toState);
-
-        // Recede back into the void as you scroll past
-        gsap.to(el, {
-          opacity: 0,
-          scale: 1.35,
-          y: -depth * 0.12,
-          filter: `blur(${Math.min(30, depth / 50)}px)`,
-          ease: 'power2.in',
           scrollTrigger: {
-            trigger: slide,
-            start: `bottom ${75 - Math.min(idx * 1.0, 8)}%`,
-            end:   `bottom ${15 - Math.min(idx * 0.5, 5)}%`,
-            scrub: 1
+            trigger: el,
+            start: 'top bottom',     // start when element top enters viewport
+            end:   'top 55%',        // settled by the time element top hits 55% from top
+            scrub: 1.2
           }
-        });
-      });
-
-      // Slide-number label
-      gsap.fromTo(titleNum,
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0,
-          scrollTrigger: { trigger: slide, start: 'top 90%', end: 'top 50%', scrub: 1 } }
+        }
       );
-      gsap.to(titleNum, {
-        opacity: 0, y: -20,
-        scrollTrigger: { trigger: slide, start: 'bottom 70%', end: 'bottom 30%', scrub: 1 }
-      });
 
-      // Portal ring (ambient — keeps the entering-portal feel)
-      gsap.fromTo(ring,
-        { opacity: 0, scale: 0.1 },
-        { opacity: 0.55, scale: 1.4,
-          scrollTrigger: { trigger: slide, start: 'top 95%', end: 'top 25%', scrub: 1 } }
-      );
-      gsap.to(ring, {
-        opacity: 0, scale: 5,
-        scrollTrigger: { trigger: slide, start: 'top 25%', end: 'bottom -10%', scrub: 1 }
-      });
-
-      // Nebula glow
-      gsap.fromTo(glow,
-        { opacity: 0 },
-        { opacity: 0.35,
-          scrollTrigger: { trigger: slide, start: 'top 70%', end: 'top 30%', scrub: 1 } }
-      );
-      gsap.to(glow, {
+      // Very gentle trailing fade as element scrolls past viewport top, so it
+      // dissolves into the void instead of hard-cutting at the slide boundary.
+      gsap.to(el, {
         opacity: 0,
-        scrollTrigger: { trigger: slide, start: 'top 30%', end: 'bottom 30%', scrub: 1 }
+        filter: 'blur(8px)',
+        ease: 'power2.in',
+        scrollTrigger: {
+          trigger: el,
+          start: 'bottom 18%',       // begin to dissolve only near top of viewport
+          end:   'bottom -10%',
+          scrub: 1.2
+        }
       });
     });
 
-    // ---------- Progress bar + counter + scroll-hint hide ----------
+    // ---------- Progress bar + counter ----------
     const progressBar = document.createElement('div');
     Object.assign(progressBar.style, {
-      position: 'fixed', top: '0', left: '0', height: '3px',
+      position: 'fixed', top: '0', left: '0', height: '2px',
       background: 'linear-gradient(90deg, #6C63FF, #00D2FF, #FF6FD8, #00FF87, #FFD700, #FF1493)',
       width: '0%', zIndex: '999', transition: 'width 0.05s linear'
     });
@@ -579,32 +493,34 @@
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const p = max ? (st / max) * 100 : 0;
       progressBar.style.width = p + '%';
-      const idx = Math.min(slides.length - 1, Math.round(st / window.innerHeight));
+      const idx = Math.min(TOTAL - 1, Math.round(st / window.innerHeight));
       if (counterEl) {
         counterEl.textContent =
-          String(idx + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+          String(idx + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
       }
       if (hintEl) hintEl.style.opacity = st > 80 ? '0' : '1';
     }
     window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', updateProgress);
 
-    // ---------- First-load entrance: first slide emerges from void ----------
+    // ---------- First-load: gentle entrance for first slide's elements ----------
     window.addEventListener('load', () => {
-      const firstFloats = slides[0]?.querySelectorAll('.float-el') || [];
+      layoutStages();
+      const firstSlide = document.querySelector('.slide');
+      const firstFloats = firstSlide ? firstSlide.querySelectorAll('.float-el') : [];
       firstFloats.forEach((el, i) => {
         const depth = parseFloat(el.dataset.depth) || 800;
         gsap.fromTo(el,
           {
             opacity: 0,
-            scale: Math.max(0.2, 1 - depth / 2400),
-            y: depth * 0.08,
-            filter: `blur(${Math.min(30, depth / 40)}px)`
+            scale: Math.max(0.25, 1 - depth / 2400),
+            y: depth * 0.12,
+            filter: `blur(${Math.min(28, depth / 38)}px)`
           },
           {
             opacity: 1, scale: 1, y: 0, filter: 'blur(0px)',
             duration: 1.6,
-            delay: 0.15 * i,
+            delay: 0.08 * i,
             ease: 'power3.out'
           }
         );

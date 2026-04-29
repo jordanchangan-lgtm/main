@@ -395,7 +395,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build dive-fullscreen v7</div>
+  <div class="build-stamp">build gpu-stars v8</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -415,39 +415,54 @@
     const SPACE_DEPTH = 3500;     // shorter slab — stars get recycled in tick()
     const SPACE_RADIUS = 900;     // tighter cylinder so stars fly past closer
 
-    const positions = new Float32Array(STAR_COUNT * 3);
-    const colors    = new Float32Array(STAR_COUNT * 3);
-    const sizes     = new Float32Array(STAR_COUNT);
+    // ===== GPU-driven star shell =====
+    // Each star carries a static (angle, radius, zOff, phase) seed. The
+    // VERTEX SHADER positions it relative to the camera every frame, so
+    // stars are GUARANTEED to surround the camera regardless of where it
+    // teleports. There is no JS update loop that can fail or lag — the
+    // GPU recomputes positions from uniforms (camera + time) on every draw.
+    const seeds  = new Float32Array(STAR_COUNT * 3);   // angle, radius, zOff
+    const phases = new Float32Array(STAR_COUNT);
+    const colors = new Float32Array(STAR_COUNT * 3);
+    const sizes  = new Float32Array(STAR_COUNT);
     const tmpColor = new THREE.Color();
+    // The "position" attribute is a dummy — we never use it. WebGL still
+    // needs SOME vertex attribute to drive vertexCount, so we stuff the
+    // seeds into it (3-component) AND duplicate to a clearer name for shader.
+    const dummyPos = new Float32Array(STAR_COUNT * 3);
     for (let i = 0; i < STAR_COUNT; i++) {
       const i3 = i * 3;
-      // Mix of close-flyby stars and far-background stars so you visibly pass through
-      const close = Math.random() < 0.35;
+      const close = (Math.random() < 0.35);
       const radius = close
-        ? 40 + Math.pow(Math.random(), 1.4) * 240   // close band — these whip past you
+        ? 40 + Math.pow(Math.random(), 1.4) * 240
         : 240 + Math.pow(Math.random(), 0.7) * SPACE_RADIUS;
       const angle = Math.random() * Math.PI * 2;
-      positions[i3]     = Math.cos(angle) * radius;
-      positions[i3 + 1] = Math.sin(angle) * radius;
-      // Bias initial z toward the near band (so the field looks dense from frame 1)
-      positions[i3 + 2] = 100 - Math.pow(Math.random(), 0.6) * 2000;
-      // Cool-white palette: navy / violet / off-white, occasional warm spec
+      const zOff  = 50 + Math.pow(Math.random(), 0.5) * 1800;
+      seeds[i3]     = angle;
+      seeds[i3 + 1] = radius;
+      seeds[i3 + 2] = zOff;
+      phases[i]     = Math.random() * Math.PI * 2;
+      // Cool-white / lavender palette
       const warm = Math.random() < 0.05;
-      const hue = warm ? 0.04 + Math.random() * 0.08 : 0.6 + Math.random() * 0.18;
+      const hue  = warm ? 0.04 + Math.random() * 0.08 : 0.6 + Math.random() * 0.18;
       tmpColor.setHSL(hue, 0.55, 0.6 + Math.random() * 0.4);
       colors[i3] = tmpColor.r; colors[i3 + 1] = tmpColor.g; colors[i3 + 2] = tmpColor.b;
       sizes[i] = (close ? 1.4 : 1.0) + Math.random() * 1.6;
+      dummyPos[i3] = 0; dummyPos[i3 + 1] = 0; dummyPos[i3 + 2] = 0;
     }
     const starGeo = new THREE.BufferGeometry();
-    starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    starGeo.setAttribute('position', new THREE.BufferAttribute(dummyPos, 3));
     starGeo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
     starGeo.setAttribute('aSize',    new THREE.BufferAttribute(sizes, 1));
+    starGeo.setAttribute('aSeed',    new THREE.BufferAttribute(seeds, 3));
+    starGeo.setAttribute('aPhase',   new THREE.BufferAttribute(phases, 1));
 
     const starMat = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: renderer.getPixelRatio() },
         uVelocity:   { value: 0.0 },
-        uTime:       { value: 0.0 }
+        uTime:       { value: 0.0 },
+        uCamPos:     { value: new THREE.Vector3() }
       },
       vertexColors: true,
       transparent: true,
@@ -455,17 +470,25 @@
       blending: THREE.AdditiveBlending,
       vertexShader: `
         attribute float aSize;
+        attribute vec3  aSeed;     // x: angle, y: radius, z: zOff
+        attribute float aPhase;
         varying vec3 vColor;
         varying float vAlpha;
         uniform float uPixelRatio;
         uniform float uVelocity;
         uniform float uTime;
+        uniform vec3  uCamPos;
         void main() {
           vColor = color;
-          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          // Compute world position relative to current camera every frame
+          float angle  = aSeed.x + sin(uTime * 0.4 + aPhase)        * 0.18;
+          float radius = aSeed.y + sin(uTime * 0.5 + aPhase * 1.3)  * 22.0;
+          float zOff   = aSeed.z + sin(uTime * 0.6 + aPhase * 0.7)  * 38.0;
+          vec3 worldPos = uCamPos + vec3(cos(angle) * radius, sin(angle) * radius, -zOff);
+          vec4 mv = viewMatrix * vec4(worldPos, 1.0);
           gl_Position = projectionMatrix * mv;
           float perspective = 320.0 / max(1.0, -mv.z);
-          float twinkle = 0.85 + 0.15 * sin(uTime * 2.0 + position.x * 0.3 + position.y * 0.5);
+          float twinkle = 0.85 + 0.15 * sin(uTime * 2.0 + aPhase * 4.0);
           float warp = 1.0 + abs(uVelocity) * 0.8;
           gl_PointSize = aSize * perspective * uPixelRatio * twinkle * warp;
           vAlpha = clamp(1.0 - smoothstep(2500.0, 5500.0, -mv.z), 0.0, 1.0);
@@ -615,58 +638,9 @@
       camera.fov += (targetFOV - camera.fov) * 0.05;
       camera.updateProjectionMatrix();
 
-      // Star streaks intensify as you fall in
+      // Star streaks intensify as you fall in. uCamPos drives the GPU shell.
       starMat.uniforms.uVelocity.value = scrollVel + blackHolePull * 2.6;
-
-      // ===== Deterministic shell — every frame, every star is positioned =====
-      // RELATIVE to the camera using a per-index seed. No accumulating drift,
-      // no recycle window, no possibility of an empty field. Stars always
-      // surround the camera regardless of where it is, even after teleports.
-      // The small sin/cos modulation gives the "alive" feel without any state.
-      const starPos = stars.geometry.attributes.position;
-      const starArr = starPos.array;
-      const camZ = camera.position.z;
-      const camX = camera.position.x;
-      const camY = camera.position.y;
-      // Pre-baked seeds populated once on first run — keeps each star's
-      // angular / radial / depth signature constant so they're not flickering
-      // randomly between frames.
-      if (!stars.userData.seedsBaked) {
-        const seedAng = new Float32Array(STAR_COUNT);
-        const seedRad = new Float32Array(STAR_COUNT);
-        const seedZ   = new Float32Array(STAR_COUNT);
-        const seedPh  = new Float32Array(STAR_COUNT);
-        for (let i = 0; i < STAR_COUNT; i++) {
-          // golden-angle distribution gives even angular spread
-          seedAng[i] = (i * 2.39996323) % (Math.PI * 2);
-          // mix of close (40-280) and far (240-1140) radii
-          const close = (i * 7) % 100 < 35;
-          seedRad[i] = close ? 40 + ((i * 13) % 240)
-                             : 240 + ((i * 17) % 900);
-          // z offset 50–1850 ahead of camera
-          seedZ[i]   = 50 + ((i * 29) % 1800);
-          seedPh[i]  = (i * 0.137);
-        }
-        stars.userData.seedAng = seedAng;
-        stars.userData.seedRad = seedRad;
-        stars.userData.seedZ   = seedZ;
-        stars.userData.seedPh  = seedPh;
-        stars.userData.seedsBaked = true;
-      }
-      const sAng = stars.userData.seedAng;
-      const sRad = stars.userData.seedRad;
-      const sZ   = stars.userData.seedZ;
-      const sPh  = stars.userData.seedPh;
-      for (let i = 0; i < STAR_COUNT; i++) {
-        const i3 = i * 3;
-        const angle  = sAng[i] + Math.sin(time * 0.4 + sPh[i]) * 0.18;
-        const radius = sRad[i] + Math.sin(time * 0.5 + sPh[i] * 1.3) * 22;
-        const zOff   = sZ[i]   + Math.sin(time * 0.6 + sPh[i] * 0.7) * 38;
-        starArr[i3]     = camX + Math.cos(angle) * radius;
-        starArr[i3 + 1] = camY + Math.sin(angle) * radius;
-        starArr[i3 + 2] = camZ - zOff;
-      }
-      starPos.needsUpdate = true;
+      starMat.uniforms.uCamPos.value.copy(camera.position);
 
       scrollVel *= 0.92;
       renderer.render(scene, camera);
@@ -674,24 +648,9 @@
     }
     requestAnimationFrame(tick);
 
-    // Force-reseed every star around the current camera position. Called by
-    // fadeNavigate() after a scroll teleport so the field never feels empty.
-    window.reseedStarsAroundCamera = function () {
-      const arr = stars.geometry.attributes.position.array;
-      const cz = camera.position.z, cx = camera.position.x, cy = camera.position.y;
-      for (let i = 0; i < STAR_COUNT; i++) {
-        const i3 = i * 3;
-        const close = Math.random() < 0.35;
-        const radius = close
-          ? 40 + Math.pow(Math.random(), 1.4) * 240
-          : 240 + Math.pow(Math.random(), 0.7) * SPACE_RADIUS;
-        const angle = Math.random() * Math.PI * 2;
-        arr[i3]     = cx + Math.cos(angle) * radius;
-        arr[i3 + 1] = cy + Math.sin(angle) * radius;
-        arr[i3 + 2] = cz - 50 - Math.pow(Math.random(), 0.5) * 1800;
-      }
-      stars.geometry.attributes.position.needsUpdate = true;
-    };
+    // Backwards-compat no-op (the GPU shell needs no explicit reseed now;
+    // the shader recomputes positions every frame from uCamPos).
+    window.reseedStarsAroundCamera = function () {};
 
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;

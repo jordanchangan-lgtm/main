@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MALLOUK GROUP - Space Portal Landing</title>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #000;
+      --text: #fff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      overflow-x: hidden;
+      scroll-snap-type: y mandatory;
+    }
+
+    /* Starfield canvas */
+    #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+    /* Portal overlay (gentle vignette) */
+    .portal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+    }
+
+    /* Slides container - each slide fills viewport */
+    .slide {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 40px;
+      overflow: hidden;
+      scroll-snap-align: start;
+      z-index: 2;
+    }
+
+    /* Corner image */
+    .slide-corner-img {
+      position: absolute;
+      width: 28vmin;
+      height: auto;
+      max-width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.6);
+    }
+
+    /* Text column */
+    .slide-text {
+      padding: 20px;
+      background: rgba(0,0,0,.25);
+      border-radius: 12px;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      max-width: 640px;
+    }
+    .slide-text h2 {
+      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+      margin: 0 0 12px;
+      letter-spacing: .5px;
+    }
+    .slide-text p {
+      font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+      color: rgba(255,255,255,.92);
+      white-space: pre-wrap;
+      margin: 0;
+    }
+
+    /* Nebula glow per slide */
+    .nebula-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at center, var(--accent1, #6C63FF) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      filter: blur(60px);
+      mix-blend-mode: screen;
+    }
+
+    /* Portal ring for each slide */
+    .portal-ring {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      border: 2px solid var(--accent1, #6C63FF);
+      box-shadow: 0 0 40px var(--accent1, #6C63FF);
+      opacity: 0;
+      transform: scale(0);
+      left: 50%;
+      top: 50%;
+      margin-left: -130px;
+      margin-top: -130px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .portal-ring::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid var(--accent2, #3F3D9E);
+      animation: portalSpin 4s linear infinite;
+      opacity: 0.6;
+    }
+    .portal-ring::after {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      border: 1px dashed var(--accent1, #6C63FF);
+      animation: portalSpin 6s linear infinite reverse;
+      opacity: 0.3;
+    }
+    @keyframes portalSpin { to { transform: rotate(360deg); } }
+
+    /* Per-slide color tokens */
+    .slide[data-index="0"]  { --accent1: #6C63FF; --accent2: #3F3D9E; }
+    .slide[data-index="1"]  { --accent1: #00D2FF; --accent2: #0083B0; }
+    .slide[data-index="2"]  { --accent1: #FF6FD8; --accent2: #9B3DB5; }
+    .slide[data-index="3"]  { --accent1: #00FF87; --accent2: #00A86B; }
+    .slide[data-index="4"]  { --accent1: #FFD700; --accent2: #FF8C00; }
+    .slide[data-index="5"]  { --accent1: #FF4444; --accent2: #CC0000; }
+    .slide[data-index="6"]  { --accent1: #00FFFF; --accent2: #008B8B; }
+    .slide[data-index="7"]  { --accent1: #FF69B4; --accent2: #C71585; }
+    .slide[data-index="8"]  { --accent1: #ADFF2F; --accent2: #6B8E23; }
+    .slide[data-index="9"]  { --accent1: #FF6347; --accent2: #B22222; }
+    .slide[data-index="10"] { --accent1: #7B68EE; --accent2: #483D8B; }
+    .slide[data-index="11"] { --accent1: #40E0D0; --accent2: #20B2AA; }
+    .slide[data-index="12"] { --accent1: #FF1493; --accent2: #8B0A50; }
+    .slide[data-index="13"] { --accent1: #00FA9A; --accent2: #2E8B57; }
+    .slide[data-index="14"] { --accent1: #DA70D6; --accent2: #9932CC; }
+
+    /* Corner placement helpers */
+    .corner-tl { left: 4%; top: 6%; }
+    .corner-tr { right: 4%; top: 6%; }
+    .corner-bl { left: 4%; bottom: 6%; }
+    .corner-br { right: 4%; bottom: 6%; }
+
+    .slide-content {
+      position: relative;
+      z-index: 2;
+      grid-column: 1 / -1;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Place text per corner so image and text don't collide */
+    .slide-content .slide-text {
+      position: absolute;
+    }
+    .slide[data-corner="tl"] .slide-text { right: 6%; bottom: 10%; }
+    .slide[data-corner="tr"] .slide-text { left: 6%;  bottom: 10%; }
+    .slide[data-corner="bl"] .slide-text { right: 6%; top: 10%; }
+    .slide[data-corner="br"] .slide-text { left: 6%;  top: 10%; }
+
+    .slide-counter {
+      position: fixed; top: 12px; left: 12px; z-index: 5;
+      color: #fff; font-family: monospace; letter-spacing: 2px;
+      background: rgba(0,0,0,.4); padding: 6px 10px; border-radius: 6px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .slide { grid-template-columns: 1fr; padding: 20px; }
+      .slide-content .slide-text { position: relative; left: auto; right: auto; top: auto; bottom: auto; margin: 16px auto; }
+      .slide-corner-img { width: 50vw; max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+  <div class="portal-overlay"></div>
+
+  <!-- Slides wrapper (body-scroll, NOT its own scroller, so ScrollTrigger works) -->
+  <div id="slidesRoot"></div>
+
+  <div class="slide-counter">01 / 15</div>
+
+  <script>
+    // 1) Starfield background
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    function spawnStars(n = 1200) {
+      stars = [];
+      for (let i = 0; i < n; i++) {
+        stars.push({
+          x: Math.random() * canvas.width - canvas.width / 2,
+          y: Math.random() * canvas.height - canvas.height / 2,
+          z: Math.random() * 1500,
+          size: Math.random() * 1.5 + 0.5,
+          speed: Math.random() * 0.6 + 0.2,
+          color: `hsl(${Math.random() * 60 + 200}, 80%, ${Math.random() * 40 + 60}%)`
+        });
+      }
+    }
+    function draw() {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2, cy = canvas.height / 2;
+      for (const s of stars) {
+        s.z -= s.speed;
+        if (s.z <= 0) {
+          s.x = Math.random() * canvas.width - cx;
+          s.y = Math.random() * canvas.height - cy;
+          s.z = 1500;
+        }
+        const f = 300 / s.z;
+        const sx = s.x * f + cx;
+        const sy = s.y * f + cy;
+        const sz = Math.max(0.2, s.size * f * 0.5);
+        if (sx >= 0 && sx <= canvas.width && sy >= 0 && sy <= canvas.height) {
+          const a = Math.max(0.2, 1 - (s.z / 1500));
+          ctx.beginPath();
+          ctx.arc(sx, sy, sz, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = a;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    resize(); spawnStars(); draw();
+    window.addEventListener('resize', () => { resize(); spawnStars(); });
+
+    // 2) Slide data (replace IMAGE_URL_X with real URLs once PPT is provided)
+    const slideBlocks = [
+      {
+        title: "MALLOUK GROUP",
+        text: `Owned by the Mallouk Family, Mallouk Group was established in Syria in 1981 with subsidiary companies and offices in Jordan, Lebanon, Iraq, Egypt and China (Hong Kong, Shanghai & Jiangsu).
+
+The Mallouk Group is one of the pioneer business groups achieving growth in several business sectors including Automotive Manufacturing, Automotive Distributorship (branding, marketing, sales & after-service), Public Transportation, Financing, Medical Equipment, Property Development & Constructions, Aviation and Education etc.`,
+        img: "IMAGE_URL_1",
+        corner: "tl"
+      },
+      { title: "Earlier Business", text: "Economic Blockade — importation was prohibited during the economic blockade in Syria in 1981.", img: "IMAGE_URL_2", corner: "tr" },
+      { title: "Company Establishment", text: "Mallouk Trading Company (Mallouk & Co) was established in 1991 in Syria as the Syrian government alleviated part of the importation restriction.", img: "IMAGE_URL_3", corner: "tl" },
+      { title: "Expansion", text: "Mallouk & Co acquired distributorship of the VW Group from Germany (AUDI, SKODA & VOLKSWAGEN) and the business rapidly covered the entire territory of Syria.", img: "IMAGE_URL_4", corner: "tr" },
+      { title: "Motorcycle Business", text: "Mallouk started its motorcycle SKD factory business with HONDA, YAMAHA and SUZUKI which lasted for ten years.", img: "IMAGE_URL_5", corner: "br" },
+      { title: "Automotive Trading & Distributorship", text: "Pioneer in Chinese vehicles. With the chairman's strategic vision, Mallouk & Co became one of the first companies in the world importing various kinds of vehicles from the industrial production of China in the 1990s.", img: "IMAGE_URL_6", corner: "bl" },
+      { title: "Rooted in the Middle East", text: "Market Leader: with more than 200,000 units sold in the global market, awards of top 10 importers in the Middle East, etc.", img: "IMAGE_URL_7", corner: "tl" },
+      { title: "扎根中东市场", text: "(Chinese excerpt — paste the full slide text here once extracted from the PPT.)", img: "IMAGE_URL_8", corner: "tr" },
+      { title: "Global Sales & Service Network", text: "Mallouk Group has a total of over 30 4S facilities in its global sales & service network.", img: "IMAGE_URL_9", corner: "tl" },
+      { title: "Remarkable Achievement in Jordan Market", text: "Market Position: Ranking 1st in May 2023.\nHistoric Achievement: First Chinese automotive brand to lead an overseas market.", img: "IMAGE_URL_10", corner: "tr" },
+      { title: "Distinguished Partnerships", text: "Historic Visit: Li Shufu & An Conghui visit; Opening Ceremony in Syria.", img: "IMAGE_URL_11", corner: "tl" },
+      { title: "Honors & Awards", text: "Syria-China Business Council member; Top Trading Company.", img: "IMAGE_URL_12", corner: "br" },
+      { title: "Automotive Manufacturing", text: "Mallouk Industries owns the biggest CKD assembly plant in Homs; CKD production capabilities, etc.", img: "IMAGE_URL_13", corner: "tl" },
+      { title: "Reconstruction & Hisya", text: "Location: Hisya, Homs, Syria.\nSize: 40,000 sqm.\nStrategic location advantages.", img: "IMAGE_URL_14", corner: "tr" },
+      { title: "Public Transportation", text: "Public Transportation Services: First licensed private provider; Taxi Phone; 240 drivers.", img: "IMAGE_URL_15", corner: "bl" }
+    ];
+
+    // 3) Build slides in DOM
+    const slidesRoot = document.getElementById('slidesRoot');
+    slideBlocks.forEach((s, i) => {
+      const sec = document.createElement('section');
+      sec.className = 'slide';
+      sec.setAttribute('data-index', i);
+      sec.setAttribute('data-corner', s.corner);
+
+      const fallback = `https://placehold.co/600x400/0a0a1f/ffffff?text=${encodeURIComponent(s.title)}`;
+      sec.innerHTML = `
+        <div class="nebula-glow"></div>
+        <div class="portal-ring" aria-label="portal ring"></div>
+        <div class="slide-content">
+          <img class="slide-corner-img corner-${s.corner}" src="${s.img}" alt=""
+               onerror="this.onerror=null; this.src='${fallback}';">
+          <div class="slide-text">
+            <h2>${s.title}</h2>
+            <p>${s.text}</p>
+          </div>
+        </div>
+      `;
+      slidesRoot.appendChild(sec);
+    });
+
+    // 4) GSAP Scroll animations per slide
+    gsap.registerPlugin(ScrollTrigger);
+    const slides = document.querySelectorAll('.slide');
+    slides.forEach((slide) => {
+      const inner = slide.querySelector('.slide-text');
+      const img = slide.querySelector('.slide-corner-img');
+      const portalRing = slide.querySelector('.portal-ring');
+      const nebulaGlow = slide.querySelector('.nebula-glow');
+
+      gsap.fromTo(inner,
+        { opacity: 0, y: 60, scale: 0.96 },
+        {
+          opacity: 1, y: 0, scale: 1,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: slide, start: 'top 85%', end: 'top 25%', scrub: true }
+        }
+      );
+
+      gsap.fromTo(img,
+        { opacity: 0, scale: 0.9, rotate: -3 },
+        {
+          opacity: 1, scale: 1, rotate: 0,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: slide, start: 'top 85%', end: 'top 30%', scrub: true }
+        }
+      );
+
+      gsap.fromTo(portalRing,
+        { opacity: 0, scale: 0 },
+        {
+          opacity: 0.6, scale: 8,
+          scrollTrigger: { trigger: slide, start: 'top 90%', end: 'top 15%', scrub: true }
+        }
+      );
+      gsap.to(portalRing, {
+        opacity: 0, scale: 15,
+        scrollTrigger: { trigger: slide, start: 'top 10%', end: 'top -20%', scrub: true }
+      });
+
+      gsap.fromTo(nebulaGlow,
+        { opacity: 0 },
+        {
+          opacity: 0.35,
+          scrollTrigger: { trigger: slide, start: 'top 60%', end: 'top 10%', scrub: true }
+        }
+      );
+
+      gsap.to([inner, img], {
+        opacity: 0, y: -60, scale: 1.04,
+        scrollTrigger: { trigger: slide, start: 'bottom 70%', end: 'bottom 20%', scrub: true }
+      });
+    });
+
+    // 5) Progress bar + slide counter
+    const progressBar = document.createElement('div');
+    Object.assign(progressBar.style, {
+      position: 'fixed', top: '0', left: '0', height: '3px',
+      background: 'linear-gradient(90deg, #6C63FF, #00D2FF, #FF6FD8, #00FF87, #FFD700)',
+      width: '0%', zIndex: '999', transition: 'width 0.05s linear'
+    });
+    document.body.appendChild(progressBar);
+
+    const counterEl = document.querySelector('.slide-counter');
+    function updateProgress() {
+      const st = window.pageYOffset;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max ? (st / max) * 100 : 0;
+      progressBar.style.width = p + '%';
+      const idx = Math.min(slides.length - 1, Math.round(st / window.innerHeight));
+      if (counterEl) {
+        counterEl.textContent =
+          String(idx + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+      }
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+
+    // 6) Initial load animation
+    window.addEventListener('load', () => {
+      if (slides.length) {
+        const first = slides[0].querySelector('.slide-text');
+        if (first) {
+          gsap.fromTo(first, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' });
+        }
+      }
+      updateProgress();
+      ScrollTrigger.refresh();
+    });
+  </script>
+</body>
+</html>

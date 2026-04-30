@@ -6,6 +6,8 @@
   <title>MALLOUK GROUP — Space Portal Landing</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/FontLoader.js"></script>
+  <script src="https://unpkg.com/three@0.128.0/examples/js/geometries/TextGeometry.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="assets/slides-data.js"></script>
@@ -417,7 +419,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build path1-img v13</div>
+  <div class="build-stamp">build crystal-mesh v14</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1106,150 +1108,58 @@
         twist:    sp.twist
       });
 
-      // Sample many tiny particles along the bipyramid's edges (the
-      // skeleton of the crystal) plus a few inside / floating around.
-      const edges = new THREE.EdgesGeometry(geo);
-      const ePos  = edges.attributes.position.array;
-      const edgeCount = ePos.length / 6;          // each edge = 2 vertices
-      // Sparse + tiny particles so the FACET LINES define the silhouette.
-      // (Earlier denser values blew out into solid blobs under additive
-      // blending — the crystal shape was lost.)
-      const PER_EDGE = 55;                         // small dots along each edge
-      const INTERIOR = 40;                         // very sparse interior sparkle
-      const HALO     = 90;                         // a few drifting motes outside
+      // ===== Solid 3D crystal — translucent body + bright facet edges =====
+      // (Replaces the earlier particle-cloud crystal. The user wants rigid
+      //  geometry, not a sparkle field.)
+      const grp = new THREE.Group();
 
-      // Engraving — particles tracing a 2D pattern on the crystal's front face
-      const engLines  = engraving ? getEngravingLines(engraving) : [];
-      const PER_ENG   = 16;                        // particles per engraving segment
-      const ENG_COUNT = engLines.length * PER_ENG;
-      const TOTAL     = edgeCount * PER_EDGE + INTERIOR + HALO + ENG_COUNT;
-
-      const pPos = new Float32Array(TOTAL * 3);
-      const pCol = new Float32Array(TOTAL * 3);
-      const pSiz = new Float32Array(TOTAL);
-      // Violet / purple / lavender palette to match the reference crystal.
-      const palette = [
-        [180, 165, 255],   // light violet
-        [155, 130, 240],   // pure violet
-        [120, 100, 220],   // deep violet
-        [200, 195, 255],   // lavender white
-        [120, 150, 255]    // crystal blue accent
-      ];
-      const tmp = new THREE.Color();
-      let p = 0;
-
-      // Edge particles — dense, small, faint jitter
-      for (let e = 0; e < edgeCount; e++) {
-        const ax = ePos[e*6],   ay = ePos[e*6+1], az = ePos[e*6+2];
-        const bx = ePos[e*6+3], by = ePos[e*6+4], bz = ePos[e*6+5];
-        for (let j = 0; j < PER_EDGE; j++) {
-          const t = j / (PER_EDGE - 1);
-          const jit = 0.022;
-          pPos[p*3]     = ax + (bx-ax) * t + (Math.random() - 0.5) * jit;
-          pPos[p*3 + 1] = ay + (by-ay) * t + (Math.random() - 0.5) * jit;
-          pPos[p*3 + 2] = az + (bz-az) * t + (Math.random() - 0.5) * jit;
-          const cc = palette[(Math.random() * palette.length) | 0];
-          tmp.setRGB(cc[0]/255, cc[1]/255, cc[2]/255);
-          pCol[p*3] = tmp.r; pCol[p*3+1] = tmp.g; pCol[p*3+2] = tmp.b;
-          pSiz[p]   = 0.35 + Math.random() * 0.35;    // tiny dots — keep silhouette readable
-          p++;
-        }
-      }
-
-      // Interior gem dust — sparse, dim, gives the inside a subtle haze
-      for (let i = 0; i < INTERIOR; i++) {
-        // sample a random vertex direction, push inward
-        const v = (Math.random() * (geo.attributes.position.array.length / 3)) | 0;
-        const ox = geo.attributes.position.array[v*3];
-        const oy = geo.attributes.position.array[v*3+1];
-        const oz = geo.attributes.position.array[v*3+2];
-        const t = Math.random() * 0.85;
-        pPos[p*3]     = ox * t + (Math.random() - 0.5) * 0.08;
-        pPos[p*3 + 1] = oy * t + (Math.random() - 0.5) * 0.08;
-        pPos[p*3 + 2] = oz * t + (Math.random() - 0.5) * 0.08;
-        const cc = palette[(Math.random() * palette.length) | 0];
-        tmp.setRGB(cc[0]/255, cc[1]/255, cc[2]/255);
-        pCol[p*3] = tmp.r; pCol[p*3+1] = tmp.g; pCol[p*3+2] = tmp.b;
-        pSiz[p]   = 0.3 + Math.random() * 0.3;
-        p++;
-      }
-
-      // Halo — a few drifting motes outside the crystal body
-      for (let i = 0; i < HALO; i++) {
-        const phi = Math.random() * Math.PI * 2;
-        const cosT = Math.random() * 2 - 1;
-        const sinT = Math.sqrt(1 - cosT * cosT);
-        const radius = 1.7 + Math.random() * 0.9;
-        pPos[p*3]     = sinT * Math.cos(phi) * radius;
-        pPos[p*3 + 1] = sinT * Math.sin(phi) * radius;
-        pPos[p*3 + 2] = cosT * radius;
-        const cc = palette[(Math.random() * palette.length) | 0];
-        tmp.setRGB(cc[0]/255, cc[1]/255, cc[2]/255);
-        pCol[p*3] = tmp.r; pCol[p*3+1] = tmp.g; pCol[p*3+2] = tmp.b;
-        pSiz[p]   = 0.3 + Math.random() * 0.45;
-        p++;
-      }
-
-      // Engraving particles — sit just in front of the crystal face. Brighter
-      // and slightly larger than crystal body particles so they read as
-      // a glowing scratch on the surface. They rotate WITH the crystal.
-      const engZ = (sp.equatorR ?? sp.radius ?? 0.7) + 0.08;  // just outside equator
-      for (const seg of engLines) {
-        const [x1, y1, x2, y2] = seg;
-        for (let i = 0; i < PER_ENG; i++) {
-          const t = i / (PER_ENG - 1);
-          const jit = 0.012;
-          pPos[p*3]     = x1 + (x2 - x1) * t + (Math.random() - 0.5) * jit;
-          pPos[p*3 + 1] = y1 + (y2 - y1) * t + (Math.random() - 0.5) * jit;
-          pPos[p*3 + 2] = engZ + (Math.random() - 0.5) * 0.025;
-          // bright cyan-white
-          pCol[p*3]     = 0.85 + Math.random() * 0.15;
-          pCol[p*3 + 1] = 0.95;
-          pCol[p*3 + 2] = 1.0;
-          pSiz[p]       = 0.4 + Math.random() * 0.3;
-          p++;
-        }
-      }
-
-      const pGeo = new THREE.BufferGeometry();
-      pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-      pGeo.setAttribute('color',    new THREE.BufferAttribute(pCol, 3));
-      pGeo.setAttribute('aSize',    new THREE.BufferAttribute(pSiz, 1));
-
-      const pMat = new THREE.ShaderMaterial({
-        uniforms: { uPixelRatio: { value: r.getPixelRatio() }, uTime: { value: 0 }, uHover: { value: 0 } },
-        vertexColors: true, transparent: true, depthWrite: false,
-        blending: THREE.AdditiveBlending,
-        vertexShader: `
-          attribute float aSize;
-          varying vec3 vColor;
-          uniform float uPixelRatio;
-          uniform float uTime;
-          uniform float uHover;
-          void main() {
-            vColor = color;
-            vec4 mv = modelViewMatrix * vec4(position, 1.0);
-            gl_Position = projectionMatrix * mv;
-            float twinkle = 0.75 + 0.25 * sin(uTime * 2.5 + position.x * 6.0 + position.y * 4.0);
-            float bright  = 1.0 + uHover * 0.6;
-            gl_PointSize = aSize * (90.0 / max(1.0, -mv.z)) * uPixelRatio * twinkle * bright;
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vColor;
-          uniform float uHover;
-          void main() {
-            vec2 c = gl_PointCoord - 0.5;
-            float d = length(c);
-            float a = smoothstep(0.5, 0.0, d);
-            // Lower per-particle output so additive blending doesn't compound
-            // overlapping particles into a solid white blob.
-            gl_FragColor = vec4(vColor * (0.6 + uHover * 0.45), a * 0.85);
-          }
-        `
+      // Translucent gem body (no lighting required — additive feel via opacity)
+      const bodyMat = new THREE.MeshBasicMaterial({
+        color: 0xa090ff,
+        transparent: true,
+        opacity: 0.32,
+        side: THREE.DoubleSide,
+        depthWrite: false
       });
-      const points = new THREE.Points(pGeo, pMat);
-      sc.add(points);
+      const body = new THREE.Mesh(geo, bodyMat);
+      grp.add(body);
+
+      // Bright facet edge lines — give the gem its rigid silhouette
+      const edgeGeo = new THREE.EdgesGeometry(geo);
+      const edgeMat = new THREE.LineBasicMaterial({
+        color: 0xd6c8ff,
+        transparent: true,
+        opacity: 0.95
+      });
+      const edgeLines = new THREE.LineSegments(edgeGeo, edgeMat);
+      grp.add(edgeLines);
+
+      // Engraving — solid line scratches on the front face
+      const engLines = engraving ? getEngravingLines(engraving) : [];
+      if (engLines.length) {
+        const engPos = [];
+        const engZ = (sp.equatorR != null ? sp.equatorR : (sp.radius != null ? sp.radius : 0.7)) + 0.06;
+        for (const seg of engLines) {
+          engPos.push(seg[0], seg[1], engZ);
+          engPos.push(seg[2], seg[3], engZ);
+        }
+        const engGeo = new THREE.BufferGeometry();
+        engGeo.setAttribute('position', new THREE.Float32BufferAttribute(engPos, 3));
+        const engMat = new THREE.LineBasicMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.9
+        });
+        const engSeg = new THREE.LineSegments(engGeo, engMat);
+        grp.add(engSeg);
+      }
+
+      sc.add(grp);
+      // Alias so the existing hover/dive animation code (which references
+      // `points`) continues to work without changes.
+      const points = grp;
+      // Empty stub so old uniform updates don't crash if referenced.
+      const pMat = { uniforms: { uTime: { value: 0 }, uHover: { value: 0 } } };
 
       // Hover state — smooth approach
       let hover = 0, hoverTarget = 0;
@@ -1328,6 +1238,12 @@
 
           cam.position.z = 5 - hover * 0.5;
         }
+
+        // Solid-crystal hover response — body more visible + edges brighter
+        // when the user hovers, intense during entering dive.
+        const intensity = entering ? 1 : hover;
+        bodyMat.opacity = 0.32 + intensity * 0.28;
+        edgeMat.opacity = 0.85 + intensity * 0.15;
 
         r.render(sc, cam);
         requestAnimationFrame(tick);
@@ -1514,116 +1430,91 @@
       }
     }, { passive: true });
 
-    // ===== 3D particle logo for slide 1 (replaces the HTML title) =====
-    // Hide the HTML title on slide 1 — the 3D particles are the title now.
+    // ===== 3D crystal logo for slide 1 (replaces the HTML title) =====
+    // Hide the HTML title on slide 1 — the 3D crystal text is the title now.
     (function hideSlide1Title() {
       const first = document.querySelector('.slide[data-index="0"]');
       if (!first) return;
       first.querySelectorAll('.float-title').forEach(t => { t.style.display = 'none'; });
     })();
 
-    // Build a particle cloud from rasterised text
-    function makeParticleLogo(text, opts) {
-      opts = opts || {};
-      const fontPx     = opts.fontPx     || 140;
-      const sampleStep = opts.sampleStep || 3;          // smaller = more particles
-      const worldScale = opts.worldScale || 0.55;       // px → world unit
-      const anchor     = opts.anchor     || new THREE.Vector3(0, 0, -200);
-      const lineGap    = opts.lineGap    || 1.18;
+    // Build a 3D extruded crystal-text logo (translucent body + bright facet
+    // edges) once the typeface JSON arrives. Async because TextGeometry needs
+    // a font that we load from a CDN.
+    const logoZ = -260;            // slightly ahead of camera start so it's visible at scroll=0
+    const logoGroup = new THREE.Group();
+    logoGroup.position.set(0, 0, logoZ);
+    scene.add(logoGroup);
 
-      // Render text on a hidden 2D canvas — supports multi-line
-      const lines = Array.isArray(text) ? text : [text];
-      const cv = document.createElement('canvas');
-      cv.width  = 1600;
-      cv.height = Math.max(280, fontPx * lines.length * lineGap + 80);
-      const ctx = cv.getContext('2d');
-      ctx.fillStyle = '#fff';
-      ctx.font = `800 ${fontPx}px system-ui, -apple-system, "Segoe UI", Roboto, Arial`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const totalH = fontPx * lines.length * lineGap;
+    function buildCrystalText(font) {
+      const lines = ['MALLOUK', 'GROUP'];
+      const lineMeshes = [];
+      const lineH = 70;             // line height in world units
       lines.forEach((line, idx) => {
-        const y = (cv.height - totalH) / 2 + (idx + 0.5) * fontPx * lineGap;
-        ctx.fillText(line, cv.width / 2, y);
+        const tg = new THREE.TextGeometry(line, {
+          font: font,
+          size: 56,
+          height: 18,
+          curveSegments: 4,
+          bevelEnabled: true,
+          bevelThickness: 4,
+          bevelSize: 1.8,
+          bevelSegments: 1
+        });
+        tg.computeBoundingBox();
+        const w = tg.boundingBox.max.x - tg.boundingBox.min.x;
+        const h = tg.boundingBox.max.y - tg.boundingBox.min.y;
+        // Centre this line on origin then offset vertically per line index
+        tg.translate(-tg.boundingBox.min.x - w / 2, -tg.boundingBox.min.y - h / 2, 0);
+
+        const lineGroup = new THREE.Group();
+        const bodyMat = new THREE.MeshBasicMaterial({
+          color: 0xb0a0ff,
+          transparent: true,
+          opacity: 0.4,
+          side: THREE.DoubleSide,
+          depthWrite: false
+        });
+        const body = new THREE.Mesh(tg, bodyMat);
+        lineGroup.add(body);
+
+        const eg = new THREE.EdgesGeometry(tg, 25);
+        const edgeMat = new THREE.LineBasicMaterial({
+          color: 0xe2d6ff,
+          transparent: true,
+          opacity: 0.95
+        });
+        const edges = new THREE.LineSegments(eg, edgeMat);
+        lineGroup.add(edges);
+
+        // Stack lines vertically: top line above origin, bottom below
+        const offsetY = (lines.length - 1) * lineH * 0.5 - idx * lineH;
+        lineGroup.position.y = offsetY;
+        logoGroup.add(lineGroup);
+        lineMeshes.push(lineGroup);
       });
 
-      const data = ctx.getImageData(0, 0, cv.width, cv.height).data;
-      const pos = [], col = [], siz = [], target = [];
-      // Theme palette: cyan / pale-blue / white — same family as the
-      // circuit dots so the logo reads as part of the field.
-      const logoPalette = [
-        [136, 182, 255],   // accent circuit
-        [180, 210, 255],   // light blue
-        [220, 230, 255],   // near white
-        [90, 130, 220]     // deeper blue accent
-      ];
-      for (let py = 0; py < cv.height; py += sampleStep) {
-        for (let px = 0; px < cv.width; px += sampleStep) {
-          const i = (py * cv.width + px) * 4;
-          if (data[i + 3] > 128) {
-            const wx = (px - cv.width / 2)  * worldScale + anchor.x;
-            const wy = -(py - cv.height / 2) * worldScale + anchor.y;
-            const wz = anchor.z + (Math.random() - 0.5) * 14;
-            pos.push(wx, wy, wz);
-            target.push(wx, wy, anchor.z);
-            const c = logoPalette[(Math.random() * logoPalette.length) | 0];
-            col.push(c[0]/255, c[1]/255, c[2]/255);
-            siz.push(1.4 + Math.random() * 1.6);
-          }
-        }
-      }
-
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
-      geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(col), 3));
-      geo.setAttribute('aSize',    new THREE.BufferAttribute(new Float32Array(siz), 1));
-      // Use the static-position additive material so the logo particles
-      // stay where we sampled them (NOT tethered to the camera shell).
-      const points = new THREE.Points(geo, staticPointsMat);
-      points.userData.targets = new Float32Array(target);
-      points.userData.count = pos.length / 3;
-      points.userData.phase = new Float32Array(points.userData.count);
-      for (let i = 0; i < points.userData.count; i++) {
-        points.userData.phase[i] = Math.random() * Math.PI * 2;
-      }
-      return points;
-    }
-
-    // Place logo near the front of the camera path (slide 1 anchor at z=0)
-    const logoZ = -260;     // slightly ahead of camera start so it's visible at scroll=0
-    const malloukLogo = makeParticleLogo(
-      ['MALLOUK', 'GROUP'],
-      {
-        fontPx: 180,
-        sampleStep: 3,
-        worldScale: 0.55,
-        anchor: new THREE.Vector3(0, 0, logoZ),
-        lineGap: 1.05
-      }
-    );
-    scene.add(malloukLogo);
-
-    // Idle drift animation for the logo particles — runs in the existing tick loop
-    // via this hook (added so we don't need to edit tick() again)
-    (function attachLogoDrift() {
-      const positions = malloukLogo.geometry.attributes.position;
-      const targets   = malloukLogo.userData.targets;
-      const phases    = malloukLogo.userData.phase;
-      const count     = malloukLogo.userData.count;
-      function loop(now) {
-        const t = now * 0.001;
-        const arr = positions.array;
-        for (let i = 0; i < count; i++) {
-          const ph = phases[i];
-          arr[i*3]     = targets[i*3]     + Math.sin(t * 0.6 + ph)        * 2.0;
-          arr[i*3 + 1] = targets[i*3 + 1] + Math.cos(t * 0.5 + ph * 1.3)  * 2.0;
-          arr[i*3 + 2] = targets[i*3 + 2] + Math.sin(t * 0.35 + ph * 0.7) * 3.0;
-        }
-        positions.needsUpdate = true;
+      // Idle drift — the logo gently bobs and rotates so the gem facets catch
+      // perspective changes (small motion = readable but alive).
+      const startT = performance.now();
+      function loop() {
+        const t = (performance.now() - startT) * 0.001;
+        logoGroup.position.y = Math.sin(t * 0.6) * 6;
+        logoGroup.rotation.y = Math.sin(t * 0.4) * 0.06;
+        logoGroup.rotation.x = Math.sin(t * 0.3) * 0.03;
         requestAnimationFrame(loop);
       }
       requestAnimationFrame(loop);
-    })();
+    }
+
+    if (typeof THREE.FontLoader === 'function') {
+      new THREE.FontLoader().load(
+        'https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json',
+        buildCrystalText,
+        undefined,
+        (err) => { console.warn('Logo font failed to load', err); }
+      );
+    }
 
     // ---------- Stage sizing ----------
     // Simple now: stage fills a viewport-sized box centred in the sticky pin.

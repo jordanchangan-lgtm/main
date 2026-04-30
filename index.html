@@ -8,6 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/FontLoader.js"></script>
   <script src="https://unpkg.com/three@0.128.0/examples/js/geometries/TextGeometry.js"></script>
+  <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="assets/slides-data.js"></script>
@@ -419,7 +420,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build quartz-tight v20</div>
+  <div class="build-stamp">build glb-crystals v21</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1228,6 +1229,28 @@
     // Build a single crystal shard: hex prism that tapers to a point. The
     // base sits at -length/2; the apex at +length/2. Returns a buffer
     // geometry suitable for both Mesh and EdgesGeometry.
+    // ===== GLB cluster loader =====
+    // Loads each crystal-cluster .glb once, caches the parsed scene, and
+    // hands out fresh clones to every initCrystal() call. Public-domain
+    // (CC0) models from the Polygonal Mind "Crystal Crossroads" pack.
+    const gltfLoader = (typeof THREE.GLTFLoader === 'function') ? new THREE.GLTFLoader() : null;
+    const crystalModelCache = {};
+    function loadCrystalModel(name, onReady, onFail) {
+      if (crystalModelCache[name]) {
+        onReady(crystalModelCache[name].clone(true));
+        return;
+      }
+      if (!gltfLoader) { (onFail || (() => {}))(); return; }
+      gltfLoader.load('assets/models/' + name + '.glb',
+        (gltf) => {
+          crystalModelCache[name] = gltf.scene;
+          onReady(gltf.scene.clone(true));
+        },
+        undefined,
+        (err) => { console.warn('crystal model failed', name, err); (onFail || (() => {}))(); }
+      );
+    }
+
     function initCrystal(canvas, shape, card) {
       const w = canvas.width, h = canvas.height;
       const r = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -1239,83 +1262,99 @@
       const cam = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
       cam.position.set(0, 0, 5);
 
-      // Cluster recipe key — 'tower' | 'splay' | 'compact'
+      // Lights — needed because the loaded GLB uses lit materials. Without
+      // them the model would render flat-black.
+      sc.add(new THREE.AmbientLight(0xffffff, 0.55));
+      const key = new THREE.DirectionalLight(0xffffff, 0.85);
+      key.position.set(2.5, 4, 3);
+      sc.add(key);
+      const rim = new THREE.DirectionalLight(0xb59cff, 0.4);   // violet rim
+      rim.position.set(-3, 1.5, -2);
+      sc.add(rim);
+
       const variant = (typeof shape === 'string' && CLUSTER_VARIANTS[shape]) ? shape : 'tower';
-      const recipe = CLUSTER_VARIANTS[variant];
 
-      // ===== Multi-shard crystal cluster + rocky base =====
+      // Group the crystal sits in. Hover/dive animations operate on `points`
+      // (= grp), keeping the existing animation code working.
       const grp = new THREE.Group();
-
-      // Shared materials. Body is more solid than before (closer to the
-      // glassy look in the reference) and edges are bright lavender.
-      const bodyMat = new THREE.MeshBasicMaterial({
-        color: 0x9a8edc,
-        transparent: true,
-        opacity: 0.55,
-        side: THREE.DoubleSide,
-        depthWrite: false
-      });
-      const edgeMat = new THREE.LineBasicMaterial({
-        color: 0xe6dbff,
-        transparent: true,
-        opacity: 0.95
-      });
-
-      // Rocky / mossy base — irregular icosahedron-derived geometry, flattened
-      // on top so the crystals look like they're sprouting out of it. Vertex
-      // colours fake shading without needing a light setup.
-      const baseGeo = new THREE.IcosahedronGeometry(0.95, 1);
-      const baseAttr = baseGeo.attributes.position;
-      const baseColors = new Float32Array(baseAttr.count * 3);
-      for (let i = 0; i < baseAttr.count; i++) {
-        const x = baseAttr.getX(i);
-        let   y = baseAttr.getY(i);
-        const z = baseAttr.getZ(i);
-        // Squash the top half so the base is dome-on-disc (matches the photo)
-        if (y > 0) y *= 0.45;
-        // Random radial wobble for irregular silhouette
-        const wobble = 1 + (Math.random() - 0.5) * 0.30;
-        baseAttr.setXYZ(i, x * wobble, y - 0.55, z * wobble);
-        // Fake shading: top vertices brighter, bottom darker. Mossy hint.
-        const yN = (baseAttr.getY(i) + 1.5) / 2;     // 0..1
-        const v  = 0.18 + yN * 0.22 + (Math.random() - 0.5) * 0.05;
-        baseColors[i*3]     = v * 0.95;     // brown-ish R
-        baseColors[i*3 + 1] = v * 0.78;     // G
-        baseColors[i*3 + 2] = v * 0.62;     // B
-      }
-      baseGeo.setAttribute('color', new THREE.BufferAttribute(baseColors, 3));
-      baseGeo.computeVertexNormals();
-      const baseMat = new THREE.MeshBasicMaterial({
-        vertexColors: true
-      });
-      grp.add(new THREE.Mesh(baseGeo, baseMat));
-      // Subtle outline on the base (silhouette pop in the dark void)
-      const baseEdgeGeo = new THREE.EdgesGeometry(baseGeo, 28);
-      grp.add(new THREE.LineSegments(baseEdgeGeo, new THREE.LineBasicMaterial({
-        color: 0x5a4a40, transparent: true, opacity: 0.6
-      })));
-
-      // Now lay the crystal shards on top of the base
-      recipe.forEach((sh) => {
-        const shardGeo = makeShardGeometry(sh.sides, sh.len, sh.r);
-        const body = new THREE.Mesh(shardGeo, bodyMat);
-        // Lift each shard slightly so its base sinks INTO the rock, not floats
-        body.position.set(sh.x, sh.y - 0.2, sh.z);
-        body.rotation.set(sh.rx || 0, sh.ry || 0, sh.rz || 0);
-        grp.add(body);
-
-        const eGeo = new THREE.EdgesGeometry(shardGeo);
-        const eLines = new THREE.LineSegments(eGeo, edgeMat);
-        eLines.position.copy(body.position);
-        eLines.rotation.copy(body.rotation);
-        grp.add(eLines);
-      });
-
       sc.add(grp);
-      // Alias so the existing hover/dive animation code (which references
-      // `points`) continues to work without changes.
+
+      // Map our 3 path keys to the 2 cluster GLBs (one is reused with a
+      // different rotation/scale so all three crystals look distinct).
+      const variantToModel = {
+        tower:   { file: 'Crystal_Cluster',           rotY: 0,                   scale: 1.00 },
+        splay:   { file: 'Crystal_ClusterSurrounded', rotY: 0,                   scale: 1.00 },
+        compact: { file: 'Crystal_Cluster',           rotY: Math.PI * 0.5,       scale: 0.85 }
+      };
+      const cfg = variantToModel[variant] || variantToModel.tower;
+
+      // Body / edge materials applied to every mesh inside the GLB so the
+      // whole cluster reads as one violet crystal. Edge lines are layered
+      // on top of each mesh for that bright facet pop.
+      function paintCrystal(model) {
+        // Recentre at origin and scale to fit the canvas viewport
+        const box = new THREE.Box3().setFromObject(model);
+        const size = box.getSize(new THREE.Vector3());
+        const centre = box.getCenter(new THREE.Vector3());
+        model.position.sub(centre);
+        const targetSize = 2.4;
+        const fitScale = targetSize / Math.max(size.x, size.y, size.z);
+        model.scale.setScalar(fitScale * cfg.scale);
+        model.rotation.y = cfg.rotY;
+
+        // Override every mesh material with a lit, glossy violet gem material.
+        // Add facet edge lines on top for crisp outline.
+        model.traverse((o) => {
+          if (o.isMesh && o.geometry) {
+            o.material = new THREE.MeshPhongMaterial({
+              color: 0x9a8edc,
+              specular: 0xffffff,
+              shininess: 110,
+              transparent: true,
+              opacity: 0.78,
+              side: THREE.DoubleSide
+            });
+            o.material.userData.baseOpacity = 0.78;
+            const eg = new THREE.EdgesGeometry(o.geometry, 18);
+            const edges = new THREE.LineSegments(eg, new THREE.LineBasicMaterial({
+              color: 0xe6dbff, transparent: true, opacity: 0.85
+            }));
+            edges.position.copy(o.position);
+            edges.rotation.copy(o.rotation);
+            edges.scale.copy(o.scale);
+            o.parent.add(edges);
+          }
+        });
+      }
+
+      loadCrystalModel(cfg.file, (model) => {
+        paintCrystal(model);
+        grp.add(model);
+      }, () => {
+        console.warn('Falling back to procedural cluster for', variant);
+        // Procedural fallback if GLB fails — never go fully empty.
+        const recipe = CLUSTER_VARIANTS[variant];
+        const fbMat = new THREE.MeshBasicMaterial({
+          color: 0x9a8edc, transparent: true, opacity: 0.55,
+          side: THREE.DoubleSide, depthWrite: false
+        });
+        const fbEdge = new THREE.LineBasicMaterial({ color: 0xe6dbff, transparent: true, opacity: 0.95 });
+        recipe.forEach((sh) => {
+          const sg = makeShardGeometry(sh.sides, sh.len, sh.r);
+          const body = new THREE.Mesh(sg, fbMat);
+          body.position.set(sh.x, sh.y, sh.z);
+          body.rotation.set(sh.rx || 0, sh.ry || 0, sh.rz || 0);
+          grp.add(body);
+          const eg = new THREE.EdgesGeometry(sg);
+          const lines = new THREE.LineSegments(eg, fbEdge);
+          lines.position.copy(body.position);
+          lines.rotation.copy(body.rotation);
+          grp.add(lines);
+        });
+      });
+
+      // Aliases for legacy hover / dive code below.
       const points = grp;
-      // Empty stub so old uniform updates don't crash if referenced.
       const pMat = { uniforms: { uTime: { value: 0 }, uHover: { value: 0 } } };
 
       // Hover state — smooth approach
@@ -1396,11 +1435,18 @@
           cam.position.z = 5 - hover * 0.5;
         }
 
-        // Solid-crystal hover response — body more visible + edges brighter
-        // when the user hovers, intense during entering dive.
+        // Hover response — pulse opacity on the loaded GLB's materials.
+        // We traverse `grp` instead of holding a single material reference
+        // because the GLB has many meshes (each with its own material).
         const intensity = entering ? 1 : hover;
-        bodyMat.opacity = 0.32 + intensity * 0.28;
-        edgeMat.opacity = 0.85 + intensity * 0.15;
+        grp.traverse((o) => {
+          if (o.isMesh && o.material && 'opacity' in o.material) {
+            const base = (o.material.userData && o.material.userData.baseOpacity) || 0.78;
+            o.material.opacity = base * (0.85 + intensity * 0.18);
+          } else if (o.isLineSegments && o.material) {
+            o.material.opacity = 0.75 + intensity * 0.20;
+          }
+        });
 
         r.render(sc, cam);
         requestAnimationFrame(tick);

@@ -419,7 +419,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build cluster-fix v18</div>
+  <div class="build-stamp">build rocky-base v19</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -969,15 +969,14 @@
       // image (top apex / upper ring / wide equator / lower ring / bottom
       // apex). Each path varies the proportions for visual distinction.
       // Cluster shapes — match the reference photo: groups of pointed quartz
-      // shards radiating from a base. Each crystal still has its own silhouette
-      // and engraving to identify the path.
+      // shards radiating from a base. Three different silhouettes per path.
       const crystals = [
         { path: 'path-1', label: 'Automotive', subtitle: 'Path 1',
-          engraving: 'car', clusterVariant: 'tower' },           // tall central + lean outs
+          clusterVariant: 'tower' },
         { path: 'path-2', label: 'Diversification', subtitle: 'Path 2',
-          engraving: 'tree', clusterVariant: 'splay' },          // radiating splay
+          clusterVariant: 'splay' },
         { path: 'path-3', label: 'Global Strategy', subtitle: 'Path 3',
-          engraving: 'globe', clusterVariant: 'compact' },       // compact stout cluster
+          clusterVariant: 'compact' },
       ];
 
       crystals.forEach((c, ci) => {
@@ -1004,7 +1003,7 @@
         card.appendChild(lbl);
 
         // Mini Three.js scene per crystal — particles around a wire-frame solid
-        initCrystal(canvasEl, c.clusterVariant || c.shape, card, c.engraving);
+        initCrystal(canvasEl, c.clusterVariant, card);
 
         card.addEventListener('click', () => enterCrystal(card, c.path));
         row.appendChild(card);
@@ -1177,7 +1176,7 @@
     // Build a single crystal shard: hex prism that tapers to a point. The
     // base sits at -length/2; the apex at +length/2. Returns a buffer
     // geometry suitable for both Mesh and EdgesGeometry.
-    function initCrystal(canvas, shape, card, engraving) {
+    function initCrystal(canvas, shape, card) {
       const w = canvas.width, h = canvas.height;
       const r = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -1188,34 +1187,68 @@
       const cam = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
       cam.position.set(0, 0, 5);
 
-      // Cluster recipe: shape is now the variant key ('tower'|'splay'|'compact')
+      // Cluster recipe key — 'tower' | 'splay' | 'compact'
       const variant = (typeof shape === 'string' && CLUSTER_VARIANTS[shape]) ? shape : 'tower';
       const recipe = CLUSTER_VARIANTS[variant];
 
-      // ===== Multi-shard crystal cluster =====
+      // ===== Multi-shard crystal cluster + rocky base =====
       const grp = new THREE.Group();
 
-      // Shared materials so all shards animate uniformly. The body is darker
-      // and more translucent than the bright lavender edges — matches the
-      // reference photo (dark grey-violet shards with pale highlights).
+      // Shared materials. Body is more solid than before (closer to the
+      // glassy look in the reference) and edges are bright lavender.
       const bodyMat = new THREE.MeshBasicMaterial({
-        color: 0x8474c4,
+        color: 0x9a8edc,
         transparent: true,
-        opacity: 0.42,
+        opacity: 0.55,
         side: THREE.DoubleSide,
         depthWrite: false
       });
       const edgeMat = new THREE.LineBasicMaterial({
-        color: 0xe2d5ff,
+        color: 0xe6dbff,
         transparent: true,
         opacity: 0.95
       });
 
-      let totalRadius = 0;        // for engraving placement
+      // Rocky / mossy base — irregular icosahedron-derived geometry, flattened
+      // on top so the crystals look like they're sprouting out of it. Vertex
+      // colours fake shading without needing a light setup.
+      const baseGeo = new THREE.IcosahedronGeometry(0.95, 1);
+      const baseAttr = baseGeo.attributes.position;
+      const baseColors = new Float32Array(baseAttr.count * 3);
+      for (let i = 0; i < baseAttr.count; i++) {
+        const x = baseAttr.getX(i);
+        let   y = baseAttr.getY(i);
+        const z = baseAttr.getZ(i);
+        // Squash the top half so the base is dome-on-disc (matches the photo)
+        if (y > 0) y *= 0.45;
+        // Random radial wobble for irregular silhouette
+        const wobble = 1 + (Math.random() - 0.5) * 0.30;
+        baseAttr.setXYZ(i, x * wobble, y - 0.55, z * wobble);
+        // Fake shading: top vertices brighter, bottom darker. Mossy hint.
+        const yN = (baseAttr.getY(i) + 1.5) / 2;     // 0..1
+        const v  = 0.18 + yN * 0.22 + (Math.random() - 0.5) * 0.05;
+        baseColors[i*3]     = v * 0.95;     // brown-ish R
+        baseColors[i*3 + 1] = v * 0.78;     // G
+        baseColors[i*3 + 2] = v * 0.62;     // B
+      }
+      baseGeo.setAttribute('color', new THREE.BufferAttribute(baseColors, 3));
+      baseGeo.computeVertexNormals();
+      const baseMat = new THREE.MeshBasicMaterial({
+        vertexColors: true
+      });
+      grp.add(new THREE.Mesh(baseGeo, baseMat));
+      // Subtle outline on the base (silhouette pop in the dark void)
+      const baseEdgeGeo = new THREE.EdgesGeometry(baseGeo, 28);
+      grp.add(new THREE.LineSegments(baseEdgeGeo, new THREE.LineBasicMaterial({
+        color: 0x5a4a40, transparent: true, opacity: 0.6
+      })));
+
+      // Now lay the crystal shards on top of the base
       recipe.forEach((sh) => {
         const shardGeo = makeShardGeometry(sh.sides, sh.len, sh.r);
         const body = new THREE.Mesh(shardGeo, bodyMat);
-        body.position.set(sh.x, sh.y, sh.z);
+        // Lift each shard slightly so its base sinks INTO the rock, not floats
+        body.position.set(sh.x, sh.y - 0.2, sh.z);
         body.rotation.set(sh.rx || 0, sh.ry || 0, sh.rz || 0);
         grp.add(body);
 
@@ -1224,29 +1257,7 @@
         eLines.position.copy(body.position);
         eLines.rotation.copy(body.rotation);
         grp.add(eLines);
-
-        const reach = Math.hypot(sh.x, sh.z) + sh.len * 0.5;
-        if (reach > totalRadius) totalRadius = reach;
       });
-
-      // Engraving — drawn on a transparent plane in front of the cluster
-      const engLines = engraving ? getEngravingLines(engraving) : [];
-      if (engLines.length) {
-        const engPos = [];
-        const engZ = totalRadius + 0.4;
-        for (const seg of engLines) {
-          engPos.push(seg[0], seg[1], engZ);
-          engPos.push(seg[2], seg[3], engZ);
-        }
-        const engGeo = new THREE.BufferGeometry();
-        engGeo.setAttribute('position', new THREE.Float32BufferAttribute(engPos, 3));
-        const engMat = new THREE.LineBasicMaterial({
-          color: 0xffffff,
-          transparent: true,
-          opacity: 0.9
-        });
-        grp.add(new THREE.LineSegments(engGeo, engMat));
-      }
 
       sc.add(grp);
       // Alias so the existing hover/dive animation code (which references

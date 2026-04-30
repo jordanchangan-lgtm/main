@@ -3,6 +3,14 @@ window.SLIDES = [
   {
     "path": "overview",
     "id": "1.0",
+    "title": "",
+    "subtitle": "",
+    "body": "",
+    "images": []
+  },
+  {
+    "path": "overview",
+    "id": "1.1",
     "title": "MALLOUK GROUP",
     "subtitle": "Main Entry",
     "body": "Owned by the Mallouk Family, Mallouk Group was established in Syria in 1981 with subsidiary companies and offices in Jordan, Lebanon, Iraq, Egypt and China (Hong Kong, Shanghai & Jiangsu). One of the pioneer business groups achieving growth across Automotive Manufacturing, Distributorship (branding, marketing, sales & after-service), Public Transportation, Financing, Medical Equipment, Property Development & Constructions, Aviation and Education.",

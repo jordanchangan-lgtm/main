@@ -89,12 +89,6 @@
       height: 200vh;
       z-index: 2;
     }
-    /* The overview slide is short — only 1 scroll between the hero text and
-       the path menu. Everything after still uses the 200vh sticky-read
-       window. */
-    .slide[data-path="overview"] {
-      height: 100vh;
-    }
 
     .slide-pin {
       position: sticky;
@@ -425,7 +419,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build new-doc v15</div>
+  <div class="build-stamp">build split-intro v16</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -825,8 +819,12 @@
       sec.appendChild(pin);
       slidesRoot.appendChild(sec);
 
-      // After the overview scene, insert the menu (3 path crystals)
-      if (slide.path === 'overview') {
+      // After the LAST overview scene (the main entry), insert the menu
+      // (3 path crystals). Earlier overview scenes — like the logo-only
+      // intro — leave the menu insertion to the next overview scene.
+      const isLastOverview = slide.path === 'overview' &&
+        (i + 1 >= SLIDES.length || SLIDES[i + 1].path !== 'overview');
+      if (isLastOverview) {
         const menu = buildMenuSection();
         slidesRoot.appendChild(menu);
       }
@@ -1446,16 +1444,17 @@
 
     // Build a 3D extruded crystal-text logo (translucent body + bright facet
     // edges) once the typeface JSON arrives. Async because TextGeometry needs
-    // a font that we load from a CDN.
-    const logoZ = -260;            // slightly ahead of camera start so it's visible at scroll=0
+    // a font that we load from a CDN. The logo follows the camera during the
+    // intro (slide 0 — logo scene) so it stays visible while you scroll, and
+    // fades out as you approach the main-entry scene.
+    const LOGO_OFFSET_Z = -260;      // distance ahead of the camera while visible
     const logoGroup = new THREE.Group();
-    logoGroup.position.set(0, 0, logoZ);
     scene.add(logoGroup);
+    const logoMaterials = [];        // collected so we can fade opacity uniformly
 
     function buildCrystalText(font) {
       const lines = ['MALLOUK', 'GROUP'];
-      const lineMeshes = [];
-      const lineH = 70;             // line height in world units
+      const lineH = 70;
       lines.forEach((line, idx) => {
         const tg = new THREE.TextGeometry(line, {
           font: font,
@@ -1470,7 +1469,6 @@
         tg.computeBoundingBox();
         const w = tg.boundingBox.max.x - tg.boundingBox.min.x;
         const h = tg.boundingBox.max.y - tg.boundingBox.min.y;
-        // Centre this line on origin then offset vertically per line index
         tg.translate(-tg.boundingBox.min.x - w / 2, -tg.boundingBox.min.y - h / 2, 0);
 
         const lineGroup = new THREE.Group();
@@ -1481,8 +1479,9 @@
           side: THREE.DoubleSide,
           depthWrite: false
         });
-        const body = new THREE.Mesh(tg, bodyMat);
-        lineGroup.add(body);
+        bodyMat.userData.baseOpacity = 0.4;
+        logoMaterials.push(bodyMat);
+        lineGroup.add(new THREE.Mesh(tg, bodyMat));
 
         const eg = new THREE.EdgesGeometry(tg, 25);
         const edgeMat = new THREE.LineBasicMaterial({
@@ -1490,28 +1489,58 @@
           transparent: true,
           opacity: 0.95
         });
-        const edges = new THREE.LineSegments(eg, edgeMat);
-        lineGroup.add(edges);
+        edgeMat.userData.baseOpacity = 0.95;
+        logoMaterials.push(edgeMat);
+        lineGroup.add(new THREE.LineSegments(eg, edgeMat));
 
         // Stack lines vertically: top line above origin, bottom below
-        const offsetY = (lines.length - 1) * lineH * 0.5 - idx * lineH;
-        lineGroup.position.y = offsetY;
+        lineGroup.position.y = (lines.length - 1) * lineH * 0.5 - idx * lineH;
         logoGroup.add(lineGroup);
-        lineMeshes.push(lineGroup);
       });
+      logoGroup.userData.ready = true;
+    }
 
-      // Idle drift — the logo gently bobs and rotates so the gem facets catch
-      // perspective changes (small motion = readable but alive).
+    // Per-frame placement + fade — lives on its own RAF loop so it updates
+    // even before the font finishes loading (logoGroup.userData.ready
+    // flips on once the meshes exist).
+    (function animateLogo() {
       const startT = performance.now();
       function loop() {
         const t = (performance.now() - startT) * 0.001;
-        logoGroup.position.y = Math.sin(t * 0.6) * 6;
-        logoGroup.rotation.y = Math.sin(t * 0.4) * 0.06;
-        logoGroup.rotation.x = Math.sin(t * 0.3) * 0.03;
+
+        // Slide-relative scroll progress to know whether we're on the logo
+        // scene (slide 0) or the main-entry scene (slide 1).
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const sp  = max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
+        const slideF = sp * Math.max(1, SLIDE_COUNT_3D - 1);
+        const slideIdx = Math.floor(slideF);
+        const subP = slideF - slideIdx;
+
+        // Visible only on slide 0; fade out across the second half of slide 0
+        // so by the time the main-entry scene starts the logo is gone.
+        let logoOp = 1;
+        if (slideIdx > 0) logoOp = 0;
+        else if (subP > 0.55) logoOp = Math.max(0, 1 - (subP - 0.55) / 0.45);
+
+        // Anchor the logo a fixed distance ahead of the camera so it doesn't
+        // pass through us — feels like the logo is suspended in space and
+        // the camera is contemplating it from the same distance.
+        if (logoGroup.userData.ready) {
+          logoGroup.position.set(
+            camera.position.x,
+            camera.position.y + Math.sin(t * 0.6) * 6,
+            camera.position.z + LOGO_OFFSET_Z
+          );
+          logoGroup.rotation.y = Math.sin(t * 0.4) * 0.06;
+          logoGroup.rotation.x = Math.sin(t * 0.3) * 0.03;
+        }
+        for (const m of logoMaterials) {
+          m.opacity = m.userData.baseOpacity * logoOp;
+        }
         requestAnimationFrame(loop);
       }
       requestAnimationFrame(loop);
-    }
+    })();
 
     if (typeof THREE.FontLoader === 'function') {
       new THREE.FontLoader().load(
@@ -1549,24 +1578,6 @@
     document.querySelectorAll('.slide').forEach((slide) => {
       const elements = Array.from(slide.querySelectorAll('.float-el'));
       if (!elements.length) return;
-
-      // Overview slide is only 100vh — there's no scroll range to drive an
-      // emerge/dissolve scrub. Use a one-shot fade-in on load instead so the
-      // hero text is visible without scrolling.
-      if (slide.dataset.path === 'overview') {
-        elements.forEach((el, i) => {
-          gsap.fromTo(el,
-            { opacity: 0, y: 24, scale: 0.96 },
-            {
-              opacity: 1, y: 0, scale: 1,
-              duration: 1.1,
-              delay: 0.25 + i * 0.12,
-              ease: 'power3.out'
-            }
-          );
-        });
-        return;
-      }
 
       const tl = gsap.timeline({
         defaults: { ease: 'power2.out' },

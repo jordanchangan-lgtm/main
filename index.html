@@ -616,7 +616,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build all-centered v46</div>
+  <div class="build-stamp">build sparser-stars v47</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -632,7 +632,7 @@
     const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 6000);
     camera.position.set(0, 0, 0);
 
-    const STAR_COUNT = 500;
+    const STAR_COUNT = 150;
     const SPACE_DEPTH = 3500;     // shorter slab — stars get recycled in tick()
     const SPACE_RADIUS = 900;     // tighter cylinder so stars fly past closer
 

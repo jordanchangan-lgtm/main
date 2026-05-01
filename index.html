@@ -569,7 +569,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build big-and-paged v33</div>
+  <div class="build-stamp">build pass-through v34</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1805,8 +1805,14 @@
     // a font that we load from a CDN. The logo follows the camera during the
     // intro (slide 0 — logo scene) so it stays visible while you scroll, and
     // fades out as you approach the main-entry scene.
-    const LOGO_OFFSET_Z = -260;      // distance ahead of the camera while visible
+    // Logo lives at a FIXED world position ahead of the camera's start
+    // (not following the camera). As you scroll forward into the void
+    // the camera approaches and physically passes through the logo —
+    // the user is "flying past" the gem text. Once camera.z < LOGO_Z the
+    // logo is behind the camera and naturally invisible.
+    const LOGO_Z = -520;            // logo's fixed world Z
     const logoGroup = new THREE.Group();
+    logoGroup.position.set(0, 0, LOGO_Z);
     scene.add(logoGroup);
     const logoMaterials = [];        // collected so we can fade opacity uniformly
 
@@ -1866,34 +1872,16 @@
       function loop() {
         const t = (performance.now() - startT) * 0.001;
 
-        // Slide-relative scroll progress to know whether we're on the logo
-        // scene (slide 0) or the main-entry scene (slide 1).
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const sp  = max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
-        const slideF = sp * Math.max(1, SLIDE_COUNT_3D - 1);
-        const slideIdx = Math.floor(slideF);
-        const subP = slideF - slideIdx;
-
-        // Visible only on slide 0; fade out across the second half of slide 0
-        // so by the time the main-entry scene starts the logo is gone.
-        let logoOp = 1;
-        if (slideIdx > 0) logoOp = 0;
-        else if (subP > 0.55) logoOp = Math.max(0, 1 - (subP - 0.55) / 0.45);
-
-        // Anchor the logo a fixed distance ahead of the camera so it doesn't
-        // pass through us — feels like the logo is suspended in space and
-        // the camera is contemplating it from the same distance.
         if (logoGroup.userData.ready) {
-          logoGroup.position.set(
-            camera.position.x,
-            camera.position.y + Math.sin(t * 0.6) * 6,
-            camera.position.z + LOGO_OFFSET_Z
-          );
+          // Stays at LOGO_Z in world space. Only the in-place bob + slow
+          // rotation animate. Camera position is independent.
+          logoGroup.position.x = 0;
+          logoGroup.position.y = Math.sin(t * 0.6) * 6;
+          logoGroup.position.z = LOGO_Z;
           logoGroup.rotation.y = Math.sin(t * 0.4) * 0.06;
           logoGroup.rotation.x = Math.sin(t * 0.3) * 0.03;
-          // Scale logo down on small / portrait screens so it doesn't get
-          // cropped by the narrow horizontal viewport. Dynamic so a phone
-          // rotated to landscape grows it back.
+          // Shrink for narrow viewports so the logo fits on phone screens.
+          // Recomputed every frame so rotating the phone resizes smoothly.
           const w = window.innerWidth;
           const portraitScale =
             w < 420 ? 0.45 :
@@ -1902,8 +1890,17 @@
             w < 1000 ? 0.85 : 1.0;
           logoGroup.scale.setScalar(portraitScale);
         }
+
+        // Distance-based fade. Camera ahead of logo (z > LOGO_Z) → visible.
+        // Once camera passes through (z <= LOGO_Z) → start fading out so
+        // we don't see the back of the gem text suddenly clip in.
+        const dz = camera.position.z - LOGO_Z;     // negative when behind
+        const fade =
+          dz >  -50 ? 1 :              // approaching / at logo
+          dz > -250 ? Math.max(0, 1 - (-dz - 50) / 200) :   // just passed
+                      0;
         for (const m of logoMaterials) {
-          m.opacity = m.userData.baseOpacity * logoOp;
+          m.opacity = m.userData.baseOpacity * fade;
         }
         requestAnimationFrame(loop);
       }
@@ -2004,23 +2001,35 @@
       const elements = Array.from(slide.querySelectorAll('.float-el'));
       if (!elements.length) return;
 
-      // Mobile: skip the scroll-scrubbed emerge/dissolve timeline. With the
-      // sticky pin off and slides at natural height, the timeline range is
-      // tiny and elements were flashing in/out as you scrolled. Just set
-      // them visible — they appear naturally as the section scrolls into
-      // view, and stay visible while readable.
+      // Mobile: emerge / dissolve like desktop but driven by toggleActions
+      // (not scrub) so animation timing is independent of scroll velocity.
+      // Each scene fades in when its slide enters the viewport, fades out
+      // when it exits — the camera flying through space behind it (driven
+      // by scrollProgress) is unchanged, so the "passing through" feel is
+      // preserved.
       if (window.innerWidth <= 760) {
-        elements.forEach((el) => {
-          gsap.set(el, { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' });
-        });
-        // A tiny one-shot fade so it doesn't pop in
-        gsap.fromTo(elements,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1, y: 0, duration: 0.7, stagger: 0.05, ease: 'power2.out',
-            scrollTrigger: { trigger: slide, start: 'top 85%', toggleActions: 'play none none reverse' }
+        elements.forEach((el) => { gsap.set(el, { opacity: 0, y: 30, scale: 0.94 }); });
+
+        // Fade IN as the slide top enters the viewport
+        gsap.to(elements, {
+          opacity: 1, y: 0, scale: 1,
+          duration: 0.85, stagger: 0.05, ease: 'power2.out',
+          scrollTrigger: {
+            trigger: slide,
+            start: 'top 75%',
+            toggleActions: 'play none none reverse'
           }
-        );
+        });
+        // Fade OUT as the slide bottom approaches the viewport top
+        gsap.to(elements, {
+          opacity: 0, y: -30, scale: 1.05,
+          duration: 0.7, stagger: 0.04, ease: 'power2.in',
+          scrollTrigger: {
+            trigger: slide,
+            start: 'bottom 25%',
+            toggleActions: 'play none none reverse'
+          }
+        });
         return;
       }
 

@@ -609,7 +609,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build xl-banner v38</div>
+  <div class="build-stamp">build longer-hold v39</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -2041,35 +2041,37 @@
       const elements = Array.from(slide.querySelectorAll('.float-el'));
       if (!elements.length) return;
 
-      // Mobile: scrub timeline keyed off the SLIDE'S CENTRE.
-      //   0–30%   EMERGE (slide entering, content fades in to centre)
-      //  30–70%   HOLD   (slide is near centred — content is sharp / readable)
-      //  70–100%  DISSOLVE (slide leaving — content fades back into the void)
-      // Scrolling back up reverses the same animation, so the text and
-      // image keep reappearing whenever the user pulls back to centre.
+      // Mobile: scrub timeline keyed off the slide. Trigger range stretched
+      // and hold extended so content stays visible most of the scroll.
+      //    0 – 15 %   EMERGE   text + image fade in
+      //   15 – 85 %   HOLD     long read window (most of the scroll)
+      //   85 – 100 %  DISSOLVE fade back into the void
+      // Scrolling back up reverses the timeline, so re-entering the centre
+      // brings the same animation back.
       if (window.innerWidth <= 760) {
         const mtl = gsap.timeline({
           defaults: { ease: 'power2.out' },
           scrollTrigger: {
             trigger: slide,
-            start: 'top 90%',     // begin once the slide has just entered from below
-            end:   'top -10%',    // finish once the slide top is past the viewport
+            start: 'top 95%',      // begin emerging right as the slide enters
+            end:   'bottom 5%',    // don't dissolve until the slide is almost gone
             scrub: 1
           }
         });
-        // Emerge — 0 to 30%
+        // Emerge — 0 → 0.15
         mtl.fromTo(elements,
           { opacity: 0, y: 40, scale: 0.92, filter: 'blur(8px)' },
           { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)',
-            duration: 0.30, stagger: 0.02 },
+            duration: 0.15, stagger: 0.015 },
           0
         );
-        // Hold from 0.30 to 0.70 — no tween needed, gap is the read window.
-        // Dissolve — 0.70 to 1.0
+        // Hold from 0.15 → 0.85 — ~70% of the scroll window keeps content
+        // sharp and centred. Long read time.
+        // Dissolve — 0.85 → 1.0
         mtl.to(elements,
           { opacity: 0, y: -40, scale: 1.06, filter: 'blur(8px)',
-            duration: 0.30, stagger: 0.02, ease: 'power2.in' },
-          0.7
+            duration: 0.15, stagger: 0.015, ease: 'power2.in' },
+          0.85
         );
         return;
       }

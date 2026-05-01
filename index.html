@@ -610,7 +610,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build earth-deepal v42</div>
+  <div class="build-stamp">build ink-glitch v43</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -743,14 +743,91 @@
       `
     });
     const stars = new THREE.Points(starGeo, starMat);
-    // CRITICAL: positions are computed in the shader from uCamPos, NOT from
-    // the geometry's position attribute (which is a zero-filled dummy). The
-    // dummy makes Three.js compute a 0-radius bounding sphere at origin and
-    // frustum-cull the entire Points object as soon as the camera moves
-    // away from (0, 0, 0). Disabling frustum culling forces a draw every
-    // frame so the GPU shell actually renders.
     stars.frustumCulled = false;
     scene.add(stars);
+
+    // ===== Cloudy-ink fullscreen backdrop =====
+    // Adds a flowing FBM-noise plane behind the stars. Together they read
+    // as ink swirls in deep navy water rather than empty space. The plane
+    // is a separate scene rendered first so it sits behind everything.
+    const inkScene  = new THREE.Scene();
+    const inkCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const inkMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime:       { value: 0 },
+        uVelocity:   { value: 0 },
+        uAspect:     { value: window.innerWidth / window.innerHeight }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        precision highp float;
+        varying vec2 vUv;
+        uniform float uTime;
+        uniform float uVelocity;
+        uniform float uAspect;
+
+        // Hash + value-noise + fbm — small classic implementation.
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453123);
+        }
+        float vnoise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          float a = hash(i);
+          float b = hash(i + vec2(1.0, 0.0));
+          float c = hash(i + vec2(0.0, 1.0));
+          float d = hash(i + vec2(1.0, 1.0));
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+        }
+        float fbm(vec2 p) {
+          float v = 0.0;
+          float a = 0.5;
+          for (int i = 0; i < 5; i++) {
+            v += a * vnoise(p);
+            p *= 2.04;
+            a *= 0.5;
+          }
+          return v;
+        }
+
+        void main() {
+          // Aspect-correct UV so the swirl isn't stretched on wide screens
+          vec2 uv = vUv * 2.0 - 1.0;
+          uv.x *= uAspect;
+
+          float t = uTime * 0.04;
+          // Two-layer flow: a slow base + a faster swirl that responds to
+          // scroll velocity (uVelocity). When scrolling fast the ink whirls
+          // harder.
+          vec2 q = vec2(fbm(uv * 1.4 + vec2(t, -t * 0.7)),
+                         fbm(uv * 1.4 + vec2(-t * 0.6, t * 0.9)));
+          vec2 r = vec2(fbm(uv * 2.6 + q + vec2(t * 1.5, t * 0.8) * (1.0 + abs(uVelocity) * 0.5)),
+                         fbm(uv * 2.6 + q + vec2(-t * 1.1, t * 1.4) * (1.0 + abs(uVelocity) * 0.5)));
+          float n = fbm(uv * 1.1 + r * 0.9);
+
+          // Ink palette — deep navy → violet ink → near-black
+          vec3 cBase = vec3(0.020, 0.030, 0.085);   // void
+          vec3 cMid  = vec3(0.090, 0.120, 0.260);   // navy ink
+          vec3 cHi   = vec3(0.230, 0.190, 0.380);   // violet bloom
+          vec3 col = mix(cBase, cMid, smoothstep(0.30, 0.65, n));
+          col = mix(col, cHi, smoothstep(0.65, 0.85, n) * 0.6);
+          // A brief lightening near the rim of swirls so it reads "wet"
+          col += vec3(0.05, 0.07, 0.12) * pow(n, 4.0);
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `,
+      depthWrite: false,
+      depthTest: false
+    });
+    const inkPlane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), inkMat);
+    inkScene.add(inkPlane);
 
     // Static-position additive shader for any Points cloud whose particles
     // are anchored in world space (the Mallouk logo, etc.) — does NOT use
@@ -935,6 +1012,15 @@
       starMat.uniforms.uTravel.value = starTravel;
 
       scrollVel *= 0.92;
+      // Update ink uniforms then render in two passes — ink first so it
+      // sits behind everything, then the main scene with autoClear off so
+      // it overlays without wiping the ink backdrop.
+      inkMat.uniforms.uTime.value     = time;
+      inkMat.uniforms.uVelocity.value = scrollVel;
+      inkMat.uniforms.uAspect.value   = window.innerWidth / window.innerHeight;
+      renderer.autoClear = true;
+      renderer.render(inkScene, inkCamera);
+      renderer.autoClear = false;
       renderer.render(scene, camera);
       requestAnimationFrame(tick);
     }
@@ -1635,60 +1721,75 @@
       const texLoader = new THREE.TextureLoader();
       texLoader.crossOrigin = 'anonymous';
 
-      // Earth daymap from three.js examples (CC-by NASA Visible Earth).
-      // We pre-fill with a Phong material in case the texture network-fails;
-      // when it loads we set .map and the surface upgrades to a real planet.
+      // Higher-fidelity Earth: daymap + normal map (terrain shading) +
+      // specular map (oceans reflect, land doesn't), all CC-by NASA
+      // Visible Earth derivatives bundled with three.js examples.
       const earthMat = new THREE.MeshPhongMaterial({
-        color: 0x335577,
-        specular: 0x88aaff,
+        color: 0xffffff,
+        specular: 0x335577,
         shininess: 18
       });
       const earth = new THREE.Mesh(
-        new THREE.SphereGeometry(0.95, 64, 48),
+        new THREE.SphereGeometry(0.95, 96, 64),       // higher tessellation
         earthMat
       );
       grp.add(earth);
-      texLoader.load(
-        'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg',
-        (tex) => { earthMat.map = tex; earthMat.color.setHex(0xffffff); earthMat.needsUpdate = true; },
-        undefined,
-        () => { /* keep the plain sphere if the texture fails */ }
-      );
+      const TEX = 'https://threejs.org/examples/textures/planets/';
+      texLoader.load(TEX + 'earth_atmos_2048.jpg', (t) => {
+        earthMat.map = t; earthMat.color.setHex(0xffffff); earthMat.needsUpdate = true;
+      });
+      texLoader.load(TEX + 'earth_normal_2048.jpg', (t) => {
+        earthMat.normalMap = t; earthMat.normalScale = new THREE.Vector2(0.85, 0.85);
+        earthMat.needsUpdate = true;
+      });
+      texLoader.load(TEX + 'earth_specular_2048.jpg', (t) => {
+        earthMat.specularMap = t; earthMat.specular.setHex(0xffffff);
+        earthMat.shininess = 32; earthMat.needsUpdate = true;
+      });
 
-      // Cloud shell — a slightly larger transparent sphere with the clouds
-      // texture, rotating slightly faster than the earth for parallax life.
+      // Cloud shell — slightly larger sphere with the clouds alpha map.
       const cloudMat = new THREE.MeshPhongMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.0,                // hidden until the texture arrives
-        depthWrite: false
+        color: 0xffffff, transparent: true, opacity: 0.0, depthWrite: false
       });
       const clouds = new THREE.Mesh(
-        new THREE.SphereGeometry(0.97, 48, 32),
+        new THREE.SphereGeometry(0.97, 64, 40),
         cloudMat
       );
       grp.add(clouds);
-      texLoader.load(
-        'https://threejs.org/examples/textures/planets/earth_clouds_1024.png',
-        (tex) => { cloudMat.alphaMap = tex; cloudMat.transparent = true;
-                   cloudMat.opacity = 0.85; cloudMat.needsUpdate = true; },
-        undefined,
-        () => { /* clouds optional */ }
-      );
+      texLoader.load(TEX + 'earth_clouds_1024.png', (t) => {
+        cloudMat.alphaMap = t; cloudMat.opacity = 0.85;
+        cloudMat.transparent = true; cloudMat.needsUpdate = true;
+      });
 
-      // Atmospheric halo
-      const halo = new THREE.Mesh(
-        new THREE.SphereGeometry(1.12, 32, 24),
-        new THREE.MeshBasicMaterial({
-          color: 0x88c8ff,
-          transparent: true,
-          opacity: 0.20,
-          side: THREE.BackSide
-        })
-      );
-      grp.add(halo);
+      // Atmosphere — a Fresnel-style outer halo that's brighter at the rim.
+      const atmoMat = new THREE.ShaderMaterial({
+        transparent: true,
+        side: THREE.BackSide,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        uniforms: {
+          uColor: { value: new THREE.Color(0x6cc8ff) }
+        },
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          uniform vec3 uColor;
+          void main() {
+            float r = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
+            float fres = pow(r, 2.5) * 0.85;
+            gl_FragColor = vec4(uColor, fres);
+          }
+        `
+      });
+      const atmo = new THREE.Mesh(new THREE.SphereGeometry(1.10, 48, 32), atmoMat);
+      grp.add(atmo);
 
-      // Spinning references for the crystal tick to rotate.
       grp.userData.spinChild  = earth;
       grp.userData.spinChild2 = clouds;
       grp.userData.cloudFaster = true;
@@ -2055,6 +2156,63 @@
     scene.add(logoGroup);
     const logoMaterials = [];        // collected so we can fade opacity uniformly
 
+    // Glitch shader applied to the 3D logo: clean white text + subtle RGB
+    // chromatic split + occasional sliced jitter on the X axis. Custom
+    // ShaderMaterial so each text mesh renders with the same uniforms.
+    const logoGlitchUniforms = {
+      uTime:    { value: 0 },
+      uGlitch:  { value: 0.6 },   // amplitude of the slicing
+      uOpacity: { value: 1.0 }    // synced with the camera-pass fade
+    };
+    function makeGlitchTextMaterial() {
+      return new THREE.ShaderMaterial({
+        uniforms: logoGlitchUniforms,
+        transparent: true,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        vertexShader: `
+          uniform float uTime;
+          uniform float uGlitch;
+          varying vec2 vUv;
+          varying vec3 vWorld;
+          // Hash-based stable random per-strip so we can offset HORIZONTAL
+          // slices of the text rather than a random twitch per vertex.
+          float hash(float x) { return fract(sin(x) * 43758.5453); }
+          void main() {
+            vUv = uv;
+            vec3 p = position;
+            // Trigger the glitch on a tight cycle, otherwise let the text rest.
+            float pulse = step(0.96, fract(uTime * 0.7));
+            float strip = floor(p.y * 0.18);
+            float r = hash(strip + floor(uTime * 12.0));
+            // Offset some strips on the X axis when the pulse is on
+            p.x += pulse * (r - 0.5) * 18.0 * uGlitch;
+            vWorld = p;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          uniform float uGlitch;
+          uniform float uOpacity;
+          varying vec2 vUv;
+          varying vec3 vWorld;
+          // Subtle RGB split — the text is white but channels are nudged
+          // a few pixels apart, giving the chromatic-aberration glitch feel.
+          void main() {
+            // Soft scanline shimmer
+            float sl = 0.92 + 0.08 * sin(vWorld.y * 1.4 + uTime * 6.0);
+            // Random burst — once a beat the white shifts to magenta-cyan
+            float burst = step(0.985, fract(uTime * 1.2));
+            vec3 col = vec3(sl);
+            col = mix(col, vec3(1.0, 0.55, 0.85), burst * 0.6);
+            col = mix(col, vec3(0.55, 0.95, 1.0), step(0.978, fract(uTime * 0.83)) * 0.5);
+            gl_FragColor = vec4(col, uOpacity);
+          }
+        `
+      });
+    }
+
     function buildCrystalText(font) {
       const lines = ['MALLOUK', 'GROUP'];
       const lineH = 70;
@@ -2062,11 +2220,11 @@
         const tg = new THREE.TextGeometry(line, {
           font: font,
           size: 56,
-          height: 18,
+          height: 14,
           curveSegments: 4,
           bevelEnabled: true,
-          bevelThickness: 4,
-          bevelSize: 1.8,
+          bevelThickness: 2,
+          bevelSize: 1.0,
           bevelSegments: 1
         });
         tg.computeBoundingBox();
@@ -2075,28 +2233,22 @@
         tg.translate(-tg.boundingBox.min.x - w / 2, -tg.boundingBox.min.y - h / 2, 0);
 
         const lineGroup = new THREE.Group();
-        const bodyMat = new THREE.MeshBasicMaterial({
-          color: 0xb0a0ff,
-          transparent: true,
-          opacity: 0.4,
-          side: THREE.DoubleSide,
-          depthWrite: false
-        });
-        bodyMat.userData.baseOpacity = 0.4;
+        // White glitchy body
+        const bodyMat = makeGlitchTextMaterial();
+        bodyMat.userData.baseOpacity = 1.0;
         logoMaterials.push(bodyMat);
         lineGroup.add(new THREE.Mesh(tg, bodyMat));
 
+        // Subtle white edge outline so the silhouette stays crisp even when
+        // the glitch RGB-splits the body
         const eg = new THREE.EdgesGeometry(tg, 25);
         const edgeMat = new THREE.LineBasicMaterial({
-          color: 0xe2d6ff,
-          transparent: true,
-          opacity: 0.95
+          color: 0xffffff, transparent: true, opacity: 0.55
         });
-        edgeMat.userData.baseOpacity = 0.95;
+        edgeMat.userData.baseOpacity = 0.55;
         logoMaterials.push(edgeMat);
         lineGroup.add(new THREE.LineSegments(eg, edgeMat));
 
-        // Stack lines vertically: top line above origin, bottom below
         lineGroup.position.y = (lines.length - 1) * lineH * 0.5 - idx * lineH;
         logoGroup.add(lineGroup);
       });
@@ -2141,6 +2293,9 @@
         for (const m of logoMaterials) {
           m.opacity = m.userData.baseOpacity * fade;
         }
+        // Drive the glitch shader's uniforms (shared across all logo lines)
+        logoGlitchUniforms.uTime.value    = t;
+        logoGlitchUniforms.uOpacity.value = fade;
         requestAnimationFrame(loop);
       }
       requestAnimationFrame(loop);

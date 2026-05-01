@@ -126,21 +126,28 @@
       justify-content: center !important;
     }
 
-    /* Big-image layout — for slides whose PNGs were too small at the
-       default scale. The wrapper claims the maximum room available
-       (96vw / 90vh) so the picture reads at roughly 3× its previous
-       footprint, while still flex-grown to fill the void below the text. */
-    .stage-big-image .scene-gallery {
-      flex: 1 1 auto;
-      min-height: 0;
+    /* Image-size tiers — pick one per slide via slides-data imageScale.
+       Each tier sets the wrapper's max width + min height so the picture
+       claims more screen real estate. object-fit: contain on the inner
+       <img> keeps aspect intact so nothing crops. */
+    .stage-img-md .scene-gallery .float-img {
+      max-width: 80vw;
+      width: 80vw;
+      min-height: 50vh;
     }
-    .stage-big-image .scene-gallery .float-img {
+    .stage-img-lg .scene-gallery .float-img {
       max-width: 96vw;
       width: 96vw;
-      height: 100%;
-      min-height: 60vh;
+      min-height: 65vh;
     }
-    .stage-big-image .scene-gallery .float-img img {
+    .stage-img-xl .scene-gallery .float-img {
+      max-width: 100vw;
+      width: 100vw;
+      min-height: 80vh;
+    }
+    .stage-img-md .scene-gallery .float-img img,
+    .stage-img-lg .scene-gallery .float-img img,
+    .stage-img-xl .scene-gallery .float-img img {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -498,14 +505,27 @@
         height: auto !important;
         max-height: 55vh !important;
       }
-      /* Big-image flag on mobile: claim more of the viewport (95vw / 75vh)
-         so the picture reads at roughly 3× its standard footprint. */
-      .stage-big-image .scene-gallery .float-img {
+      /* Tiered images on mobile: each level claims a bit more room. */
+      .stage-img-md .scene-gallery .float-img {
         width: 95vw !important;
         max-width: 95vw !important;
       }
-      .stage-big-image .scene-gallery .float-img img {
+      .stage-img-md .scene-gallery .float-img img {
+        max-height: 60vh !important;
+      }
+      .stage-img-lg .scene-gallery .float-img {
+        width: 100vw !important;
+        max-width: 100vw !important;
+      }
+      .stage-img-lg .scene-gallery .float-img img {
         max-height: 75vh !important;
+      }
+      .stage-img-xl .scene-gallery .float-img {
+        width: 100vw !important;
+        max-width: 100vw !important;
+      }
+      .stage-img-xl .scene-gallery .float-img img {
+        max-height: 88vh !important;
       }
       .float-img .float-bob {
         height: auto !important;
@@ -569,7 +589,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build trimmed v35</div>
+  <div class="build-stamp">build tiered-sizes v36</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1056,7 +1076,7 @@
       stage.className = 'slide-stage stage-centred' +
         (slide.layout === 'overlay' ? ' stage-overlay' : '') +
         (slide.centerText ? ' stage-centered-text' : '') +
-        (slide.bigImage  ? ' stage-big-image'   : '');
+        (slide.imageScale ? ' stage-img-' + slide.imageScale : '');
 
       // Helper — text inside a `.float-bob` span so it bobs gently in place
       // even after the GSAP emerge timeline has finished. GSAP transforms the

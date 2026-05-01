@@ -46,7 +46,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-3.png"
     ],
-    "bigImage": true
+    "imageScale": "xl"
   },
   {
     "path": "path-1",
@@ -67,7 +67,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-5.png"
     ],
-    "bigImage": true
+    "imageScale": "lg"
   },
   {
     "path": "path-1",
@@ -78,7 +78,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-6.png"
     ],
-    "bigImage": true
+    "imageScale": "lg"
   },
   {
     "path": "path-1",
@@ -89,7 +89,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-7.png"
     ],
-    "bigImage": true
+    "imageScale": "xl"
   },
   {
     "path": "path-1",
@@ -100,7 +100,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-8.png"
     ],
-    "bigImage": true
+    "imageScale": "lg"
   },
   {
     "path": "path-2",
@@ -111,7 +111,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-1.png"
     ],
-    "bigImage": true
+    "imageScale": "md"
   },
   {
     "path": "path-2",
@@ -122,7 +122,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-2.png"
     ],
-    "bigImage": true
+    "imageScale": "md"
   },
   {
     "path": "path-2",
@@ -132,8 +132,7 @@ window.SLIDES = [
     "body": "IN ARCHITECTS operates across Syria, Iraq, Jordan and Lebanon. Over 15 years of experience. Developed and managed more than 300,000 sqm of commercial property and 90,000 sqm of residential property.",
     "images": [
       "assets/images/png2-3.png"
-    ],
-    "bigImage": true
+    ]
   },
   {
     "path": "path-2",
@@ -144,7 +143,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-4.png"
     ],
-    "bigImage": true
+    "imageScale": "md"
   },
   {
     "path": "path-2",
@@ -166,7 +165,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-6.png"
     ],
-    "bigImage": true
+    "imageScale": "lg"
   },
   {
     "path": "path-2",
@@ -176,7 +175,8 @@ window.SLIDES = [
     "body": "Solar Power Storage project in Homs with a capacity of 100 MW — a major investment in sustainable energy and environmental responsibility.",
     "images": [
       "assets/images/png2-7.png"
-    ]
+    ],
+    "imageScale": "lg"
   },
   {
     "path": "path-3",
@@ -187,7 +187,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-1.png"
     ],
-    "bigImage": true
+    "imageScale": "lg"
   },
   {
     "path": "path-3",
@@ -198,7 +198,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-2.png"
     ],
-    "bigImage": true
+    "imageScale": "md"
   },
   {
     "path": "path-3",
@@ -209,7 +209,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-3.png"
     ],
-    "bigImage": true
+    "imageScale": "md"
   },
   {
     "path": "path-3",
@@ -227,7 +227,8 @@ window.SLIDES = [
     "title": "Future Investments",
     "subtitle": "Path 3 · Global Strategy & Future",
     "body": "Focus on Syria reconstruction and economic development. Spectrum Trading Company established to support reconstruction efforts. Strategic partnerships with government and international organizations.",
-    "images": []
+    "images": [],
+    "centerText": true
   },
   {
     "path": "path-3",
@@ -238,7 +239,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-6.png"
     ],
-    "bigImage": true
+    "imageScale": "lg"
   },
   {
     "path": "path-3",
@@ -249,7 +250,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-7.png"
     ],
-    "bigImage": true
+    "imageScale": "lg"
   },
   {
     "path": "path-3",
@@ -260,6 +261,6 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-8.png"
     ],
-    "layout": "overlay"
+    "imageScale": "lg"
   }
 ];

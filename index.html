@@ -589,7 +589,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build tiered-sizes v36</div>
+  <div class="build-stamp">build mobile-emerge v37</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -2021,35 +2021,36 @@
       const elements = Array.from(slide.querySelectorAll('.float-el'));
       if (!elements.length) return;
 
-      // Mobile: emerge / dissolve like desktop but driven by toggleActions
-      // (not scrub) so animation timing is independent of scroll velocity.
-      // Each scene fades in when its slide enters the viewport, fades out
-      // when it exits — the camera flying through space behind it (driven
-      // by scrollProgress) is unchanged, so the "passing through" feel is
-      // preserved.
+      // Mobile: scrub timeline keyed off the SLIDE'S CENTRE.
+      //   0–30%   EMERGE (slide entering, content fades in to centre)
+      //  30–70%   HOLD   (slide is near centred — content is sharp / readable)
+      //  70–100%  DISSOLVE (slide leaving — content fades back into the void)
+      // Scrolling back up reverses the same animation, so the text and
+      // image keep reappearing whenever the user pulls back to centre.
       if (window.innerWidth <= 760) {
-        elements.forEach((el) => { gsap.set(el, { opacity: 0, y: 30, scale: 0.94 }); });
-
-        // Fade IN as the slide top enters the viewport
-        gsap.to(elements, {
-          opacity: 1, y: 0, scale: 1,
-          duration: 0.85, stagger: 0.05, ease: 'power2.out',
+        const mtl = gsap.timeline({
+          defaults: { ease: 'power2.out' },
           scrollTrigger: {
             trigger: slide,
-            start: 'top 75%',
-            toggleActions: 'play none none reverse'
+            start: 'top 90%',     // begin once the slide has just entered from below
+            end:   'top -10%',    // finish once the slide top is past the viewport
+            scrub: 1
           }
         });
-        // Fade OUT as the slide bottom approaches the viewport top
-        gsap.to(elements, {
-          opacity: 0, y: -30, scale: 1.05,
-          duration: 0.7, stagger: 0.04, ease: 'power2.in',
-          scrollTrigger: {
-            trigger: slide,
-            start: 'bottom 25%',
-            toggleActions: 'play none none reverse'
-          }
-        });
+        // Emerge — 0 to 30%
+        mtl.fromTo(elements,
+          { opacity: 0, y: 40, scale: 0.92, filter: 'blur(8px)' },
+          { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)',
+            duration: 0.30, stagger: 0.02 },
+          0
+        );
+        // Hold from 0.30 to 0.70 — no tween needed, gap is the read window.
+        // Dissolve — 0.70 to 1.0
+        mtl.to(elements,
+          { opacity: 0, y: -40, scale: 1.06, filter: 'blur(8px)',
+            duration: 0.30, stagger: 0.02, ease: 'power2.in' },
+          0.7
+        );
         return;
       }
 

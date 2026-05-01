@@ -233,5 +233,16 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-7.png"
     ]
+  },
+  {
+    "path": "path-3",
+    "id": "4.8",
+    "title": "MALLOUK'S FAMILY",
+    "subtitle": "",
+    "body": "",
+    "images": [
+      "assets/images/png3-8.png"
+    ],
+    "layout": "overlay"
   }
 ];

@@ -117,6 +117,31 @@
       gap: 18px;
       padding: 0 4vw;
     }
+    /* Overlay layout — used by the path-3 outro ("MALLOUK'S FAMILY").
+       The title is positioned absolutely on top of the image, with the
+       image filling the stage. Both children still bob via .float-bob. */
+    .stage-overlay {
+      position: relative;
+      gap: 0;
+    }
+    .stage-overlay .scene-gallery {
+      margin-top: 0;
+    }
+    .stage-overlay .float-title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 4;
+      max-width: 90vw;
+      pointer-events: none;
+      letter-spacing: 4px;
+      font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+      text-shadow:
+        0 0 30px rgba(0,0,0,0.95),
+        0 0 60px rgba(0,0,0,0.85),
+        0 0 90px var(--accent1, #6C63FF);
+    }
 
     .float-el {
       position: relative;
@@ -433,7 +458,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build images-centered v27</div>
+  <div class="build-stamp">build family-outro v28</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -917,7 +942,8 @@
       sec.dataset.id   = slide.id || String(i + 1);
 
       const stage = document.createElement('div');
-      stage.className = 'slide-stage stage-centred';
+      stage.className = 'slide-stage stage-centred' +
+        (slide.layout === 'overlay' ? ' stage-overlay' : '');
 
       // Helper — text inside a `.float-bob` span so it bobs gently in place
       // even after the GSAP emerge timeline has finished. GSAP transforms the

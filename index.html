@@ -420,7 +420,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build glb-defensive v22</div>
+  <div class="build-stamp">build always-render v23</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1287,40 +1287,54 @@
       const grp = new THREE.Group();
       sc.add(grp);
 
-      // Map our 3 path keys to the 2 cluster GLBs (one is reused with a
-      // different rotation/scale so all three crystals look distinct).
+      // 1. Build the procedural cluster IMMEDIATELY so the canvas is never
+      //    empty. The GLB load will swap it out in (2) only if successful.
+      function buildProceduralInto(target) {
+        const recipe = CLUSTER_VARIANTS[variant];
+        const fbMat = new THREE.MeshBasicMaterial({
+          color: 0x9a8edc, transparent: true, opacity: 0.62,
+          side: THREE.DoubleSide, depthWrite: false
+        });
+        const fbEdge = new THREE.LineBasicMaterial({ color: 0xe6dbff, transparent: true, opacity: 0.95 });
+        recipe.forEach((sh) => {
+          const sg = makeShardGeometry(sh.sides, sh.len, sh.r);
+          const body = new THREE.Mesh(sg, fbMat);
+          body.position.set(sh.x, sh.y, sh.z);
+          body.rotation.set(sh.rx || 0, sh.ry || 0, sh.rz || 0);
+          target.add(body);
+          const eg = new THREE.EdgesGeometry(sg);
+          const lines = new THREE.LineSegments(eg, fbEdge);
+          lines.position.copy(body.position);
+          lines.rotation.copy(body.rotation);
+          target.add(lines);
+        });
+      }
+      buildProceduralInto(grp);
+
+      // 2. Try the GLB. If — and only if — it loads cleanly, swap out the
+      //    procedural shards. Any error keeps the procedural cluster visible.
       const variantToModel = {
-        tower:   { file: 'Crystal_Cluster',           rotY: 0,                   scale: 1.00 },
-        splay:   { file: 'Crystal_ClusterSurrounded', rotY: 0,                   scale: 1.00 },
-        compact: { file: 'Crystal_Cluster',           rotY: Math.PI * 0.5,       scale: 0.85 }
+        tower:   { file: 'Crystal_Cluster',           rotY: 0,             scale: 1.00 },
+        splay:   { file: 'Crystal_ClusterSurrounded', rotY: 0,             scale: 1.00 },
+        compact: { file: 'Crystal_Cluster',           rotY: Math.PI * 0.5, scale: 0.85 }
       };
       const cfg = variantToModel[variant] || variantToModel.tower;
 
-      // Body / edge materials applied to every mesh inside the GLB so the
-      // whole cluster reads as one violet crystal. Edge lines are layered
-      // on top of each mesh for that bright facet pop.
       function paintCrystal(model) {
-        // Recentre at origin and scale to fit the canvas viewport
         const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const centre = box.getCenter(new THREE.Vector3());
+        if (!isFinite(size.x) || size.x === 0) return false;     // bail safely
         model.position.sub(centre);
         const targetSize = 2.4;
         const fitScale = targetSize / Math.max(size.x, size.y, size.z);
         model.scale.setScalar(fitScale * cfg.scale);
         model.rotation.y = cfg.rotY;
-
-        // Override every mesh material with a lit, glossy violet gem material.
-        // Add facet edge lines on top for crisp outline.
         model.traverse((o) => {
           if (o.isMesh && o.geometry) {
             o.material = new THREE.MeshPhongMaterial({
-              color: 0x9a8edc,
-              specular: 0xffffff,
-              shininess: 110,
-              transparent: true,
-              opacity: 0.78,
-              side: THREE.DoubleSide
+              color: 0x9a8edc, specular: 0xffffff, shininess: 110,
+              transparent: true, opacity: 0.78, side: THREE.DoubleSide
             });
             o.material.userData.baseOpacity = 0.78;
             const eg = new THREE.EdgesGeometry(o.geometry, 18);
@@ -1333,33 +1347,21 @@
             o.parent.add(edges);
           }
         });
+        return true;
       }
 
       loadCrystalModel(cfg.file, (model) => {
-        paintCrystal(model);
-        grp.add(model);
-      }, () => {
-        console.warn('Falling back to procedural cluster for', variant);
-        // Procedural fallback if GLB fails — never go fully empty.
-        const recipe = CLUSTER_VARIANTS[variant];
-        const fbMat = new THREE.MeshBasicMaterial({
-          color: 0x9a8edc, transparent: true, opacity: 0.55,
-          side: THREE.DoubleSide, depthWrite: false
-        });
-        const fbEdge = new THREE.LineBasicMaterial({ color: 0xe6dbff, transparent: true, opacity: 0.95 });
-        recipe.forEach((sh) => {
-          const sg = makeShardGeometry(sh.sides, sh.len, sh.r);
-          const body = new THREE.Mesh(sg, fbMat);
-          body.position.set(sh.x, sh.y, sh.z);
-          body.rotation.set(sh.rx || 0, sh.ry || 0, sh.rz || 0);
-          grp.add(body);
-          const eg = new THREE.EdgesGeometry(sg);
-          const lines = new THREE.LineSegments(eg, fbEdge);
-          lines.position.copy(body.position);
-          lines.rotation.copy(body.rotation);
-          grp.add(lines);
-        });
+        try {
+          if (paintCrystal(model)) {
+            // Clear the procedural cluster, install the GLB
+            while (grp.children.length) grp.remove(grp.children[0]);
+            grp.add(model);
+          }
+        } catch (err) {
+          console.warn('paintCrystal threw, keeping procedural', err);
+        }
       });
+      // No onFail handler needed — procedural is already in `grp`.
 
       // Aliases for legacy hover / dive code below.
       const points = grp;
@@ -1749,13 +1751,71 @@
       requestAnimationFrame(loop);
     })();
 
-    if (typeof THREE.FontLoader === 'function') {
+    // Fallback if FontLoader / TextGeometry / the typeface JSON didn't load:
+    // build the Mallouk logo from sampled-pixel particles (the original
+    // approach that doesn't need any external font asset). The 3D crystal
+    // version replaces it once the font loads.
+    function buildLogoFallback() {
+      if (logoGroup.userData.ready) return;
+      const cv = document.createElement('canvas');
+      cv.width = 1600; cv.height = 280;
+      const ctx = cv.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.font = '800 110px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('MALLOUK', cv.width / 2, 90);
+      ctx.fillText('GROUP',   cv.width / 2, 200);
+      const data = ctx.getImageData(0, 0, cv.width, cv.height).data;
+      const pos = [], col = [], siz = [];
+      const step = 3;
+      const palette = [[200,180,255],[160,140,240],[230,220,255]];
+      for (let py = 0; py < cv.height; py += step) {
+        for (let px = 0; px < cv.width; px += step) {
+          const a = data[(py * cv.width + px) * 4 + 3];
+          if (a > 128) {
+            const wx = (px - cv.width / 2)  * 0.55;
+            const wy = -(py - cv.height / 2) * 0.55;
+            pos.push(wx, wy, 0);
+            const c = palette[(Math.random() * palette.length) | 0];
+            col.push(c[0]/255, c[1]/255, c[2]/255);
+            siz.push(1.4 + Math.random() * 1.4);
+          }
+        }
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+      geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(col), 3));
+      geo.setAttribute('aSize',    new THREE.BufferAttribute(new Float32Array(siz), 1));
+      const points = new THREE.Points(geo, staticPointsMat);
+      const fbMat = points.material;
+      fbMat.userData.baseOpacity = 0.9;
+      logoMaterials.push(fbMat);
+      logoGroup.add(points);
+      logoGroup.userData.ready = true;
+    }
+
+    if (typeof THREE.FontLoader === 'function' && typeof THREE.TextGeometry === 'function') {
       new THREE.FontLoader().load(
         'https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json',
         buildCrystalText,
         undefined,
-        (err) => { console.warn('Logo font failed to load', err); }
+        (err) => {
+          console.warn('Logo font failed to load — using particle fallback', err);
+          buildLogoFallback();
+        }
       );
+      // Also kick the fallback if the font hasn't arrived in 4 s — covers the
+      // case where unpkg responds slowly or never.
+      setTimeout(() => {
+        if (!logoGroup.userData.ready) {
+          console.warn('Font load timeout — using particle fallback');
+          buildLogoFallback();
+        }
+      }, 4000);
+    } else {
+      console.warn('FontLoader / TextGeometry not available — using particle fallback');
+      buildLogoFallback();
     }
 
     // ---------- Stage sizing ----------

@@ -191,13 +191,14 @@
       margin: 0 auto;
     }
     .scene-gallery .float-img img {
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
+      /* Fill the gallery's flex-grown box (so the image expands into the
+         empty void under short text), with object-fit: contain to preserve
+         aspect — never clipped, always fully visible, always centred. */
+      width: 100%;
+      height: 100%;
       object-fit: contain;
+      object-position: center;
       display: block;
-      margin: 0 auto;
     }
     /* Clean mode: bypass the particle-edge SVG filter and the noisy radial
        mask so transparent PNGs render with their native alpha intact. */
@@ -460,7 +461,7 @@
       .scene-gallery .float-img img {
         width: 100% !important;
         height: auto !important;
-        max-height: 50vh;
+        max-height: 55vh !important;
       }
       .float-img .float-bob {
         height: auto !important;
@@ -472,13 +473,32 @@
         font-size: 1.9rem !important;
         position: absolute !important;
       }
-      /* Crystal cards smaller on mobile so all 3 fit */
+      .build-stamp { font-size: 9px; }
+    }
+
+    /* Portrait phones (typical iPhone widths): stack the crystals
+       vertically so all 3 fit on screen comfortably. */
+    @media (max-width: 600px) {
+      .crystal-row {
+        flex-direction: column;
+        gap: 18px;
+        align-items: center;
+      }
+      .crystal-card { transform: scale(1); }
+      .crystal-canvas {
+        width: 220px;
+        height: 260px;
+      }
+      .menu-stage .crystal-row {
+        margin-top: 6px;
+      }
+    }
+
+    /* Wider phones / phablets (≤ 760 px but > 600 px): keep the row
+       layout but shrink the cards so all 3 fit horizontally. */
+    @media (max-width: 760px) and (min-width: 601px) {
       .crystal-card { transform: scale(0.85); }
       .crystal-canvas { width: 180px; height: 230px; }
-      /* Reduce GPU load on mobile — the WebGL background is a fixed
-         canvas so it'll still cover the screen, but the user sees less
-         particle density and shorter scroll distances */
-      .build-stamp { font-size: 9px; }
     }
   </style>
 </head>
@@ -505,7 +525,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build fill-void v30</div>
+  <div class="build-stamp">build phone-portrait v31</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------

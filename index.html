@@ -147,20 +147,21 @@
       object-fit: contain;
     }
 
-    /* XL — image is right beneath the text, full-width banner style.
-       Gallery doesn't flex-grow; it's whatever height the image needs. */
+    /* XL — full-width banner, vertically centered in the void below the
+       text (not pinned to the top, not pinned to the bottom). */
     .stage-img-xl .scene-gallery {
-      flex: 0 1 auto;
+      flex: 1 1 auto;
       min-height: 0;
-      margin-top: 8px;
-      align-items: flex-start;
+      margin-top: 24px;
+      align-items: center;
+      justify-content: center;
     }
     .stage-img-xl .scene-gallery .float-img {
       width: 100vw;
       max-width: 100vw;
       height: auto;
       min-height: 0;
-      align-self: flex-start;
+      align-self: center;
     }
     .stage-img-xl .scene-gallery .float-img .float-bob {
       width: 100%;
@@ -169,7 +170,7 @@
     .stage-img-xl .scene-gallery .float-img img {
       width: 100%;
       height: auto;
-      max-height: 75vh;
+      max-height: 60vh;
       object-fit: contain;
     }
 
@@ -609,7 +610,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build longer-hold v39</div>
+  <div class="build-stamp">build xl-balanced v40</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------

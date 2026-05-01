@@ -420,7 +420,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build glb-crystals v21</div>
+  <div class="build-stamp">build glb-defensive v22</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1233,7 +1233,15 @@
     // Loads each crystal-cluster .glb once, caches the parsed scene, and
     // hands out fresh clones to every initCrystal() call. Public-domain
     // (CC0) models from the Polygonal Mind "Crystal Crossroads" pack.
-    const gltfLoader = (typeof THREE.GLTFLoader === 'function') ? new THREE.GLTFLoader() : null;
+    let gltfLoader = null;
+    try {
+      if (typeof THREE.GLTFLoader === 'function') {
+        gltfLoader = new THREE.GLTFLoader();
+      }
+    } catch (err) {
+      console.warn('GLTFLoader failed to construct, falling back to procedural crystals', err);
+      gltfLoader = null;
+    }
     const crystalModelCache = {};
     function loadCrystalModel(name, onReady, onFail) {
       if (crystalModelCache[name]) {

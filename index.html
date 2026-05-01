@@ -420,7 +420,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build always-render v23</div>
+  <div class="build-stamp">build sync-only v24</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1311,57 +1311,8 @@
       }
       buildProceduralInto(grp);
 
-      // 2. Try the GLB. If — and only if — it loads cleanly, swap out the
-      //    procedural shards. Any error keeps the procedural cluster visible.
-      const variantToModel = {
-        tower:   { file: 'Crystal_Cluster',           rotY: 0,             scale: 1.00 },
-        splay:   { file: 'Crystal_ClusterSurrounded', rotY: 0,             scale: 1.00 },
-        compact: { file: 'Crystal_Cluster',           rotY: Math.PI * 0.5, scale: 0.85 }
-      };
-      const cfg = variantToModel[variant] || variantToModel.tower;
-
-      function paintCrystal(model) {
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3());
-        const centre = box.getCenter(new THREE.Vector3());
-        if (!isFinite(size.x) || size.x === 0) return false;     // bail safely
-        model.position.sub(centre);
-        const targetSize = 2.4;
-        const fitScale = targetSize / Math.max(size.x, size.y, size.z);
-        model.scale.setScalar(fitScale * cfg.scale);
-        model.rotation.y = cfg.rotY;
-        model.traverse((o) => {
-          if (o.isMesh && o.geometry) {
-            o.material = new THREE.MeshPhongMaterial({
-              color: 0x9a8edc, specular: 0xffffff, shininess: 110,
-              transparent: true, opacity: 0.78, side: THREE.DoubleSide
-            });
-            o.material.userData.baseOpacity = 0.78;
-            const eg = new THREE.EdgesGeometry(o.geometry, 18);
-            const edges = new THREE.LineSegments(eg, new THREE.LineBasicMaterial({
-              color: 0xe6dbff, transparent: true, opacity: 0.85
-            }));
-            edges.position.copy(o.position);
-            edges.rotation.copy(o.rotation);
-            edges.scale.copy(o.scale);
-            o.parent.add(edges);
-          }
-        });
-        return true;
-      }
-
-      loadCrystalModel(cfg.file, (model) => {
-        try {
-          if (paintCrystal(model)) {
-            // Clear the procedural cluster, install the GLB
-            while (grp.children.length) grp.remove(grp.children[0]);
-            grp.add(model);
-          }
-        } catch (err) {
-          console.warn('paintCrystal threw, keeping procedural', err);
-        }
-      });
-      // No onFail handler needed — procedural is already in `grp`.
+      // GLB loading temporarily disabled — pure procedural cluster only.
+      // Re-enable once we've confirmed the basic rendering works again.
 
       // Aliases for legacy hover / dive code below.
       const points = grp;
@@ -1795,28 +1746,9 @@
       logoGroup.userData.ready = true;
     }
 
-    if (typeof THREE.FontLoader === 'function' && typeof THREE.TextGeometry === 'function') {
-      new THREE.FontLoader().load(
-        'https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json',
-        buildCrystalText,
-        undefined,
-        (err) => {
-          console.warn('Logo font failed to load — using particle fallback', err);
-          buildLogoFallback();
-        }
-      );
-      // Also kick the fallback if the font hasn't arrived in 4 s — covers the
-      // case where unpkg responds slowly or never.
-      setTimeout(() => {
-        if (!logoGroup.userData.ready) {
-          console.warn('Font load timeout — using particle fallback');
-          buildLogoFallback();
-        }
-      }, 4000);
-    } else {
-      console.warn('FontLoader / TextGeometry not available — using particle fallback');
-      buildLogoFallback();
-    }
+    // 3D-text logo path is temporarily disabled. Synchronous particle logo
+    // (no external font asset) so the hero is visible immediately.
+    buildLogoFallback();
 
     // ---------- Stage sizing ----------
     // Simple now: stage fills a viewport-sized box centred in the sticky pin.

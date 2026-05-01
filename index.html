@@ -610,7 +610,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build toycar-ink v44</div>
+  <div class="build-stamp">build defensive v45</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -802,38 +802,24 @@
           vec2 uv = vUv * 2.0 - 1.0;
           uv.x *= uAspect;
 
-          // Strongly amplified by scroll velocity so the ink visibly
-          // whirls and stretches the moment you scroll, then settles back
-          // when you stop. Direction of the warp flips with sign(uVelocity)
-          // so scrolling DOWN and scrolling UP feel different.
-          float v   = uVelocity * 6.0;             // amplified magnitude
-          float vAbs = abs(v);
-          // Base time + chunk added when scrolling so the swirl genuinely
-          // accelerates — not just a constant flow.
-          float t = uTime * 0.04 + uTime * vAbs * 0.0015;
-
-          // Pull the UVs in the direction of motion to give the field a
-          // wind-blown look while scrolling.
-          vec2 drift = vec2(0.0, v * 0.025);
-          uv += drift;
-
-          // Two-layer flow with the warp factor scaling much higher when
-          // scrolling. When idle this collapses back to the gentle base.
+          float t = uTime * 0.04;
+          // Two-layer flow: a slow base + a faster swirl that responds to
+          // scroll velocity (uVelocity). When scrolling fast the ink whirls
+          // harder.
           vec2 q = vec2(fbm(uv * 1.4 + vec2(t, -t * 0.7)),
                          fbm(uv * 1.4 + vec2(-t * 0.6, t * 0.9)));
-          float warpScale = 1.0 + vAbs * 1.6;
+          float warpScale = 1.0 + abs(uVelocity) * 1.2;
           vec2 r = vec2(fbm(uv * 2.6 + q + vec2(t * 1.5, t * 0.8) * warpScale),
                          fbm(uv * 2.6 + q + vec2(-t * 1.1, t * 1.4) * warpScale));
           float n = fbm(uv * 1.1 + r * 0.9);
 
-          // Ink palette — deep navy → violet ink → near-black. Brighter
-          // overall when scrolling (more violet bloom, more rim glow).
+          // Ink palette — deep navy → violet ink → near-black
           vec3 cBase = vec3(0.020, 0.030, 0.085);
           vec3 cMid  = vec3(0.090, 0.120, 0.260);
           vec3 cHi   = vec3(0.230, 0.190, 0.380);
           vec3 col = mix(cBase, cMid, smoothstep(0.30, 0.65, n));
-          col = mix(col, cHi, smoothstep(0.65, 0.85, n) * (0.6 + vAbs * 0.4));
-          col += vec3(0.05, 0.07, 0.12) * pow(n, 4.0) * (1.0 + vAbs * 1.2);
+          col = mix(col, cHi, smoothstep(0.65, 0.85, n) * 0.6);
+          col += vec3(0.05, 0.07, 0.12) * pow(n, 4.0);
           gl_FragColor = vec4(col, 1.0);
         }
       `,
@@ -1026,16 +1012,22 @@
       starMat.uniforms.uTravel.value = starTravel;
 
       scrollVel *= 0.92;
-      // Update ink uniforms then render in two passes — ink first so it
-      // sits behind everything, then the main scene with autoClear off so
-      // it overlays without wiping the ink backdrop.
-      inkMat.uniforms.uTime.value     = time;
-      inkMat.uniforms.uVelocity.value = scrollVel;
-      inkMat.uniforms.uAspect.value   = window.innerWidth / window.innerHeight;
+      // Update ink uniforms then render in two passes. Wrapped in try/catch
+      // so a shader-compile or render failure on the ink pass can never
+      // block the main scene from drawing.
+      try {
+        inkMat.uniforms.uTime.value     = time;
+        inkMat.uniforms.uVelocity.value = scrollVel;
+        inkMat.uniforms.uAspect.value   = window.innerWidth / window.innerHeight;
+        renderer.autoClear = true;
+        renderer.render(inkScene, inkCamera);
+      } catch (e) { /* swallow — ink is decorative */ }
+      try {
+        renderer.autoClear = false;
+        renderer.render(scene, camera);
+      } catch (e) { console.warn('main scene render failed', e); }
+      // Restore default for any other consumer of the renderer
       renderer.autoClear = true;
-      renderer.render(inkScene, inkCamera);
-      renderer.autoClear = false;
-      renderer.render(scene, camera);
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
@@ -1569,27 +1561,29 @@
     // glass canopy, full-width light bars). Looks "real-car"-ish without
     // depending on an external GLB.
     function buildCarIcon(target) {
-      // Try the licensed CC-by GLB first (Khronos ToyCar) — replaces the
-      // procedural fallback once it loads. Procedural is built immediately
-      // so the menu canvas is never empty.
+      // Always build the procedural car immediately — guarantees the canvas
+      // has visible content the moment it renders. The GLB load runs in
+      // parallel and only swaps in if everything succeeds. Wrapped in
+      // outer try/catch so a model failure can never cascade into the
+      // surrounding menu loop and break sibling crystals (the previous
+      // bug pattern that wiped the logo + paths).
       buildProceduralCar(target);
-      loadCrystalModel('ToyCar', (model) => {
-        try {
-          // Centre + scale the GLB to fit the canvas viewport
-          const box = new THREE.Box3().setFromObject(model);
-          const size = box.getSize(new THREE.Vector3());
-          const centre = box.getCenter(new THREE.Vector3());
-          if (!isFinite(size.x) || size.x === 0) return;
-          model.position.sub(centre);
-          const fitScale = 2.6 / Math.max(size.x, size.y, size.z);
-          model.scale.setScalar(fitScale);
-          // Orient so the car is in three-quarter view facing camera
-          model.rotation.y = -0.45;
-          // Wipe the procedural car, install the GLB
-          while (target.children.length) target.remove(target.children[0]);
-          target.add(model);
-        } catch (e) { console.warn('ToyCar paint threw, keeping procedural', e); }
-      });
+      try {
+        loadCrystalModel('ToyCar', (model) => {
+          try {
+            const box = new THREE.Box3().setFromObject(model);
+            const size = box.getSize(new THREE.Vector3());
+            const centre = box.getCenter(new THREE.Vector3());
+            if (!isFinite(size.x) || size.x === 0) return;
+            model.position.sub(centre);
+            const fitScale = 2.6 / Math.max(size.x, size.y, size.z);
+            model.scale.setScalar(fitScale);
+            model.rotation.y = -0.45;
+            while (target.children.length) target.remove(target.children[0]);
+            target.add(model);
+          } catch (e) { console.warn('ToyCar paint threw, keeping procedural', e); }
+        });
+      } catch (e) { console.warn('ToyCar load threw, keeping procedural', e); }
     }
 
     // Procedural fallback (Deepal-class EV silhouette) — also used while

@@ -120,6 +120,32 @@
       height: 100%;
       box-sizing: border-box;
     }
+    /* Centered-text layout — text is vertically centred in the stage.
+       Used for the main entry slide and the Healthcare Expansion scene. */
+    .stage-centered-text {
+      justify-content: center !important;
+    }
+
+    /* Big-image layout — for slides whose PNGs were too small at the
+       default scale. The wrapper claims the maximum room available
+       (96vw / 90vh) so the picture reads at roughly 3× its previous
+       footprint, while still flex-grown to fill the void below the text. */
+    .stage-big-image .scene-gallery {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .stage-big-image .scene-gallery .float-img {
+      max-width: 96vw;
+      width: 96vw;
+      height: 100%;
+      min-height: 60vh;
+    }
+    .stage-big-image .scene-gallery .float-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
     /* Overlay layout — used by the path-3 outro ("MALLOUK'S FAMILY").
        The title is positioned absolutely on top of the image, with the
        image filling the stage. Both children still bob via .float-bob. */
@@ -425,11 +451,18 @@
 
     /* Mobile: drop the absolute % layout, let elements flow vertically */
     @media (max-width: 760px) {
-      /* Phones: drop the sticky-pin + flex-fill layout in favour of a
-         simple natural vertical flow. Each slide grows tall enough to
-         hold its content, scrolling reveals the next one. */
-      .slide { height: auto !important; min-height: 100vh; padding: 8vh 5vw; }
-      .slide-pin { position: relative; height: auto; }
+      /* Phones: each slide becomes a page-tall block with content centred,
+         so scrolling moves you cleanly from one slide to the next instead
+         of cramming half-of-next at the edge. */
+      .slide {
+        height: auto !important;
+        min-height: 110vh;
+        padding: 6vh 5vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .slide-pin { position: relative; height: auto; width: 100%; }
       .slide-stage {
         position: relative; left: auto; top: auto;
         transform: none;
@@ -437,6 +470,7 @@
       }
       .stage-centred {
         height: auto !important;
+        justify-content: center !important;
         padding: 4vh 4vw !important;
         gap: 14px;
       }
@@ -457,11 +491,21 @@
         width: 100% !important;
         height: auto !important;
         flex: 0 1 auto !important;
+        min-height: 0 !important;
       }
       .scene-gallery .float-img img {
         width: 100% !important;
         height: auto !important;
         max-height: 55vh !important;
+      }
+      /* Big-image flag on mobile: claim more of the viewport (95vw / 75vh)
+         so the picture reads at roughly 3× its standard footprint. */
+      .stage-big-image .scene-gallery .float-img {
+        width: 95vw !important;
+        max-width: 95vw !important;
+      }
+      .stage-big-image .scene-gallery .float-img img {
+        max-height: 75vh !important;
       }
       .float-img .float-bob {
         height: auto !important;
@@ -525,7 +569,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build mobile-fix v32</div>
+  <div class="build-stamp">build big-and-paged v33</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1010,7 +1054,9 @@
 
       const stage = document.createElement('div');
       stage.className = 'slide-stage stage-centred' +
-        (slide.layout === 'overlay' ? ' stage-overlay' : '');
+        (slide.layout === 'overlay' ? ' stage-overlay' : '') +
+        (slide.centerText ? ' stage-centered-text' : '') +
+        (slide.bigImage  ? ' stage-big-image'   : '');
 
       // Helper — text inside a `.float-bob` span so it bobs gently in place
       // even after the GSAP emerge timeline has finished. GSAP transforms the

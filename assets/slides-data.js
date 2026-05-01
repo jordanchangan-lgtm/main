@@ -14,7 +14,8 @@ window.SLIDES = [
     "title": "MALLOUK GROUP",
     "subtitle": "Main Entry",
     "body": "Owned by the Mallouk Family, Mallouk Group was established in Syria in 1981 with subsidiary companies and offices in Jordan, Lebanon, Iraq, Egypt and China (Hong Kong, Shanghai & Jiangsu). One of the pioneer business groups achieving growth across Automotive Manufacturing, Distributorship (branding, marketing, sales & after-service), Public Transportation, Financing, Medical Equipment, Property Development & Constructions, Aviation and Education.",
-    "images": []
+    "images": [],
+    "centerText": true
   },
   {
     "path": "path-1",
@@ -44,7 +45,8 @@ window.SLIDES = [
     "body": "Mallouk Group operates over 30 4S facilities in its global sales-and-service network.\nSyria — Aleppo, Homs, Damascus, Latakia, Tartous & Hama.\nLebanon — Beirut.\nJordan — Amman, Irbid & Aqaba.\nIraq — Dohuk, Sulaymaniyah & Erbil.\nEgypt — Cairo.",
     "images": [
       "assets/images/png1-3.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-1",
@@ -64,7 +66,8 @@ window.SLIDES = [
     "body": "Mallouk Industries owns one of the biggest and most advanced automotive KD assembly plants in Homs-Hisya industrial city. 30 work stations for passenger cars, 22 for pick-up trucks. Granted CKD production license with welding and painting lines ensuring the highest quality standards. A full manufacturing ecosystem with skilled workforce and advanced facilities.",
     "images": [
       "assets/images/png1-5.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-1",
@@ -74,7 +77,8 @@ window.SLIDES = [
     "body": "Planning — detailed production scheduling and resource allocation. Component Sourcing — procurement from trusted suppliers. Assembly — precision manufacturing with skilled technicians. Quality Control — rigorous testing and inspection. Distribution — efficient delivery to the dealership network.",
     "images": [
       "assets/images/png1-6.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-1",
@@ -84,7 +88,8 @@ window.SLIDES = [
     "body": "Hisya industrial city sits at a strategic crossroads connecting Syria with Asia, Europe and Africa. Distances: Damascus 110–150 km, Lebanon 45 km, Jordan 200 km, Turkey & Iraq 350 km, Tartous Port 100 km, Latakia Port 180 km.",
     "images": [
       "assets/images/png1-7.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-1",
@@ -94,7 +99,8 @@ window.SLIDES = [
     "body": "Mallouk Co is among the earliest companies importing Chinese and international used cars — especially EVs — from China to the Middle East, with an annual volume exceeding 15,000 units.",
     "images": [
       "assets/images/png1-8.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-2",
@@ -104,7 +110,8 @@ window.SLIDES = [
     "body": "Founded in 1995 with over 30 years of history. More than 100,000 cars financed. Total financing exceeding USD 1.5 billion. Dedicated accounting, legal, credit-analysis and collection teams. 7 regional offices covering the country.",
     "images": [
       "assets/images/png2-1.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-2",
@@ -114,7 +121,8 @@ window.SLIDES = [
     "body": "In 2009 Mallouk Group became the first licensed private public-transportation provider in Damascus. Taxi Phone service covers the entire city with a modern fleet, 240 drivers and an advanced locating system. In 2010 SHAMUNA was established, replacing microbuses with 1,200 eco-friendly buses providing safe and efficient transport.",
     "images": [
       "assets/images/png2-2.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-2",
@@ -124,7 +132,8 @@ window.SLIDES = [
     "body": "IN ARCHITECTS operates across Syria, Iraq, Jordan and Lebanon. Over 15 years of experience. Developed and managed more than 300,000 sqm of commercial property and 90,000 sqm of residential property.",
     "images": [
       "assets/images/png2-3.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-2",
@@ -134,7 +143,8 @@ window.SLIDES = [
     "body": "Al Shafi Hospital — 5,000 sqm, 99 beds, including general medicine, surgery, gynecology and emergency center. Al TAL Development — 82.5 hectares including residential, tourism, business, green spaces and infrastructure areas.",
     "images": [
       "assets/images/png2-4.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-2",
@@ -144,7 +154,8 @@ window.SLIDES = [
     "body": "Phoenix Advanced Systems Ltd, established in 2014. Provides medical equipment, gases and generators. Exclusive distributor of Atlas Copco. Jordan ranks first in Middle East healthcare and top 5 globally, supporting medical tourism.",
     "images": [
       "assets/images/png2-5.png"
-    ]
+    ],
+    "centerText": true
   },
   {
     "path": "path-2",
@@ -154,7 +165,8 @@ window.SLIDES = [
     "body": "Al Ghad Al Moshreq Hygienic Paper Company, established in 2020. Acquired one of the largest hygienic-paper factories in Jordan. Produces high-quality hygiene products with advanced manufacturing capabilities.",
     "images": [
       "assets/images/png2-6.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-2",
@@ -174,7 +186,8 @@ window.SLIDES = [
     "body": "Subsidiaries in Hong Kong and Jiangsu, plus a regional office in Shanghai Tower. They serve as hubs for research, manufacturing coordination and trading operations.",
     "images": [
       "assets/images/png3-1.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-3",
@@ -184,7 +197,8 @@ window.SLIDES = [
     "body": "Strong partnerships with major global players such as GEELY. Hosted chairman visits and major opening ceremonies with government presence.",
     "images": [
       "assets/images/png3-2.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-3",
@@ -194,7 +208,8 @@ window.SLIDES = [
     "body": "Active member of the Syria-China Business Council. Ranked among the top-10 trading companies in Syria. Awarded largest importer from China for three consecutive years. Continuous partner-recognition awards.",
     "images": [
       "assets/images/png3-3.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-3",
@@ -222,7 +237,8 @@ window.SLIDES = [
     "body": "Levant University project in Damascus — 20,000 sqm area, $10M investment, offering specialized education programs.",
     "images": [
       "assets/images/png3-6.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-3",
@@ -232,7 +248,8 @@ window.SLIDES = [
     "body": "Fly Syria aviation project. Initial phase includes 5 aircraft operating within the Middle East. Expansion to 10 destinations planned. Focus on improving regional connectivity and job creation.",
     "images": [
       "assets/images/png3-7.png"
-    ]
+    ],
+    "bigImage": true
   },
   {
     "path": "path-3",

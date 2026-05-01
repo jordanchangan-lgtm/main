@@ -112,10 +112,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       text-align: center;
-      gap: 18px;
-      padding: 0 4vw;
+      gap: 12px;
+      padding: 6vh 4vw 5vh 4vw;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
     }
     /* Overlay layout — used by the path-3 outro ("MALLOUK'S FAMILY").
        The title is positioned absolutely on top of the image, with the
@@ -123,9 +126,12 @@
     .stage-overlay {
       position: relative;
       gap: 0;
+      padding: 4vh 4vw;
     }
     .stage-overlay .scene-gallery {
       margin-top: 0;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .stage-overlay .float-title {
       position: absolute;
@@ -160,34 +166,38 @@
       margin-bottom: 6px;
     }
 
+    /* Gallery flex-grows to fill ALL remaining vertical space below the
+       text, so the image fills the void rather than sitting in a fixed
+       small box. */
     .scene-gallery {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
       gap: 24px;
-      margin-top: 24px;
+      margin-top: 18px;
       width: 100%;
+      flex: 1 1 auto;
+      min-height: 0;        /* allow the flex child to actually shrink */
     }
-    /* Wrapper reserves a generous bounding box so wide composite images
-       (multiple sub-images side-by-side, like png1-3) get the room they
-       need, and small images are scaled UP to fill the same box —
-       both stay aspect-correct via object-fit: contain. Centred both axes. */
     .scene-gallery .float-img {
-      flex: 0 1 auto;
-      width: 85vw;
-      height: 58vh;
-      max-width: 100%;
+      flex: 1 1 auto;
+      width: 100%;
+      height: 100%;
+      max-width: 92vw;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto;
     }
     .scene-gallery .float-img img {
-      width: 100%;
-      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
       object-fit: contain;
       display: block;
+      margin: 0 auto;
     }
     /* Clean mode: bypass the particle-edge SVG filter and the noisy radial
        mask so transparent PNGs render with their native alpha intact. */
@@ -205,6 +215,7 @@
       justify-content: center;
       width: 100%;
       height: 100%;
+      min-height: 0;
     }
 
     /* ===== Menu scene with 3 path crystals ===== */
@@ -413,23 +424,61 @@
 
     /* Mobile: drop the absolute % layout, let elements flow vertically */
     @media (max-width: 760px) {
-      .slide { height: auto; min-height: 100vh; padding: 10vh 6vw; }
+      /* Phones: drop the sticky-pin + flex-fill layout in favour of a
+         simple natural vertical flow. Each slide grows tall enough to
+         hold its content, scrolling reveals the next one. */
+      .slide { height: auto !important; min-height: 100vh; padding: 8vh 5vw; }
       .slide-pin { position: relative; height: auto; }
       .slide-stage {
         position: relative; left: auto; top: auto;
         transform: none;
         width: 100% !important; height: auto !important;
       }
+      .stage-centred {
+        height: auto !important;
+        padding: 4vh 4vw !important;
+        gap: 14px;
+      }
       .float-el {
         position: relative !important;
         left: auto !important; top: auto !important;
         width: 100% !important;
-        margin: 12px 0;
+        margin: 10px 0;
       }
-      .float-title { font-size: 1.6rem !important; }
-      .float-text, .float-cn { font-size: 1rem !important; }
-      .float-img { height: auto !important; }
-      .float-img img { max-height: 38vh; }
+      .float-title { font-size: 1.7rem !important; max-width: 100% !important; }
+      .float-text, .float-cn { font-size: 1rem !important; max-width: 100% !important; }
+      .scene-gallery {
+        flex: 0 1 auto !important;
+        height: auto !important;
+        margin-top: 18px;
+      }
+      .scene-gallery .float-img {
+        width: 100% !important;
+        height: auto !important;
+        flex: 0 1 auto !important;
+      }
+      .scene-gallery .float-img img {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 50vh;
+      }
+      .float-img .float-bob {
+        height: auto !important;
+      }
+      .stage-overlay {
+        padding: 8vh 4vw !important;
+      }
+      .stage-overlay .float-title {
+        font-size: 1.9rem !important;
+        position: absolute !important;
+      }
+      /* Crystal cards smaller on mobile so all 3 fit */
+      .crystal-card { transform: scale(0.85); }
+      .crystal-canvas { width: 180px; height: 230px; }
+      /* Reduce GPU load on mobile — the WebGL background is a fixed
+         canvas so it'll still cover the screen, but the user sees less
+         particle density and shorter scroll distances */
+      .build-stamp { font-size: 9px; }
     }
   </style>
 </head>
@@ -456,7 +505,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build big-images v29</div>
+  <div class="build-stamp">build fill-void v30</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------

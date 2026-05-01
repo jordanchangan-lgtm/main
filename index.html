@@ -87,7 +87,7 @@
     .slide {
       position: relative;
       width: 100%;
-      height: 110vh;
+      height: 200vh;
       z-index: 2;
     }
 
@@ -420,7 +420,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build sync-only v24</div>
+  <div class="build-stamp">build restored v25</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1311,8 +1311,54 @@
       }
       buildProceduralInto(grp);
 
-      // GLB loading temporarily disabled — pure procedural cluster only.
-      // Re-enable once we've confirmed the basic rendering works again.
+      // OPTIONALLY swap procedural for the CC0 GLB cluster if it loads.
+      // Procedural is already built into grp above; we never go empty.
+      const variantToModel = {
+        tower:   { file: 'Crystal_Cluster',           rotY: 0,             scale: 1.00 },
+        splay:   { file: 'Crystal_ClusterSurrounded', rotY: 0,             scale: 1.00 },
+        compact: { file: 'Crystal_Cluster',           rotY: Math.PI * 0.5, scale: 0.85 }
+      };
+      const cfg = variantToModel[variant] || variantToModel.tower;
+
+      function paintCrystal(model) {
+        const box = new THREE.Box3().setFromObject(model);
+        const size = box.getSize(new THREE.Vector3());
+        const centre = box.getCenter(new THREE.Vector3());
+        if (!isFinite(size.x) || size.x === 0) return false;
+        model.position.sub(centre);
+        const fitScale = 2.4 / Math.max(size.x, size.y, size.z);
+        model.scale.setScalar(fitScale * cfg.scale);
+        model.rotation.y = cfg.rotY;
+        model.traverse((o) => {
+          if (o.isMesh && o.geometry) {
+            o.material = new THREE.MeshPhongMaterial({
+              color: 0x9a8edc, specular: 0xffffff, shininess: 110,
+              transparent: true, opacity: 0.78, side: THREE.DoubleSide
+            });
+            o.material.userData.baseOpacity = 0.78;
+            const eg = new THREE.EdgesGeometry(o.geometry, 18);
+            const edges = new THREE.LineSegments(eg, new THREE.LineBasicMaterial({
+              color: 0xe6dbff, transparent: true, opacity: 0.85
+            }));
+            edges.position.copy(o.position);
+            edges.rotation.copy(o.rotation);
+            edges.scale.copy(o.scale);
+            o.parent.add(edges);
+          }
+        });
+        return true;
+      }
+
+      try {
+        loadCrystalModel(cfg.file, (model) => {
+          try {
+            if (paintCrystal(model)) {
+              while (grp.children.length) grp.remove(grp.children[0]);
+              grp.add(model);
+            }
+          } catch (e) { console.warn('paintCrystal threw, keeping procedural', e); }
+        });
+      } catch (e) { console.warn('loadCrystalModel threw, keeping procedural', e); }
 
       // Aliases for legacy hover / dive code below.
       const points = grp;
@@ -1746,9 +1792,27 @@
       logoGroup.userData.ready = true;
     }
 
-    // 3D-text logo path is temporarily disabled. Synchronous particle logo
-    // (no external font asset) so the hero is visible immediately.
+    // Particle logo immediately so the hero is never blank, then optionally
+    // upgrade to the 3D crystal-text version if the typeface JSON arrives.
     buildLogoFallback();
+    if (typeof THREE.FontLoader === 'function' && typeof THREE.TextGeometry === 'function') {
+      try {
+        new THREE.FontLoader().load(
+          'https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json',
+          (font) => {
+            try {
+              // Wipe the particle fallback, install the 3D crystal text
+              while (logoGroup.children.length) logoGroup.remove(logoGroup.children[0]);
+              logoMaterials.length = 0;
+              logoGroup.userData.ready = false;
+              buildCrystalText(font);
+            } catch (e) { console.warn('buildCrystalText threw, keeping particle logo', e); }
+          },
+          undefined,
+          (err) => { console.warn('Logo font failed to load — keeping particle logo', err); }
+        );
+      } catch (e) { console.warn('FontLoader threw — keeping particle logo', e); }
+    }
 
     // ---------- Stage sizing ----------
     // Simple now: stage fills a viewport-sized box centred in the sticky pin.
@@ -1788,42 +1852,41 @@
         }
       });
 
-      // EMERGE 0–10% (snappy in), HOLD 10–80% (most of the scroll = read time),
-      // DISSOLVE 80–100% (quick out). The slide is now 110vh so the total
-      // sticky pin range is short — these proportions give the longest
-      // possible reading window inside that range.
+      // EMERGE 0–25%, HOLD 25–70% (the long stretch — read here),
+      // DISSOLVE 70–100%. Slide is 200vh so there is real scroll range
+      // to read; ~100vh of pinning gives a comfortable read window.
       elements.forEach((el, i) => {
         const depth = parseFloat(el.dataset.depth) || 800;
-        const stagger = i * 0.004;
+        const stagger = i * 0.008;
         tl.fromTo(el,
           {
             opacity: 0,
-            scale: Math.max(0.4, 1 - depth / 2400),
-            y: 40,
-            filter: `blur(${Math.min(18, depth / 50)}px)`
+            scale: Math.max(0.3, 1 - depth / 2400),
+            y: 60,
+            filter: `blur(${Math.min(26, depth / 40)}px)`
           },
           {
             opacity: 1,
             scale: 1,
             y: 0,
             filter: 'blur(0px)',
-            duration: 0.10
+            duration: 0.18
           },
-          0.0 + stagger
+          0.02 + stagger
         );
       });
 
-      // DISSOLVE: 80 → 100% — quick fade-up into the next universe.
+      // DISSOLVE: 70 → 100% — fade up + blow out into the next universe.
       elements.forEach((el, i) => {
-        const stagger = i * 0.003;
+        const stagger = i * 0.005;
         tl.to(el, {
           opacity: 0,
-          scale: 1.25,
-          y: -60,
-          filter: 'blur(14px)',
-          duration: 0.14,
+          scale: 1.45,
+          y: -90,
+          filter: 'blur(22px)',
+          duration: 0.22,
           ease: 'power2.in'
-        }, 0.82 + stagger);
+        }, 0.72 + stagger);
       });
     });
 

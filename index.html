@@ -525,7 +525,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build phone-portrait v31</div>
+  <div class="build-stamp">build mobile-fix v32</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1845,6 +1845,16 @@
           );
           logoGroup.rotation.y = Math.sin(t * 0.4) * 0.06;
           logoGroup.rotation.x = Math.sin(t * 0.3) * 0.03;
+          // Scale logo down on small / portrait screens so it doesn't get
+          // cropped by the narrow horizontal viewport. Dynamic so a phone
+          // rotated to landscape grows it back.
+          const w = window.innerWidth;
+          const portraitScale =
+            w < 420 ? 0.45 :
+            w < 600 ? 0.55 :
+            w < 760 ? 0.70 :
+            w < 1000 ? 0.85 : 1.0;
+          logoGroup.scale.setScalar(portraitScale);
         }
         for (const m of logoMaterials) {
           m.opacity = m.userData.baseOpacity * logoOp;
@@ -1947,6 +1957,26 @@
     document.querySelectorAll('.slide').forEach((slide) => {
       const elements = Array.from(slide.querySelectorAll('.float-el'));
       if (!elements.length) return;
+
+      // Mobile: skip the scroll-scrubbed emerge/dissolve timeline. With the
+      // sticky pin off and slides at natural height, the timeline range is
+      // tiny and elements were flashing in/out as you scrolled. Just set
+      // them visible — they appear naturally as the section scrolls into
+      // view, and stay visible while readable.
+      if (window.innerWidth <= 760) {
+        elements.forEach((el) => {
+          gsap.set(el, { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' });
+        });
+        // A tiny one-shot fade so it doesn't pop in
+        gsap.fromTo(elements,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1, y: 0, duration: 0.7, stagger: 0.05, ease: 'power2.out',
+            scrollTrigger: { trigger: slide, start: 'top 85%', toggleActions: 'play none none reverse' }
+          }
+        );
+        return;
+      }
 
       const tl = gsap.timeline({
         defaults: { ease: 'power2.out' },

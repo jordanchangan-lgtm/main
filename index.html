@@ -169,26 +169,25 @@
       margin-top: 24px;
       width: 100%;
     }
-    /* Image wrapper defines a clear bounding box; the image inside is
-       force-contained inside it so the whole picture is always visible.
-       Centered both axes via flex. */
+    /* Wrapper reserves a generous bounding box so wide composite images
+       (multiple sub-images side-by-side, like png1-3) get the room they
+       need, and small images are scaled UP to fill the same box —
+       both stay aspect-correct via object-fit: contain. Centred both axes. */
     .scene-gallery .float-img {
       flex: 0 1 auto;
-      max-width: 55vw;
-      max-height: 50vh;
+      width: 85vw;
+      height: 58vh;
+      max-width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto;
     }
     .scene-gallery .float-img img {
-      max-width: 100%;
-      max-height: 50vh;
-      width: auto;
-      height: auto;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       display: block;
-      margin: 0 auto;
     }
     /* Clean mode: bypass the particle-edge SVG filter and the noisy radial
        mask so transparent PNGs render with their native alpha intact. */
@@ -198,15 +197,14 @@
       mask-image: none !important;
       animation: none;
     }
-    /* Inside an image wrapper, .float-bob centres the image and carries the
-       up-down drift (CSS keyframe) — independent of GSAP transforms on the
-       outer .float-el. */
+    /* .float-bob fills the wrapper and centres its child so the image
+       lines up dead-centre regardless of aspect. */
     .float-img .float-bob {
       display: flex;
       align-items: center;
       justify-content: center;
-      max-width: 100%;
-      max-height: 100%;
+      width: 100%;
+      height: 100%;
     }
 
     /* ===== Menu scene with 3 path crystals ===== */
@@ -458,7 +456,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build family-outro v28</div>
+  <div class="build-stamp">build big-images v29</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------

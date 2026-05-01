@@ -610,7 +610,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build xl-balanced v40</div>
+  <div class="build-stamp">build path-icons v41</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1218,11 +1218,11 @@
       // shards radiating from a base. Three different silhouettes per path.
       const crystals = [
         { path: 'path-1', label: 'Automotive', subtitle: 'Path 1',
-          clusterVariant: 'tower' },
+          clusterVariant: 'car' },
         { path: 'path-2', label: 'Diversification', subtitle: 'Path 2',
-          clusterVariant: 'splay' },
+          clusterVariant: 'arrows' },
         { path: 'path-3', label: 'Global Strategy', subtitle: 'Path 3',
-          clusterVariant: 'compact' },
+          clusterVariant: 'earth' },
       ];
 
       crystals.forEach((c, ci) => {
@@ -1452,6 +1452,192 @@
       );
     }
 
+    // ===== Path-icon builders =====
+    // Procedurally-built 3D scenes for each path's menu icon. They share
+    // initCrystal's renderer / scene / camera + lighting setup, so they
+    // get proper shading, hover bob, and dive-through animation for free.
+
+    // Path 1 — futuristic car: low + wide hull, cockpit bubble, four
+    // wheels, with a glowing accent strip on the side.
+    function buildCarIcon(target) {
+      const car = new THREE.Group();
+      // Hull — main body
+      const hullMat = new THREE.MeshPhongMaterial({
+        color: 0x252840, specular: 0xa0c8ff, shininess: 100
+      });
+      const hull = new THREE.Mesh(
+        new THREE.BoxGeometry(2.4, 0.45, 1.0).toNonIndexed(),
+        hullMat
+      );
+      hull.position.y = -0.05;
+      car.add(hull);
+      // Front wedge — angled nose
+      const wedge = new THREE.Mesh(
+        new THREE.BoxGeometry(0.55, 0.32, 1.0),
+        hullMat
+      );
+      wedge.position.set(1.45, -0.10, 0);
+      wedge.rotation.z = -0.18;
+      car.add(wedge);
+      // Cockpit dome
+      const cockpit = new THREE.Mesh(
+        new THREE.SphereGeometry(0.55, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2),
+        new THREE.MeshPhongMaterial({
+          color: 0x88c8ff, specular: 0xffffff, shininess: 180,
+          transparent: true, opacity: 0.6
+        })
+      );
+      cockpit.scale.set(1.3, 1.0, 0.85);
+      cockpit.position.set(-0.05, 0.18, 0);
+      car.add(cockpit);
+      // Rear spoiler
+      const spoiler = new THREE.Mesh(
+        new THREE.BoxGeometry(0.7, 0.06, 0.9),
+        hullMat
+      );
+      spoiler.position.set(-1.0, 0.15, 0);
+      car.add(spoiler);
+      // Wheels
+      const wheelMat = new THREE.MeshPhongMaterial({ color: 0x1a1a22 });
+      const wheelGeo = new THREE.CylinderGeometry(0.30, 0.30, 0.14, 24);
+      const wheelPositions = [
+        [ 0.85, -0.32,  0.55],
+        [ 0.85, -0.32, -0.55],
+        [-0.85, -0.32,  0.55],
+        [-0.85, -0.32, -0.55]
+      ];
+      wheelPositions.forEach((p) => {
+        const w = new THREE.Mesh(wheelGeo, wheelMat);
+        w.rotation.x = Math.PI / 2;
+        w.position.set(p[0], p[1], p[2]);
+        car.add(w);
+        // Bright rim
+        const rim = new THREE.Mesh(
+          new THREE.RingGeometry(0.12, 0.20, 18),
+          new THREE.MeshBasicMaterial({ color: 0x88b6ff, side: THREE.DoubleSide })
+        );
+        rim.rotation.x = Math.PI / 2;
+        rim.position.copy(w.position);
+        rim.position.z += p[2] > 0 ? 0.072 : -0.072;
+        car.add(rim);
+      });
+      // Glowing accent strip down the side
+      const strip = new THREE.Mesh(
+        new THREE.BoxGeometry(2.0, 0.04, 0.04),
+        new THREE.MeshBasicMaterial({ color: 0x6cf0ff })
+      );
+      strip.position.set(-0.05, -0.10, 0.51);
+      car.add(strip);
+      const strip2 = strip.clone();
+      strip2.position.z = -0.51;
+      car.add(strip2);
+      // Headlight glow
+      const headlightMat = new THREE.MeshBasicMaterial({ color: 0xddeeff });
+      const headlight = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 8), headlightMat);
+      headlight.position.set(1.65, -0.05, 0.30);
+      car.add(headlight);
+      const headlight2 = headlight.clone(); headlight2.position.z = -0.30;
+      car.add(headlight2);
+      target.add(car);
+    }
+
+    // Path 2 — diagram of arrows: 4 outward-pointing arrows in a cross
+    // pattern around a central node, suggesting branching diversification.
+    function buildArrowsIcon(target) {
+      const grp = new THREE.Group();
+      // Central node
+      const node = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(0.32, 1),
+        new THREE.MeshPhongMaterial({ color: 0x9a8edc, specular: 0xffffff, shininess: 90 })
+      );
+      grp.add(node);
+      // 4 arrows radiating outward in the XZ plane (then rotate slightly)
+      const armColors = [0x88b6ff, 0xa090ff, 0x6cf0ff, 0xb59cff];
+      for (let i = 0; i < 4; i++) {
+        const arm = new THREE.Group();
+        // Shaft — cylinder pointing along +X
+        const shaft = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.06, 0.06, 0.85, 12),
+          new THREE.MeshPhongMaterial({
+            color: armColors[i], specular: 0xffffff, shininess: 80
+          })
+        );
+        shaft.rotation.z = -Math.PI / 2;
+        shaft.position.x = 0.55;
+        arm.add(shaft);
+        // Arrow head (cone)
+        const head = new THREE.Mesh(
+          new THREE.ConeGeometry(0.18, 0.34, 18),
+          new THREE.MeshPhongMaterial({
+            color: armColors[i], specular: 0xffffff, shininess: 120,
+            emissive: armColors[i], emissiveIntensity: 0.18
+          })
+        );
+        head.rotation.z = -Math.PI / 2;
+        head.position.x = 1.16;
+        arm.add(head);
+        // Rotate this arm to its slot
+        arm.rotation.y = (i / 4) * Math.PI * 2;
+        // Slight upward tilt so we see depth
+        arm.rotation.z = -0.18;
+        grp.add(arm);
+      }
+      target.add(grp);
+    }
+
+    // Path 3 — Earth globe: blue sphere with green continent splotches
+    // (procedural noise), atmospheric halo, slow auto-rotate handled by
+    // the existing crystal tick loop.
+    function buildEarthIcon(target) {
+      const grp = new THREE.Group();
+      // Ocean sphere
+      const oceanGeo = new THREE.SphereGeometry(0.95, 48, 32);
+      const oceanMat = new THREE.MeshPhongMaterial({
+        color: 0x18406b, specular: 0x88c0ff, shininess: 60
+      });
+      const ocean = new THREE.Mesh(oceanGeo, oceanMat);
+      grp.add(ocean);
+      // Continents — vertex-coloured layer on a slightly bigger sphere
+      // using a noise pattern so it reads as "land vs water"
+      const landGeo = new THREE.SphereGeometry(0.96, 64, 40);
+      const pos = landGeo.attributes.position;
+      const colors = new Float32Array(pos.count * 3);
+      const land = new THREE.Color(0x3a8c4a);
+      const water = new THREE.Color(0x18406b);
+      // Cheap procedural noise: use sin/cos of (lat,long) at multiple frequencies
+      const nv = new THREE.Vector3();
+      const indicesToHide = [];
+      for (let i = 0; i < pos.count; i++) {
+        nv.set(pos.getX(i), pos.getY(i), pos.getZ(i)).normalize();
+        const lat = Math.asin(nv.y);
+        const lon = Math.atan2(nv.z, nv.x);
+        const n = Math.sin(lat * 4.0 + Math.cos(lon * 3.0) * 1.5)
+                + Math.sin(lon * 5.5 + Math.cos(lat * 2.0) * 2.0) * 0.7;
+        const isLand = n > 0.4;
+        const col = isLand ? land : water;
+        colors[i * 3] = col.r; colors[i * 3 + 1] = col.g; colors[i * 3 + 2] = col.b;
+      }
+      landGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      const landMesh = new THREE.Mesh(landGeo, new THREE.MeshPhongMaterial({
+        vertexColors: true, specular: 0x6090d0, shininess: 30,
+        transparent: true, opacity: 0.95
+      }));
+      grp.add(landMesh);
+      // Atmospheric halo
+      const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(1.10, 32, 20),
+        new THREE.MeshBasicMaterial({
+          color: 0x88c8ff, transparent: true, opacity: 0.18,
+          side: THREE.BackSide
+        })
+      );
+      grp.add(halo);
+      // Save the spinning core for the crystal tick to rotate
+      grp.userData.spinChild = ocean;
+      grp.userData.spinChild2 = landMesh;
+      target.add(grp);
+    }
+
     function initCrystal(canvas, shape, card) {
       const w = canvas.width, h = canvas.height;
       const r = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -1473,85 +1659,27 @@
       rim.position.set(-3, 1.5, -2);
       sc.add(rim);
 
-      const variant = (typeof shape === 'string' && CLUSTER_VARIANTS[shape]) ? shape : 'tower';
+      const variant = (typeof shape === 'string') ? shape : 'car';
 
       // Group the crystal sits in. Hover/dive animations operate on `points`
       // (= grp), keeping the existing animation code working.
       const grp = new THREE.Group();
       sc.add(grp);
 
-      // 1. Build the procedural cluster IMMEDIATELY so the canvas is never
-      //    empty. The GLB load will swap it out in (2) only if successful.
-      function buildProceduralInto(target) {
-        const recipe = CLUSTER_VARIANTS[variant];
-        const fbMat = new THREE.MeshBasicMaterial({
-          color: 0x9a8edc, transparent: true, opacity: 0.62,
-          side: THREE.DoubleSide, depthWrite: false
-        });
-        const fbEdge = new THREE.LineBasicMaterial({ color: 0xe6dbff, transparent: true, opacity: 0.95 });
-        recipe.forEach((sh) => {
-          const sg = makeShardGeometry(sh.sides, sh.len, sh.r);
-          const body = new THREE.Mesh(sg, fbMat);
-          body.position.set(sh.x, sh.y, sh.z);
-          body.rotation.set(sh.rx || 0, sh.ry || 0, sh.rz || 0);
-          target.add(body);
-          const eg = new THREE.EdgesGeometry(sg);
-          const lines = new THREE.LineSegments(eg, fbEdge);
-          lines.position.copy(body.position);
-          lines.rotation.copy(body.rotation);
-          target.add(lines);
-        });
+      // Build the path icon: futuristic car / arrows diagram / earth globe.
+      // All three are pure procedural Three.js so there's no CDN dependency.
+      function buildPathIcon(target, kind) {
+        if (kind === 'car') return buildCarIcon(target);
+        if (kind === 'arrows') return buildArrowsIcon(target);
+        if (kind === 'earth') return buildEarthIcon(target);
+        // Fallback to a sphere if unknown
+        const fb = new THREE.Mesh(
+          new THREE.SphereGeometry(0.9, 32, 24),
+          new THREE.MeshPhongMaterial({ color: 0x8c80d4 })
+        );
+        target.add(fb);
       }
-      buildProceduralInto(grp);
-
-      // OPTIONALLY swap procedural for the CC0 GLB cluster if it loads.
-      // Procedural is already built into grp above; we never go empty.
-      const variantToModel = {
-        tower:   { file: 'Crystal_Cluster',           rotY: 0,             scale: 1.00 },
-        splay:   { file: 'Crystal_ClusterSurrounded', rotY: 0,             scale: 1.00 },
-        compact: { file: 'Crystal_Cluster',           rotY: Math.PI * 0.5, scale: 0.85 }
-      };
-      const cfg = variantToModel[variant] || variantToModel.tower;
-
-      function paintCrystal(model) {
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3());
-        const centre = box.getCenter(new THREE.Vector3());
-        if (!isFinite(size.x) || size.x === 0) return false;
-        model.position.sub(centre);
-        const fitScale = 2.4 / Math.max(size.x, size.y, size.z);
-        model.scale.setScalar(fitScale * cfg.scale);
-        model.rotation.y = cfg.rotY;
-        model.traverse((o) => {
-          if (o.isMesh && o.geometry) {
-            o.material = new THREE.MeshPhongMaterial({
-              color: 0x9a8edc, specular: 0xffffff, shininess: 110,
-              transparent: true, opacity: 0.78, side: THREE.DoubleSide
-            });
-            o.material.userData.baseOpacity = 0.78;
-            const eg = new THREE.EdgesGeometry(o.geometry, 18);
-            const edges = new THREE.LineSegments(eg, new THREE.LineBasicMaterial({
-              color: 0xe6dbff, transparent: true, opacity: 0.85
-            }));
-            edges.position.copy(o.position);
-            edges.rotation.copy(o.rotation);
-            edges.scale.copy(o.scale);
-            o.parent.add(edges);
-          }
-        });
-        return true;
-      }
-
-      try {
-        loadCrystalModel(cfg.file, (model) => {
-          try {
-            if (paintCrystal(model)) {
-              while (grp.children.length) grp.remove(grp.children[0]);
-              grp.add(model);
-            }
-          } catch (e) { console.warn('paintCrystal threw, keeping procedural', e); }
-        });
-      } catch (e) { console.warn('loadCrystalModel threw, keeping procedural', e); }
+      buildPathIcon(grp, variant);
 
       // Aliases for legacy hover / dive code below.
       const points = grp;
@@ -1627,10 +1755,21 @@
           const bobAmp = 0.06 + hover * 0.18;
           points.position.y = Math.sin(t * 1.6) * bobAmp;
 
-          // Gentle rotation, faster on hover
+          // Gentle rotation, faster on hover.
+          // For the earth icon, spin the inner globe meshes around their
+          // local Y instead of tilting the whole group, so it always reads
+          // as a rotating planet.
           const rotSpeed = 0.35 + hover * 0.9;
-          points.rotation.x = t * 0.18;
-          points.rotation.y = t * rotSpeed * 0.45;
+          if (grp.userData && grp.userData.spinChild) {
+            grp.userData.spinChild.rotation.y  = t * (0.25 + hover * 0.6);
+            grp.userData.spinChild2.rotation.y = t * (0.25 + hover * 0.6);
+            // Tiny axis tilt + bob, no full-group tumble
+            grp.rotation.x = Math.sin(t * 0.3) * 0.05;
+            grp.rotation.z = 0.20;     // Earth axial tilt feel
+          } else {
+            points.rotation.x = t * 0.18;
+            points.rotation.y = t * rotSpeed * 0.45;
+          }
 
           cam.position.z = 5 - hover * 0.5;
         }

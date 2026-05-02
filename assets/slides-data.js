@@ -116,7 +116,9 @@ window.SLIDES = [
       "assets/images/png2-1.png"
     ],
     "imageScale": "xl",
-    "tightenGap": true
+    "tightenGap": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-2",

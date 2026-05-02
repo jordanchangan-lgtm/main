@@ -848,7 +848,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build mobile-fullbleed v56</div>
+  <div class="build-stamp">build car-engine-icon v57</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1795,36 +1795,48 @@
     // initCrystal's renderer / scene / camera + lighting setup, so they
     // get proper shading, hover bob, and dive-through animation for free.
 
-    // Path 1 — futuristic car: low + wide hull, cockpit bubble, four
-    // wheels, with a glowing accent strip on the side.
-    // Sleek modern EV silhouette — built from extruded shapes to suggest a
-    // Deepal-class sedan / sport-coupe (low + long, fastback rear, slim
-    // glass canopy, full-width light bars). Looks "real-car"-ish without
-    // depending on an external GLB.
+    // Path 1 — ultra-realistic 2-cylinder car engine (Khronos CC-BY GLB).
+    // Procedural EV silhouette is rendered first so the canvas is never
+    // empty; the engine GLB swaps in once it loads. Outer try/catch keeps
+    // any model failure isolated from the surrounding menu loop.
     function buildCarIcon(target) {
-      // Always build the procedural car immediately — guarantees the canvas
-      // has visible content the moment it renders. The GLB load runs in
-      // parallel and only swaps in if everything succeeds. Wrapped in
-      // outer try/catch so a model failure can never cascade into the
-      // surrounding menu loop and break sibling crystals (the previous
-      // bug pattern that wiped the logo + paths).
       buildProceduralCar(target);
       try {
-        loadCrystalModel('ToyCar', (model) => {
+        loadCrystalModel('CarEngine', (model) => {
           try {
             const box = new THREE.Box3().setFromObject(model);
             const size = box.getSize(new THREE.Vector3());
             const centre = box.getCenter(new THREE.Vector3());
             if (!isFinite(size.x) || size.x === 0) return;
             model.position.sub(centre);
+            // Engine is large in CAD units — fit its largest dimension to
+            // ~2.6 world units (matches the procedural car's bounding size
+            // so the camera-fly-through math doesn't need re-tuning).
             const fitScale = 2.6 / Math.max(size.x, size.y, size.z);
             model.scale.setScalar(fitScale);
-            model.rotation.y = -0.45;
+            // Three-quarter view: tilt slightly so the cylinders + intake
+            // manifold are clearly visible.
+            model.rotation.set(0.18, -0.55, 0);
+            // Boost shading on the engine's PBR materials so it reads even
+            // against the dark void backdrop. Most Khronos sample meshes
+            // use MeshStandardMaterial — bump emissive a touch for glow.
+            model.traverse((node) => {
+              if (node.isMesh && node.material) {
+                const mats = Array.isArray(node.material) ? node.material : [node.material];
+                mats.forEach((m) => {
+                  if ('metalness' in m) m.metalness = Math.max(m.metalness || 0, 0.65);
+                  if ('roughness' in m) m.roughness = Math.min(m.roughness == null ? 0.4 : m.roughness, 0.55);
+                  if (m.emissive)       m.emissive.setHex(0x111933);
+                  if ('emissiveIntensity' in m) m.emissiveIntensity = 0.35;
+                  m.needsUpdate = true;
+                });
+              }
+            });
             while (target.children.length) target.remove(target.children[0]);
             target.add(model);
-          } catch (e) { console.warn('ToyCar paint threw, keeping procedural', e); }
+          } catch (e) { console.warn('CarEngine paint threw, keeping procedural', e); }
         });
-      } catch (e) { console.warn('ToyCar load threw, keeping procedural', e); }
+      } catch (e) { console.warn('CarEngine load threw, keeping procedural', e); }
     }
 
     // Procedural fallback (Deepal-class EV silhouette) — also used while

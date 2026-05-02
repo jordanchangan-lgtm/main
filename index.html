@@ -541,6 +541,96 @@
       align-self: center !important;
     }
 
+    /* ===== Full-bleed landscape layout =====
+       The slide takes over the entire viewport (no stage padding, no width
+       cap from layoutStages). The image becomes a backdrop layer pinned
+       at 100vw, naturally tall, vertically centred — so wide composites
+       render at their actual aspect with the left/right scenes flush to
+       the screen edges. The text sits on TOP of the image, centred in the
+       empty middle gap, with a soft shadow halo for readability. */
+    .stage-full-bleed {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100vh !important;
+      min-height: 100vh !important;
+      padding: 0 !important;
+      position: relative;
+      display: flex !important;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px !important;
+    }
+    .stage-full-bleed .scene-gallery {
+      position: absolute !important;
+      inset: 0;
+      margin: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .stage-full-bleed .scene-gallery .float-img {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: auto !important;
+      max-height: 100vh !important;
+      min-height: 0 !important;
+      align-self: center !important;
+    }
+    .stage-full-bleed .scene-gallery .float-img .float-bob {
+      width: 100% !important;
+      height: auto !important;
+    }
+    .stage-full-bleed .scene-gallery .float-img img {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 100vh !important;
+      object-fit: contain !important;
+    }
+    /* Text overlay — z-index above the image, with a deep shadow halo so
+       the title reads cleanly against the image's centre gap. */
+    .stage-full-bleed .float-subtitle,
+    .stage-full-bleed .float-title,
+    .stage-full-bleed .float-text {
+      position: relative;
+      z-index: 5;
+      max-width: min(40vw, 560px);
+      text-shadow:
+        0 0 30px rgba(0,0,0,0.95),
+        0 0 60px rgba(0,0,0,0.85),
+        0 0 90px rgba(0,0,0,0.7);
+    }
+    .stage-full-bleed .float-title {
+      font-size: clamp(2rem, 3.6vw, 3.4rem);
+    }
+    @media (max-width: 760px) {
+      /* Mobile — fall back to stacked (image below text). The slide is too
+         narrow for the side-by-side composite to read; we let the image
+         keep its xl + tightenGap behaviour instead. */
+      .stage-full-bleed {
+        width: 92vw !important;
+        max-width: 92vw !important;
+        height: auto !important;
+        min-height: auto !important;
+        padding: 4vh 4vw !important;
+      }
+      .stage-full-bleed .scene-gallery {
+        position: relative !important;
+        inset: auto;
+        width: 100% !important;
+        height: auto !important;
+      }
+      .stage-full-bleed .float-subtitle,
+      .stage-full-bleed .float-title,
+      .stage-full-bleed .float-text {
+        max-width: 100% !important;
+      }
+    }
+
     /* Color accents per slide for subtle text glow only */
     .slide:nth-child(15n+1)  { --accent1: #6C63FF; }
     .slide:nth-child(15n+2)  { --accent1: #00D2FF; }
@@ -710,7 +800,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build new-png2-1 v53</div>
+  <div class="build-stamp">build full-bleed-3.1 v54</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1295,7 +1385,8 @@
         (slide.layout === 'overlay' ? ' stage-overlay' : '') +
         (slide.centerText ? ' stage-centered-text' : '') +
         (slide.imageScale ? ' stage-img-' + slide.imageScale : '') +
-        (slide.tightenGap  ? ' stage-tight-gap' : '');
+        (slide.tightenGap  ? ' stage-tight-gap' : '') +
+        (slide.fullBleed  ? ' stage-full-bleed' : '');
 
       // Helper — text inside a `.float-bob` span so it bobs gently in place
       // even after the GSAP emerge timeline has finished. GSAP transforms the
@@ -2511,6 +2602,13 @@
       const maxW = isMobile ? window.innerWidth * 0.92 : Math.min(window.innerWidth * 0.78, 1100);
       const maxH = isMobile ? null : window.innerHeight * 0.82;
       document.querySelectorAll('.slide-stage').forEach(stage => {
+        // Full-bleed slides take the whole viewport — leave their inline
+        // sizes empty so the CSS rules win.
+        if (stage.classList.contains('stage-full-bleed')) {
+          stage.style.width = '';
+          stage.style.minHeight = '';
+          return;
+        }
         stage.style.width  = maxW + 'px';
         if (maxH) stage.style.minHeight = maxH + 'px';
         else      stage.style.minHeight = '';

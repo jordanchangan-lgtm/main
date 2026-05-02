@@ -115,8 +115,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-1.png"
     ],
-    "imageScale": "xl",
-    "tightenGap": true,
+    "fullBleed": true,
     "centerText": true,
     "glitchIn": true
   },

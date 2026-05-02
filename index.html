@@ -471,68 +471,37 @@
       50%      { transform: translateY(-8px); }
     }
 
-    /* ===== Glitch-emerge for images flagged glitchIn ===== */
-    /* The image starts invisible / scrambled, then RGB-splits, jitters and
-       resolves over ~1.6s when the slide is on screen. After the reveal
-       completes, the inner .float-bob keeps the image drifting up-and-down. */
+    /* ===== Pixel-glitch emerge =====
+       Images flagged glitchIn get a true pixel-scrambling reveal: an SVG
+       feDisplacementMap shatters the image's pixels, JS lerps the
+       displacement scale back to 0 over ~1.4s while jittering the noise
+       seed every frame. Stacked on top: a quick chromatic-aberration
+       drop-shadow (RGB split) and a fast opacity/scale settle.
+
+       After the reveal completes we strip everything and let the inner
+       .float-bob run (slightly stronger range than the default). */
     .float-img.glitch-in .float-bob {
       animation: voidBobGlitch 5.5s ease-in-out infinite;
-    }
-    .float-img.glitch-in img {
-      animation: glitchEmerge 1.6s steps(12, end) 1 both;
-      will-change: transform, filter, opacity, clip-path;
     }
     @keyframes voidBobGlitch {
       0%, 100% { transform: translateY(0); }
       50%      { transform: translateY(-14px); }
     }
-    @keyframes glitchEmerge {
-      0% {
-        opacity: 0;
-        filter: blur(14px) saturate(2.5)
-                drop-shadow( 18px 0 0 rgba(255,0,80,0.95))
-                drop-shadow(-18px 0 0 rgba(0,220,255,0.95));
-        transform: translate(-22px, -8px) skewX(14deg) scale(1.05);
-        clip-path: inset(40% 0 30% 0);
-      }
-      18% {
-        opacity: 1;
-        filter: blur(6px) saturate(2)
-                drop-shadow( 14px 0 0 rgba(255,0,80,0.9))
-                drop-shadow(-14px 0 0 rgba(0,220,255,0.9));
-        transform: translate(16px, 6px) skewX(-10deg) scale(1.03);
-        clip-path: inset(10% 0 55% 0);
-      }
-      35% {
-        opacity: 1;
-        filter: blur(2px) saturate(1.6)
-                drop-shadow( 9px 0 0 rgba(255,0,80,0.7))
-                drop-shadow(-9px 0 0 rgba(0,220,255,0.7));
-        transform: translate(-10px, 4px) skewX(6deg) scale(1.015);
-        clip-path: inset(55% 0 8% 0);
-      }
-      55% {
-        opacity: 1;
-        filter: blur(1.4px) saturate(1.3)
-                drop-shadow( 5px 0 0 rgba(255,0,80,0.55))
-                drop-shadow(-5px 0 0 rgba(0,220,255,0.55));
-        transform: translate(6px, -2px) skewX(-3deg) scale(1.005);
-        clip-path: inset(0 0 0 0);
-      }
-      75% {
-        opacity: 1;
-        filter: blur(0.4px) saturate(1.1)
-                drop-shadow( 2px 0 0 rgba(255,0,80,0.35))
-                drop-shadow(-2px 0 0 rgba(0,220,255,0.35));
-        transform: translate(-2px, 1px) skewX(0deg) scale(1);
-        clip-path: inset(0 0 0 0);
-      }
-      100% {
-        opacity: 1;
-        filter: none;
-        transform: none;
-        clip-path: inset(0 0 0 0);
-      }
+    /* Active glitch state — JS toggles this for ~1.4s. The SVG filter
+       handles the pixel scramble; the CSS handles RGB split + opacity. */
+    .float-img.glitch-active img {
+      filter: url(#pixelGlitch)
+              drop-shadow( 6px 0 0 rgba(255, 30, 90, 0.85))
+              drop-shadow(-6px 0 0 rgba(0, 220, 255, 0.85));
+      animation: glitchSettle 1.4s ease-out 1 both;
+      will-change: filter, transform, opacity;
+    }
+    @keyframes glitchSettle {
+      0%   { opacity: 0; transform: scale(1.04); }
+      8%   { opacity: 1; }
+      40%  { transform: scale(1.02) translateX(-3px); }
+      60%  { transform: scale(1.01) translateX(2px); }
+      100% { opacity: 1; transform: none; }
     }
 
     /* Center-aligned image — used together with stage-centered-text so
@@ -789,6 +758,16 @@
         </feTurbulence>
         <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/>
       </filter>
+
+      <!-- Pixel-glitch filter for the glitch-emerge reveal. JS animates the
+           feDisplacementMap scale from a high value down to 0, while the
+           feTurbulence seed jitters every frame — produces a true pixel-
+           scrambling effect where the image's pixels appear shattered, then
+           snap back together as the displacement collapses. -->
+      <filter id="pixelGlitch" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+        <feTurbulence id="pixelGlitchTurb" type="fractalNoise" baseFrequency="0.05 0.6" numOctaves="2" seed="7" stitchTiles="stitch" result="noise"/>
+        <feDisplacementMap id="pixelGlitchMap" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
     </defs>
   </svg>
 
@@ -800,7 +779,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build full-bleed-3.1 v54</div>
+  <div class="build-stamp">build pixel-glitch-all v55</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -2619,21 +2598,61 @@
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // ---------- Glitch-emerge replay on slide entry ----------
-    // For images flagged glitchIn, restart the keyframe animation each time
-    // the slide scrolls into view (forward or backward) so the user sees the
-    // glitch reveal every visit, not just on first paint.
-    document.querySelectorAll('.float-img.glitch-in').forEach((wrap) => {
+    // ---------- Pixel-glitch reveal on slide entry ----------
+    // Drives the shared #pixelGlitch SVG filter: scale starts high (~220)
+    // and lerps to 0 over GLITCH_MS, while the turbulence seed is randomised
+    // every frame so the displacement pattern keeps shifting. The CSS
+    // .glitch-active class layers a chromatic-aberration drop-shadow on top.
+    //
+    // Only one image glitches at a time (slides scroll one-at-a-time), so
+    // the shared filter is fine. If a new glitch starts mid-animation we
+    // cancel the previous RAF loop so the two don't fight.
+    const pixelGlitchMap  = document.getElementById('pixelGlitchMap');
+    const pixelGlitchTurb = document.getElementById('pixelGlitchTurb');
+    let pixelGlitchRAF = 0;
+    function playPixelGlitch(wrap) {
+      if (!pixelGlitchMap || !wrap) return;
+      cancelAnimationFrame(pixelGlitchRAF);
+      // Restart the CSS settle keyframe (opacity + scale jitter)
       const img = wrap.querySelector('img');
-      if (!img) return;
-      const slide = wrap.closest('.slide');
-      if (!slide) return;
-      const replay = () => {
+      if (img) {
         img.style.animation = 'none';
-        // Force reflow so the browser re-applies the keyframe from frame 0.
         void img.offsetWidth;
         img.style.animation = '';
-      };
+      }
+      wrap.classList.add('glitch-active');
+      const GLITCH_MS = 1400;
+      const START_SCALE = 220;
+      const start = performance.now();
+      function step(now) {
+        const t = Math.min(1, (now - start) / GLITCH_MS);
+        // Strong ease-out + per-frame jitter so the displacement crashes
+        // down quickly but keeps a chaotic feel until the very end.
+        const eased = Math.pow(1 - t, 2.4);
+        const jitter = (1 - t) * (Math.random() - 0.5) * 50;
+        const scale = Math.max(0, eased * START_SCALE + jitter);
+        pixelGlitchMap.setAttribute('scale', scale.toFixed(1));
+        if (pixelGlitchTurb && t < 0.92) {
+          pixelGlitchTurb.setAttribute('seed', String(Math.floor(Math.random() * 9999)));
+          // Slowly settle the noise frequency for a more organic finish.
+          const fx = (0.05 + (1 - t) * 0.03).toFixed(3);
+          const fy = (0.6  + (1 - t) * 0.2 ).toFixed(3);
+          pixelGlitchTurb.setAttribute('baseFrequency', fx + ' ' + fy);
+        }
+        if (t < 1) {
+          pixelGlitchRAF = requestAnimationFrame(step);
+        } else {
+          pixelGlitchMap.setAttribute('scale', '0');
+          wrap.classList.remove('glitch-active');
+        }
+      }
+      pixelGlitchRAF = requestAnimationFrame(step);
+    }
+
+    document.querySelectorAll('.float-img.glitch-in').forEach((wrap) => {
+      const slide = wrap.closest('.slide');
+      if (!slide) return;
+      const replay = () => playPixelGlitch(wrap);
       ScrollTrigger.create({
         trigger: slide,
         start: 'top 80%',

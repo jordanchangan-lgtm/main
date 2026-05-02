@@ -25,7 +25,10 @@ window.SLIDES = [
     "body": "Importation was prohibited during the economic blockade in Syria in 1981. Mallouk Trading Company (Mallouk & Co) was established in 1991 as the Syrian government alleviated part of the importation restriction. Mallouk & Co acquired distributorship of the VW Group from Germany — AUDI, SKODA & VOLKSWAGEN — and the business rapidly covered the entire territory of Syria. Mallouk also started its motorcycle SKD factory business with HONDA, YAMAHA and SUZUKI which lasted for ten years.",
     "images": [
       "assets/images/png1-1.png"
-    ]
+    ],
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-1",
@@ -35,7 +38,10 @@ window.SLIDES = [
     "body": "With the chairman's strategic vision, Mallouk & Co became one of the first companies in the world importing various kinds of vehicles from China in the 1990s — and the very first overseas buyer and distributor of multiple Chinese automotive brands. Over 200,000 units sold globally, top-10 importer awards for consecutive years in the Middle East, record owner of popularity in the automotive category on major social media. Over 40 years of outstanding sales & market share rankings.",
     "images": [
       "assets/images/png1-2.png"
-    ]
+    ],
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-1",
@@ -46,7 +52,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-3.png"
     ],
-    "imageScale": "xl"
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-1",
@@ -56,7 +64,10 @@ window.SLIDES = [
     "body": "Mallouk Group made a historical breakthrough in the Jordan market. In May 2023 it reached No. 1 in monthly sales and market share with CHANGAN — the first time a Chinese automotive brand led an overseas market. Changan remained No. 1 across 2023 and held a top-3 position through 2024 and 2025.",
     "images": [
       "assets/images/png1-4.png"
-    ]
+    ],
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-1",
@@ -67,8 +78,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-5.png"
     ],
-    "imageScale": "xl",
-    "tightenGap": true
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-1",
@@ -79,8 +91,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-6.png"
     ],
-    "imageScale": "xl",
-    "tightenGap": true
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-1",
@@ -91,8 +104,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-7.png"
     ],
-    "imageScale": "xl",
-    "tightenGap": true
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-1",
@@ -103,8 +117,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-8.png"
     ],
-    "imageScale": "xl",
-    "tightenGap": true
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-2",
@@ -128,8 +143,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-2.png"
     ],
-    "imageScale": "xl",
-    "tightenGap": true
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-2",
@@ -140,8 +156,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-3.png"
     ],
-    "imageScale": "xl",
-    "tightenGap": true
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-2",
@@ -152,8 +169,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-4.png"
     ],
-    "imageScale": "xl",
-    "tightenGap": true
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-2",
@@ -164,7 +182,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-5.png"
     ],
-    "centerText": true
+    "centerText": true,
+    "fullBleed": true,
+    "glitchIn": true
   },
   {
     "path": "path-2",
@@ -175,7 +195,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-6.png"
     ],
-    "imageScale": "lg"
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-2",
@@ -186,7 +208,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-7.png"
     ],
-    "imageScale": "lg"
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-3",
@@ -197,7 +221,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-1.png"
     ],
-    "imageScale": "lg"
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-3",
@@ -208,7 +234,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-2.png"
     ],
-    "imageScale": "md"
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-3",
@@ -219,7 +247,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-3.png"
     ],
-    "imageScale": "md"
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-3",
@@ -229,7 +259,10 @@ window.SLIDES = [
     "body": "Participation in reconstruction tenders including 1,600 buses, 1,000 passenger cars, 1,000 pickups, 240 specialized vehicles, 300 trucks and tractors. Collaboration with multiple ministries — transport, health and agriculture.",
     "images": [
       "assets/images/png3-4.png"
-    ]
+    ],
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-3",
@@ -249,7 +282,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-6.png"
     ],
-    "imageScale": "lg"
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-3",
@@ -260,7 +295,9 @@ window.SLIDES = [
     "images": [
       "assets/images/png3-7.png"
     ],
-    "imageScale": "lg"
+    "fullBleed": true,
+    "centerText": true,
+    "glitchIn": true
   },
   {
     "path": "path-3",

@@ -576,29 +576,9 @@
     .stage-full-bleed .float-title {
       font-size: clamp(2rem, 3.6vw, 3.4rem);
     }
-    @media (max-width: 760px) {
-      /* Mobile — fall back to stacked (image below text). The slide is too
-         narrow for the side-by-side composite to read; we let the image
-         keep its xl + tightenGap behaviour instead. */
-      .stage-full-bleed {
-        width: 92vw !important;
-        max-width: 92vw !important;
-        height: auto !important;
-        min-height: auto !important;
-        padding: 4vh 4vw !important;
-      }
-      .stage-full-bleed .scene-gallery {
-        position: relative !important;
-        inset: auto;
-        width: 100% !important;
-        height: auto !important;
-      }
-      .stage-full-bleed .float-subtitle,
-      .stage-full-bleed .float-title,
-      .stage-full-bleed .float-text {
-        max-width: 100% !important;
-      }
-    }
+    /* Mobile rules for stage-full-bleed live further down in the general
+       mobile @media block so they win the cascade against the stacked-
+       layout overrides defined there. */
 
     /* Color accents per slide for subtle text glow only */
     .slide:nth-child(15n+1)  { --accent1: #6C63FF; }
@@ -718,6 +698,95 @@
         position: absolute !important;
       }
       .build-stamp { font-size: 9px; }
+
+      /* Full-bleed slides on mobile: keep the same layered layout as
+         desktop — image as full-viewport backdrop, text overlaid in
+         the centre. Override every stacked-layout rule above so the
+         full-bleed slides ignore the mobile stacking. Slide is 200vh
+         tall (same as desktop) so the scrub timeline has room for the
+         emerge → hold → dissolve sequence; the sticky pin keeps the
+         backdrop image and text fixed in the centre while the user
+         scrolls through the read window. */
+      .slide:has(.stage-full-bleed) {
+        height: 200vh !important;
+        min-height: 200vh !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+      .slide:has(.stage-full-bleed) .slide-pin {
+        position: sticky !important;
+        top: 0 !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      .stage-full-bleed,
+      .slide-stage.stage-full-bleed {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        padding: 0 !important;
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 14px !important;
+      }
+      .stage-full-bleed .scene-gallery {
+        position: absolute !important;
+        inset: 0 !important;
+        margin: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: none !important;
+        z-index: 1 !important;
+      }
+      .stage-full-bleed .scene-gallery .float-img {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: auto !important;
+        max-height: 100vh !important;
+        align-self: center !important;
+      }
+      .stage-full-bleed .scene-gallery .float-img .float-bob {
+        width: 100% !important;
+        height: auto !important;
+      }
+      .stage-full-bleed .scene-gallery .float-img img {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 100vh !important;
+        object-fit: contain !important;
+      }
+      .stage-full-bleed .float-subtitle,
+      .stage-full-bleed .float-title,
+      .stage-full-bleed .float-text {
+        position: relative !important;
+        z-index: 5 !important;
+        max-width: 86vw !important;
+        margin: 6px 0 !important;
+        text-shadow:
+          0 0 20px rgba(0,0,0,0.98),
+          0 0 40px rgba(0,0,0,0.95),
+          0 0 70px rgba(0,0,0,0.85) !important;
+      }
+      .stage-full-bleed .float-title {
+        font-size: clamp(1.6rem, 6.5vw, 2.4rem) !important;
+      }
+      .stage-full-bleed .float-text {
+        font-size: clamp(0.85rem, 3.6vw, 1rem) !important;
+        line-height: 1.45 !important;
+      }
+      .stage-full-bleed .float-subtitle {
+        font-size: clamp(0.6rem, 2.6vw, 0.8rem) !important;
+      }
     }
 
     /* Portrait phones (typical iPhone widths): stack the crystals
@@ -779,7 +848,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build pixel-glitch-all v55</div>
+  <div class="build-stamp">build mobile-fullbleed v56</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------

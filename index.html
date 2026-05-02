@@ -126,6 +126,22 @@
       justify-content: center !important;
     }
 
+    /* Tighten-gap layout — pulls the image close to the bottom of the
+       text block (almost touching). Used on slides where the standard
+       16-24px gap reads as "image too low". */
+    .stage-tight-gap {
+      gap: 4px;
+    }
+    .stage-tight-gap .scene-gallery {
+      margin-top: 0 !important;
+    }
+    .stage-tight-gap .scene-gallery .float-img {
+      align-self: flex-start;
+    }
+    .stage-tight-gap.stage-img-xl .scene-gallery {
+      margin-top: 0 !important;
+    }
+
     /* Image-size tiers — pick one per slide via slides-data imageScale.
        md/lg flex-grow the gallery to fill the void; xl uses natural
        height directly under the text so wide composites sit right
@@ -616,7 +632,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build sparser-stars v47</div>
+  <div class="build-stamp">build tight-gap v48</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1200,7 +1216,8 @@
       stage.className = 'slide-stage stage-centred' +
         (slide.layout === 'overlay' ? ' stage-overlay' : '') +
         (slide.centerText ? ' stage-centered-text' : '') +
-        (slide.imageScale ? ' stage-img-' + slide.imageScale : '');
+        (slide.imageScale ? ' stage-img-' + slide.imageScale : '') +
+        (slide.tightenGap  ? ' stage-tight-gap' : '');
 
       // Helper — text inside a `.float-bob` span so it bobs gently in place
       // even after the GSAP emerge timeline has finished. GSAP transforms the

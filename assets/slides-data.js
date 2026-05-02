@@ -1,4 +1,7 @@
-// Auto-generated from MASTER ROADMAP doc — overview + 3 paths
+// Auto-generated from MASTER ROADMAP doc — bilingual EN + 中文.
+// Each slide carries title/subtitle/body in English with a parallel
+// titleCn/subtitleCn/bodyCn for the Chinese translation rendered
+// directly under each English line.
 window.SLIDES = [
   {
     "path": "overview",
@@ -12,302 +15,363 @@ window.SLIDES = [
     "path": "overview",
     "id": "1.1",
     "title": "MALLOUK GROUP",
-    "subtitle": "Main Entry",
-    "body": "Owned by the Mallouk Family, Mallouk Group was established in Syria in 1981 with subsidiary companies and offices in Jordan, Lebanon, Iraq, Egypt and China (Hong Kong, Shanghai & Jiangsu). One of the pioneer business groups achieving growth across Automotive Manufacturing, Distributorship (branding, marketing, sales & after-service), Public Transportation, Financing, Medical Equipment, Property Development & Constructions, Aviation and Education.",
+    "titleCn": "马络克集团",
+    "subtitle": "Main Overview",
+    "subtitleCn": "总体介绍",
+    "body": "Owned by the Mallouk Family, Mallouk Group was established in Syria in 1981 with subsidiary companies and offices in Jordan, Lebanon, Iraq, Egypt and China (Hong Kong, Shanghai & Jiangsu).\n\nThe Mallouk Group is one of the pioneer business groups achieving growth in several sectors including Automotive Manufacturing, Automotive Distributorship (branding, marketing, sales & after-service), Public Transportation, Financing, Medical Equipment, Property Development & Construction, Aviation and Education.",
+    "bodyCn": "由马络克家族持有的马络克集团于1981年成立于叙利亚，并在约旦、黎巴嫩、伊拉克、埃及和中国（香港、上海及江苏）设有分公司及办事处。\n\n马络克集团致力于汽车制造、汽车经销（品牌发展、市场营销、销售及售后）、公共交通、金融、医疗器械、地产开发及建筑、航空及教育等领域的商业发展，并在各国市场取得了卓越成绩。",
     "images": [],
     "centerText": true
   },
   {
     "path": "path-1",
     "id": "2.1",
-    "title": "Early Business",
-    "subtitle": "Path 1 · Automotive Ecosystem",
-    "body": "Importation was prohibited during the economic blockade in Syria in 1981. Mallouk Trading Company (Mallouk & Co) was established in 1991 as the Syrian government alleviated part of the importation restriction. Mallouk & Co acquired distributorship of the VW Group from Germany — AUDI, SKODA & VOLKSWAGEN — and the business rapidly covered the entire territory of Syria. Mallouk also started its motorcycle SKD factory business with HONDA, YAMAHA and SUZUKI which lasted for ten years.",
-    "images": [
-      "assets/images/png1-1.png"
-    ],
+    "title": "Earlier Business",
+    "titleCn": "早期业务",
+    "subtitle": "Path 1 · Automotive",
+    "subtitleCn": "路径一 · 汽车业务",
+    "body": "Economic Blockade — Importation was prohibited during the economic blockade in Syria in 1981.\n\nCompany Establishment — Mallouk Trading Company (Mallouk & Co) was established in 1991 in Syria as the Syrian government alleviated part of the importation restriction.\n\nExpansion — Mallouk & Co acquired distributorship of the VW Group from Germany (AUDI, SKODA & VOLKSWAGEN) and the business rapidly covered the entire territory of Syria.\n\nMotorcycle Business — Mallouk started its motorcycle SKD factory business with HONDA, YAMAHA and SUZUKI which lasted for ten years.",
+    "bodyCn": "经济封锁 —— 1981年叙利亚经济封锁期间，进口业务被禁止。\n\n公司成立 —— 随着叙利亚进口政策逐渐放宽，马络克汽车贸易公司（Mallouk & Co）于1991年在叙利亚成立。\n\n业务扩张 —— 在成为德国大众集团旗下奥迪、斯柯达及大众品牌的授权经销商后，马络克汽车贸易公司的业务在叙利亚全境迅速扩张。\n\n摩托车业务 —— 那时马络克集团便开始了长达十年的本田、雅马哈及铃木摩托车半散件组装工厂业务。",
+    "images": ["assets/images/png1-1.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-1",
     "id": "2.2",
     "title": "Automotive Trading & Distributorship",
-    "subtitle": "Path 1 · Automotive Ecosystem",
-    "body": "With the chairman's strategic vision, Mallouk & Co became one of the first companies in the world importing various kinds of vehicles from China in the 1990s — and the very first overseas buyer and distributor of multiple Chinese automotive brands. Over 200,000 units sold globally, top-10 importer awards for consecutive years in the Middle East, record owner of popularity in the automotive category on major social media. Over 40 years of outstanding sales & market share rankings.",
-    "images": [
-      "assets/images/png1-2.png"
-    ],
+    "titleCn": "汽车贸易与经销",
+    "subtitle": "Path 1 · Automotive",
+    "subtitleCn": "路径一 · 汽车业务",
+    "body": "Pioneer in Chinese Vehicles — With the chairman's strategic vision, Mallouk & Co became one of the first companies in the world importing various kinds of vehicles produced in China in the 1990s, and the very first overseas buyer and distributor of multiple Chinese automotive brands.\n\nRooted in the Middle East — With over 40 years' experience of automotive manufacturing and distributorship in the Middle East market, Mallouk & Co holds outstanding achievements in sales and market-share rankings with its partnered Chinese car brands.\n\nMarket Leader — Over 200,000 units sold globally, top-10 importer awards for consecutive years in the Middle East, and record-holding popularity in the automotive category across major social-media platforms in the region.",
+    "bodyCn": "中国汽车市场先驱 —— 得益于集团董事长的战略眼光，马络克汽车早在90年代就成为了全球最早进口各类中国工业生产汽车的企业之一，更是诸多中国汽车品牌的首位海外买家及经销商。\n\n扎根中东市场 —— 在中东市场拥有超过40年汽车生产及经销的经验，马络克汽车与合作中国汽车品牌一起，在中东市场取得了突出的销售及市场占有率成绩。\n\n行业领先者 —— 全球销售超过20万台、连续多年蝉联中东十大进口商称号，并在各大社交媒体上保持中东汽车板块受欢迎程度的领先地位。",
+    "images": ["assets/images/png1-2.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-1",
     "id": "2.3",
     "title": "Global Sales & Service Network",
-    "subtitle": "Path 1 · Automotive Ecosystem",
-    "body": "Mallouk Group operates over 30 4S facilities in its global sales-and-service network.\nSyria — Aleppo, Homs, Damascus, Latakia, Tartous & Hama.\nLebanon — Beirut.\nJordan — Amman, Irbid & Aqaba.\nIraq — Dohuk, Sulaymaniyah & Erbil.\nEgypt — Cairo.",
-    "images": [
-      "assets/images/png1-3.png"
-    ],
+    "titleCn": "全球销售及售后网络",
+    "subtitle": "Path 1 · Automotive",
+    "subtitleCn": "路径一 · 汽车业务",
+    "body": "Mallouk Group operates over 30 4S facilities in its global sales and service network.\n\nSyria — Aleppo, Homs, Damascus, Latakia, Tartous & Hama.\nLebanon — Beirut.\nJordan — Amman, Irbid & Aqaba.\nIraq — Dohuk, Sulaymaniyah & Erbil.\nEgypt — Cairo.",
+    "bodyCn": "马络克集团在其全球销售及服务网络中共拥有超过30家4S网点。\n\n叙利亚 —— 阿勒颇、霍姆斯、大马士革、拉塔基亚、塔尔图斯及哈马。\n黎巴嫩 —— 贝鲁特。\n约旦 —— 安曼、伊尔比德及亚喀巴。\n伊拉克 —— 杜胡克、苏莱曼尼亚及埃尔比勒。\n埃及 —— 开罗。",
+    "images": ["assets/images/png1-3.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-1",
     "id": "2.4",
-    "title": "Jordan Market Achievement",
-    "subtitle": "Path 1 · Automotive Ecosystem",
-    "body": "Mallouk Group made a historical breakthrough in the Jordan market. In May 2023 it reached No. 1 in monthly sales and market share with CHANGAN — the first time a Chinese automotive brand led an overseas market. Changan remained No. 1 across 2023 and held a top-3 position through 2024 and 2025.",
-    "images": [
-      "assets/images/png1-4.png"
-    ],
+    "title": "Remarkable Achievement in Jordan Market",
+    "titleCn": "约旦市场表现突出",
+    "subtitle": "Path 1 · Automotive",
+    "subtitleCn": "路径一 · 汽车业务",
+    "body": "Market Position — No. 1 ranking achieved by Changan in the Jordan market, May 2023.\n\nHistoric Achievement — First time a Chinese automotive brand led an overseas market.\n\nMallouk Group has made a historical breakthrough with its partnered Chinese car brands in terms of sales performance and market share in the Jordan market. In May 2023, Mallouk Group reached No. 1 in monthly sales and market share with CHANGAN. CHANGAN's annual sales and market-share ranking in Jordan remained No. 1 for 2023 and Top 3 for 2024 and 2025.",
+    "bodyCn": "市场排名第一 —— 2023年5月长安品牌首次实现中国品牌汽车在海外市场排名第一。\n\n历史性的突破 —— 马络克集团所经营的中国汽车品牌在约旦市场的销售表现及市场占有率均实现了历史性的突破。\n\n2023年5月，马络克集团帮助合作伙伴长安汽车在约旦市场取得了月销量及月市场占有率排名第一的成绩，并于2023年实现年销量及年市场占有率排名第一。长安汽车在约旦市场的年销量及市场排名在2024及2025年仍保持前三。",
+    "images": ["assets/images/png1-4.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-1",
     "id": "2.5",
-    "title": "Automotive Manufacturing",
-    "subtitle": "Path 1 · Automotive Ecosystem",
-    "body": "Mallouk Industries owns one of the biggest and most advanced automotive KD assembly plants in Homs-Hisya industrial city. 30 work stations for passenger cars, 22 for pick-up trucks. Granted CKD production license with welding and painting lines ensuring the highest quality standards. A full manufacturing ecosystem with skilled workforce and advanced facilities.",
-    "images": [
-      "assets/images/png1-5.png"
-    ],
+    "title": "Distinguished Partnerships",
+    "titleCn": "杰出的伙伴关系",
+    "subtitle": "Path 1 · Automotive",
+    "subtitleCn": "路径一 · 汽车业务",
+    "body": "Historic Visit — Mallouk Group was honoured by the unique and special visit of Chairman Mr. Li Shufu and CEO Mr. An Conghui from GEELY Holding Group to our network and establishments in Syria.\n\nOpening Ceremony — Historic opening ceremony of Mallouk & Co (Homs Branch) under the auspices of the Minister of Transportation of Syria, the Mayor of Homs and Chairman Mr. Li Shufu from GEELY Holding Group.",
+    "bodyCn": "历史性的到访 —— 马络克集团曾有幸于叙利亚的网点接待吉利控股集团李书福董事长以及安聪慧总裁一行的特别访问。\n\n开幕仪式 —— 马络克汽车（霍姆斯网点）在叙利亚交通部长、霍姆斯市市长以及吉利控股集团李书福董事长的见证下举行了历史性的开幕仪式。",
+    "images": ["assets/images/png3-2.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-1",
     "id": "2.6",
-    "title": "Manufacturing Workflow",
-    "subtitle": "Path 1 · Automotive Ecosystem",
-    "body": "Planning — detailed production scheduling and resource allocation. Component Sourcing — procurement from trusted suppliers. Assembly — precision manufacturing with skilled technicians. Quality Control — rigorous testing and inspection. Distribution — efficient delivery to the dealership network.",
-    "images": [
-      "assets/images/png1-6.png"
-    ],
+    "title": "Honors & Awards",
+    "titleCn": "荣誉及奖项",
+    "subtitle": "Path 1 · Automotive",
+    "subtitleCn": "路径一 · 汽车业务",
+    "body": "Syria-China Business Council — Mallouk Group is an active member of the Syria-China Business Council, with its general manager serving as the Vice Chairman of the organization.\n\nTop Trading Company — Mallouk Group is one of the top 10 trading companies in Syria and was awarded the biggest importer from China to Syria by the China Council for the Promotion of International Trade for three consecutive years.\n\nPartner Recognition — Mallouk Group continues to receive numerous awards from its Chinese partners every year.",
+    "bodyCn": "中叙商务理事会 —— 马络克集团是中国-叙利亚商务理事会的活跃成员，集团总经理更担任理事会副主席一职。\n\n顶级贸易商 —— 作为叙利亚十大贸易商之一，马络克集团曾被中国国际贸易促进委员会（贸促会）连续三年评为全叙利亚从中国进口最大贸易商。\n\n合作奖项 —— 马络克集团每年都收获其中国合作伙伴所颁发的各类合作奖项。",
+    "images": ["assets/images/png3-3.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-1",
     "id": "2.7",
-    "title": "Strategic Location",
-    "subtitle": "Path 1 · Automotive Ecosystem",
-    "body": "Hisya industrial city sits at a strategic crossroads connecting Syria with Asia, Europe and Africa. Distances: Damascus 110–150 km, Lebanon 45 km, Jordan 200 km, Turkey & Iraq 350 km, Tartous Port 100 km, Latakia Port 180 km.",
-    "images": [
-      "assets/images/png1-7.png"
-    ],
+    "title": "Automotive Manufacturing",
+    "titleCn": "汽车制造",
+    "subtitle": "Path 1 · Automotive",
+    "subtitleCn": "路径一 · 汽车业务",
+    "body": "Mallouk Industries owns the biggest and most advanced automotive KD assembly plant, located in Homs-Hisya industrial city — 30 work stations for the passenger-car assembly line and 22 work stations for the pick-up truck assembly line.\n\nAdvanced Manufacturing Facilities · Skilled Workforce Development · Complete Manufacturing Eco-system.",
+    "bodyCn": "马络克工业在霍姆斯希斯耶工业城市拥有全国规模最大且技术最先进的汽车半散件装配线。其中乘用车装配线共有30个工位，皮卡装配线共有22个工位。\n\n先进的生产设施 · 娴熟的操作技术 · 完整的制造生态系统。",
+    "images": ["assets/images/png1-5.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-1",
     "id": "2.8",
-    "title": "Used Car Trading",
-    "subtitle": "Path 1 · Automotive Ecosystem",
-    "body": "Mallouk Co is among the earliest companies importing Chinese and international used cars — especially EVs — from China to the Middle East, with an annual volume exceeding 15,000 units.",
-    "images": [
-      "assets/images/png1-8.png"
-    ],
+    "title": "CKD Production License",
+    "titleCn": "CKD 全散件生产",
+    "subtitle": "Path 1 · Automotive Manufacturing",
+    "subtitleCn": "路径一 · 汽车制造",
+    "body": "As one of the few companies granted a CKD production license within the country, Mallouk Group has developed the capabilities of its manufacturing facilities in CKD production through the establishment of welding and painting lines that ensure the highest quality standards.",
+    "bodyCn": "作为国内仅有的数家具备CKD生产执照的企业之一，马络克集团通过日益完善的焊接线及涂装线，实现其生产设施的全散件生产能力，并进一步巩固高质量的生产标准。",
+    "images": ["assets/images/png1-6.png"],
     "fullBleed": true,
-    "centerText": true,
+    "glitchIn": true
+  },
+  {
+    "path": "path-1",
+    "id": "2.9",
+    "title": "Manufacturing Workflow",
+    "titleCn": "制造流程",
+    "subtitle": "Path 1 · Automotive Manufacturing",
+    "subtitleCn": "路径一 · 汽车制造",
+    "body": "Planning — Detailed production scheduling and resource allocation.\nComponent Sourcing — Procurement of high-quality parts from trusted suppliers.\nAssembly — Precision manufacturing with skilled technicians.\nQuality Control — Rigorous testing and inspection processes.\nDistribution — Efficient delivery to the dealership network.",
+    "bodyCn": "计划 —— 精准的生产计划及资源配置。\n配件采购 —— 可靠供应商及高品质采购标准。\n装配 —— 娴熟技术人员及精密制造工艺。\n质量把控 —— 严格的测试及检验流程。\n分销 —— 分销网络高效配送。",
+    "images": ["assets/images/png1-6.png"],
+    "fullBleed": true,
+    "glitchIn": true
+  },
+  {
+    "path": "path-1",
+    "id": "2.10",
+    "title": "Strategic Position — Hisya",
+    "titleCn": "战略位置 · 希斯耶",
+    "subtitle": "Path 1 · Automotive Manufacturing",
+    "subtitleCn": "路径一 · 汽车制造",
+    "body": "Location — Hisya, Homs, Syria.\nSize — 40,000 sqm.\n\nAbout Hisya — Hisya is an industrial cluster combining residential, cultural, educational and modern-services functions. Home to a population of about 70,000, Hisya sits at a strategic location, connecting various parts of Syria as well as three continents (Asia, Europe and Africa) by road network.",
+    "bodyCn": "工厂位置 —— 叙利亚 · 霍姆斯 · 希斯耶工业城。\n工厂占地面积 —— 40,000 平方米。\n\n关于希斯耶 —— 希斯耶工业城是一个集工业、住宅、文化、教育及现代服务业等元素于一体的产业聚集地，人口约7万。希斯耶占据重要的地理位置，不但拥有通往叙利亚国内各地的道路交通网络，更连接亚洲、欧洲和非洲三大洲。",
+    "images": ["assets/images/png1-7.png"],
+    "fullBleed": true,
+    "glitchIn": true
+  },
+  {
+    "path": "path-1",
+    "id": "2.11",
+    "title": "Strategic Location Advantages",
+    "titleCn": "战略性的地理优势",
+    "subtitle": "Path 1 · Automotive Manufacturing",
+    "subtitleCn": "路径一 · 汽车制造",
+    "body": "Damascus / Damascus Airport — 110 / 150 km.\nLebanon Border — 45 km.\nJordan Border — 200 km.\nTurkey Border — 350 km.\nIraq Border — 350 km.\nTartous Port — 100 km.\nLatakia Port — 180 km.",
+    "bodyCn": "大马士革 / 大马士革机场 —— 110 / 150 公里。\n黎巴嫩边境 —— 45 公里。\n约旦边境 —— 200 公里。\n土耳其边境 —— 350 公里。\n伊拉克边境 —— 350 公里。\n塔尔图斯港口 —— 100 公里。\n拉塔基亚港口 —— 180 公里。",
+    "images": ["assets/images/png1-7.png"],
+    "fullBleed": true,
+    "glitchIn": true
+  },
+  {
+    "path": "path-1",
+    "id": "2.12",
+    "title": "Used Car Trading",
+    "titleCn": "二手车贸易",
+    "subtitle": "Path 1 · Automotive",
+    "subtitleCn": "路径一 · 汽车业务",
+    "body": "Mallouk & Co is among the earliest international companies importing all ranges of Chinese and international-brand used cars — especially EVs — from China to the Middle East market, with an annual volume of more than 15,000 units.",
+    "bodyCn": "马络克汽车是最早从中国进口各类型中国及国际品牌二手车到中东市场的公司之一，尤其是新能源汽车，年进口量超过15,000台。",
+    "images": ["assets/images/png1-8.png"],
+    "fullBleed": true,
     "glitchIn": true
   },
   {
     "path": "path-2",
     "id": "3.1",
-    "title": "Finance Services",
-    "subtitle": "Path 2 · Business Diversification",
-    "body": "Founded in 1995 with over 30 years of history. More than 100,000 cars financed. Total financing exceeding USD 1.5 billion. Dedicated accounting, legal, credit-analysis and collection teams. 7 regional offices covering the country.",
-    "images": [
-      "assets/images/png2-1.png"
-    ],
+    "title": "Reconstruction Government Tenders",
+    "titleCn": "战后重建招标项目",
+    "subtitle": "Path 2 · Diversification",
+    "subtitleCn": "路径二 · 多元化业务",
+    "body": "Vehicles Awarded — Buses 1,600 units · Passenger cars 1,000 units · Pick-ups 1,000 units · Specialized vehicles 240 units · Trucks 300 units · Tractors 300 units.\n\nGovernment Departments Cooperated With — Ministry of Presidential Affairs · Ministry of Civil Affairs · Ministry of Health · Ministry of Transportation · Ministry of Agriculture.",
+    "bodyCn": "中标车辆 —— 公交车 1,600 台 · 乘用车 1,000 台 · 皮卡 1,000 台 · 特种车辆 240 台 · 卡车 300 台 · 拖拉机 300 台。\n\n合作政府部门 —— 总统事务部 · 内政部 · 卫生部 · 交通部 · 农业部。",
+    "images": ["assets/images/png3-4.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-2",
     "id": "3.2",
-    "title": "Public Transportation",
-    "subtitle": "Path 2 · Business Diversification",
-    "body": "In 2009 Mallouk Group became the first licensed private public-transportation provider in Damascus. Taxi Phone service covers the entire city with a modern fleet, 240 drivers and an advanced locating system. In 2010 SHAMUNA was established, replacing microbuses with 1,200 eco-friendly buses providing safe and efficient transport.",
-    "images": [
-      "assets/images/png2-2.png"
-    ],
+    "title": "Finance Services",
+    "titleCn": "马络克集团汽车金融服务",
+    "subtitle": "Path 2 · Diversification",
+    "subtitleCn": "路径二 · 多元化业务",
+    "body": "Founded in 1995 with a history of over 30 years.\nTotal of more than 100,000 cars financed.\nTotal amount of USD 1,511,520,000 financed.\nDedicated accounting, legal, credit-analysis, due-diligence and collection teams at every regional office.\n7 regional offices covering the whole country.",
+    "bodyCn": "成立于1995年，拥有超过30年的历史。\n累计为超过100,000台车提供金融服务。\n累计金融服务金额超过1,511,520,000美元。\n各区域办事处均设有专业财务、法务、信用分析、尽职调查及催收团队。\n7个区域办事处覆盖全国。",
+    "images": ["assets/images/png2-1.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-2",
     "id": "3.3",
-    "title": "Property Development",
-    "subtitle": "Path 2 · Business Diversification",
-    "body": "IN ARCHITECTS operates across Syria, Iraq, Jordan and Lebanon. Over 15 years of experience. Developed and managed more than 300,000 sqm of commercial property and 90,000 sqm of residential property.",
-    "images": [
-      "assets/images/png2-3.png"
-    ],
+    "title": "Public Transportation Services",
+    "titleCn": "公共交通服务",
+    "subtitle": "Path 2 · Diversification",
+    "subtitleCn": "路径二 · 多元化业务",
+    "body": "First Licensed Private Public-Transportation Service Provider — In 2009 Mallouk Group entered the public-transportation sector, becoming the first and sole licensed private public-transportation services provider in Damascus, Syria.\n\nCitywide Coverage — Taxi Phone, with its distinguished red-and-white fleet, covers the whole of Damascus, supported by highly-skilled drivers and a fast locating system.\n\nDiverse Workforce — Up to 240 skilled male and female drivers form the Taxi Phone team — one of our signature advantages.\n\nQuality Service — Reliability and cost-efficiency for Syrian residents and visitors.",
+    "bodyCn": "首家持牌私营公共交通服务商 —— 2009年马络克集团进入公共交通领域，成为大马士革第一家、唯一一家具有公共交通运营服务执照的私人企业。\n\n全城覆盖 —— 出租车叫车服务公司覆盖整个大马士革，配备全新红白相间色车队、高素质驾驶员团队及最前沿科技支持的定位系统。\n\n多元化队伍 —— 车队拥有240名技术精湛的男性及女性驾驶员，为大马士革城市勾勒出一道亮丽的风景线。\n\n优质服务 —— 致力于为叙利亚当地百姓及游客提供可靠且高性价比的服务。",
+    "images": ["assets/images/png2-2.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-2",
     "id": "3.4",
-    "title": "Major Projects",
-    "subtitle": "Path 2 · Business Diversification",
-    "body": "Al Shafi Hospital — 5,000 sqm, 99 beds, including general medicine, surgery, gynecology and emergency center. Al TAL Development — 82.5 hectares including residential, tourism, business, green spaces and infrastructure areas.",
-    "images": [
-      "assets/images/png2-4.png"
-    ],
+    "title": "SHAMUNA — City Buses",
+    "titleCn": "SHAMUNA 城市公交",
+    "subtitle": "Path 2 · Public Transportation",
+    "subtitleCn": "路径二 · 公共交通",
+    "body": "In 2010, with the success of Taxi Phone, Mallouk Group received a second government approval to replace all small microbuses (which threatened the environment) with new ECO-friendly, internationally-recognized city buses.\n\nMallouk Group registered SHAMUNA Company and imported 1,200 city buses, allocating them across the main cities of Syria — providing safe, efficient and quality public-transportation services for all people in the country.",
+    "bodyCn": "在出租车叫车服务大获成功的基础上，马络克集团于2010年再次获政府批准，将城市道路上威胁环境的中小巴士替换为绿色环保且经国际认证的城市巴士。\n\n马络克集团成立了 SHAMUNA 公司，并进口了1,200台城市公交车，陆续投入到叙利亚各大城市，致力于为当地百姓提供安全、高效且高质量的公共交通服务。",
+    "images": ["assets/images/png2-2.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-2",
     "id": "3.5",
-    "title": "Healthcare Expansion",
-    "subtitle": "Path 2 · Business Diversification",
-    "body": "Phoenix Advanced Systems Ltd, established in 2014. Provides medical equipment, gases and generators. Exclusive distributor of Atlas Copco. Jordan ranks first in Middle East healthcare and top 5 globally, supporting medical tourism.",
-    "images": [
-      "assets/images/png2-5.png"
-    ],
-    "centerText": true,
+    "title": "Property Development & Construction",
+    "titleCn": "地产开发及建设",
+    "subtitle": "Path 2 · Diversification",
+    "subtitleCn": "路径二 · 多元化业务",
+    "body": "IN ARCHITECTS — Under Mallouk Group, IN ARCHITECTS is a commercial and residential real-estate company with presence in Syria, Iraq, Jordan and Lebanon.\n\nExtensive Experience — Over 15 years of success in real-estate development and property management.\n\nImpressive Portfolio — Developed and managed more than 300,000 sqm of commercial properties and over 90,000 sqm of residential properties.\n\nDiverse Expertise — A wide range of product types with a focus on value creation in the marketplace.",
+    "bodyCn": "IN ARCHITECTS —— 马络克集团旗下的 IN ARCHITECTS 公司是一家商业及住宅地产公司，业务涵盖叙利亚、伊拉克、约旦及黎巴嫩等多个市场。\n\n丰富经验 —— 在地产开发及物业管理领域拥有超过15年的成功经验。\n\n出色业绩 —— 累计开发及管理超过 300,000 平米商业地产以及 90,000 平米住宅地产。\n\n专业广泛 —— 覆盖各产品领域，并聚焦于产品在市场上的价值创造。",
+    "images": ["assets/images/png2-3.png"],
     "fullBleed": true,
     "glitchIn": true
   },
   {
     "path": "path-2",
     "id": "3.6",
-    "title": "Industrial Expansion",
-    "subtitle": "Path 2 · Business Diversification",
-    "body": "Al Ghad Al Moshreq Hygienic Paper Company, established in 2020. Acquired one of the largest hygienic-paper factories in Jordan. Produces high-quality hygiene products with advanced manufacturing capabilities.",
-    "images": [
-      "assets/images/png2-6.png"
-    ],
+    "title": "Al Shafi Hospital Project",
+    "titleCn": "Al Shafi 医院项目",
+    "subtitle": "Path 2 · Property Development",
+    "subtitleCn": "路径二 · 地产开发",
+    "body": "Project Details — Under-construction project by IN ARCHITECTS in Mazze, Damascus. The Al Shafi Hospital covers a total of 5,000 sqm with 99 beds — 89 in-patient beds and 10 day-care beds.\n\nMedical Specialties — In-patient specialties include General Medicine, General Surgery and Gynecology. The hospital is also equipped with an Urgent Care Center incorporating a local-injuries unit and a medical-assessment unit.",
+    "bodyCn": "项目详情 —— 大马士革 MAZZE 地区的 IN ARCHITECTS 在建项目 AL SHAFI 医院，总占地面积 5,000 平方米，拥有99个床位，其中89张住院床位、10张日间护理床位。\n\n医院特色 —— 住院特色门诊为全科医疗、外科及妇科。医院同时配备整合了外伤科及医疗评估科的紧急护理中心。",
+    "images": ["assets/images/png2-4.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-2",
     "id": "3.7",
-    "title": "Renewable Energy",
-    "subtitle": "Path 2 · Business Diversification",
-    "body": "Solar Power Storage project in Homs with a capacity of 100 MW — a major investment in sustainable energy and environmental responsibility.",
-    "images": [
-      "assets/images/png2-7.png"
-    ],
+    "title": "Al TAL Development Project",
+    "titleCn": "Al TAL 地产开发项目",
+    "subtitle": "Path 2 · Property Development",
+    "subtitleCn": "路径二 · 地产开发",
+    "body": "Property Development Project — Al TAL is located at the northern entrance of Damascus, mediating with many urban and tourism communities.\n\nArea — 82.5 hectares.\n\nLand Use — Roads & Public Squares 20% · Public Services 2% · Parks & Green Spaces 13% · Business & Investment 22% · Touristic Projects 20% · Residential Areas 23%.",
+    "bodyCn": "地产开发项目 —— Al TAL 位于大马士革北入口，连接诸多城市及旅游商圈。\n\n总占地 —— 82.5 公顷。\n\n用地规划 —— 道路及公共区域 20% · 公共服务设施 2% · 公园及绿化 13% · 商务及投资项目 22% · 旅游项目 20% · 住宅区域 23%。",
+    "images": ["assets/images/png2-4.png"],
     "fullBleed": true,
-    "centerText": true,
+    "glitchIn": true
+  },
+  {
+    "path": "path-2",
+    "id": "3.8",
+    "title": "Phoenix Advanced Systems Ltd",
+    "titleCn": "医疗器械公司 Phoenix",
+    "subtitle": "Path 2 · Diversification",
+    "subtitleCn": "路径二 · 多元化业务",
+    "body": "New Business Venture — In 2014 Mallouk Group's ambition wasn't limited to automotive in Jordan; the establishment of Phoenix Advanced Systems Ltd marked entry into a whole new field.\n\nHealthcare Focus — Phoenix provides healthcare products and services including Medical Equipment, Medical Gases and Gas Generators.\n\nExclusive Distribution — Phoenix is the exclusive distributor of ATLAS COPCO A/S — specialized in designing and manufacturing on-site nitrogen / oxygen generator solutions using Pressure Swing Adsorption, plus a range of medical equipment.\n\nStrategic Market — Ranked first in the Middle East and fifth in the world, Jordan is on the fast track in healthcare and a leading medical-tourism destination, especially for visitors from the GCC states.",
+    "bodyCn": "新业务版图 —— 自2014年起，马络克集团的业务不再局限于汽车行业，Phoenix Advanced Systems Ltd 公司在约旦的成立标志着集团正式跨入全新领域。\n\n聚焦医疗 —— Phoenix 是一家提供专业医疗产品及服务的公司，产品涵盖医疗器械、医疗气体以及气体发生装置。\n\n独家经销 —— Phoenix 是 ATLAS COPCO A/S 公司的独家经销商，专注于运用变压吸附技术（PSA）设计和生产现场氮气和氧气发生装置以及各类医疗器械。\n\n战略市场 —— 位居全中东之首、全球前五的约旦健康医疗产业正向世界一流梯队进发，并日益成为全球最受欢迎的医疗旅游目的地之一，尤其受海湾国家游客欢迎。",
+    "images": ["assets/images/png2-5.png"],
+    "fullBleed": true,
+    "glitchIn": true
+  },
+  {
+    "path": "path-2",
+    "id": "3.9",
+    "title": "Al Ghad Al Moshreq Hygienic Paper Company",
+    "titleCn": "Al Ghad Al Moshreq 卫生纸公司",
+    "subtitle": "Path 2 · Diversification",
+    "subtitleCn": "路径二 · 多元化业务",
+    "body": "Expansion — In 2020 Mallouk Group further expanded its industrial investments in Jordan with the establishment of Al Ghad Al Moshreq Hygienic Paper Company.\n\nAcquisition — Al Ghad Al Moshreq later acquired one of the largest hygienic-paper factories in Jordan (Al Rayaat Company).\n\nQuality Production — Al Ghad Al Moshreq produces hygienic paper to international standards with premium quality.\n\nDiverse Capabilities — Manufacturing and packaging capabilities for a wide range of professional hygiene products.",
+    "bodyCn": "业务扩展 —— 2020年马络克集团通过成立 Al Ghad Al Moshreq 卫生纸公司，进一步扩大了在约旦的产业投资。\n\n收购整合 —— Al Ghad Al Moshreq 后续收购了全约旦最大的卫生纸工厂之一（Al Rayaat Company）。\n\n高品质生产 —— Al Ghad Al Moshreq 出品达到国际标准的高质量卫生纸。\n\n多元产能 —— 拥有各大品类专业清洁用品的生产及包装能力。",
+    "images": ["assets/images/png2-6.png"],
+    "fullBleed": true,
+    "glitchIn": true
+  },
+  {
+    "path": "path-2",
+    "id": "3.10",
+    "title": "Renewable Energy — Solar Power Storage",
+    "titleCn": "可再生能源 · 太阳能储能项目",
+    "subtitle": "Path 2 · Diversification",
+    "subtitleCn": "路径二 · 多元化业务",
+    "body": "The Solar Power Storage project invested by Mallouk Group is located in Homs, Syria. The first phase of solar power generation and storage with 100 MW capacity is already in use. This renewable-energy project represents a significant investment in Syria's sustainable-energy future and demonstrates Mallouk Group's commitment to environmental responsibility.",
+    "bodyCn": "马络克集团所投资的太阳能储能项目位于叙利亚霍姆斯工业区。第一期产能100兆瓦的光伏储能系统已投入使用。该可再生能源项目对叙利亚可持续能源发展的未来具有重要影响，并体现了马络克集团始终以环境保护为己任的决心。",
+    "images": ["assets/images/png2-7.png"],
+    "fullBleed": true,
     "glitchIn": true
   },
   {
     "path": "path-3",
     "id": "4.1",
-    "title": "Global Offices",
-    "subtitle": "Path 3 · Global Strategy & Future",
-    "body": "Subsidiaries in Hong Kong and Jiangsu, plus a regional office in Shanghai Tower. They serve as hubs for research, manufacturing coordination and trading operations.",
-    "images": [
-      "assets/images/png3-1.png"
-    ],
+    "title": "Subsidiaries — Hong Kong, Shanghai & Jiangsu",
+    "titleCn": "中国分公司及办事处 · 香港、上海、江苏",
+    "subtitle": "Path 3 · Future & Strategy",
+    "subtitleCn": "路径三 · 未来与战略",
+    "body": "Strategic Location — In order to cater for Mallouk Group's global development needs, the group has set up subsidiaries in Hong Kong and Jiangsu, plus a regional office at the top of Shanghai Tower.\n\nThese offices serve as hubs in Asia for the group's research, manufacturing and trading operations and facilitate coordination with local manufacturing partners, suppliers and service providers.",
+    "bodyCn": "战略选址 —— 为更好地满足马络克集团在全球的发展需求，集团分别在香港和江苏成立分公司，并在上海之巅 —— 上海中心大厦设立上海办事处。\n\n这些分公司及办事处作为集团在亚洲的研发、制造及贸易运营中心，为集团更好地与生产伙伴、供应商及服务提供商对接提供了便利。",
+    "images": ["assets/images/png3-1.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-3",
     "id": "4.2",
-    "title": "Partnerships",
-    "subtitle": "Path 3 · Global Strategy & Future",
-    "body": "Strong partnerships with major global players such as GEELY. Hosted chairman visits and major opening ceremonies with government presence.",
-    "images": [
-      "assets/images/png3-2.png"
-    ],
+    "title": "Future Investment — Reconstruction",
+    "titleCn": "投资未来 · 战后重建",
+    "subtitle": "Path 3 · Future & Strategy",
+    "subtitleCn": "路径三 · 未来与战略",
+    "body": "Syria Reconstruction Focus — With the General Manager of Mallouk Group serving as Vice Chairman of the Syria-China Business Council, the group's near-future focus is the reconstruction of Syria.\n\nStrategic Partnerships — Developing relationships with government agencies and international organizations to facilitate reconstruction efforts.\n\nSpectrum Trading Company — Founded as the first company participating in reconstruction in Syria.\n\nEconomic Development — Contributing to economic revitalization through strategic investments in infrastructure and development projects.",
+    "bodyCn": "聚焦叙利亚战后重建 —— 马络克集团总经理作为中叙商务理事会副主席，将重点投身于叙利亚的战后重建工作。\n\n战略伙伴关系 —— 积极开拓与各政府部门机构及国际组织间的协同合作，助力重建。\n\nSpectrum Trading Company —— 作为最早一批参与叙利亚战后重建的公司孕育而生。\n\n经济发展 —— 通过对基建及开发项目的战略性投资，为经济振兴做出贡献。",
+    "images": ["assets/images/png3-4.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-3",
     "id": "4.3",
-    "title": "Honors & Awards",
-    "subtitle": "Path 3 · Global Strategy & Future",
-    "body": "Active member of the Syria-China Business Council. Ranked among the top-10 trading companies in Syria. Awarded largest importer from China for three consecutive years. Continuous partner-recognition awards.",
-    "images": [
-      "assets/images/png3-3.png"
-    ],
+    "title": "Future Investment — Levant University",
+    "titleCn": "投资未来 · Levant 大学",
+    "subtitle": "Path 3 · Future & Strategy",
+    "subtitleCn": "路径三 · 未来与战略",
+    "body": "Levant University is the first educational project established and managed by Mallouk Group, offering various specialized and training courses.\n\nThe project is located in Damascus, with an area of approximately 20,000 sqm and an investment capital of USD 10,000,000.",
+    "bodyCn": "Levant 大学是由马络克集团筹建运营的第一所教育机构项目，开设各类专业及培训课程。\n\n项目坐落于大马士革，总占地约2万平方米，总投资额超过1,000万美元。",
+    "images": ["assets/images/png3-6.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-3",
     "id": "4.4",
-    "title": "Government Projects",
-    "subtitle": "Path 3 · Global Strategy & Future",
-    "body": "Participation in reconstruction tenders including 1,600 buses, 1,000 passenger cars, 1,000 pickups, 240 specialized vehicles, 300 trucks and tractors. Collaboration with multiple ministries — transport, health and agriculture.",
-    "images": [
-      "assets/images/png3-4.png"
-    ],
+    "title": "Future Investment — Fly Syria",
+    "titleCn": "投资未来 · 叙利亚航空",
+    "subtitle": "Path 3 · Future & Strategy",
+    "subtitleCn": "路径三 · 未来与战略",
+    "body": "Aviation Venture — Fly Syria, under Mallouk Group, has its headquarters located in Damascus.\n\nInitial Operations — Fly Syria aims to provide its first phase of services in the Middle East region (3.5 fly-hour / trip) with an investment of 5 airplanes in the first financial year.\n\nExpansion Plans — Plans to fly to up to 10 destinations by the third financial year.\n\nEconomic Impact — Creating jobs and improving regional connectivity through new air-transportation options.",
+    "bodyCn": "航空业务 —— 马络克集团旗下的叙利亚航空公司总部位于大马士革。\n\n初期运营 —— 叙利亚航空设立初期主要服务于运营中东地区航班（单段航程3.5小时），并计划于第一财政年度投资5架客机。\n\n扩展计划 —— 计划在第三财政年度开通多达10条航线。\n\n经济影响 —— 通过新航空运输业务创造更多就业机会，并进一步提升区域经济链接。",
+    "images": ["assets/images/png3-7.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
   },
   {
     "path": "path-3",
     "id": "4.5",
-    "title": "Future Investments",
-    "subtitle": "Path 3 · Global Strategy & Future",
-    "body": "Focus on Syria reconstruction and economic development. Spectrum Trading Company established to support reconstruction efforts. Strategic partnerships with government and international organizations.",
-    "images": [],
-    "centerText": true
-  },
-  {
-    "path": "path-3",
-    "id": "4.6",
-    "title": "Education",
-    "subtitle": "Path 3 · Global Strategy & Future",
-    "body": "Levant University project in Damascus — 20,000 sqm area, $10M investment, offering specialized education programs.",
-    "images": [
-      "assets/images/png3-6.png"
-    ],
+    "title": "Contact Us",
+    "titleCn": "联系我们",
+    "subtitle": "Path 3 · Get in Touch",
+    "subtitleCn": "路径三 · 联系方式",
+    "body": "Damascus, Syria\nTel: +963 11 221 7173 · Fax: +962 11 221 1167\nEmail: syria@mallouk-co.com\n\nAmman, Jordan\nTel: +962 6 505 3939 · Fax: +962 6 505 6565\nEmail: jordan@mallouk-co.com\n\nErbil, Iraq\nTel: +964 773 440 4099 · Fax: +964 773 440 4099\nEmail: erbil@mallouk-co.com\n\nShanghai, China\nTel: +86 386 932 529\n29F, Shanghai Tower, No. 501 Yincheng Road, Pudong New District, Shanghai 200221\nEmail: ceoassistant@mallouk.cn",
+    "bodyCn": "叙利亚 · 大马士革\n电话：+963 11 221 7173 · 传真：+962 11 221 1167\n邮箱：syria@mallouk-co.com\n\n约旦 · 安曼\n电话：+962 6 505 3939 · 传真：+962 6 505 6565\n邮箱：jordan@mallouk-co.com\n\n伊拉克 · 埃尔比勒\n电话：+964 773 440 4099 · 传真：+964 773 440 4099\n邮箱：erbil@mallouk-co.com\n\n中国 · 上海\n电话：+86 386 932 529\n上海市浦东新区银城路501号上海中心大厦29F，邮编200221\n邮箱：ceoassistant@mallouk.cn",
+    "images": ["assets/images/png3-8.png"],
     "fullBleed": true,
-    "centerText": true,
     "glitchIn": true
-  },
-  {
-    "path": "path-3",
-    "id": "4.7",
-    "title": "Aviation",
-    "subtitle": "Path 3 · Global Strategy & Future",
-    "body": "Fly Syria aviation project. Initial phase includes 5 aircraft operating within the Middle East. Expansion to 10 destinations planned. Focus on improving regional connectivity and job creation.",
-    "images": [
-      "assets/images/png3-7.png"
-    ],
-    "fullBleed": true,
-    "centerText": true,
-    "glitchIn": true
-  },
-  {
-    "path": "path-3",
-    "id": "4.8",
-    "title": "MALLOUK'S FAMILY",
-    "subtitle": "",
-    "body": "",
-    "images": [
-      "assets/images/png3-8.png"
-    ],
-    "imageScale": "lg"
   }
 ];

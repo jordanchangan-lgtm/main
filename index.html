@@ -848,7 +848,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build car-engine-icon v57</div>
+  <div class="build-stamp">build car-engine-icon v58</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1804,39 +1804,56 @@
       try {
         loadCrystalModel('CarEngine', (model) => {
           try {
-            const box = new THREE.Box3().setFromObject(model);
+            // Wrap the loaded scene in a parent group so we can scale +
+            // recentre via that group, sidestepping any per-mesh transforms
+            // baked into the CAD hierarchy (matrices set on inner nodes).
+            const wrap = new THREE.Group();
+            wrap.add(model);
+            // Force-update world matrices so Box3 sees the real bounds even
+            // for nested CAD nodes that haven't been rendered yet.
+            wrap.updateMatrixWorld(true);
+            const box = new THREE.Box3().setFromObject(wrap);
             const size = box.getSize(new THREE.Vector3());
             const centre = box.getCenter(new THREE.Vector3());
-            if (!isFinite(size.x) || size.x === 0) return;
+            const maxDim = Math.max(size.x, size.y, size.z);
+            if (!isFinite(maxDim) || maxDim === 0) {
+              console.warn('CarEngine bbox empty, keeping procedural', size);
+              return;
+            }
+            // Recentre via the inner model so the wrap stays at origin.
             model.position.sub(centre);
-            // Engine is large in CAD units — fit its largest dimension to
-            // ~2.6 world units (matches the procedural car's bounding size
-            // so the camera-fly-through math doesn't need re-tuning).
-            const fitScale = 2.6 / Math.max(size.x, size.y, size.z);
-            model.scale.setScalar(fitScale);
-            // Three-quarter view: tilt slightly so the cylinders + intake
-            // manifold are clearly visible.
-            model.rotation.set(0.18, -0.55, 0);
-            // Boost shading on the engine's PBR materials so it reads even
-            // against the dark void backdrop. Most Khronos sample meshes
-            // use MeshStandardMaterial — bump emissive a touch for glow.
-            model.traverse((node) => {
-              if (node.isMesh && node.material) {
-                const mats = Array.isArray(node.material) ? node.material : [node.material];
-                mats.forEach((m) => {
-                  if ('metalness' in m) m.metalness = Math.max(m.metalness || 0, 0.65);
-                  if ('roughness' in m) m.roughness = Math.min(m.roughness == null ? 0.4 : m.roughness, 0.55);
-                  if (m.emissive)       m.emissive.setHex(0x111933);
-                  if ('emissiveIntensity' in m) m.emissiveIntensity = 0.35;
-                  m.needsUpdate = true;
-                });
+            // Fit engine's largest dimension to 3.0 world units (slightly
+            // larger than the previous toy car so the cylinders + crank
+            // read on a 220×280px crystal canvas).
+            const fitScale = 3.0 / maxDim;
+            wrap.scale.setScalar(fitScale);
+            // Three-quarter view so cylinders + intake manifold are visible.
+            wrap.rotation.set(0.25, -0.6, 0);
+            // Override every material with a metallic look that pops against
+            // the dark void backdrop. The CAD-style PBR materials default to
+            // matte grey (metallicFactor 0) which renders almost invisible.
+            const engineMat = new THREE.MeshStandardMaterial({
+              color:     0x9aa6c4,
+              metalness: 0.85,
+              roughness: 0.35,
+              emissive:  0x1a2548,
+              emissiveIntensity: 0.45
+            });
+            let meshCount = 0;
+            wrap.traverse((node) => {
+              if (node.isMesh) {
+                node.material = engineMat;
+                meshCount++;
               }
             });
+            console.log('CarEngine loaded:', meshCount, 'meshes, fit', fitScale.toFixed(3));
             while (target.children.length) target.remove(target.children[0]);
-            target.add(model);
+            target.add(wrap);
           } catch (e) { console.warn('CarEngine paint threw, keeping procedural', e); }
+        }, () => {
+          console.warn('CarEngine load failed — procedural car stays');
         });
-      } catch (e) { console.warn('CarEngine load threw, keeping procedural', e); }
+      } catch (e) { console.warn('CarEngine outer threw, keeping procedural', e); }
     }
 
     // Procedural fallback (Deepal-class EV silhouette) — also used while

@@ -848,7 +848,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build car-engine-icon v58</div>
+  <div class="build-stamp">build engine-procedural v59</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------
@@ -1856,121 +1856,144 @@
       } catch (e) { console.warn('CarEngine outer threw, keeping procedural', e); }
     }
 
-    // Procedural fallback (Deepal-class EV silhouette) — also used while
-    // the GLB is loading and as a safety net if the fetch fails.
+    // Procedural V8 engine block — used while the GLB loads and as a
+    // safety net if the fetch fails. Built from a wide block + 8 cylinder
+    // banks (V-configuration) + intake plenum + side accessories. The
+    // function name stays buildProceduralCar so initCrystal's variant
+    // routing keeps working unchanged.
     function buildProceduralCar(target) {
-      const car = new THREE.Group();
+      const engine = new THREE.Group();
 
-      // Two-tone metallic body. Use MeshPhongMaterial with strong specular
-      // so the lights bake nice highlights on the curves.
-      const bodyMat = new THREE.MeshPhongMaterial({
-        color: 0x1c2440, specular: 0xb8d8ff, shininess: 140
+      const blockMat = new THREE.MeshPhongMaterial({
+        color: 0x252b3a, specular: 0x9aa8c8, shininess: 90
       });
-      const trimMat = new THREE.MeshPhongMaterial({
-        color: 0x0e1224, specular: 0x6080a0, shininess: 60
+      const headMat = new THREE.MeshPhongMaterial({
+        color: 0x4a5168, specular: 0xc8d4ec, shininess: 130
       });
-      const glassMat = new THREE.MeshPhongMaterial({
-        color: 0x1a3450, specular: 0xffffff, shininess: 220,
-        transparent: true, opacity: 0.55
+      const intakeMat = new THREE.MeshPhongMaterial({
+        color: 0x6c63ff, specular: 0xffffff, shininess: 200,
+        emissive: 0x1a1844, emissiveIntensity: 0.45
       });
+      const accessoryMat = new THREE.MeshPhongMaterial({
+        color: 0x8794b0, specular: 0xffffff, shininess: 220
+      });
+      const beltMat = new THREE.MeshPhongMaterial({ color: 0x111118 });
 
-      // Lower body — extruded fastback profile (side view, then extruded
-      // along Z). The shape captures the long bonnet, sloping windscreen,
-      // raked fastback rear and short rear deck of a modern sedan.
-      const profile = new THREE.Shape();
-      profile.moveTo(-1.30, -0.18);            // rear bottom
-      profile.lineTo( 1.40, -0.18);            // front bottom
-      profile.lineTo( 1.40,  0.00);            // bumper top
-      profile.lineTo( 1.05,  0.10);            // bonnet top edge
-      profile.lineTo( 0.55,  0.10);            // base of windscreen
-      profile.lineTo( 0.10,  0.42);            // top of windscreen
-      profile.lineTo(-0.55,  0.46);            // roof apex
-      profile.lineTo(-1.05,  0.20);            // fastback slope
-      profile.lineTo(-1.30,  0.10);            // rear deck
-      profile.lineTo(-1.30, -0.18);            // close
-      const extrude = { depth: 1.0, bevelEnabled: true, bevelSize: 0.04, bevelThickness: 0.04, bevelSegments: 2, steps: 1 };
-      const bodyGeo = new THREE.ExtrudeGeometry(profile, extrude);
-      bodyGeo.translate(0, 0, -0.5);
-      const body = new THREE.Mesh(bodyGeo, bodyMat);
-      car.add(body);
-
-      // Greenhouse / glass canopy — a smaller shape sitting on the body's
-      // upper line. Translucent so the curves of the roof read.
-      const glassShape = new THREE.Shape();
-      glassShape.moveTo( 0.60, 0.10);
-      glassShape.lineTo( 0.10, 0.42);
-      glassShape.lineTo(-0.55, 0.46);
-      glassShape.lineTo(-1.00, 0.20);
-      glassShape.lineTo(-1.00, 0.16);
-      glassShape.lineTo(-0.55, 0.42);
-      glassShape.lineTo( 0.10, 0.40);
-      glassShape.lineTo( 0.60, 0.16);
-      const glassGeo = new THREE.ExtrudeGeometry(glassShape, {
-        depth: 0.86, bevelEnabled: false, steps: 1
-      });
-      glassGeo.translate(0, 0, -0.43);
-      const glass = new THREE.Mesh(glassGeo, glassMat);
-      car.add(glass);
-
-      // Side trim — dark rocker panel running the length of the body
-      const rocker = new THREE.Mesh(
-        new THREE.BoxGeometry(2.55, 0.06, 1.02),
-        trimMat
+      // ----- Engine block (oil pan + main block) -----
+      const oilPan = new THREE.Mesh(
+        new THREE.BoxGeometry(2.0, 0.45, 1.10),
+        blockMat
       );
-      rocker.position.y = -0.20;
-      car.add(rocker);
+      oilPan.position.y = -0.55;
+      engine.add(oilPan);
 
-      // Wheels — fatter, dark with bright rim insert
-      const wheelMat = new THREE.MeshPhongMaterial({ color: 0x101015 });
-      const rimMat   = new THREE.MeshPhongMaterial({
-        color: 0x6cb4ff, specular: 0xffffff, shininess: 200,
-        emissive: 0x224488, emissiveIntensity: 0.25
+      const mainBlock = new THREE.Mesh(
+        new THREE.BoxGeometry(2.2, 0.7, 1.30),
+        blockMat
+      );
+      mainBlock.position.y = -0.10;
+      engine.add(mainBlock);
+
+      // ----- V-bank cylinder heads (two angled rows) -----
+      const headGeo = new THREE.BoxGeometry(2.10, 0.32, 0.55);
+      const leftHead = new THREE.Mesh(headGeo, headMat);
+      leftHead.position.set(0, 0.42, -0.36);
+      leftHead.rotation.x = -0.30;
+      engine.add(leftHead);
+      const rightHead = new THREE.Mesh(headGeo, headMat);
+      rightHead.position.set(0, 0.42, 0.36);
+      rightHead.rotation.x = 0.30;
+      engine.add(rightHead);
+
+      // ----- 8 spark-plug cylinders (4 per bank) -----
+      const cylGeo = new THREE.CylinderGeometry(0.10, 0.10, 0.36, 18);
+      const cylMat = new THREE.MeshPhongMaterial({
+        color: 0xb8c4dc, specular: 0xffffff, shininess: 240
       });
-      const tyreGeo = new THREE.CylinderGeometry(0.30, 0.30, 0.18, 28);
-      const rimGeo  = new THREE.CylinderGeometry(0.20, 0.20, 0.19, 24);
-      const wheelPos = [[1.00, -0.30, 0.55], [1.00, -0.30, -0.55],
-                        [-1.00, -0.30, 0.55], [-1.00, -0.30, -0.55]];
-      wheelPos.forEach((p) => {
-        const tyre = new THREE.Mesh(tyreGeo, wheelMat);
-        tyre.rotation.x = Math.PI / 2;
-        tyre.position.set(p[0], p[1], p[2]);
-        car.add(tyre);
-        const rim  = new THREE.Mesh(rimGeo, rimMat);
-        rim.rotation.x = Math.PI / 2;
-        rim.position.copy(tyre.position);
-        car.add(rim);
+      for (let i = 0; i < 4; i++) {
+        const x = -0.75 + i * 0.5;
+        // left bank
+        const cl = new THREE.Mesh(cylGeo, cylMat);
+        cl.position.set(x, 0.66, -0.42);
+        cl.rotation.x = -0.30;
+        engine.add(cl);
+        // right bank
+        const cr = new THREE.Mesh(cylGeo, cylMat);
+        cr.position.set(x, 0.66, 0.42);
+        cr.rotation.x = 0.30;
+        engine.add(cr);
+      }
+
+      // ----- Intake plenum / manifold sitting in the V valley -----
+      const intake = new THREE.Mesh(
+        new THREE.BoxGeometry(1.7, 0.30, 0.55),
+        intakeMat
+      );
+      intake.position.set(0, 0.60, 0);
+      engine.add(intake);
+
+      // 4 intake runners feeding from plenum into each side
+      const runnerGeo = new THREE.CylinderGeometry(0.07, 0.07, 0.42, 12);
+      for (let i = 0; i < 4; i++) {
+        const x = -0.75 + i * 0.5;
+        const rL = new THREE.Mesh(runnerGeo, intakeMat);
+        rL.position.set(x, 0.55, -0.27);
+        rL.rotation.x = -0.4;
+        engine.add(rL);
+        const rR = new THREE.Mesh(runnerGeo, intakeMat);
+        rR.position.set(x, 0.55, 0.27);
+        rR.rotation.x = 0.4;
+        engine.add(rR);
+      }
+
+      // ----- Front-of-block accessories (pulley + alternator) -----
+      const pulley = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.30, 0.30, 0.12, 30),
+        accessoryMat
+      );
+      pulley.rotation.z = Math.PI / 2;
+      pulley.position.set(1.15, -0.05, 0);
+      engine.add(pulley);
+
+      const altBody = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.20, 0.20, 0.50, 22),
+        accessoryMat
+      );
+      altBody.rotation.z = Math.PI / 2;
+      altBody.position.set(1.10, 0.30, 0.55);
+      engine.add(altBody);
+
+      // Belt running between pulley + alternator (thin torus segment)
+      const belt = new THREE.Mesh(
+        new THREE.TorusGeometry(0.27, 0.02, 6, 24, Math.PI * 1.4),
+        beltMat
+      );
+      belt.position.set(1.15, 0.12, 0.30);
+      belt.rotation.y = Math.PI / 2;
+      engine.add(belt);
+
+      // ----- Exhaust manifolds / headers (curved tubes off each bank) -----
+      const exhMat = new THREE.MeshPhongMaterial({
+        color: 0x6e7a92, specular: 0xffffff, shininess: 180
       });
+      for (let i = 0; i < 4; i++) {
+        const x = -0.75 + i * 0.5;
+        const tubeGeo = new THREE.TorusGeometry(0.18, 0.05, 8, 14, Math.PI * 0.6);
+        const tL = new THREE.Mesh(tubeGeo, exhMat);
+        tL.position.set(x, 0.30, -0.65);
+        tL.rotation.set(0, Math.PI, -Math.PI / 2);
+        engine.add(tL);
+        const tR = new THREE.Mesh(tubeGeo, exhMat);
+        tR.position.set(x, 0.30, 0.65);
+        tR.rotation.set(0, 0, -Math.PI / 2);
+        engine.add(tR);
+      }
 
-      // Full-width light bars — front + rear, very modern EV styling
-      const lightBar = new THREE.Mesh(
-        new THREE.BoxGeometry(0.05, 0.06, 0.92),
-        new THREE.MeshBasicMaterial({ color: 0xddeeff })
-      );
-      lightBar.position.set(1.42, 0.00, 0);
-      car.add(lightBar);
-      const tailBar = new THREE.Mesh(
-        new THREE.BoxGeometry(0.05, 0.06, 0.92),
-        new THREE.MeshBasicMaterial({ color: 0xff5a3a })
-      );
-      tailBar.position.set(-1.30, 0.05, 0);
-      car.add(tailBar);
-
-      // Subtle underglow strip (cyan accent)
-      const glow = new THREE.Mesh(
-        new THREE.BoxGeometry(2.20, 0.03, 0.04),
-        new THREE.MeshBasicMaterial({ color: 0x6cf0ff })
-      );
-      glow.position.set(-0.05, -0.34, 0.52);
-      car.add(glow);
-      const glow2 = glow.clone();
-      glow2.position.z = -0.52;
-      car.add(glow2);
-
-      // Sit the car a touch lower in the canvas + give a small static tilt
-      // so it reads three-quarter (a side-on box would be flat).
-      car.position.y = -0.05;
-      car.rotation.y = -0.45;
-      target.add(car);
+      // Slight three-quarter pose so the V-bank is visible
+      engine.position.y = -0.10;
+      engine.rotation.y = -0.55;
+      engine.rotation.x = 0.10;
+      target.add(engine);
     }
 
     // Path 2 — diagram of arrows: 4 outward-pointing arrows in a cross

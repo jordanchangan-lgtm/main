@@ -67,7 +67,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-5.png"
     ],
-    "imageScale": "lg",
+    "imageScale": "xl",
     "tightenGap": true
   },
   {
@@ -79,7 +79,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-6.png"
     ],
-    "imageScale": "lg",
+    "imageScale": "xl",
     "tightenGap": true
   },
   {
@@ -91,7 +91,8 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-7.png"
     ],
-    "imageScale": "xl"
+    "imageScale": "xl",
+    "tightenGap": true
   },
   {
     "path": "path-1",
@@ -102,7 +103,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-8.png"
     ],
-    "imageScale": "lg",
+    "imageScale": "xl",
     "tightenGap": true
   },
   {
@@ -114,7 +115,8 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-1.png"
     ],
-    "imageScale": "md"
+    "imageScale": "xl",
+    "tightenGap": true
   },
   {
     "path": "path-2",

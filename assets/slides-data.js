@@ -125,7 +125,8 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-2.png"
     ],
-    "imageScale": "md"
+    "imageScale": "xl",
+    "tightenGap": true
   },
   {
     "path": "path-2",
@@ -135,7 +136,9 @@ window.SLIDES = [
     "body": "IN ARCHITECTS operates across Syria, Iraq, Jordan and Lebanon. Over 15 years of experience. Developed and managed more than 300,000 sqm of commercial property and 90,000 sqm of residential property.",
     "images": [
       "assets/images/png2-3.png"
-    ]
+    ],
+    "imageScale": "xl",
+    "tightenGap": true
   },
   {
     "path": "path-2",
@@ -146,7 +149,8 @@ window.SLIDES = [
     "images": [
       "assets/images/png2-4.png"
     ],
-    "imageScale": "md"
+    "imageScale": "xl",
+    "tightenGap": true
   },
   {
     "path": "path-2",

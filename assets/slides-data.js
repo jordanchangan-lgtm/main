@@ -91,8 +91,7 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-7.png"
     ],
-    "imageScale": "xl",
-    "tightenGap": true
+    "imageScale": "xl"
   },
   {
     "path": "path-1",
@@ -103,7 +102,8 @@ window.SLIDES = [
     "images": [
       "assets/images/png1-8.png"
     ],
-    "imageScale": "lg"
+    "imageScale": "lg",
+    "tightenGap": true
   },
   {
     "path": "path-2",

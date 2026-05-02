@@ -127,8 +127,9 @@
     }
 
     /* Tighten-gap layout — pulls the image close to the bottom of the
-       text block (almost touching). Used on slides where the standard
-       16-24px gap reads as "image too low". */
+       text block (almost touching). The wrapper drops its fixed height
+       so it shrinks to the image's natural rendered size — no reserved
+       empty space between the text and the picture. */
     .stage-tight-gap {
       gap: 4px;
     }
@@ -137,9 +138,16 @@
     }
     .stage-tight-gap .scene-gallery .float-img {
       align-self: flex-start;
+      height: auto !important;
+      max-height: 60vh !important;
     }
-    .stage-tight-gap.stage-img-xl .scene-gallery {
-      margin-top: 0 !important;
+    .stage-tight-gap .scene-gallery .float-img .float-bob {
+      height: auto !important;
+    }
+    .stage-tight-gap .scene-gallery .float-img img {
+      height: auto !important;
+      max-height: 60vh !important;
+      width: 100% !important;
     }
 
     /* Image-size tiers — pick one per slide via slides-data imageScale.
@@ -632,7 +640,7 @@
   <div class="slide-counter">01 / 32</div>
   <div class="scroll-hint">scroll into Mallouk's universe</div>
   <button type="button" class="back-to-menu" aria-label="Back to crystal menu">← Crystals</button>
-  <div class="build-stamp">build tight-gap v48</div>
+  <div class="build-stamp">build tight-gap-fix v49</div>
 
   <script>
     // ---------- 3D Starfield + Nebula (Three.js) — unchanged ----------

@@ -1433,7 +1433,7 @@ function StatGrid() {
   const stats = [
     { value: 200000, suffix: "+", label: "Units Sold Globally" },
     { value: 30, suffix: "+", label: "4S Facilities Worldwide" },
-    { value: 44, suffix: "", label: "Years of Operation", italic: true },
+    { value: 45, suffix: "", label: "Years of Operation", italic: true },
     { value: 6, suffix: "", label: "Countries" }
   ];
   return (

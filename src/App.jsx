@@ -26,6 +26,17 @@ import INDUSTRIES_SOLAR       from "./assets/INDUSTRIES_SOLAR.PNG";
 import INDUSTRIES_TAXIPHONE   from "./assets/INDUSTRIES_TAXIPHONE.PNG";
 import BLUEPRINT_DATA         from "./assets/BLUEPRINT_FLOOR_PLANT.PNG";
 
+// Showroom popup images — 7 placeholder photos cycled across the 14
+// dealership cities in NetworkGrid until production showroom imagery
+// lands. Each city in the popup gets 2-3 of these.
+import SHOWROOM_1 from "./assets/SHOWROOM_1.PNG";
+import SHOWROOM_2 from "./assets/SHOWROOM_2.PNG";
+import SHOWROOM_3 from "./assets/SHOWROOM_3.PNG";
+import SHOWROOM_4 from "./assets/SHOWROOM_4.PNG";
+import SHOWROOM_5 from "./assets/SHOWROOM_5.PNG";
+import SHOWROOM_6 from "./assets/SHOWROOM_6.PNG";
+import SHOWROOM_7 from "./assets/SHOWROOM_7.PNG";
+
 // Missing assets — pending production imagery. Null sources fall through to
 // the labeled placeholder slot inside AssetSlot below.
 const HERO_WINDOW_CLOSED_DATA = null;
@@ -1481,35 +1492,275 @@ function Stat({ value, suffix, label, italic, delay, isLast }) {
   );
 }
 
+/* ====== SHOWROOM IMAGES PER CITY ======
+   Each dealership city maps to 2-3 showroom photos rendered in the
+   ShowroomModal swiper. Placeholders cycle through the 7 SHOWROOM_*
+   assets until production photography is supplied. */
+const SHOWROOM_IMAGES = {
+  // Syria
+  "Aleppo":      [SHOWROOM_1, SHOWROOM_2, SHOWROOM_6],
+  "Homs":        [SHOWROOM_3, SHOWROOM_5, SHOWROOM_7],
+  "Damascus":    [SHOWROOM_2, SHOWROOM_4, SHOWROOM_6],
+  "Lattakia":    [SHOWROOM_5, SHOWROOM_1],
+  "Tartous":     [SHOWROOM_7, SHOWROOM_3, SHOWROOM_2],
+  "Hama":        [SHOWROOM_4, SHOWROOM_6],
+  // Jordan
+  "Amman":       [SHOWROOM_6, SHOWROOM_2, SHOWROOM_1],
+  "Irbid":       [SHOWROOM_3, SHOWROOM_5],
+  "Aqaba":       [SHOWROOM_7, SHOWROOM_4, SHOWROOM_6],
+  // Iraq
+  "Dohuk":       [SHOWROOM_1, SHOWROOM_3],
+  "Sulaymaniyah":[SHOWROOM_2, SHOWROOM_5, SHOWROOM_7],
+  "Erbil":       [SHOWROOM_4, SHOWROOM_6, SHOWROOM_1],
+  // Lebanon · Egypt
+  "Beirut":      [SHOWROOM_3, SHOWROOM_2, SHOWROOM_5],
+  "Cairo":       [SHOWROOM_6, SHOWROOM_7, SHOWROOM_4],
+};
+
+/* ====== SHOWROOM MODAL — popup swiper for the country city click ======
+   Full-screen overlay with a centered photo, prev/next arrows, a slide
+   counter and a close (×) button. Keyboard: ← / → cycles images, Esc
+   closes. Clicking the dim backdrop closes too. */
+function ShowroomModal({ city, onClose }) {
+  const imgs = (city && SHOWROOM_IMAGES[city]) || [];
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => { setIdx(0); }, [city]);
+
+  useEffect(() => {
+    if (!city) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") setIdx((i) => (i + 1) % imgs.length);
+      if (e.key === "ArrowLeft")  setIdx((i) => (i - 1 + imgs.length) % imgs.length);
+    };
+    window.addEventListener("keydown", onKey);
+    // Lock body scroll while the popup is open
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [city, imgs.length, onClose]);
+
+  return (
+    <AnimatePresence>
+      {city && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+          onClick={onClose}
+          style={{
+            position: "fixed", inset: 0, zIndex: 300,
+            background: "rgba(20,20,15,0.92)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center",
+            padding: "5vh 5vw",
+          }}
+        >
+          {/* Close button */}
+          <button
+            type="button"
+            aria-label="Close showroom"
+            onClick={onClose}
+            style={{
+              position: "absolute", top: 28, right: 32, zIndex: 4,
+              background: "transparent", border: "none",
+              color: COLOR.bg, fontFamily: "'Inter Tight', sans-serif",
+              fontSize: 28, cursor: "pointer", padding: 8,
+              letterSpacing: "0.05em",
+            }}
+          >×</button>
+
+          {/* City heading */}
+          <div onClick={(e) => e.stopPropagation()} style={{
+            position: "absolute", top: 36, left: 48,
+            color: COLOR.bg, pointerEvents: "none",
+          }}>
+            <div style={{
+              fontFamily: "'Inter Tight', sans-serif", fontSize: 11,
+              letterSpacing: "0.4em", textTransform: "uppercase",
+              color: COLOR.gold, marginBottom: 8,
+            }}>Mallouk Showroom</div>
+            <div style={{
+              fontFamily: "'Fraunces', serif", fontStyle: "italic",
+              fontWeight: 300, fontSize: "clamp(28px, 4vw, 56px)",
+              letterSpacing: "-0.01em",
+            }}>{city}</div>
+          </div>
+
+          {/* Image stage */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative", width: "min(1200px, 88vw)",
+              height: "min(680px, 62vh)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.02 }}
+                transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+                style={{
+                  position: "absolute", inset: 0,
+                  backgroundImage: imgs[idx] ? `url(${imgs[idx]})` : "none",
+                  backgroundSize: "contain", backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  background: imgs[idx] ? undefined :
+                    `linear-gradient(135deg, ${COLOR.muted} 0%, ${COLOR.ink} 100%)`,
+                }}
+              >
+                {imgs[idx] && (
+                  <div style={{
+                    position: "absolute", inset: 0,
+                    backgroundImage: `url(${imgs[idx]})`,
+                    backgroundSize: "contain", backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                  }} />
+                )}
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Prev / Next arrows */}
+            {imgs.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous showroom"
+                  onClick={() => setIdx((i) => (i - 1 + imgs.length) % imgs.length)}
+                  style={arrowStyle("left")}
+                >‹</button>
+                <button
+                  type="button"
+                  aria-label="Next showroom"
+                  onClick={() => setIdx((i) => (i + 1) % imgs.length)}
+                  style={arrowStyle("right")}
+                >›</button>
+              </>
+            )}
+          </div>
+
+          {/* Counter */}
+          <div onClick={(e) => e.stopPropagation()} style={{
+            marginTop: 28, color: COLOR.bg,
+            fontFamily: "'Inter Tight', sans-serif", fontSize: 12,
+            letterSpacing: "0.4em", opacity: 0.7,
+          }}>
+            {String(idx + 1).padStart(2, "0")} / {String(imgs.length).padStart(2, "0")}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function arrowStyle(side) {
+  return {
+    position: "absolute", top: "50%", [side]: -68,
+    transform: "translateY(-50%)",
+    width: 52, height: 52, borderRadius: "50%",
+    background: "rgba(243,238,229,0.08)",
+    border: "1px solid rgba(243,238,229,0.25)",
+    color: COLOR.bg, fontSize: 26, lineHeight: 1,
+    cursor: "pointer",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    fontFamily: "'Inter Tight', sans-serif",
+    transition: "background 0.25s ease, border-color 0.25s ease",
+  };
+}
+
 function NetworkGrid() {
   const items = [
-    { country: "Syria", count: "Six Cities", cities: "Aleppo  ·  Homs  ·  Damascus  ·  Lattakia  ·  Tartous  ·  Hama" },
-    { country: "Jordan", count: "Three Cities", cities: "Amman  ·  Irbid  ·  Aqaba" },
-    { country: "Iraq", count: "Three Cities", cities: "Dohuk  ·  Sulaymaniyah  ·  Erbil" },
-    { country: "Lebanon  ·  Egypt", count: "Capital Hubs", cities: "Beirut  ·  Cairo" }
+    { country: "Syria",            count: "Six Cities",   cities: ["Aleppo", "Homs", "Damascus", "Lattakia", "Tartous", "Hama"] },
+    { country: "Jordan",           count: "Three Cities", cities: ["Amman", "Irbid", "Aqaba"] },
+    { country: "Iraq",             count: "Three Cities", cities: ["Dohuk", "Sulaymaniyah", "Erbil"] },
+    { country: "Lebanon  ·  Egypt",count: "Capital Hubs", cities: ["Beirut", "Cairo"] },
   ];
+  const [openCity, setOpenCity] = useState(null);
+
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "4vw 8vw", marginTop: "6vh" }}>
-      {items.map((item, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.9, delay: i * 0.12, ease: [0.3, 0, 0.2, 1] }}
-          style={{ borderTop: `1px solid ${COLOR.line}`, paddingTop: 28 }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
-            <h4 style={{ fontFamily: "'Fraunces', serif", fontWeight: 300, fontStyle: "italic", fontSize: 28, letterSpacing: "-0.01em" }}>{item.country}</h4>
-            <span style={{
-              fontFamily: "'Inter Tight', sans-serif", fontSize: 12, letterSpacing: "0.2em",
-              color: COLOR.muted, textTransform: "uppercase"
-            }}>{item.count}</span>
-          </div>
-          <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: COLOR.inkSoft }}>{item.cities}</div>
-        </motion.div>
-      ))}
-    </div>
+    <>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "4vw 8vw", marginTop: "6vh" }}>
+        {items.map((item, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.9, delay: i * 0.12, ease: [0.3, 0, 0.2, 1] }}
+            style={{ borderTop: `1px solid ${COLOR.line}`, paddingTop: 28 }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
+              <h4 style={{ fontFamily: "'Fraunces', serif", fontWeight: 300, fontStyle: "italic", fontSize: 28, letterSpacing: "-0.01em" }}>{item.country}</h4>
+              <span style={{
+                fontFamily: "'Inter Tight', sans-serif", fontSize: 12, letterSpacing: "0.2em",
+                color: COLOR.muted, textTransform: "uppercase"
+              }}>{item.count}</span>
+            </div>
+            <div style={{
+              fontFamily: "'Inter Tight', sans-serif", fontSize: 14, color: COLOR.inkSoft,
+              display: "flex", flexWrap: "wrap", gap: "0 14px", alignItems: "center",
+            }}>
+              {item.cities.map((city, ci) => (
+                <React.Fragment key={city}>
+                  <CityLink city={city} onOpen={() => setOpenCity(city)} />
+                  {ci < item.cities.length - 1 && (
+                    <span style={{ color: COLOR.muted, userSelect: "none" }}>·</span>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+      <ShowroomModal city={openCity} onClose={() => setOpenCity(null)} />
+    </>
+  );
+}
+
+function CityLink({ city, onOpen }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        position: "relative",
+        background: "transparent",
+        border: "none",
+        padding: "2px 0",
+        margin: 0,
+        cursor: "pointer",
+        fontFamily: "'Inter Tight', sans-serif",
+        fontSize: 14,
+        letterSpacing: "0.01em",
+        color: hover ? COLOR.accent : COLOR.inkSoft,
+        transition: "color 0.25s ease, transform 0.25s ease",
+        transform: hover ? "translateY(-1px)" : "translateY(0)",
+      }}
+    >
+      {city}
+      <motion.span
+        animate={{ scaleX: hover ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        style={{
+          position: "absolute", left: 0, right: 0, bottom: -1,
+          height: 1, background: COLOR.accent,
+          transformOrigin: "left",
+        }}
+      />
+    </button>
   );
 }
 
@@ -1535,7 +1786,7 @@ function Manufacturing() {
             <div style={{
               fontFamily: "'Fraunces', serif", fontStyle: "italic", fontWeight: 300,
               fontSize: "clamp(24px, 3vw, 40px)", letterSpacing: "-0.01em"
-            }}>Where the future is assembled.</div>
+            }}>Where the future of Syria's automobile is assembled and manufactured.</div>
           </div>
         </div>
       </FadeUp>

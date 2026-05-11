@@ -1,7 +1,7 @@
 name: Deploy to GitHub Pages
 
-# Deploys the static site to GitHub Pages whenever the dev branch is updated.
-# Also runnable on demand via the "Run workflow" button in the Actions tab.
+# Builds the Vite + React app on every push to the feature branch and
+# publishes the dist/ directory to GitHub Pages.
 
 on:
   push:
@@ -9,19 +9,17 @@ on:
       - claude/landing-page-scroll-animations-3wBAL
   workflow_dispatch:
 
-# Permissions required by the GitHub-Pages deploy action.
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Only one deploy at a time; new pushes cancel any in-flight run.
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -30,14 +28,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Repo root is the site (index.html lives here)
-          path: '.'
+          path: 'dist'
 
       - name: Deploy
         id: deployment

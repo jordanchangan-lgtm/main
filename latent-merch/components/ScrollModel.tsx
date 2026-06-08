@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export function ScrollModel() {
@@ -39,13 +40,17 @@ export function ScrollModel() {
 
           <motion.div
             style={{ y: modelY, opacity: modelOpacity, scale: modelScale }}
-            className="col-span-6 flex items-end justify-center h-full pb-12"
+            className="col-span-6 relative flex items-center justify-center h-full"
           >
-            {/* Drop a transparent PNG at /public/model.png and swap the placeholder below. */}
-            <div className="relative h-[88%] w-[58%]">
-              <div className="absolute inset-0 rounded-[42%] bg-gradient-to-b from-jade/25 via-bone/8 to-ink blur-3xl" />
-              <div className="absolute inset-x-10 inset-y-6 rounded-[36%] bg-gradient-to-b from-bone/18 via-bone/8 to-jade/15 backdrop-blur-sm" />
-              <div className="absolute inset-x-20 top-4 h-20 rounded-full bg-bone/12 blur-md" />
+            <div className="relative h-[92%] w-full">
+              <Image
+                src="/model-fall.png"
+                alt="Latent Merch model falling, wearing the void hoodie in jade"
+                fill
+                priority
+                sizes="(max-width: 1280px) 50vw, 640px"
+                className="object-contain mix-blend-lighten"
+              />
             </div>
           </motion.div>
 

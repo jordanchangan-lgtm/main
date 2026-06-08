@@ -49,7 +49,7 @@ export function ScrollModel() {
                 fill
                 priority
                 sizes="(max-width: 1280px) 50vw, 640px"
-                className="object-contain mix-blend-lighten"
+                className="object-contain"
               />
             </div>
           </motion.div>

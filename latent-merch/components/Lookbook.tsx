@@ -51,8 +51,10 @@ export function Lookbook() {
       </motion.div>
 
       <SpreadOne />
+      <SpreadBack />
       <SpreadTwo />
       <SpreadThree />
+      <SpreadDetail />
       <SpreadFour />
     </section>
   );
@@ -137,13 +139,92 @@ function SpreadOne() {
 }
 
 /* -------------------------------------------------------------
+   Spread Back — full-bleed back view of the hoodie, caption on left
+   ------------------------------------------------------------- */
+function SpreadBack() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+  const numY = useTransform(scrollYProgress, [0, 1], [80, -80]);
+
+  return (
+    <div ref={ref} className="relative mx-auto mb-32 grid max-w-7xl grid-cols-12 gap-6 px-6 md:mb-44 md:px-12">
+      {/* Caption left */}
+      <motion.div
+        variants={stagger(0.1, 0.14)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-15%" }}
+        className="relative col-span-12 flex flex-col justify-between md:col-span-4 md:py-4 md:order-1"
+      >
+        <motion.div style={{ y: numY }} aria-hidden>
+          <span className="font-mono text-[clamp(80px,12vw,160px)] font-extrabold leading-none tracking-[-0.04em] text-metalLit/15">
+            02
+          </span>
+        </motion.div>
+
+        <div className="mt-6">
+          <motion.p
+            variants={fadeUp}
+            className="font-mono text-[10px] uppercase tracking-[0.32em] text-jadeLit"
+          >
+            ə–02 · figure
+          </motion.p>
+          <motion.h3
+            variants={fadeUp}
+            className="mt-4 text-3xl font-light leading-tight tracking-tight text-paper lowercase"
+          >
+            from the back.
+          </motion.h3>
+          <motion.p
+            variants={fadeUp}
+            className="mt-3 max-w-xs text-sm leading-relaxed text-paper/55"
+          >
+            Hood holds. Fleece falls. The void hoodie unposed — no front, no logo, no signal.
+          </motion.p>
+          <motion.div
+            variants={fadeUp}
+            className="mt-8 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-paper/40"
+          >
+            <span>view · 180°</span>
+            <span className="h-px flex-1 bg-paper/15" />
+            <span>still</span>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Image right */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-15%" }}
+        transition={{ duration: 1.6, ease: expoOut }}
+        className="relative col-span-12 aspect-[4/5] overflow-hidden rounded-[28px] border border-paper/8 bg-gradient-to-b from-jadeDeep/40 via-ink to-ink md:col-span-8 md:order-2"
+      >
+        <motion.div style={{ y: imgY }} className="absolute inset-0">
+          <Image
+            src="/lookbook-back.png"
+            alt="ə-02 — back view of the void hoodie, hood up"
+            fill
+            sizes="(max-width: 768px) 100vw, 60vw"
+            className="object-cover object-center"
+            priority={false}
+          />
+        </motion.div>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent" />
+      </motion.div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------
    Spread 02 — tee, rotating, caption on the left
    ------------------------------------------------------------- */
 function SpreadTwo() {
   return (
     <SpinSpread
-      number="02"
-      tag="ə–02 · object"
+      number="03"
+      tag="ə–03 · object"
       title="weightless,"
       titleAccent="wearable."
       copy="Heavyweight cotton in bone, hand-pulled copper schwa. Cut wide. Hangs straight."
@@ -161,8 +242,8 @@ function SpreadTwo() {
 function SpreadThree() {
   return (
     <SpinSpread
-      number="03"
-      tag="ə–03 · object"
+      number="04"
+      tag="ə–04 · object"
       title="brushed,"
       titleAccent="weightless."
       copy="Jade fleece, brushed-back interior, drop shoulder. Hood holds its shape."
@@ -283,6 +364,108 @@ function SpinSpread({
 }
 
 /* -------------------------------------------------------------
+   Spread Detail — extreme close-up of the schwa print
+   ------------------------------------------------------------- */
+function SpreadDetail() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const imgScale = useTransform(scrollYProgress, [0, 1], [1.06, 0.98]);
+  const numY = useTransform(scrollYProgress, [0, 1], [60, -60]);
+
+  return (
+    <div ref={ref} className="relative mx-auto mb-32 grid max-w-7xl grid-cols-12 gap-6 px-6 md:mb-44 md:px-12">
+      {/* Image left, full-bleed square */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-15%" }}
+        transition={{ duration: 1.6, ease: expoOut }}
+        className="relative col-span-12 aspect-square overflow-hidden rounded-[28px] border border-paper/8 bg-ink md:col-span-7"
+      >
+        <motion.div style={{ scale: imgScale }} className="absolute inset-0">
+          <Image
+            src="/lookbook-detail.png"
+            alt="ə-05 — close-up of the cream schwa print on jade fleece"
+            fill
+            sizes="(max-width: 768px) 100vw, 55vw"
+            className="object-cover object-center"
+            priority={false}
+          />
+        </motion.div>
+        {/* Sliver overlay along edges for editorial framing */}
+        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-paper/5" />
+      </motion.div>
+
+      {/* Caption right with breathing room */}
+      <motion.div
+        variants={stagger(0.1, 0.14)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-15%" }}
+        className="relative col-span-12 flex flex-col justify-between md:col-span-5 md:py-8"
+      >
+        <motion.div style={{ y: numY }} aria-hidden>
+          <span className="font-mono text-[clamp(80px,12vw,160px)] font-extrabold leading-none tracking-[-0.04em] text-metalLit/15">
+            05
+          </span>
+        </motion.div>
+
+        <div className="mt-6">
+          <motion.p
+            variants={fadeUp}
+            className="font-mono text-[10px] uppercase tracking-[0.32em] text-jadeLit"
+          >
+            ə–05 · detail
+          </motion.p>
+          <motion.h3
+            variants={fadeUp}
+            className="mt-4 text-4xl font-light leading-tight tracking-tight text-paper lowercase md:text-5xl"
+          >
+            cream <span className="text-metalLit">on jade.</span>
+          </motion.h3>
+          <motion.p
+            variants={fadeUp}
+            className="mt-3 max-w-xs text-sm leading-relaxed text-paper/55"
+          >
+            Hand-pulled schwa, applied warm. Cotton fleece brushed back, drawstring in the same bone.
+          </motion.p>
+
+          {/* Spec strip */}
+          <motion.dl
+            variants={fadeUp}
+            className="mt-10 grid grid-cols-3 gap-4 border-t border-paper/8 pt-6"
+          >
+            <SpecItem label="weight" value="420 gsm" />
+            <SpecItem label="weave" value="loop terry" />
+            <SpecItem label="finish" value="garment dye" />
+          </motion.dl>
+
+          <motion.div
+            variants={fadeUp}
+            className="mt-8 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-paper/40"
+          >
+            <span>macro · f/2.8</span>
+            <span className="h-px flex-1 bg-paper/15" />
+            <span>00:01</span>
+          </motion.div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function SpecItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="font-mono text-[9px] uppercase tracking-[0.28em] text-paper/40">
+        {label}
+      </dt>
+      <dd className="mt-1.5 text-sm text-paper">{value}</dd>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------
    Spread 04 — atmospheric closer, no garment, just void + type
    ------------------------------------------------------------- */
 function SpreadFour() {
@@ -311,7 +494,7 @@ function SpreadFour() {
           className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
           <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-metalLit md:text-[11px]">
-            ə–04 · interlude
+            ə–06 · interlude
           </p>
           <h3 className="mt-6 text-[clamp(32px,6vw,72px)] font-extrabold leading-[0.95] tracking-[-0.04em] lowercase text-paper">
             no logos. no noise. <span className="text-metalLit">no artifice.</span>

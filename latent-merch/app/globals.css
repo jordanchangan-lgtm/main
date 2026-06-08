@@ -2,5 +2,101 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
-body { @apply bg-ink text-bone antialiased; }
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background-color: #0a0b0d;
+}
+
+body {
+  @apply bg-ink text-paper antialiased;
+  font-feature-settings: "ss01", "cv11";
+}
+
+/* ============================================================
+   Cosmic jade hero background — direct port from the prototype
+   ============================================================ */
+.jspace-base {
+  background: radial-gradient(135% 110% at 50% 16%, #1d6249 0%, #13402f 40%, #0c2c21 70%, #071913 100%);
+}
+
+.jspace-neb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  mix-blend-mode: screen;
+  opacity: 0.6;
+}
+.jspace-neb-a {
+  width: 72vw;
+  height: 72vw;
+  left: 6%;
+  top: 2%;
+  background: radial-gradient(circle, rgba(47, 130, 97, 0.7), transparent 62%);
+  animation: nebA 19s ease-in-out infinite;
+}
+.jspace-neb-b {
+  width: 62vw;
+  height: 62vw;
+  right: 0%;
+  top: 26%;
+  background: radial-gradient(circle, rgba(31, 94, 69, 0.6), transparent 60%);
+  animation: nebB 25s ease-in-out infinite;
+}
+.jspace-neb-c {
+  width: 48vw;
+  height: 48vw;
+  left: 30vw;
+  bottom: -10vh;
+  background: radial-gradient(circle, rgba(58, 160, 122, 0.55), transparent 70%);
+  animation: nebA 30s ease-in-out infinite reverse;
+}
+
+.jspace-pulse {
+  position: absolute;
+  left: 46%;
+  top: 30%;
+  width: 62vw;
+  height: 62vw;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(120, 200, 160, 0.5) 0%, rgba(47, 130, 97, 0.16) 38%, transparent 66%);
+  mix-blend-mode: screen;
+  filter: blur(28px);
+  animation: jpulse 7.5s ease-in-out infinite;
+}
+
+.jspace-stars {
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+  background-image:
+    radial-gradient(1.6px 1.6px at 18% 28%, rgba(217, 181, 123, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 68% 58%, rgba(243, 239, 230, 0.55), transparent),
+    radial-gradient(1.2px 1.2px at 42% 82%, rgba(217, 181, 123, 0.5), transparent),
+    radial-gradient(1.2px 1.2px at 86% 22%, rgba(243, 239, 230, 0.5), transparent),
+    radial-gradient(1px 1px at 12% 64%, rgba(243, 239, 230, 0.45), transparent),
+    radial-gradient(1.1px 1.1px at 78% 78%, rgba(217, 181, 123, 0.5), transparent);
+  background-size: 540px 540px;
+  animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+@keyframes nebA {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(4%, 3%) scale(1.1); }
+}
+@keyframes nebB {
+  0%, 100% { transform: translate(0, 0) scale(1.05); }
+  50% { transform: translate(-5%, -2%) scale(1); }
+}
+@keyframes jpulse {
+  0%, 100% { opacity: 0.38; transform: translate(-50%, -50%) scale(0.9); }
+  50% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.12); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.85; }
+}

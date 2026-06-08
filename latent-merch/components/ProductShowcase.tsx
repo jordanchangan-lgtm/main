@@ -21,6 +21,7 @@ type Product = {
   video: string;
   poster: string;
   alt: string;
+  colorways: string[]; // hex swatches floating over the spin
 };
 
 const PRODUCTS: Product[] = [
@@ -44,6 +45,7 @@ const PRODUCTS: Product[] = [
     video: "/product-tee.webm",
     poster: "/product-tee.png",
     alt: "The latent tee — bone heavyweight cotton with copper ə print",
+    colorways: ["#EDE7DA", "#1E5E45", "#15201B"],
   },
   {
     handle: "hoodie",
@@ -65,6 +67,7 @@ const PRODUCTS: Product[] = [
     video: "/product-hoodie.webm",
     poster: "/product-hoodie.png",
     alt: "The void hoodie — jade heavyweight fleece with cream ə",
+    colorways: ["#1E5E45", "#EDE7DA", "#15201B"],
   },
 ];
 
@@ -187,6 +190,38 @@ function ProductCard({ product, reverseAlign }: { product: Product; reverseAlign
             aria-label={product.alt}
             className="h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
           />
+
+          {/* Floating colorway popup */}
+          <FloatingPopup
+            position={{ left: "78%", top: "22%" }}
+            from="right"
+            delay={0.2}
+          >
+            <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-jade">
+              colorway
+            </p>
+            <div className="mt-2 flex gap-1.5">
+              {product.colorways.map((c, i) => (
+                <span
+                  key={i}
+                  className="h-3 w-3 rounded-full border border-paper/15"
+                  style={{ background: c }}
+                />
+              ))}
+            </div>
+          </FloatingPopup>
+
+          {/* Floating price popup */}
+          <FloatingPopup
+            position={{ left: "80%", top: "68%" }}
+            from="right"
+            delay={0.4}
+          >
+            <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-jade">
+              {product.handle === "tee" ? "latent tee" : "void hoodie"}
+            </p>
+            <p className="mt-1.5 text-base font-medium text-ink">{product.priceLabel}</p>
+          </FloatingPopup>
         </motion.div>
 
         <div className={`relative mt-6 flex items-end justify-between gap-6 ${reverseAlign ? "md:flex-row-reverse md:text-right" : ""}`}>
@@ -256,5 +291,32 @@ function ProductCard({ product, reverseAlign }: { product: Product; reverseAlign
         </div>
       </motion.div>
     </motion.article>
+  );
+}
+
+function FloatingPopup({
+  children,
+  position,
+  from,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  position: { left: string; top: string };
+  from: "left" | "right";
+  delay?: number;
+}) {
+  const fromX = from === "right" ? 24 : -24;
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: fromX, y: 8 }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 1.0, ease: expoOut, delay }}
+      variants={{ hover: { y: -4 } }}
+      style={{ left: position.left, top: position.top }}
+      className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-metal/40 bg-paper/95 px-3 py-2.5 shadow-[0_18px_40px_rgba(0,0,0,0.5)] backdrop-blur-sm"
+    >
+      {children}
+    </motion.div>
   );
 }

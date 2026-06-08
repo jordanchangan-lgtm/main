@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { useCart } from "@/lib/cart";
 import { COMMERCE_ENABLED } from "@/lib/config";
 import { expoOut, silk, fadeUp, stagger } from "@/lib/motion";
@@ -54,11 +55,18 @@ export function NavHeader() {
           className="border-b border-transparent"
         >
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-12">
-            {/* Wordmark */}
-            <a href="#" className="group flex items-center gap-2">
-              <SchwaMark />
-              <span className="font-mono text-[11px] uppercase tracking-[0.34em] text-paper transition-colors group-hover:text-metalLit">
-                latent merch
+            {/* Wordmark — prototype's actual "latent" wordmark */}
+            <a href="#" className="group flex items-center gap-3">
+              <Image
+                src="/wordmark-latent.png"
+                alt="Latent"
+                width={120}
+                height={32}
+                priority
+                className="h-6 w-auto transition-opacity duration-500 group-hover:opacity-80"
+              />
+              <span className="hidden font-mono text-[10px] uppercase tracking-[0.34em] text-paper/60 sm:inline-block">
+                merch
               </span>
             </a>
 
@@ -200,15 +208,6 @@ export function NavHeader() {
         )}
       </AnimatePresence>
     </>
-  );
-}
-
-function SchwaMark() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6 text-metalLit" aria-hidden>
-      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2.2" />
-      <rect x="3" y="11" width="18" height="2.2" fill="currentColor" />
-    </svg>
   );
 }
 

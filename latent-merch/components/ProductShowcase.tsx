@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import { fadeUp, stagger, silk, expoOut } from "@/lib/motion";
 import { useCart } from "@/lib/cart";
+import { COMMERCE_ENABLED, WAITLIST_EMAIL } from "@/lib/config";
 
 type Product = {
   handle: string;
@@ -90,7 +91,7 @@ export function ProductShowcase() {
             variants={fadeUp}
             className="font-mono text-[11px] uppercase tracking-[0.34em] text-jadeLit"
           >
-            ə · the drop
+            ə · {COMMERCE_ENABLED ? "the drop" : "drop coming soon"}
           </motion.p>
           <motion.h2
             variants={fadeUp}
@@ -103,6 +104,7 @@ export function ProductShowcase() {
             className="max-w-lg text-base leading-relaxed text-paper/55"
           >
             Each piece is a primitive — generated, not sampled. Wear them how you wear thought.
+            {!COMMERCE_ENABLED && " Drop one launches soon — join the list."}
           </motion.p>
         </motion.div>
 
@@ -122,6 +124,16 @@ function ProductCard({ product, reverseAlign }: { product: Product; reverseAlign
   const [adding, setAdding] = useState(false);
 
   const handleAdd = () => {
+    if (!COMMERCE_ENABLED) {
+      const subject = encodeURIComponent(`Notify me · ${product.name} · ${size}`);
+      const body = encodeURIComponent(
+        `Hey — let me know when ${product.name} (size ${size}) drops.`
+      );
+      window.location.href = `mailto:${WAITLIST_EMAIL}?subject=${subject}&body=${body}`;
+      setAdding(true);
+      setTimeout(() => setAdding(false), 1200);
+      return;
+    }
     add({
       variantId: product.variantIds[size],
       handle: product.handle,
@@ -227,7 +239,7 @@ function ProductCard({ product, reverseAlign }: { product: Product; reverseAlign
               transition={{ duration: 0.5, ease: expoOut }}
               className="flex items-center gap-2"
             >
-              add to cart
+              {COMMERCE_ENABLED ? "add to cart" : "notify me"}
               <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform duration-500 group-hover/btn:translate-x-1" fill="none" stroke="currentColor" strokeWidth="1.8">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
@@ -238,7 +250,7 @@ function ProductCard({ product, reverseAlign }: { product: Product; reverseAlign
               transition={{ duration: 0.5, ease: expoOut }}
               className="absolute inset-0 flex items-center justify-center"
             >
-              added · {size}
+              {COMMERCE_ENABLED ? `added · ${size}` : `on the list · ${size}`}
             </motion.span>
           </motion.button>
         </div>

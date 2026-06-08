@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { expoOut, fadeUp, stagger } from "@/lib/motion";
+import { COMMERCE_ENABLED } from "@/lib/config";
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -42,7 +43,7 @@ export function Hero() {
           className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.34em] text-metalLit"
         >
           <span className="h-px w-10 bg-metal" />
-          ə · drop 01 · live
+          ə · drop 01 · {COMMERCE_ENABLED ? "live" : "coming soon"}
         </motion.p>
 
         <motion.h1
@@ -65,10 +66,10 @@ export function Hero() {
             href="#shop"
             className="rounded-full bg-paper px-7 py-3 text-sm font-medium tracking-wide text-ink transition-colors duration-500 hover:bg-metalLit"
           >
-            shop the drop
+            {COMMERCE_ENABLED ? "shop the drop" : "see the drop"}
           </a>
           <a
-            href="#about"
+            href="#manifesto"
             className="rounded-full border border-paper/40 px-7 py-3 text-sm font-medium tracking-wide text-paper transition-colors duration-500 hover:border-metalLit hover:text-metalLit"
           >
             the manifesto

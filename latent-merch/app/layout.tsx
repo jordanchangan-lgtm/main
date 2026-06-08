@@ -3,6 +3,7 @@ import "./globals.css";
 import { CartProvider } from "@/lib/cart";
 import { NavHeader } from "@/components/NavHeader";
 import { CartDrawer } from "@/components/CartDrawer";
+import { COMMERCE_ENABLED } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Latent Merch — AI-native apparel",
@@ -17,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CartProvider>
           <NavHeader />
           {children}
-          <CartDrawer />
+          {COMMERCE_ENABLED && <CartDrawer />}
         </CartProvider>
       </body>
     </html>

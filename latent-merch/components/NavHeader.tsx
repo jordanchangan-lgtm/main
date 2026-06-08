@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { useCart } from "@/lib/cart";
+import { COMMERCE_ENABLED } from "@/lib/config";
 import { expoOut, silk, fadeUp, stagger } from "@/lib/motion";
 import { useEffect, useState } from "react";
 
@@ -75,25 +76,31 @@ export function NavHeader() {
             </nav>
 
             <div className="flex items-center gap-2.5">
-              {/* Cart */}
-              <button
-                onClick={toggle}
-                aria-label={`Open cart, ${count} items`}
-                className="group relative flex items-center gap-2.5 rounded-full border border-paper/15 px-4 py-2 transition-colors duration-500 hover:border-metalLit/60"
-              >
-                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-paper/80 transition-colors group-hover:text-metalLit">
-                  cart
-                </span>
-                <motion.span
-                  key={count}
-                  initial={{ scale: 1.4, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.6, ease: expoOut }}
-                  className="flex h-5 min-w-5 items-center justify-center rounded-full bg-metalLit px-1.5 text-[10px] font-medium text-ink"
+              {/* Cart — only in commerce mode */}
+              {COMMERCE_ENABLED ? (
+                <button
+                  onClick={toggle}
+                  aria-label={`Open cart, ${count} items`}
+                  className="group relative flex items-center gap-2.5 rounded-full border border-paper/15 px-4 py-2 transition-colors duration-500 hover:border-metalLit/60"
                 >
-                  {count}
-                </motion.span>
-              </button>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-paper/80 transition-colors group-hover:text-metalLit">
+                    cart
+                  </span>
+                  <motion.span
+                    key={count}
+                    initial={{ scale: 1.4, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.6, ease: expoOut }}
+                    className="flex h-5 min-w-5 items-center justify-center rounded-full bg-metalLit px-1.5 text-[10px] font-medium text-ink"
+                  >
+                    {count}
+                  </motion.span>
+                </button>
+              ) : (
+                <span className="hidden rounded-full border border-metalLit/40 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.32em] text-metalLit md:inline-block">
+                  drop · soon
+                </span>
+              )}
 
               {/* Mobile menu trigger */}
               <button

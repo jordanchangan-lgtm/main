@@ -144,3 +144,50 @@ body {
               height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
               opacity 0.4s ease;
 }
+
+/* ============================================================
+   Falling streaks — gives the impression the model is descending
+   through space by streaking vertical light upward.
+   ============================================================ */
+.falling-streaks {
+  background-image:
+    /* Sparse warm gold streaks */
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 60px,
+      rgba(217, 181, 123, 0.18) 60px,
+      rgba(217, 181, 123, 0) 140px
+    ),
+    /* Medium paper streaks, offset */
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 30px,
+      rgba(243, 239, 230, 0.07) 30px,
+      rgba(243, 239, 230, 0) 110px
+    ),
+    /* Dense fine ink-on-ink streaks */
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 14px,
+      rgba(120, 200, 160, 0.04) 14px,
+      rgba(120, 200, 160, 0) 60px
+    );
+  background-size: 100px 200px, 60px 140px, 30px 74px;
+  animation: fallStreaks 9s linear infinite;
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+}
+
+@keyframes fallStreaks {
+  from {
+    background-position: 0 0, 12px 0, 0 0;
+  }
+  to {
+    background-position: 0 -200px, 12px -140px, 0 -74px;
+  }
+}

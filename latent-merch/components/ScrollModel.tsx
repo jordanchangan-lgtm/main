@@ -3,113 +3,197 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { silk, expoOut } from "@/lib/motion";
+import { expoOut, silk } from "@/lib/motion";
+
+// Paired text reveals that cycle through as you scroll the panel.
+// Each pair occupies ~12.5% of the scroll progress.
+type Pair = { left: string; right: string };
+
+const PAIRS: Pair[] = [
+  { left: "Stillness, woven.", right: "Worn like a thought." },
+  { left: "Cut from the void.", right: "Heavy cotton, soft weight." },
+  { left: "Form follows feeling.", right: "Brushed back, soft drape." },
+  { left: "No logos. No noise.", right: "Cream on jade." },
+  { left: "Each piece a primitive.", right: "Hand-pulled schwa." },
+  { left: "Generated, not sampled.", right: "The fit forgets itself." },
+  { left: "Wear the latent space.", right: "Built to hang." },
+  { left: "Every layer of the drop.", right: "Stillness in motion." },
+];
 
 export function ScrollModel() {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  // Falling + drift — long easing range for smoothness
-  const modelY = useTransform(scrollYProgress, [0, 0.5, 1], ["-55%", "0%", "14%"]);
-  const modelOpacity = useTransform(scrollYProgress, [0, 0.18, 0.85, 1], [0, 1, 1, 0.5]);
-  const modelScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 1.04]);
-  const modelRotate = useTransform(scrollYProgress, [0, 1], [-3, 3]);
+  // Final video opacity — crossfades in over the last 12% of scroll
+  const videoOpacity = useTransform(scrollYProgress, [0.86, 0.96], [0, 1]);
+  const stillOpacity = useTransform(scrollYProgress, [0.84, 0.94], [1, 0]);
 
-  // Text reveals
-  const leftOpacity = useTransform(scrollYProgress, [0.12, 0.4], [0, 1]);
-  const leftX = useTransform(scrollYProgress, [0.12, 0.4], [-56, 0]);
-  const leftBlurRaw = useTransform(scrollYProgress, [0.12, 0.4], [8, 0]);
-  const leftFilter = useTransform(leftBlurRaw, (b) => `blur(${b}px)`);
+  // Subtle drift on the still — keeps the figure alive even before the video kicks in
+  const modelY = useTransform(scrollYProgress, [0, 1], [-30, 30]);
+  const modelRotate = useTransform(scrollYProgress, [0, 1], [-2, 2]);
 
-  const rightOpacity = useTransform(scrollYProgress, [0.28, 0.58], [0, 1]);
-  const rightX = useTransform(scrollYProgress, [0.28, 0.58], [56, 0]);
-  const rightBlurRaw = useTransform(scrollYProgress, [0.28, 0.58], [8, 0]);
-  const rightFilter = useTransform(rightBlurRaw, (b) => `blur(${b}px)`);
-
-  // Ambient halo behind the model
-  const haloScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.6, 1, 1.2]);
-  const haloOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.6, 0.6, 0.2]);
+  // Ambient halo
+  const haloScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.7, 1, 1.15]);
+  const haloOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.2, 0.55, 0.55, 0.3]);
 
   return (
-    <section ref={ref} className="relative h-[240vh] bg-ink">
+    <section ref={ref} className="relative h-[420vh] bg-ink">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Ambient ink halo — gives the void a center of gravity */}
+        {/* Falling effect — vertical light streaks moving upward (suggesting descent) */}
+        <FallingStreaks />
+
+        {/* Ambient ink halo behind the model */}
         <motion.div
           aria-hidden
           style={{ scale: haloScale, opacity: haloOpacity }}
-          className="absolute left-1/2 top-1/2 -z-0 h-[60vh] w-[60vh] -translate-x-1/2 -translate-y-1/2 rounded-full bg-jade/20 blur-[120px]"
+          className="absolute left-1/2 top-1/2 z-[1] h-[70vh] w-[70vh] -translate-x-1/2 -translate-y-1/2 rounded-full bg-jade/25 blur-[140px]"
         />
 
-        <div className="relative mx-auto grid h-full max-w-7xl grid-cols-12 items-center gap-6 px-8">
-          {/* Left text */}
-          <motion.div
-            style={{
-              opacity: leftOpacity,
-              x: leftX,
-              filter: leftFilter,
-            }}
-            className="col-span-3 space-y-6"
-          >
-            <p className="font-mono text-[11px] uppercase tracking-[0.34em] text-jadeLit">
-              ə · form
-            </p>
-            <h3 className="text-3xl font-light leading-tight text-paper">
-              Stillness, woven.
-            </h3>
-            <p className="text-sm leading-relaxed text-paper/55">
-              No logos. No noise. Each piece a primitive — cut from the void, finished by hand.
-            </p>
-          </motion.div>
+        <div className="relative z-[2] mx-auto grid h-full max-w-7xl grid-cols-12 items-center gap-6 px-6 md:px-12">
+          {/* Left text column — 8 cycling reveals */}
+          <div className="col-span-3 relative h-72 md:h-80">
+            {PAIRS.map((pair, i) => (
+              <CyclingLine
+                key={`l-${i}`}
+                text={pair.left}
+                tag={`ə · ${String(i + 1).padStart(2, "0")}`}
+                tagColor="text-jadeLit"
+                index={i}
+                total={PAIRS.length}
+                scrollYProgress={scrollYProgress}
+                side="left"
+              />
+            ))}
+          </div>
 
-          {/* Falling model */}
+          {/* Center model — still that crossfades to looping video */}
           <motion.div
-            style={{
-              y: modelY,
-              opacity: modelOpacity,
-              scale: modelScale,
-              rotate: modelRotate,
-            }}
+            style={{ y: modelY, rotate: modelRotate }}
             className="relative col-span-6 flex h-full items-center justify-center"
           >
-            <div className="relative h-[92%] w-full">
-              <Image
-                src="/model-fall.png"
-                alt="Latent Merch model falling, wearing the void hoodie in jade"
-                fill
-                priority
-                sizes="(max-width: 1280px) 50vw, 640px"
-                className="object-contain"
+            <div className="relative h-[88%] w-full">
+              {/* Static image */}
+              <motion.div style={{ opacity: stillOpacity }} className="absolute inset-0">
+                <Image
+                  src="/model-fall.png"
+                  alt="Falling model in the void hoodie"
+                  fill
+                  priority
+                  sizes="(max-width: 1280px) 50vw, 640px"
+                  className="object-contain"
+                />
+              </motion.div>
+              {/* Looping video — fades in at the end of the scroll */}
+              <motion.video
+                style={{ opacity: videoOpacity }}
+                src="/model-fall-loop.webm"
+                poster="/model-fall.png"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Looping falling model"
+                className="absolute inset-0 h-full w-full object-contain"
               />
             </div>
           </motion.div>
 
-          {/* Right text */}
-          <motion.div
-            style={{
-              opacity: rightOpacity,
-              x: rightX,
-              filter: rightFilter,
-            }}
-            className="col-span-3 space-y-6 text-right"
-          >
-            <p className="font-mono text-[11px] uppercase tracking-[0.34em] text-metalLit">
-              ə · feel
-            </p>
-            <h3 className="text-3xl font-light leading-tight text-paper">
-              Worn like a thought.
-            </h3>
-            <p className="text-sm leading-relaxed text-paper/55">
-              Heavy cotton. Soft weight. The fit forgets itself the moment you move.
-            </p>
-          </motion.div>
+          {/* Right text column — 8 cycling reveals */}
+          <div className="col-span-3 relative h-72 md:h-80 text-right">
+            {PAIRS.map((pair, i) => (
+              <CyclingLine
+                key={`r-${i}`}
+                text={pair.right}
+                tag={`ə · ${String(i + 1).padStart(2, "0")}`}
+                tagColor="text-metalLit"
+                index={i}
+                total={PAIRS.length}
+                scrollYProgress={scrollYProgress}
+                side="right"
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-// Re-exports kept for parity if other files import them later
-export { silk, expoOut };
+function CyclingLine({
+  text,
+  tag,
+  tagColor,
+  index,
+  total,
+  scrollYProgress,
+  side,
+}: {
+  text: string;
+  tag: string;
+  tagColor: string;
+  index: number;
+  total: number;
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+  side: "left" | "right";
+}) {
+  const window = 1 / total; // 0.125
+  const start = window * index;
+  const fadeIn = start + 0.01;
+  const peakStart = start + window * 0.25;
+  const peakEnd = start + window * 0.75;
+  const fadeOut = start + window;
+
+  // Bound to [0, 1]
+  const a = Math.max(0, start);
+  const b = Math.min(1, fadeIn);
+  const c = Math.min(1, peakStart);
+  const d = Math.min(1, peakEnd);
+  const e = Math.min(1, fadeOut);
+
+  const opacity = useTransform(scrollYProgress, [a, c, d, e], [0, 1, 1, 0]);
+  const x = useTransform(
+    scrollYProgress,
+    [a, c, d, e],
+    side === "left" ? [-32, 0, 0, 24] : [32, 0, 0, -24]
+  );
+  const blurRaw = useTransform(scrollYProgress, [a, c, d, e], [8, 0, 0, 6]);
+  const filter = useTransform(blurRaw, (v) => `blur(${v}px)`);
+
+  void b; // start animation slightly after window start; kept for clarity
+
+  return (
+    <motion.div
+      style={{ opacity, x, filter }}
+      className="absolute inset-0 flex flex-col justify-center"
+    >
+      <p
+        className={`font-mono text-[11px] uppercase tracking-[0.34em] ${tagColor}`}
+      >
+        {tag}
+      </p>
+      <h3 className="mt-4 text-3xl font-light leading-tight text-paper md:text-4xl">
+        {text}
+      </h3>
+      <p className="mt-3 text-sm leading-relaxed text-paper/55">
+        {side === "left"
+          ? "No logos. No noise. Cut from the void, finished by hand."
+          : "Heavy cotton. Soft weight. The fit forgets itself."}
+      </p>
+    </motion.div>
+  );
+}
+
+function FallingStreaks() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+      {/* Diagonal/vertical light streaks moving upward to suggest descent */}
+      <div className="falling-streaks absolute inset-0" />
+      {/* Subtle atmospheric gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-ink via-jadeDeep/8 to-ink" />
+    </div>
+  );
+}

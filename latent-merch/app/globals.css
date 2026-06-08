@@ -100,3 +100,47 @@ body {
   0%, 100% { opacity: 0.35; }
   50% { opacity: 0.85; }
 }
+
+/* ============================================================
+   X-ray reveal — radial mask cuts a hole in the top layer
+   to expose the gold-tinted figure underneath. The lens ring
+   tracks the cursor independently.
+   ============================================================ */
+.xray-stage {
+  /* CSS custom properties driven from React */
+  --mx: 50%;
+  --my: 50%;
+  --r: 0px;
+}
+
+.xray-top {
+  -webkit-mask: radial-gradient(
+    circle at var(--mx) var(--my),
+    transparent 0,
+    transparent var(--r),
+    #000 calc(var(--r) + 90px),
+    #000 100%
+  );
+  mask: radial-gradient(
+    circle at var(--mx) var(--my),
+    transparent 0,
+    transparent var(--r),
+    #000 calc(var(--r) + 90px),
+    #000 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  transition: -webkit-mask 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              mask 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.xray-under-filter {
+  /* Cast the same figure in gold/metal — the X-ray view */
+  filter: sepia(1) saturate(3.4) hue-rotate(-12deg) brightness(1.05) contrast(1.05);
+}
+
+.xray-lens {
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.4s ease;
+}

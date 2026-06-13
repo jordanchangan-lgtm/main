@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mallouk Group — Social Content Schedule · Deepal & Avatr Jordan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter+Tight:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0b0b0b;        /* near-black */
+    --ink-2:#2b2b2b;
+    --mute:#5f5f5f;        /* grey body */
+    --faint:#8c8c8c;
+    --line:#d9d9d9;        /* hairlines */
+    --line-2:#ededed;
+    --paper:#ffffff;
+    --paper-2:#f6f6f4;     /* faint panel */
+    --panel:#0b0b0b;       /* inverted block */
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Inter Tight',system-ui,Arial,sans-serif;
+    font-weight:400;line-height:1.5;letter-spacing:.005em;
+    font-feature-settings:"kern" 1;
+    -webkit-font-smoothing:antialiased;
+  }
+  .ar{direction:rtl;font-family:'Tajawal','Inter Tight',sans-serif;unicode-bidi:isolate;}
+  .wrap{max-width:920px;margin:0 auto;padding:64px 40px 96px;}
+  h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.01em;margin:0;}
+  a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);}
+  a:hover{border-color:var(--ink);}
+  hr{border:none;border-top:1px solid var(--line);margin:0;}
+  .mono{font-family:'Inter Tight',monospace;letter-spacing:.14em;text-transform:uppercase;font-size:11px;font-weight:600;}
+
+  /* ---------- Masthead ---------- */
+  .mast{border-bottom:2px solid var(--ink);padding-bottom:22px;margin-bottom:8px;}
+  .mast .brand{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;}
+  .mast .word{font-family:'Fraunces',serif;font-weight:600;font-size:30px;letter-spacing:.04em;line-height:1;}
+  .mast .word small{display:block;font-family:'Inter Tight',sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.34em;color:var(--mute);margin-top:8px;}
+  .mast .meta{text-align:right;color:var(--mute);font-size:11.5px;line-height:1.7;}
+  .mast .meta b{color:var(--ink);font-weight:600;}
+  .title-block{margin:40px 0 14px;}
+  .title-block .kicker{color:var(--faint);}
+  .title-block h1{font-size:46px;line-height:1.02;margin-top:14px;letter-spacing:-.02em;}
+  .title-block .sub{color:var(--mute);font-size:15px;max-width:62ch;margin-top:16px;}
+
+  /* ---------- Section labels ---------- */
+  .eyebrow{display:flex;align-items:center;gap:14px;margin:56px 0 18px;}
+  .eyebrow .n{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:var(--faint);}
+  .eyebrow h2{font-size:13px;font-family:'Inter Tight',sans-serif;font-weight:700;letter-spacing:.22em;text-transform:uppercase;}
+  .eyebrow .rule{flex:1;height:1px;background:var(--line);}
+
+  /* ---------- Market brief ---------- */
+  .brief{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);}
+  .brief div{padding:20px 22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .brief div:nth-child(2n){border-right:none;}
+  .brief .stat{font-family:'Fraunces',serif;font-size:30px;font-weight:500;line-height:1;}
+  .brief .lbl{color:var(--mute);font-size:12.5px;margin-top:9px;line-height:1.45;}
+  .takeaway{margin-top:18px;padding:18px 22px;background:var(--panel);color:#fff;}
+  .takeaway .mono{color:#bdbdbd;}
+  .takeaway p{margin:8px 0 0;font-size:14.5px;line-height:1.55;}
+  .takeaway b{font-weight:600;}
+
+  /* ---------- Strategy split ---------- */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .split .col{border:1px solid var(--line);padding:20px 22px;}
+  .split .col h3{font-size:24px;letter-spacing:.02em;}
+  .split .col .pos{color:var(--faint);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:4px;}
+  .split .col p{color:var(--mute);font-size:13px;margin:12px 0 0;}
+  .split .col .kw{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;}
+  .split .col .kw span{border:1px solid var(--line);padding:3px 9px;font-size:11px;color:var(--ink-2);border-radius:40px;}
+
+  /* ---------- Calendar ---------- */
+  table.cal{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table.cal th,table.cal td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top;}
+  table.cal th{background:var(--paper-2);font-weight:600;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);}
+  table.cal td .d{font-weight:600;}
+  table.cal td .wk{color:var(--faint);}
+  table.cal .we{background:repeating-linear-gradient(45deg,#fafafa,#fafafa 6px,#f0f0f0 6px,#f0f0f0 7px);color:var(--faint);}
+  .tag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--ink);padding:2px 7px;border-radius:3px;white-space:nowrap;}
+  .tag.ai{background:var(--ink);color:#fff;}
+
+  /* ---------- Content cards ---------- */
+  .card{border:1px solid var(--line);margin:16px 0;padding:0;break-inside:avoid;}
+  .card .hd{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 22px;border-bottom:1px solid var(--line);background:var(--paper-2);}
+  .card .hd .when{font-size:12px;font-weight:600;letter-spacing:.02em;}
+  .card .hd .when span{color:var(--faint);font-weight:400;}
+  .card .bd{padding:20px 22px 22px;}
+  .card h3{font-size:25px;line-height:1.06;letter-spacing:-.01em;}
+  .card .row{margin-top:16px;}
+  .card .row .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--faint);margin-bottom:6px;}
+  .hook{border-left:2px solid var(--ink);padding:10px 0 10px 16px;margin-top:14px;}
+  .hook .en{font-family:'Fraunces',serif;font-size:18px;font-style:italic;line-height:1.25;}
+  .hook .ar{font-size:17px;font-weight:500;margin-top:7px;line-height:1.5;}
+  .card p.desc{font-size:13.5px;color:var(--ink-2);margin:0;}
+  .why{font-size:13px;color:var(--mute);margin:0;}
+  .why b{color:var(--ink);font-weight:600;}
+  ul.shots{margin:0;padding:0;list-style:none;}
+  ul.shots li{font-size:12.5px;color:var(--ink-2);padding:4px 0 4px 18px;position:relative;border-bottom:1px solid var(--line-2);}
+  ul.shots li:last-child{border-bottom:none;}
+  ul.shots li:before{content:"";position:absolute;left:0;top:11px;width:6px;height:1px;background:var(--ink);}
+  .cta{display:inline-block;font-size:12px;font-weight:600;border:1px solid var(--ink);padding:7px 14px;border-radius:3px;}
+  .cta .ar{font-weight:700;}
+  .ref{font-size:12px;color:var(--mute);}
+  .ref a{font-size:12px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+
+  /* ---------- Appendix / footer ---------- */
+  .appx{border:1px solid var(--line);padding:6px 22px;}
+  .appx .item{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line-2);}
+  .appx .item:last-child{border-bottom:none;}
+  .appx .item .t{font-size:13px;font-weight:500;}
+  .appx .item .t small{display:block;color:var(--faint);font-weight:400;font-size:11.5px;margin-top:2px;}
+  .note{font-size:12px;color:var(--mute);background:var(--paper-2);border:1px solid var(--line);padding:14px 18px;}
+  footer{margin-top:64px;border-top:2px solid var(--ink);padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--faint);font-size:11px;letter-spacing:.04em;}
+  footer b{color:var(--ink);font-family:'Fraunces',serif;font-weight:600;letter-spacing:.06em;}
+
+  @media (max-width:680px){
+    .wrap{padding:36px 20px 64px;}
+    .brief,.split,.grid2{grid-template-columns:1fr;}
+    .brief div:nth-child(n){border-right:none;}
+    .title-block h1{font-size:34px;}
+    .mast .meta{text-align:left;}
+  }
+  @media print{
+    @page{size:A4;margin:14mm;}
+    a{border:none;}
+    .wrap{padding:0;max-width:none;}
+    .card,.split .col,.brief,.appx,.takeaway{break-inside:avoid;}
+    .eyebrow{break-after:avoid;}
+    body{font-size:11px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ====================== MASTHEAD ====================== -->
+  <div class="mast">
+    <div class="brand">
+      <div class="word">MALLOUK&nbsp;GROUP<small>OFFICIAL DEALER · DEEPAL &amp; AVATR · JORDAN</small></div>
+      <div class="meta">
+        <b>Social Content Schedule</b><br/>
+        Window: <b>Sun 14 — Wed 24 June 2026</b><br/>
+        Prepared: 13 June 2026 · Amman<br/>
+        Channels: Instagram / TikTok
+      </div>
+    </div>
+  </div>
+
+  <div class="title-block">
+    <div class="kicker mono">10-Day Sprint · Deepal &amp; Avatr</div>
+    <h1>Two brands.<br/>One signal:<br/><em>drive without limits.</em></h1>
+    <p class="sub">A tight, two-track content plan built for the Jordanian feed — Deepal sells <b>freedom &amp; adventure</b>, Avatr sells <b>intelligence &amp; status</b>. Both ride the one truth the market is waiting to hear: with range-extender (REEV) power, the range-anxiety conversation is over.</p>
+  </div>
+
+  <!-- ====================== MARKET BRIEF ====================== -->
+  <div class="eyebrow"><span class="n">00</span><h2>Market Brief — Why this works in Jordan</h2><span class="rule"></span></div>
+  <div class="brief">
+    <div><div class="stat">87%</div><div class="lbl">of EVs cleared in Jordan are Chinese-made. The buyer already trusts the origin — we sell the <b>brand &amp; story</b>, not the country.</div></div>
+    <div><div class="stat">0% <span style="font-size:14px;">sales tax</span></div><div class="lbl">EVs are exempt from the 16% sales tax on petrol cars and sit on a low flat tax — pair the dream with the <b>math</b>.</div></div>
+    <div><div class="stat">450+</div><div class="lbl">charging stations now cover the Desert Road, Dead Sea &amp; Irbid routes every 70–100 km — the infrastructure objection is fading.</div></div>
+    <div><div class="stat">~1,000 km</div><div class="lbl">total REEV range on a full tank + charge. This is the hero number for a country that drives Amman→Aqaba→Petra.</div></div>
+  </div>
+  <div class="takeaway">
+    <div class="mono">The strategic angle</div>
+    <p>Jordanians love the idea of an EV but fear being stranded on the way to Aqaba or up to the north. <b>REEV kills that fear.</b> Every Deepal post leans <b>adventure + freedom</b> (no fuel stops, go anywhere); every Avatr post leans <b>premium + intelligence</b> (silent luxury, Huawei tech, a statement in West Amman). Bilingual hooks, Jordanian dialect, evening posting.</p>
+  </div>
+
+  <!-- ====================== STRATEGY SPLIT ====================== -->
+  <div class="eyebrow"><span class="n">01</span><h2>The two-track strategy</h2><span class="rule"></span></div>
+  <div class="split">
+    <div class="col">
+      <div class="pos">Deepal · Track A</div>
+      <h3>Freedom &amp; Adventure</h3>
+      <p>Young, bold, outdoors. The G318 is the boxy hero that turns a weekend into an expedition — Wadi Rum, the Dead Sea, camping under the stars, no gas station in sight. Accessible premium, high energy.</p>
+      <div class="kw"><span>Adventure</span><span>No range anxiety</span><span>Value</span><span>Youth</span><span>Off-road</span></div>
+    </div>
+    <div class="col">
+      <div class="pos">Avatr · Track B</div>
+      <h3>Intelligence &amp; Status</h3>
+      <p>Refined, quiet, future-facing. The 07 REEV is a statement for the West-Amman executive — Huawei HarmonyOS cockpit, sculpted design, silence inside the city's noise. Less shouting, more presence.</p>
+      <div class="kw"><span>Premium</span><span>Huawei tech</span><span>Design</span><span>Calm</span><span>Status</span></div>
+    </div>
+  </div>
+
+  <!-- ====================== MASTER CALENDAR ====================== -->
+  <div class="eyebrow"><span class="n">02</span><h2>Master calendar — at a glance</h2><span class="rule"></span></div>
+  <table class="cal">
+    <thead>
+      <tr><th style="width:120px;">Day / Date</th><th style="width:90px;">Brand</th><th>Content</th><th style="width:150px;">Format</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="d">Sun</span> · <span class="wk">14 Jun</span></td><td>Deepal</td><td>“The Last Fuel Stop” — cinematic teaser</td><td><span class="tag ai">Reel · AI</span></td></tr>
+      <tr><td><span class="d">Mon</span> · <span class="wk">15 Jun</span></td><td>Avatr</td><td>“Sculpted by Light” — cinematic teaser</td><td><span class="tag ai">Reel · AI</span></td></tr>
+      <tr><td><span class="d">Tue</span> · <span class="wk">16 Jun</span></td><td>Deepal</td><td>Showroom story — “First 5 seconds”</td><td><span class="tag">Story</span></td></tr>
+      <tr><td><span class="d">Wed</span> · <span class="wk">17 Jun</span></td><td>Avatr</td><td>Showroom story — “Luxury is in the details”</td><td><span class="tag">Story</span></td></tr>
+      <tr><td><span class="d">Thu</span> · <span class="wk">18 Jun</span></td><td>Deepal</td><td>G318 — moving carousel post</td><td><span class="tag ai">Carousel · AI</span></td></tr>
+      <tr class="we"><td><span class="d">Fri–Sat</span> · 19–20 Jun</td><td>—</td><td>Weekend · Wadi Rum / city shoot days + engagement &amp; reshares</td><td>Production</td></tr>
+      <tr><td><span class="d">Sun</span> · <span class="wk">21 Jun</span></td><td>Avatr</td><td>07 REEV GCC — moving carousel post</td><td><span class="tag ai">Carousel · AI</span></td></tr>
+      <tr><td><span class="d">Mon</span> · <span class="wk">22 Jun</span></td><td>Deepal</td><td>“Amman → Wadi Rum” — filmed reel</td><td><span class="tag">Reel · Filmed</span></td></tr>
+      <tr><td><span class="d">Tue</span> · <span class="wk">23 Jun</span></td><td>Avatr</td><td>“A Day, Reimagined” — filmed reel</td><td><span class="tag">Reel · Filmed</span></td></tr>
+      <tr><td><span class="d">Wed</span> · <span class="wk">24 Jun</span></td><td>—</td><td>Buffer · best-performer boost + week recap story</td><td>Optimize</td></tr>
+    </tbody>
+  </table>
+  <p class="note" style="margin-top:14px;"><b>Posting times (Amman):</b> Reels &amp; carousels perform best <b>8:00–10:30 PM</b> (after dinner, peak scroll). Stories: a morning frame ~<b>11 AM</b> + an evening frame ~<b>9 PM</b>. Avoid Friday mornings.</p>
+
+  <!-- ====================== SECTION: DEEPAL ====================== -->
+  <div class="eyebrow"><span class="n">D</span><h2>Section One — Deepal</h2><span class="rule"></span></div>
+
+  <!-- D1 -->
+  <div class="card">
+    <div class="hd"><div class="when">Sun · 14 Jun <span>· Deepal · Reel 01</span></div><span class="tag ai">Cinematic (AI)</span></div>
+    <div class="bd">
+      <h3>The Last Fuel Stop</h3>
+      <div class="hook">
+        <div class="en">“Remember gas stations?”</div>
+        <div class="ar">إيمتى آخر مرة وقفت ع البنزين؟</div>
+      </div>
+      <div class="row"><div class="k">The idea</div>
+        <p class="desc">A fully AI-generated cinematic teaser. A lone Deepal G318 rolls past a deserted, dusty fuel station on the Desert Road at golden hour — then accelerates toward the horizon as an on-screen counter climbs to <b>1,000 KM</b>. No dialogue, just engine-less calm, wind and a deep music swell. Ends on the Deepal logo + line: <span class="ar">“لأبعد نقطة. بدون قلق.”</span> / “To the farthest point. No anxiety.”</p>
+      </div>
+      <div class="row"><div class="k">Why it works (Jordan)</div>
+        <p class="why"><b>Range anxiety + fuel prices are the #1 hesitation.</b> REEV reframes both into freedom — emotional, not spec-heavy.</p>
+      </div>
+      <div class="row"><div class="k">Beats</div>
+        <ul class="shots">
+          <li>0–1.5s — HOOK text over the empty fuel station, car entering frame</li>
+          <li>2–6s — low tracking shot, dust, golden light raking the boxy body + C-LED signature</li>
+          <li>7–12s — wide desert highway, “1,000 KM” range counter animates up</li>
+          <li>13–15s — logo lockup + tagline + <span class="ar">احجز تجربة قيادة</span></li>
+        </ul>
+      </div>
+      <div class="row"><span class="cta">Book a test drive · <span class="ar">احجز تجربتك</span></span></div>
+      <div class="row"><div class="k">Reference</div><div class="ref">AI prompt ready in <a href="./ai-prompts.md">ai-prompts.md → §3</a>. Mood: cinematic car-in-landscape, Pinterest “3D car render”.</div></div>
+    </div>
+  </div>
+
+  <!-- D2 -->
+  <div class="card">
+    <div class="hd"><div class="when">Mon · 22 Jun <span>· Deepal · Reel 02</span></div><span class="tag">Filmed</span></div>
+    <div class="bd">
+      <h3>Amman → Wadi Rum</h3>
+      <div class="hook">
+        <div class="en">“What do you really pack for the adventure?”</div>
+        <div class="ar">شو بتاخد معك ع المغامرة؟</div>
+      </div>
+      <div class="row"><div class="k">The idea</div>
+        <p class="desc">A real, shot-on-location reel. Open on a pile of camping gear, cooler, tents — “will it fit?” Then the G318 swallows all of it (818–1,747 L). Cut to the drive out of Amman, arrival at Wadi Rum, the front seats folding <b>flat into a bed</b>, friends watching the stars from the open tailgate. One diff-lock dune crawl for drama. Trending audio, fast cuts, real faces.</p>
+      </div>
+      <div class="row"><div class="k">Why it works (Jordan)</div>
+        <p class="why"><b>Wadi Rum &amp; camping is core to young Jordanian culture.</b> Showing capability through a relatable weekend beats a spec sheet.</p>
+      </div>
+      <div class="row"><div class="k">Shot list</div>
+        <ul class="shots">
+          <li>Hook: gear on the ground, doubtful face → boot reveal swallowing it all</li>
+          <li>Departure: rooftop of Amman → open Desert Road, sunroof POV</li>
+          <li>Arrival: Wadi Rum red sand, slow 360° around the parked G318</li>
+          <li>Payoff: seats fold flat → night sky time-lapse from inside the cabin</li>
+        </ul>
+      </div>
+      <div class="row"><span class="cta">Plan your escape · <span class="ar">جهّز رحلتك</span></span></div>
+      <div class="row"><div class="k">Reference</div><div class="ref">Live shoot — no AI. Edit pace per <a href="https://later.com/blog/instagram-reels-trends/" target="_blank" rel="noopener">Later · Reels trends 2026</a>.</div></div>
+    </div>
+  </div>
+
+  <!-- D3 story -->
+  <div class="card">
+    <div class="hd"><div class="when">Tue · 16 Jun <span>· Deepal · Showroom Story</span></div><span class="tag">Story</span></div>
+    <div class="bd">
+      <h3>First 5 Seconds</h3>
+      <div class="hook">
+        <div class="en">“The first 5 seconds decide everything.”</div>
+        <div class="ar">أول ٥ ثواني هي اللي بتقرّر.</div>
+      </div>
+      <div class="row"><div class="k">The idea</div>
+        <p class="desc">A 3–4 frame vertical story shot inside the Mallouk showroom. Slow, tactile detail pans that show off the <b>beauty of the car</b> under the lights — the C-shaped LED DRLs igniting, the squared-off silhouette, a hand opening the door, the rugged button-rich cabin — then a full hero reveal. Each frame holds 2–3s with a swipe-up sticker.</p>
+      </div>
+      <div class="row"><div class="k">Why it works (Jordan)</div>
+        <p class="why"><b>Stories drive walk-ins.</b> A polished showroom tease converts curiosity into a booked visit — low effort, daily presence.</p>
+      </div>
+      <div class="row"><div class="k">Frames</div>
+        <ul class="shots">
+          <li>F1 — dark → LED DRLs switch on (HOOK text)</li>
+          <li>F2 — macro pan along the boxy shoulder line &amp; roof rack</li>
+          <li>F3 — door opens, interior buttons / spacious cabin</li>
+          <li>F4 — full car reveal + “Book a test drive” link sticker</li>
+        </ul>
+      </div>
+      <div class="row"><span class="cta">Visit the showroom · <span class="ar">زورونا بالمعرض</span></span></div>
+      <div class="row"><div class="k">Reference</div><div class="ref">Use existing assets <code>SHOWROOM_1–7</code> as set dressing if a fresh shoot isn’t possible.</div></div>
+    </div>
+  </div>
+
+  <!-- D4 carousel -->
+  <div class="card">
+    <div class="hd"><div class="when">Thu · 18 Jun <span>· Deepal · Feed Post</span></div><span class="tag ai">Carousel · Moving (AI)</span></div>
+    <div class="bd">
+      <h3>G318 — Swipe Across the Desert</h3>
+      <div class="hook">
+        <div class="en">“Swipe. The desert doesn’t end — and neither does the range.”</div>
+        <div class="ar">اسحب… الصحرا ما بتخلص، والمدى كمان.</div>
+      </div>
+      <div class="row"><div class="k">The idea</div>
+        <p class="desc">An <b>AI-generated moving carousel</b> (4 slides) built as one seamless panorama: as the user swipes, the G318 appears to <b>drive forward across the slides</b> — dust kicking, wheels turning, the desert scrolling behind it (subtle looping motion per slide). Slide 1 hook → slides 2–3 the journey + one hero spec each → slide 4 the offer &amp; CTA. Cinematic colour scene, monochrome Mallouk frame to stay on-brand.</p>
+      </div>
+      <div class="row"><div class="k">Why it works (Jordan)</div>
+        <p class="why"><b>Carousels earn the most saves &amp; dwell-time.</b> The seamless “moving” gimmick stops the scroll and rewards the swipe.</p>
+      </div>
+      <div class="row"><div class="k">Slides</div>
+        <ul class="shots">
+          <li>1 — Hook line, G318 entering from the right edge</li>
+          <li>2 — mid-desert, “1,000 km range · 0 anxiety”</li>
+          <li>3 — dune crawl, “424 hp · diff-locks · 240 mm clearance”</li>
+          <li>4 — full hero + <span class="ar">احجز تجربة قيادة</span> + dealer handle</li>
+        </ul>
+      </div>
+      <div class="row"><span class="cta">Reserve yours · <span class="ar">احجز سيارتك</span></span></div>
+      <div class="row"><div class="k">Reference</div><div class="ref">Full AI prompt → <a href="./ai-prompts.md">ai-prompts.md → §1</a> · <a href="https://www.behance.net/search/projects/seamless%20carousel" target="_blank" rel="noopener">Behance · seamless carousel</a> · <a href="https://www.pinterest.com/ideas/3d-car-animation-video/908647782779/" target="_blank" rel="noopener">Pinterest · 3D car animation</a></div></div>
+    </div>
+  </div>
+
+  <!-- ====================== SECTION: AVATR ====================== -->
+  <div class="eyebrow"><span class="n">A</span><h2>Section Two — Avatr</h2><span class="rule"></span></div>
+
+  <!-- A1 -->
+  <div class="card">
+    <div class="hd"><div class="when">Mon · 15 Jun <span>· Avatr · Reel 01</span></div><span class="tag ai">Cinematic (AI)</span></div>
+    <div class="bd">
+      <h3>Sculpted by Light</h3>
+      <div class="hook">
+        <div class="en">“This isn’t a car. It’s a statement.”</div>
+        <div class="ar">هاي مش سيارة… هاي موقف.</div>
+      </div>
+      <div class="row"><div class="k">The idea</div>
+        <p class="desc">A dark, high-end AI cinematic. The Avatr 07 forms out of flowing particles &amp; light in a black studio; the camera orbits as reflections trace the sculpted body and the full-width light bar ignites. The quad-screen Huawei cockpit boots up in a single elegant sweep. No clutter — pure design worship. Ends on the Avatr mark + <span class="ar">“الذكاء بصمت.”</span> / “Intelligence, in silence.”</p>
+      </div>
+      <div class="row"><div class="k">Why it works (Jordan)</div>
+        <p class="why"><b>West-Amman premium buyers want differentiation</b> from mass-market EVs. Huawei + sculptural design = a flex, not just transport.</p>
+      </div>
+      <div class="row"><div class="k">Beats</div>
+        <ul class="shots">
+          <li>0–2s — black void, particles assemble into a silhouette (HOOK)</li>
+          <li>3–8s — slow orbit, reflections sliding over the body, light bar on</li>
+          <li>9–12s — interior: quad-screen HarmonyOS sweep, ambient glow</li>
+          <li>13–15s — logo + tagline + <span class="ar">جلسة خاصة</span></li>
+        </ul>
+      </div>
+      <div class="row"><span class="cta">Book a private viewing · <span class="ar">احجز جلسة خاصة</span></span></div>
+      <div class="row"><div class="k">Reference</div><div class="ref">AI prompt → <a href="./ai-prompts.md">ai-prompts.md → §4</a> · <a href="https://www.pinterest.com/ideas/car-motion-graphics/916155670697/" target="_blank" rel="noopener">Pinterest · car motion graphics</a></div></div>
+    </div>
+  </div>
+
+  <!-- A2 -->
+  <div class="card">
+    <div class="hd"><div class="when">Tue · 23 Jun <span>· Avatr · Reel 02</span></div><span class="tag">Filmed</span></div>
+    <div class="bd">
+      <h3>A Day, Reimagined</h3>
+      <div class="hook">
+        <div class="en">“Half an hour in Amman traffic. Now do it in silence.”</div>
+        <div class="ar">نص ساعة بزحمة عمّان… بس هالمرة بهدوء.</div>
+      </div>
+      <div class="row"><div class="k">The idea</div>
+        <p class="desc">A filmed “evening of an executive” reel. Boulevard / Abdoun lights, the Avatr 07 gliding silently through the city; quick beats of Huawei voice control, the calm cabin against the chaos outside the glass, then arrival at a rooftop overlooking Amman at dusk. Premium colour grade, minimal cuts, a single restrained voice-over line. Luxury = calm.</p>
+      </div>
+      <div class="row"><div class="k">Why it works (Jordan)</div>
+        <p class="why"><b>Amman traffic &amp; noise is a daily pain.</b> Selling silence + intelligence is deeply aspirational to the premium commuter.</p>
+      </div>
+      <div class="row"><div class="k">Shot list</div>
+        <ul class="shots">
+          <li>Hook: chaotic street audio → cut inside to total silence</li>
+          <li>Tech: hand-free voice command, screens responding</li>
+          <li>City: smooth night drive, reflections over the sculpted hood</li>
+          <li>Payoff: rooftop park-up, Amman skyline, badge close-up</li>
+        </ul>
+      </div>
+      <div class="row"><span class="cta">Experience the calm · <span class="ar">جرّب الهدوء</span></span></div>
+      <div class="row"><div class="k">Reference</div><div class="ref">Live shoot — no AI. Cinematic grade per <a href="https://www.behance.net/search/projects/car%20social%20media%20post%20vehicle" target="_blank" rel="noopener">Behance · automotive social</a>.</div></div>
+    </div>
+  </div>
+
+  <!-- A3 story -->
+  <div class="card">
+    <div class="hd"><div class="when">Wed · 17 Jun <span>· Avatr · Showroom Story</span></div><span class="tag">Story</span></div>
+    <div class="bd">
+      <h3>Luxury Is in the Details</h3>
+      <div class="hook">
+        <div class="en">“Real luxury hides in the details.”</div>
+        <div class="ar">الفخامة الحقيقية بالتفاصيل.</div>
+      </div>
+      <div class="row"><div class="k">The idea</div>
+        <p class="desc">A macro, slow-motion vertical story from inside the showroom. Extreme close-ups that celebrate the <b>beauty of the car</b> — the quad-screen cockpit glowing, ambient light washing across leather, the flush door handle, the badge, seam lines — each detail a separate frame, ending on a full reveal under controlled lighting. Quiet, expensive, swipe-up to book.</p>
+      </div>
+      <div class="row"><div class="k">Why it works (Jordan)</div>
+        <p class="why"><b>Premium intent starts with desire, not price.</b> Detail-worship stories pre-sell the showroom appointment.</p>
+      </div>
+      <div class="row"><div class="k">Frames</div>
+        <ul class="shots">
+          <li>F1 — screen glow in the dark cabin (HOOK)</li>
+          <li>F2 — macro: stitching / material / ambient light line</li>
+          <li>F3 — exterior light bar + badge reflection</li>
+          <li>F4 — full hero reveal + “Book a private viewing” sticker</li>
+        </ul>
+      </div>
+      <div class="row"><span class="cta">Private viewing · <span class="ar">احجز جلسة خاصة</span></span></div>
+      <div class="row"><div class="k">Reference</div><div class="ref">Existing <code>SHOWROOM_*</code> assets work as the set. Keep grade cool &amp; dark.</div></div>
+    </div>
+  </div>
+
+  <!-- A4 carousel -->
+  <div class="card">
+    <div class="hd"><div class="when">Sun · 21 Jun <span>· Avatr · Feed Post</span></div><span class="tag ai">Carousel · Moving (AI)</span></div>
+    <div class="bd">
+      <h3>07 REEV — Swipe to Wake It Up</h3>
+      <div class="hook">
+        <div class="en">“Swipe to wake it up.”</div>
+        <div class="ar">اسحب… وخلّيها تصحى.</div>
+      </div>
+      <div class="row"><div class="k">The idea</div>
+        <p class="desc">An <b>AI-generated moving carousel</b> (4 slides) in a black studio. As the user swipes, the Avatr 07 <b>“wakes”</b> — the light bar sequences on, the screens boot, the car slowly rotates across the slides (looping motion per frame). Slide 1 hook → slides 2–3 reveal + GCC tech → slide 4 the spec lockup &amp; CTA. Ultra-premium, monochrome Mallouk frame, single accent of motion light.</p>
+      </div>
+      <div class="row"><div class="k">Why it works (Jordan)</div>
+        <p class="why"><b>“Wake it up” is interactive &amp; premium</b> — it mirrors the tech promise and maximises swipe-through + saves.</p>
+      </div>
+      <div class="row"><div class="k">Slides</div>
+        <ul class="shots">
+          <li>1 — dark, dormant car; HOOK; light bar half-lit</li>
+          <li>2 — light bar fully on, “Powered by Huawei HarmonyOS”</li>
+          <li>3 — ¾ rotation, “~1,100 km REEV · 492 hp · GCC spec”</li>
+          <li>4 — hero front + <span class="ar">احجز جلسة خاصة</span> + dealer handle</li>
+        </ul>
+      </div>
+      <div class="row"><span class="cta">Reserve a viewing · <span class="ar">احجز الآن</span></span></div>
+      <div class="row"><div class="k">Reference</div><div class="ref">Full AI prompt → <a href="./ai-prompts.md">ai-prompts.md → §2</a> · <a href="https://www.behance.net/gallery/105810531/Car-Social-Media-Post-Template" target="_blank" rel="noopener">Behance · car social template</a> · <a href="https://www.pinterest.com/ideas/car-3d-render/955624890230/" target="_blank" rel="noopener">Pinterest · car 3D render</a></div></div>
+    </div>
+  </div>
+
+  <!-- ====================== APPENDIX ====================== -->
+  <div class="eyebrow"><span class="n">03</span><h2>Reference library</h2><span class="rule"></span></div>
+  <div class="appx">
+    <div class="item"><div class="t">Behance — Seamless carousel<small>Multi-slide panorama mechanics for the Deepal G318 post</small></div><a href="https://www.behance.net/search/projects/seamless%20carousel" target="_blank" rel="noopener">open ↗</a></div>
+    <div class="item"><div class="t">Behance — Automotive social / vehicle posts<small>Layout, type &amp; spec-callout treatment</small></div><a href="https://www.behance.net/search/projects/car%20social%20media%20post%20vehicle" target="_blank" rel="noopener">open ↗</a></div>
+    <div class="item"><div class="t">Behance — Car Social Media Post Template<small>Concrete reference for the Avatr 07 layout</small></div><a href="https://www.behance.net/gallery/105810531/Car-Social-Media-Post-Template" target="_blank" rel="noopener">open ↗</a></div>
+    <div class="item"><div class="t">Pinterest — 3D car animation video<small>Motion / “moving” feel for both carousels</small></div><a href="https://www.pinterest.com/ideas/3d-car-animation-video/908647782779/" target="_blank" rel="noopener">open ↗</a></div>
+    <div class="item"><div class="t">Pinterest — Car motion graphics<small>Particle build / light-reveal for Avatr cinematic</small></div><a href="https://www.pinterest.com/ideas/car-motion-graphics/916155670697/" target="_blank" rel="noopener">open ↗</a></div>
+    <div class="item"><div class="t">Pinterest — Car 3D render<small>Lighting &amp; studio look for hero frames</small></div><a href="https://www.pinterest.com/ideas/car-3d-render/955624890230/" target="_blank" rel="noopener">open ↗</a></div>
+  </div>
+  <p class="note" style="margin-top:14px;"><b>AI prompts:</b> The ready-to-paste generation prompts for both moving carousels and both cinematic reels live in the companion file <a href="./ai-prompts.md">ai-prompts.md</a>.</p>
+
+  <footer>
+    <div><b>MALLOUK GROUP</b> · Official Dealer — Deepal &amp; Avatr Jordan</div>
+    <div>Social Content Schedule · 14–24 June 2026 · Amman</div>
+  </footer>
+
+</div>
+</body>
+</html>

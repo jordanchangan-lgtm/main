@@ -10,6 +10,8 @@ import {
 import { ShaderAnimation } from "../ui/ShaderAnimation";
 import { TextEffect } from "../ui/TextEffect";
 import { ChanganWordmark } from "./ChanganWordmark";
+import { ChanganModels } from "./ChanganModels";
+import { ChanganLocation } from "./ChanganLocation";
 import { CHANGAN } from "./theme";
 import CHANGAN_FACTORY from "../assets/changan-factory.jpg";
 
@@ -397,22 +399,11 @@ export default function ChanganLanding() {
         </div>
       </section>
 
-      {/* spacer so the sticky brand panel settles before whatever follows */}
-      <section
-        style={{
-          height: "60vh",
-          background: CHANGAN.blueDeep,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: `${CHANGAN.mist}88`,
-          fontSize: 13,
-          letterSpacing: "0.24em",
-          textTransform: "uppercase",
-        }}
-      >
-        Models &amp; location — coming next
-      </section>
+      {/* ============ PANEL 3 — car models (horizontal scroll) ============ */}
+      <ChanganModels />
+
+      {/* ============ PANEL 4 — location ============ */}
+      <ChanganLocation />
     </div>
   );
 }

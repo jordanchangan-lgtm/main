@@ -1,53 +1,10 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValueEvent,
-} from "framer-motion";
-import { TextEffect } from "../ui/TextEffect";
-import { CHANGAN } from "./theme";
-import UNI_K from "../assets/changan-models/uni-k.jpg";
-import UNI_T from "../assets/changan-models/uni-t.jpg";
-import UNI_V from "../assets/changan-models/uni-v.jpg";
-import CS75 from "../assets/changan-models/cs75plus.jpg";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { TextEffect } from "./ui/TextEffect";
 
-// Flagship Changan (V-logo) line-up. Specs are indicative marketing copy —
-// swap for the exact Jordan-market trims/figures when available.
-const MODELS = [
-  {
-    key: "uni-k",
-    name: "UNI-K",
-    cat: "Flagship SUV",
-    blurb: "Commanding stance, lounge-grade cabin and a 2.0T heart.",
-    img: UNI_K,
-  },
-  {
-    key: "uni-t",
-    name: "UNI-T",
-    cat: "Coupe SUV",
-    blurb: "The design manifesto — sculpted, connected, unmistakably new.",
-    img: UNI_T,
-  },
-  {
-    key: "uni-v",
-    name: "UNI-V",
-    cat: "Fastback Sedan",
-    blurb: "A driver's sedan with a fastback silhouette and real punch.",
-    img: UNI_V,
-  },
-  {
-    key: "cs75",
-    name: "CS75 PLUS",
-    cat: "Best-selling SUV",
-    blurb: "The everyday flagship — space, tech and confidence for the family.",
-    img: CS75,
-  },
-];
-
-function ModelCard({ model, index }) {
+function ModelCard({ model, index, t }) {
   const [hover, setHover] = useState(false);
   return (
     <div
@@ -61,7 +18,7 @@ function ModelCard({ model, index }) {
         borderRadius: 20,
         overflow: "hidden",
         boxShadow: hover
-          ? `0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px ${CHANGAN.blueBright}66`
+          ? `0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px ${t.accentBright}66`
           : "0 20px 60px rgba(0,0,0,0.45)",
         transition: "box-shadow 0.4s ease",
       }}
@@ -77,13 +34,11 @@ function ModelCard({ model, index }) {
           backgroundPosition: "center",
         }}
       />
-      {/* Changan-blue gradient so the busy street backdrop recedes and the
-          car reads as the hero */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: `linear-gradient(to top, ${CHANGAN.blueDeep} 2%, ${CHANGAN.blueDeep}cc 22%, ${CHANGAN.blueDeep}22 55%, ${CHANGAN.blueDeep}55 100%)`,
+          background: `linear-gradient(to top, ${t.deep} 2%, ${t.deep}cc 22%, ${t.deep}22 55%, ${t.deep}55 100%)`,
         }}
       />
       <div
@@ -92,12 +47,10 @@ function ModelCard({ model, index }) {
           inset: 0,
           opacity: hover ? 0.5 : 0.25,
           transition: "opacity 0.4s ease",
-          background: `radial-gradient(90% 60% at 20% 100%, ${CHANGAN.blue}88 0%, transparent 60%)`,
+          background: `radial-gradient(90% 60% at 20% 100%, ${t.accent}88 0%, transparent 60%)`,
           mixBlendMode: "screen",
         }}
       />
-
-      {/* big index number */}
       <span
         style={{
           position: "absolute",
@@ -113,7 +66,6 @@ function ModelCard({ model, index }) {
       >
         {String(index + 1).padStart(2, "0")}
       </span>
-
       <div
         style={{
           position: "absolute",
@@ -121,18 +73,10 @@ function ModelCard({ model, index }) {
           right: 0,
           bottom: 0,
           padding: "clamp(24px, 4vw, 48px)",
-          color: CHANGAN.white,
+          color: t.white,
         }}
       >
-        <div
-          style={{
-            fontSize: 12,
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
-            color: CHANGAN.blueGlow,
-            marginBottom: 12,
-          }}
-        >
+        <div style={{ fontSize: 12, letterSpacing: "0.3em", textTransform: "uppercase", color: t.glow, marginBottom: 12 }}>
           {model.cat}
         </div>
         <div
@@ -147,17 +91,14 @@ function ModelCard({ model, index }) {
           {model.name}
         </div>
         <motion.p
-          animate={{
-            opacity: hover ? 1 : 0.72,
-            y: hover ? 0 : 6,
-          }}
+          animate={{ opacity: hover ? 1 : 0.72, y: hover ? 0 : 6 }}
           style={{
             margin: "14px 0 0",
             maxWidth: 440,
             fontWeight: 300,
             fontSize: "clamp(0.95rem, 1.2vw, 1.1rem)",
             lineHeight: 1.6,
-            color: CHANGAN.mist,
+            color: t.mist,
           }}
         >
           {model.blurb}
@@ -173,42 +114,34 @@ function ModelCard({ model, index }) {
             fontSize: 13,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: CHANGAN.white,
+            color: t.white,
           }}
         >
-          Explore
-          <span style={{ fontSize: 16 }}>→</span>
+          Explore <span style={{ fontSize: 16 }}>→</span>
         </motion.div>
       </div>
     </div>
   );
 }
 
-export function ChanganModels() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
+export function BrandModels({ brand }) {
+  const t = brand.theme;
+  const items = brand.models.items;
+  const N = items.length;
 
-  // horizontal travel of the card row
-  const x = useTransform(scrollYProgress, [0.06, 0.94], ["4vw", "-172vw"]);
-  const progressWidth = useTransform(
-    scrollYProgress,
-    [0.06, 0.94],
-    ["0%", "100%"]
-  );
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+
+  // Horizontal travel derived from card count (60vw card + 3vw gap stride).
+  const endVw = -((N * 60 + (N - 1) * 3) - 86);
+  const x = useTransform(scrollYProgress, [0.06, 0.94], ["4vw", `${endVw}vw`]);
+  const progressWidth = useTransform(scrollYProgress, [0.06, 0.94], ["0%", "100%"]);
 
   const [headIn, setHeadIn] = useState(false);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    setHeadIn(v > 0.02);
-  });
+  useMotionValueEvent(scrollYProgress, "change", (v) => setHeadIn(v > 0.02));
 
   return (
-    <section
-      ref={ref}
-      style={{ height: "360vh", position: "relative", background: CHANGAN.blueDeep }}
-    >
+    <section ref={ref} style={{ height: `${N * 90}vh`, position: "relative", background: t.deep }}>
       <div
         style={{
           position: "sticky",
@@ -220,16 +153,7 @@ export function ChanganModels() {
           justifyContent: "center",
         }}
       >
-        {/* header */}
-        <div
-          style={{
-            position: "absolute",
-            top: "9vh",
-            left: "clamp(24px, 7vw, 110px)",
-            zIndex: 3,
-            color: CHANGAN.white,
-          }}
-        >
+        <div style={{ position: "absolute", top: "9vh", left: "clamp(24px, 7vw, 110px)", zIndex: 3, color: t.white }}>
           <div
             style={{
               display: "inline-flex",
@@ -238,13 +162,11 @@ export function ChanganModels() {
               fontSize: 12,
               letterSpacing: "0.34em",
               textTransform: "uppercase",
-              color: CHANGAN.blueGlow,
+              color: t.glow,
               marginBottom: 14,
             }}
           >
-            <span
-              style={{ width: 34, height: 1, background: CHANGAN.blueBright }}
-            />
+            <span style={{ width: 34, height: 1, background: t.accentBright }} />
             The Range
           </div>
           <TextEffect
@@ -261,11 +183,10 @@ export function ChanganModels() {
               letterSpacing: "-0.015em",
             }}
           >
-            A Changan for every road.
+            {brand.models.headline}
           </TextEffect>
         </div>
 
-        {/* card row */}
         <motion.div
           style={{
             display: "flex",
@@ -277,12 +198,11 @@ export function ChanganModels() {
             willChange: "transform",
           }}
         >
-          {MODELS.map((m, i) => (
-            <ModelCard key={m.key} model={m} index={i} />
+          {items.map((m, i) => (
+            <ModelCard key={m.key} model={m} index={i} t={t} />
           ))}
         </motion.div>
 
-        {/* scroll progress bar */}
         <div
           style={{
             position: "absolute",
@@ -300,7 +220,7 @@ export function ChanganModels() {
             style={{
               height: "100%",
               width: progressWidth,
-              background: `linear-gradient(90deg, ${CHANGAN.blue}, ${CHANGAN.blueBright}, ${CHANGAN.blueGlow})`,
+              background: `linear-gradient(90deg, ${t.accent}, ${t.accentBright}, ${t.glow})`,
             }}
           />
         </div>

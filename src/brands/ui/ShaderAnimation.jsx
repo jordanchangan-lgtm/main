@@ -2,12 +2,22 @@
 
 // Ported from the provided shadcn/Tailwind/TS `shader-animation.tsx` to plain
 // JSX. `three` is already a project dependency. The fragment shader's original
-// RGB "plexus" output is retinted to the Changan brand blue palette
-// (deep #00204a base → bright #12A5F4 filaments).
+// RGB "plexus" output is folded into a single intensity and mapped onto a
+// per-brand colour ramp passed via the `colors` prop (base → accent → hot
+// core), so the same field can render Changan blue, Deepal teal, Nevo violet…
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export function ShaderAnimation({ className, style }) {
+// Changan-blue default ramp (base #000e2e → accent #12A5F4 → white core)
+const DEFAULT_COLORS = {
+  base: [0.0, 0.055, 0.18],
+  accent: [0.07, 0.647, 0.957],
+  bright: [0.75, 0.92, 1.0],
+};
+
+const v3 = (c) => `vec3(${c[0].toFixed(4)}, ${c[1].toFixed(4)}, ${c[2].toFixed(4)})`;
+
+export function ShaderAnimation({ className, style, colors = DEFAULT_COLORS, background = "#000e2e" }) {
   const containerRef = useRef(null);
   const sceneRef = useRef(null);
 
@@ -22,9 +32,6 @@ export function ShaderAnimation({ className, style }) {
       }
     `;
 
-    // Same line-field math as the source, but the three accumulated channels
-    // are folded into a single intensity and mapped onto a Changan-blue ramp
-    // so the whole field reads as brand blue instead of rainbow.
     const fragmentShader = `
       #define TWO_PI 6.2831853072
       #define PI 3.14159265359
@@ -45,13 +52,12 @@ export function ShaderAnimation({ className, style }) {
           }
         }
 
-        // Changan-blue ramp: deep navy base, cyan-blue mid, near-white cores.
-        vec3 base   = vec3(0.000, 0.055, 0.180); // #000e2e-ish deep navy
-        vec3 blue   = vec3(0.070, 0.647, 0.957); // #12A5F4 brand blue
-        vec3 bright  = vec3(0.75, 0.92, 1.0);     // hot filament core
+        vec3 base   = ${v3(colors.base)};
+        vec3 accent = ${v3(colors.accent)};
+        vec3 bright = ${v3(colors.bright)};
 
         vec3 color = base;
-        color += blue * intensity;
+        color += accent * intensity;
         color += bright * pow(intensity, 3.0) * 0.35;
 
         gl_FragColor = vec4(color, 1.0);
@@ -98,50 +104,32 @@ export function ShaderAnimation({ className, style }) {
       const animationId = requestAnimationFrame(animate);
       uniforms.time.value += 0.05;
       renderer.render(scene, camera);
-
-      if (sceneRef.current) {
-        sceneRef.current.animationId = animationId;
-      }
+      if (sceneRef.current) sceneRef.current.animationId = animationId;
     };
 
-    sceneRef.current = {
-      camera,
-      scene,
-      renderer,
-      uniforms,
-      animationId: 0,
-    };
-
+    sceneRef.current = { camera, scene, renderer, uniforms, animationId: 0 };
     animate();
 
     return () => {
       window.removeEventListener("resize", onWindowResize);
-
       if (sceneRef.current) {
         cancelAnimationFrame(sceneRef.current.animationId);
-
         if (container && sceneRef.current.renderer.domElement) {
           container.removeChild(sceneRef.current.renderer.domElement);
         }
-
         sceneRef.current.renderer.dispose();
         geometry.dispose();
         material.dispose();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div
       ref={containerRef}
       className={className}
-      style={{
-        width: "100%",
-        height: "100%",
-        background: "#000e2e",
-        overflow: "hidden",
-        ...style,
-      }}
+      style={{ width: "100%", height: "100%", background, overflow: "hidden", ...style }}
     />
   );
 }

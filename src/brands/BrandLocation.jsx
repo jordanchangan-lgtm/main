@@ -2,67 +2,32 @@
 
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { TextEffect } from "../ui/TextEffect";
-import { ChanganWordmark } from "./ChanganWordmark";
-import { CHANGAN } from "./theme";
+import { TextEffect } from "./ui/TextEffect";
+import { Wordmark } from "./ui/Wordmark";
 
-// Secondary Jordan showrooms shown as faint pins around Amman on the radar.
-// Positions are decorative (percentage offsets), not geographic.
-const SATELLITES = [
-  { name: "Irbid", x: 62, y: 24 },
-  { name: "Zarqa", x: 66, y: 45 },
-  { name: "Aqaba", x: 40, y: 84 },
-];
-
-function RadarMap({ inView }) {
+function RadarMap({ inView, t, city, coords, satellites }) {
   const [active, setActive] = useState(null);
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "min(46vw, 520px)",
-        aspectRatio: "1 / 1",
-        maxWidth: "86vw",
-      }}
-    >
-      {/* faint coordinate grid */}
-      <svg
-        viewBox="0 0 100 100"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-      >
+    <div style={{ position: "relative", width: "min(46vw, 520px)", aspectRatio: "1 / 1", maxWidth: "86vw" }}>
+      <svg viewBox="0 0 100 100" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
         {Array.from({ length: 9 }).map((_, i) => (
-          <g key={i} stroke={`${CHANGAN.blueBright}22`} strokeWidth="0.2">
+          <g key={i} stroke={`${t.accentBright}22`} strokeWidth="0.2">
             <line x1={(i + 1) * 10} y1="0" x2={(i + 1) * 10} y2="100" />
             <line x1="0" y1={(i + 1) * 10} x2="100" y2={(i + 1) * 10} />
           </g>
         ))}
-        {/* concentric range rings around Amman (centre ~ 50,55) */}
         {[14, 26, 38].map((r, i) => (
-          <circle
-            key={i}
-            cx="50"
-            cy="55"
-            r={r}
-            fill="none"
-            stroke={`${CHANGAN.blueBright}33`}
-            strokeWidth="0.25"
-          />
+          <circle key={i} cx="50" cy="55" r={r} fill="none" stroke={`${t.accentBright}33`} strokeWidth="0.25" />
         ))}
       </svg>
 
-      {/* pulsing radar rings */}
       {inView &&
         [0, 1, 2].map((i) => (
           <motion.span
             key={i}
             initial={{ scale: 0.2, opacity: 0.6 }}
             animate={{ scale: 1.9, opacity: 0 }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              delay: i * 1,
-              ease: "easeOut",
-            }}
+            transition={{ duration: 3, repeat: Infinity, delay: i * 1, ease: "easeOut" }}
             style={{
               position: "absolute",
               left: "50%",
@@ -72,24 +37,17 @@ function RadarMap({ inView }) {
               marginLeft: "-17%",
               marginTop: "-17%",
               borderRadius: "50%",
-              border: `1px solid ${CHANGAN.blueBright}`,
+              border: `1px solid ${t.accentBright}`,
             }}
           />
         ))}
 
-      {/* satellite showrooms */}
-      {SATELLITES.map((s) => (
+      {satellites.map((s) => (
         <div
           key={s.name}
           onMouseEnter={() => setActive(s.name)}
           onMouseLeave={() => setActive(null)}
-          style={{
-            position: "absolute",
-            left: `${s.x}%`,
-            top: `${s.y}%`,
-            transform: "translate(-50%, -50%)",
-            cursor: "pointer",
-          }}
+          style={{ position: "absolute", left: `${s.x}%`, top: `${s.y}%`, transform: "translate(-50%, -50%)", cursor: "pointer" }}
         >
           <span
             style={{
@@ -97,9 +55,9 @@ function RadarMap({ inView }) {
               width: 8,
               height: 8,
               borderRadius: "50%",
-              background: CHANGAN.blueGlow,
+              background: t.glow,
               opacity: 0.7,
-              boxShadow: `0 0 10px ${CHANGAN.blueBright}`,
+              boxShadow: `0 0 10px ${t.accentBright}`,
             }}
           />
           {active === s.name && (
@@ -113,8 +71,8 @@ function RadarMap({ inView }) {
                 fontSize: 11,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                color: CHANGAN.white,
-                background: `${CHANGAN.blue}dd`,
+                color: t.white,
+                background: `${t.accent}dd`,
                 padding: "4px 8px",
                 borderRadius: 4,
               }}
@@ -125,37 +83,15 @@ function RadarMap({ inView }) {
         </div>
       ))}
 
-      {/* Amman — flagship pin */}
-      <div
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: "55%",
-          transform: "translate(-50%, -100%)",
-          textAlign: "center",
-        }}
-      >
-        <motion.div
-          initial={{ y: -14, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <div
-            style={{
-              fontSize: 11,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: CHANGAN.white,
-              marginBottom: 6,
-              fontWeight: 600,
-            }}
-          >
-            Amman
+      <div style={{ position: "absolute", left: "50%", top: "55%", transform: "translate(-50%, -100%)", textAlign: "center" }}>
+        <motion.div initial={{ y: -14, opacity: 0 }} animate={inView ? { y: 0, opacity: 1 } : {}} transition={{ duration: 0.6, ease: "easeOut" }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: t.white, marginBottom: 6, fontWeight: 600 }}>
+            {city}
           </div>
           <svg width="26" height="34" viewBox="0 0 26 34" style={{ overflow: "visible" }}>
             <path
               d="M13 0C6 0 0.5 5.4 0.5 12.2 0.5 21 13 34 13 34S25.5 21 25.5 12.2C25.5 5.4 20 0 13 0Z"
-              fill={CHANGAN.blueBright}
+              fill={t.accentBright}
               stroke="#fff"
               strokeWidth="1.2"
             />
@@ -164,27 +100,21 @@ function RadarMap({ inView }) {
         </motion.div>
       </div>
 
-      {/* coordinate readout */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: -4,
-          left: 0,
-          fontSize: 11,
-          letterSpacing: "0.18em",
-          color: `${CHANGAN.mist}aa`,
-          fontFamily: "monospace",
-        }}
-      >
-        31.9539° N &nbsp; 35.9106° E
+      <div style={{ position: "absolute", bottom: -4, left: 0, fontSize: 11, letterSpacing: "0.18em", color: `${t.mist}aa`, fontFamily: "monospace" }}>
+        {coords}
       </div>
     </div>
   );
 }
 
-export function ChanganLocation() {
+export function BrandLocation({ brand }) {
+  const t = brand.theme;
+  const loc = brand.location;
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.35, once: false });
+
+  const labelStyle = { fontSize: 11, letterSpacing: "0.24em", textTransform: "uppercase", color: t.glow, marginBottom: 8 };
+  const valueStyle = { fontSize: "clamp(1.05rem, 1.4vw, 1.25rem)", fontWeight: 300, color: t.white };
 
   return (
     <section
@@ -192,20 +122,13 @@ export function ChanganLocation() {
       style={{
         position: "relative",
         minHeight: "100vh",
-        background: `linear-gradient(180deg, ${CHANGAN.blueDeep} 0%, #00081f 100%)`,
+        background: `linear-gradient(180deg, ${t.deep} 0%, ${t.ink} 100%)`,
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
       }}
     >
-      {/* ambient glow */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: `radial-gradient(70% 60% at 75% 45%, ${CHANGAN.blue}44 0%, transparent 60%)`,
-        }}
-      />
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(70% 60% at 75% 45%, ${t.accent}44 0%, transparent 60%)` }} />
 
       <div
         style={{
@@ -222,21 +145,9 @@ export function ChanganLocation() {
           gap: "6vh",
         }}
       >
-        {/* left — details */}
-        <div style={{ flex: "1 1 380px", color: CHANGAN.white, maxWidth: 520 }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              fontSize: 12,
-              letterSpacing: "0.34em",
-              textTransform: "uppercase",
-              color: CHANGAN.blueGlow,
-              marginBottom: 18,
-            }}
-          >
-            <span style={{ width: 34, height: 1, background: CHANGAN.blueBright }} />
+        <div style={{ flex: "1 1 380px", color: t.white, maxWidth: 520 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, fontSize: 12, letterSpacing: "0.34em", textTransform: "uppercase", color: t.glow, marginBottom: 18 }}>
+            <span style={{ width: 34, height: 1, background: t.accentBright }} />
             Visit us
           </div>
 
@@ -255,7 +166,7 @@ export function ChanganLocation() {
               letterSpacing: "-0.015em",
             }}
           >
-            Experience Changan in Jordan.
+            {loc.headline}
           </TextEffect>
 
           <motion.div
@@ -266,18 +177,16 @@ export function ChanganLocation() {
           >
             <div>
               <div style={labelStyle}>Flagship Showroom</div>
-              <div style={valueStyle}>
-                Mecca Street, Amman, Jordan
-              </div>
+              <div style={valueStyle}>{loc.showroom}</div>
             </div>
             <div style={{ display: "flex", gap: 48, flexWrap: "wrap" }}>
               <div>
                 <div style={labelStyle}>Call</div>
-                <div style={valueStyle}>+962 6 000 0000</div>
+                <div style={valueStyle}>{loc.phone}</div>
               </div>
               <div>
                 <div style={labelStyle}>Hours</div>
-                <div style={valueStyle}>Sat–Thu · 9:00–19:00</div>
+                <div style={valueStyle}>{loc.hours}</div>
               </div>
             </div>
 
@@ -291,13 +200,13 @@ export function ChanganLocation() {
                 gap: 12,
                 padding: "15px 30px",
                 borderRadius: 999,
-                background: CHANGAN.blueBright,
-                color: "#00122b",
+                background: t.accentBright,
+                color: t.ink,
                 fontWeight: 700,
                 fontSize: 14,
                 letterSpacing: "0.06em",
                 textDecoration: "none",
-                boxShadow: `0 12px 34px ${CHANGAN.blueBright}55`,
+                boxShadow: `0 12px 34px ${t.accentBright}55`,
               }}
             >
               Book a test drive <span style={{ fontSize: 16 }}>→</span>
@@ -305,38 +214,14 @@ export function ChanganLocation() {
           </motion.div>
         </div>
 
-        {/* right — radar map */}
         <div style={{ flex: "1 1 420px", display: "flex", justifyContent: "center" }}>
-          <RadarMap inView={inView} />
+          <RadarMap inView={inView} t={t} city={loc.city} coords={loc.coords} satellites={loc.satellites} />
         </div>
       </div>
 
-      {/* footer wordmark */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 26,
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 2,
-          opacity: 0.5,
-        }}
-      >
-        <ChanganWordmark color={CHANGAN.mist} style={{ fontSize: 16 }} />
+      <div style={{ position: "absolute", bottom: 26, left: "50%", transform: "translateX(-50%)", zIndex: 2, opacity: 0.5 }}>
+        <Wordmark text={brand.wordmark.text} transform={brand.wordmark.transform} color={t.mist} style={{ fontSize: 16 }} />
       </div>
     </section>
   );
 }
-
-const labelStyle = {
-  fontSize: 11,
-  letterSpacing: "0.24em",
-  textTransform: "uppercase",
-  color: CHANGAN.blueGlow,
-  marginBottom: 8,
-};
-const valueStyle = {
-  fontSize: "clamp(1.05rem, 1.4vw, 1.25rem)",
-  fontWeight: 300,
-  color: CHANGAN.white,
-};

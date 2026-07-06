@@ -27,6 +27,23 @@ export function BrandSwitcher({ current }) {
         boxShadow: "0 8px 24px rgba(20,30,60,0.16)",
       }}
     >
+      <a
+        href="#/home"
+        aria-label="All brands"
+        style={{
+          textDecoration: "none",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: isSmall ? 30 : 34,
+          height: isSmall ? 30 : 34,
+          borderRadius: 999,
+          color: "#33404f",
+          fontSize: isSmall ? 14 : 16,
+        }}
+      >
+        ⌂
+      </a>
       {Object.values(BRANDS).map((b) => {
         const active = b.slug === current;
         return (

@@ -2,11 +2,12 @@ import React, { useSyncExternalStore } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import BrandLanding from './brands/BrandLanding.jsx';
+import Hub from './brands/Hub.jsx';
 import { BRANDS } from './brands/brands.js';
 
 // Lightweight hash router — keeps the existing Mallouk homepage at "/" while
-// exposing the three connected brand landing pages at #/changan, #/deepal,
-// #/nevo.
+// exposing the connected brand experience: the hub selector at #/home (or
+// #/brands) and the three brand landing pages at #/changan, #/deepal, #/nevo.
 function subscribe(cb) {
   window.addEventListener('hashchange', cb);
   return () => window.removeEventListener('hashchange', cb);
@@ -20,6 +21,7 @@ function Root() {
   const slug = hash.replace(/^#\/?/, '').split(/[/?]/)[0];
   const brand = BRANDS[slug];
   if (brand) return <BrandLanding brand={brand} />;
+  if (slug === 'home' || slug === 'brands') return <Hub />;
   return <App />;
 }
 

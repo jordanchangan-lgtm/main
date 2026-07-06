@@ -5,10 +5,12 @@ import { motion, useInView } from "framer-motion";
 import { TextEffect } from "./ui/TextEffect";
 import { Wordmark } from "./ui/Wordmark";
 import { GlobeLive } from "./ui/GlobeLive";
+import { useViewport } from "./useViewport";
 
 export function BrandLocation({ brand }) {
   const t = brand.theme;
   const loc = brand.location;
+  const { isMobile } = useViewport();
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.3, once: false });
 
@@ -22,7 +24,7 @@ export function BrandLocation({ brand }) {
         minHeight: "100vh",
         background: "transparent",
         display: "flex",
-        alignItems: "center",
+        alignItems: isMobile ? "flex-start" : "center",
         overflow: "hidden",
       }}
     >
@@ -35,12 +37,12 @@ export function BrandLocation({ brand }) {
           width: "100%",
           maxWidth: 1280,
           margin: "0 auto",
-          padding: "12vh clamp(24px, 7vw, 110px)",
+          padding: isMobile ? "15vh clamp(24px, 7vw, 110px) 8vh" : "12vh clamp(24px, 7vw, 110px)",
           display: "flex",
           flexWrap: "wrap",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "6vh",
+          gap: "5vh",
         }}
       >
         {/* left — copy + showroom list */}
@@ -132,8 +134,8 @@ export function BrandLocation({ brand }) {
         </div>
 
         {/* right — interactive globe */}
-        <div style={{ flex: "1 1 380px", display: "flex", justifyContent: "center" }}>
-          <div style={{ width: "min(46vw, 460px)", maxWidth: "86vw" }}>
+        <div style={{ flex: "1 1 320px", display: "flex", justifyContent: "center", width: "100%" }}>
+          <div style={{ width: isMobile ? "min(84vw, 380px)" : "min(44vw, 460px)", minWidth: 0 }}>
             <GlobeLive
               markers={loc.showrooms}
               baseColor={loc.globe.base}

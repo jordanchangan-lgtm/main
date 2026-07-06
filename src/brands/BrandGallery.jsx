@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useScroll, useMotionValueEvent, motion, useInView } from "framer-motion";
 import { CircularGallery } from "./ui/CircularGallery";
 import { TextEffect } from "./ui/TextEffect";
+import { useViewport } from "./useViewport";
 
 /* Scroll-driven wrapper around CircularGallery. Rotation is scoped to this
    section's own scroll progress (one+ full turn as it passes), and the ring
@@ -19,6 +20,14 @@ export function BrandGallery({
   heightVh = 400,
 }) {
   const t = brand.theme;
+  const { w, isMobile } = useViewport();
+  // On phones the ring/cards are pixel-sized off-screen at desktop values —
+  // scale them to the viewport so the front card fills nicely and neighbours peek.
+  if (isMobile) {
+    cardW = Math.min(cardW, Math.round(w * 0.66));
+    cardH = Math.round(cardW * 1.34);
+    radius = Math.round(cardW * 1.5);
+  }
   const ref = useRef(null);
   const stickyRef = useRef(null);
   // Anchor "in view" to the pinned 100vh stage — a 400vh section can never

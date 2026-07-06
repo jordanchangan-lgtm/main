@@ -93,7 +93,9 @@ export function GlobeLive({
       const lng0 = CENTER.lng + (PHI_START - effPhi) * RAD * LNG_SIGN;
       const c = project(CENTER.lat, CENTER.lng, CENTER.lat, lng0, R);
       const centroidVis = clamp01((c.cosc - 0.12) / 0.5);
-      const stackDX = w * 0.3, stackGap = w * 0.12;
+      const compact = w < 400;
+      const stackDX = compact ? w * 0.17 : w * 0.3;
+      const stackGap = compact ? w * 0.16 : w * 0.12;
       for (let i = 0; i < markers.length; i++) {
         const p = project(markers[i].location[0], markers[i].location[1], CENTER.lat, lng0, R);
         const mx = cx + p.x, my = cy + p.y;
@@ -152,7 +154,7 @@ export function GlobeLive({
       <canvas
         ref={canvasRef}
         onPointerDown={onDown}
-        style={{ width: "100%", height: "100%", cursor: "grab", opacity: 0, transition: "opacity 1.2s ease", borderRadius: "50%", touchAction: "none" }}
+        style={{ width: "100%", height: "100%", cursor: "grab", opacity: 0, transition: "opacity 1.2s ease", borderRadius: "50%", touchAction: "pan-y" }}
       />
 
       {size > 0 && (
@@ -175,7 +177,7 @@ export function GlobeLive({
             style={{
               position: "absolute", left: 0, top: 0, opacity: 0,
               transform: "translate(-50%, -50%)", pointerEvents: "none", whiteSpace: "nowrap",
-              padding: "8px 13px", borderRadius: 13,
+              padding: size < 400 ? "5px 9px" : "8px 13px", borderRadius: 11,
               background: "linear-gradient(135deg, rgba(255,255,255,0.62), rgba(255,255,255,0.28))",
               backdropFilter: "blur(11px) saturate(160%)", WebkitBackdropFilter: "blur(11px) saturate(160%)",
               border: "1px solid rgba(255,255,255,0.7)",
@@ -183,11 +185,11 @@ export function GlobeLive({
               willChange: "left, top, opacity, transform",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: accent, boxShadow: `0 0 8px ${accent}` }} />
-              <span style={{ fontSize: 12.5, fontWeight: 700, color: "#141c2e", letterSpacing: "0.01em" }}>{m.name}</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: accent, boxShadow: `0 0 8px ${accent}`, flex: "0 0 auto" }} />
+              <span style={{ fontSize: size < 400 ? 10.5 : 12.5, fontWeight: 700, color: "#141c2e", letterSpacing: "0.01em" }}>{m.name}</span>
             </div>
-            {m.address && <div style={{ marginTop: 2, fontSize: 10.5, color: "rgba(20,28,46,0.62)", paddingLeft: 15 }}>{m.address}</div>}
+            {m.address && size >= 400 && <div style={{ marginTop: 2, fontSize: 10.5, color: "rgba(20,28,46,0.62)", paddingLeft: 15 }}>{m.address}</div>}
           </div>
         ))}
     </div>

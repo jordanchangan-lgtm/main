@@ -9,6 +9,7 @@ import { BrandZoom } from "./BrandZoom";
 import { BrandGallery } from "./BrandGallery";
 import { BrandLocation } from "./BrandLocation";
 import { BrandSwitcher } from "./BrandSwitcher";
+import { useViewport } from "./useViewport";
 
 /* ======================================================================
    Generic brand landing page — renders from a brand config (see brands.js).
@@ -56,7 +57,7 @@ function Hero({ brand }) {
               margin: 0,
               fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
               fontWeight: 300,
-              fontSize: "clamp(2rem, 6vw, 5.25rem)",
+              fontSize: "clamp(1.45rem, 6vw, 5.25rem)",
               lineHeight: 1.05,
               letterSpacing: "-0.01em",
               display: "flex",
@@ -137,14 +138,17 @@ function PageBackdrop({ t }) {
 
 export default function BrandLanding({ brand }) {
   const t = brand.theme;
+  const { isMobile } = useViewport();
   return (
     <div style={{ background: "transparent", position: "relative" }}>
       <PageBackdrop t={t} />
       <BrandSwitcher current={brand.slug} />
 
-      <div style={{ position: "fixed", top: 26, left: 34, zIndex: 50, mixBlendMode: "difference" }}>
-        <Wordmark text={brand.wordmark.text} transform={brand.wordmark.transform} color="#ffffff" style={{ fontSize: 22 }} />
-      </div>
+      {!isMobile && (
+        <div style={{ position: "fixed", top: 26, left: 34, zIndex: 50, mixBlendMode: "difference" }}>
+          <Wordmark text={brand.wordmark.text} transform={brand.wordmark.transform} color="#ffffff" style={{ fontSize: 22 }} />
+        </div>
+      )}
 
       <div style={{ position: "relative", zIndex: 1 }}>
       <Hero brand={brand} />

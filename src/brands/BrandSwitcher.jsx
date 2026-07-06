@@ -2,16 +2,17 @@
 
 import React from "react";
 import { BRANDS } from "./brands";
+import { useViewport } from "./useViewport";
 
 // Small fixed nav across the three connected brand sites. Uses hash links so
 // it works both in the app and inside a static/iframe preview.
 export function BrandSwitcher({ current }) {
-  const t = BRANDS[current]?.theme;
+  const { isSmall } = useViewport();
   return (
     <div
       style={{
         position: "fixed",
-        top: 22,
+        top: isSmall ? 12 : 22,
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 60,
@@ -34,9 +35,9 @@ export function BrandSwitcher({ current }) {
             href={`#/${b.slug}`}
             style={{
               textDecoration: "none",
-              padding: "7px 16px",
+              padding: isSmall ? "6px 12px" : "7px 16px",
               borderRadius: 999,
-              fontSize: 13,
+              fontSize: isSmall ? 12 : 13,
               fontWeight: 700,
               letterSpacing: "0.02em",
               textTransform: b.wordmark.transform === "lowercase" ? "lowercase" : "none",

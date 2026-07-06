@@ -34,12 +34,14 @@ import NV_A06 from "./assets/nevo-models/a06.jpg";
 import NV_E07 from "./assets/nevo-models/e07.jpg";
 import NV_A07B from "./assets/nevo-models/a07b.jpg";
 
-const JORDAN_SATELLITES = [
-  { name: "Irbid", x: 62, y: 24 },
-  { name: "Zarqa", x: 66, y: 45 },
-  { name: "Aqaba", x: 40, y: 84 },
+// Shared Jordan showrooms — same four locations for all brands. `location` is
+// [lat, long] for the interactive globe markers.
+const JORDAN_SHOWROOMS = [
+  { name: "Amman — Flagship", address: "Mecca St, Building No. 146", location: [31.955, 35.87] },
+  { name: "Amman — Tabarbour", address: "Al Shahid St, Tabarbour", location: [32.02, 35.95] },
+  { name: "Aqaba", address: "Aqaba Showroom", location: [29.532, 35.006] },
+  { name: "Irbid", address: "Irbid Showroom", location: [32.556, 35.847] },
 ];
-const JORDAN_COORDS = "31.9539° N   35.9106° E";
 
 export const CHANGAN = {
   slug: "changan",
@@ -78,9 +80,9 @@ export const CHANGAN = {
   },
   location: {
     headline: "Experience Changan in Jordan.",
-    showroom: "Mecca Street, Amman, Jordan",
     phone: "+962 6 000 0000", hours: "Sat–Thu · 9:00–19:00",
-    city: "Amman", coords: JORDAN_COORDS, satellites: JORDAN_SATELLITES,
+    showrooms: JORDAN_SHOWROOMS,
+    globe: { base: [0.05, 0.1, 0.2], marker: [0.2, 0.75, 1.0], glow: [0.08, 0.28, 0.55] },
   },
 };
 
@@ -121,9 +123,9 @@ export const DEEPAL = {
   },
   location: {
     headline: "Discover Deepal in Jordan.",
-    showroom: "Deepal Store, Amman, Jordan",
     phone: "+962 6 000 0000", hours: "Sat–Thu · 9:00–19:00",
-    city: "Amman", coords: JORDAN_COORDS, satellites: JORDAN_SATELLITES,
+    showrooms: JORDAN_SHOWROOMS,
+    globe: { base: [0.03, 0.12, 0.14], marker: [0.15, 0.85, 0.9], glow: [0.05, 0.33, 0.38] },
   },
 };
 
@@ -164,9 +166,9 @@ export const NEVO = {
   },
   location: {
     headline: "Meet Nevo in Jordan.",
-    showroom: "Nevo Store, Amman, Jordan",
     phone: "+962 6 000 0000", hours: "Sat–Thu · 9:00–19:00",
-    city: "Amman", coords: JORDAN_COORDS, satellites: JORDAN_SATELLITES,
+    showrooms: JORDAN_SHOWROOMS,
+    globe: { base: [0.1, 0.05, 0.2], marker: [0.65, 0.45, 1.0], glow: [0.3, 0.15, 0.5] },
   },
 };
 

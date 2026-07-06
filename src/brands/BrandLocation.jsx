@@ -1,120 +1,18 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { TextEffect } from "./ui/TextEffect";
 import { Wordmark } from "./ui/Wordmark";
-
-function RadarMap({ inView, t, city, coords, satellites }) {
-  const [active, setActive] = useState(null);
-  return (
-    <div style={{ position: "relative", width: "min(46vw, 520px)", aspectRatio: "1 / 1", maxWidth: "86vw" }}>
-      <svg viewBox="0 0 100 100" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        {Array.from({ length: 9 }).map((_, i) => (
-          <g key={i} stroke={`${t.accentBright}22`} strokeWidth="0.2">
-            <line x1={(i + 1) * 10} y1="0" x2={(i + 1) * 10} y2="100" />
-            <line x1="0" y1={(i + 1) * 10} x2="100" y2={(i + 1) * 10} />
-          </g>
-        ))}
-        {[14, 26, 38].map((r, i) => (
-          <circle key={i} cx="50" cy="55" r={r} fill="none" stroke={`${t.accentBright}33`} strokeWidth="0.25" />
-        ))}
-      </svg>
-
-      {inView &&
-        [0, 1, 2].map((i) => (
-          <motion.span
-            key={i}
-            initial={{ scale: 0.2, opacity: 0.6 }}
-            animate={{ scale: 1.9, opacity: 0 }}
-            transition={{ duration: 3, repeat: Infinity, delay: i * 1, ease: "easeOut" }}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "55%",
-              width: "34%",
-              height: "34%",
-              marginLeft: "-17%",
-              marginTop: "-17%",
-              borderRadius: "50%",
-              border: `1px solid ${t.accentBright}`,
-            }}
-          />
-        ))}
-
-      {satellites.map((s) => (
-        <div
-          key={s.name}
-          onMouseEnter={() => setActive(s.name)}
-          onMouseLeave={() => setActive(null)}
-          style={{ position: "absolute", left: `${s.x}%`, top: `${s.y}%`, transform: "translate(-50%, -50%)", cursor: "pointer" }}
-        >
-          <span
-            style={{
-              display: "block",
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: t.glow,
-              opacity: 0.7,
-              boxShadow: `0 0 10px ${t.accentBright}`,
-            }}
-          />
-          {active === s.name && (
-            <span
-              style={{
-                position: "absolute",
-                left: "50%",
-                bottom: "150%",
-                transform: "translateX(-50%)",
-                whiteSpace: "nowrap",
-                fontSize: 11,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: t.white,
-                background: `${t.accent}dd`,
-                padding: "4px 8px",
-                borderRadius: 4,
-              }}
-            >
-              {s.name}
-            </span>
-          )}
-        </div>
-      ))}
-
-      <div style={{ position: "absolute", left: "50%", top: "55%", transform: "translate(-50%, -100%)", textAlign: "center" }}>
-        <motion.div initial={{ y: -14, opacity: 0 }} animate={inView ? { y: 0, opacity: 1 } : {}} transition={{ duration: 0.6, ease: "easeOut" }}>
-          <div style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: t.white, marginBottom: 6, fontWeight: 600 }}>
-            {city}
-          </div>
-          <svg width="26" height="34" viewBox="0 0 26 34" style={{ overflow: "visible" }}>
-            <path
-              d="M13 0C6 0 0.5 5.4 0.5 12.2 0.5 21 13 34 13 34S25.5 21 25.5 12.2C25.5 5.4 20 0 13 0Z"
-              fill={t.accentBright}
-              stroke="#fff"
-              strokeWidth="1.2"
-            />
-            <circle cx="13" cy="12" r="4.4" fill="#fff" />
-          </svg>
-        </motion.div>
-      </div>
-
-      <div style={{ position: "absolute", bottom: -4, left: 0, fontSize: 11, letterSpacing: "0.18em", color: `${t.mist}aa`, fontFamily: "monospace" }}>
-        {coords}
-      </div>
-    </div>
-  );
-}
+import { GlobeLive } from "./ui/GlobeLive";
 
 export function BrandLocation({ brand }) {
   const t = brand.theme;
   const loc = brand.location;
   const ref = useRef(null);
-  const inView = useInView(ref, { amount: 0.35, once: false });
+  const inView = useInView(ref, { amount: 0.3, once: false });
 
-  const labelStyle = { fontSize: 11, letterSpacing: "0.24em", textTransform: "uppercase", color: t.glow, marginBottom: 8 };
-  const valueStyle = { fontSize: "clamp(1.05rem, 1.4vw, 1.25rem)", fontWeight: 300, color: t.white };
+  const labelStyle = { fontSize: 11, letterSpacing: "0.24em", textTransform: "uppercase", color: t.glow, marginBottom: 6 };
 
   return (
     <section
@@ -145,7 +43,8 @@ export function BrandLocation({ brand }) {
           gap: "6vh",
         }}
       >
-        <div style={{ flex: "1 1 380px", color: t.white, maxWidth: 520 }}>
+        {/* left — copy + showroom list */}
+        <div style={{ flex: "1 1 400px", color: t.white, maxWidth: 540 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 10, fontSize: 12, letterSpacing: "0.34em", textTransform: "uppercase", color: t.glow, marginBottom: 18 }}>
             <span style={{ width: 34, height: 1, background: t.accentBright }} />
             Visit us
@@ -173,28 +72,45 @@ export function BrandLocation({ brand }) {
             initial={{ opacity: 0, y: 16 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            style={{ marginTop: 30, display: "grid", gap: 22 }}
+            style={{ marginTop: 28 }}
           >
-            <div>
-              <div style={labelStyle}>Flagship Showroom</div>
-              <div style={valueStyle}>{loc.showroom}</div>
+            {/* showroom list */}
+            <div style={{ display: "grid", gap: 16, marginBottom: 26 }}>
+              {loc.showrooms.map((s) => (
+                <div key={s.address} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                  <span
+                    style={{
+                      marginTop: 6,
+                      flex: "0 0 auto",
+                      width: 9,
+                      height: 9,
+                      borderRadius: "50%",
+                      background: t.accentBright,
+                      boxShadow: `0 0 10px ${t.accentBright}`,
+                    }}
+                  />
+                  <div>
+                    <div style={{ fontSize: "clamp(1rem, 1.35vw, 1.15rem)", fontWeight: 500, color: t.white }}>{s.name}</div>
+                    <div style={{ fontSize: 13.5, fontWeight: 300, color: t.mist }}>{s.address}</div>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div style={{ display: "flex", gap: 48, flexWrap: "wrap" }}>
+
+            <div style={{ display: "flex", gap: 48, flexWrap: "wrap", marginBottom: 26 }}>
               <div>
                 <div style={labelStyle}>Call</div>
-                <div style={valueStyle}>{loc.phone}</div>
+                <div style={{ fontSize: "1.1rem", fontWeight: 300, color: t.white }}>{loc.phone}</div>
               </div>
               <div>
                 <div style={labelStyle}>Hours</div>
-                <div style={valueStyle}>{loc.hours}</div>
+                <div style={{ fontSize: "1.1rem", fontWeight: 300, color: t.white }}>{loc.hours}</div>
               </div>
             </div>
 
             <a
               href="#book"
               style={{
-                marginTop: 8,
-                alignSelf: "start",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 12,
@@ -214,8 +130,22 @@ export function BrandLocation({ brand }) {
           </motion.div>
         </div>
 
-        <div style={{ flex: "1 1 420px", display: "flex", justifyContent: "center" }}>
-          <RadarMap inView={inView} t={t} city={loc.city} coords={loc.coords} satellites={loc.satellites} />
+        {/* right — interactive globe */}
+        <div style={{ flex: "1 1 380px", display: "flex", justifyContent: "center" }}>
+          <div style={{ width: "min(46vw, 460px)", maxWidth: "86vw" }}>
+            <GlobeLive
+              markers={loc.showrooms}
+              baseColor={loc.globe.base}
+              markerColor={loc.globe.marker}
+              glowColor={loc.globe.glow}
+              phiStart={3.85}
+              thetaStart={0.42}
+              speed={0.003}
+            />
+            <div style={{ marginTop: 12, textAlign: "center", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: `${t.mist}99` }}>
+              Drag to explore · Jordan
+            </div>
+          </div>
         </div>
       </div>
 

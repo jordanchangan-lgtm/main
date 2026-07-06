@@ -6,9 +6,10 @@ import { ShaderAnimation } from "./ui/ShaderAnimation";
 import { TextEffect } from "./ui/TextEffect";
 import { Wordmark } from "./ui/Wordmark";
 import { BrandZoom } from "./BrandZoom";
-import { BrandGallery } from "./BrandGallery";
+import { BrandModels } from "./BrandModels";
 import { BrandLocation } from "./BrandLocation";
 import { BrandSwitcher } from "./BrandSwitcher";
+import { PageBackdrop } from "./PageBackdrop";
 import { useViewport } from "./useViewport";
 
 /* ======================================================================
@@ -111,37 +112,12 @@ function Hero({ brand }) {
   );
 }
 
-/* Fixed clean-white backdrop with a slow-moving dotted pattern masked to the
-   edges. Sits behind every post-hero section (which are transparent); the hero
-   paints its own opaque shader on top so the first scene stays dark. */
-function PageBackdrop({ t }) {
-  return (
-    <>
-      <div style={{ position: "fixed", inset: 0, zIndex: 0, background: t.paper || "#ffffff", pointerEvents: "none" }} />
-      <div className="edge-dots" style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }} />
-      <style>{`
-        .edge-dots {
-          background-image: radial-gradient(circle, rgba(20,28,45,0.16) 1.1px, transparent 1.7px);
-          background-size: 26px 26px;
-          -webkit-mask-image: radial-gradient(ellipse 60% 58% at 50% 50%, transparent 45%, #000 85%);
-          mask-image: radial-gradient(ellipse 60% 58% at 50% 50%, transparent 45%, #000 85%);
-          animation: edgeDotsDrift 7s linear infinite;
-        }
-        @keyframes edgeDotsDrift {
-          from { background-position: 0 0; }
-          to   { background-position: 26px 52px; }
-        }
-      `}</style>
-    </>
-  );
-}
-
 export default function BrandLanding({ brand }) {
   const t = brand.theme;
   const { isMobile } = useViewport();
   return (
     <div style={{ background: "transparent", position: "relative" }}>
-      <PageBackdrop t={t} />
+      <PageBackdrop paper={t.paper} />
       <BrandSwitcher current={brand.slug} />
 
       {!isMobile && (
@@ -156,16 +132,8 @@ export default function BrandLanding({ brand }) {
       {/* Panel 2 — brand description (zoom-parallax of brand imagery) */}
       <BrandZoom brand={brand} />
 
-      {/* Panel 3 — the range (circular gallery of the models) */}
-      <BrandGallery
-        brand={brand}
-        gallery={brand.modelsGallery}
-        radius={540}
-        cardW={330}
-        cardH={440}
-        turns={1}
-        heightVh={340}
-      />
+      {/* Panel 3 — the range (fan carousel of the models) */}
+      <BrandModels brand={brand} />
 
       {/* Panel 4 — location */}
       <BrandLocation brand={brand} />

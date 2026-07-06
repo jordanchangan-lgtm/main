@@ -1,12 +1,12 @@
 // ======================================================================
 // Brand configuration — one object per connected brand landing page.
-// The generic BrandLanding + BrandModels + BrandLocation components render
-// entirely from these configs, so adding/adjusting a brand is data-only.
+// Generic BrandLanding + BrandGallery + BrandLocation render entirely from
+// these configs, so adding/adjusting a brand is data-only.
 //
 // theme keys:  deep (darkest bg) · accent (mid brand colour) ·
 //              accentBright (bright brand) · glow (light glow) ·
 //              mist (light body text) · white · ink
-// shaderColors: 0..1 float triplets fed into the hero shader ramp.
+// gallery item: { img, title, sub, note, pos }
 // ======================================================================
 
 // Changan (V-logo) assets
@@ -15,18 +15,23 @@ import CH_UNI_K from "./assets/changan-models/uni-k.jpg";
 import CH_UNI_T from "./assets/changan-models/uni-t.jpg";
 import CH_UNI_V from "./assets/changan-models/uni-v.jpg";
 import CH_CS75 from "./assets/changan-models/cs75plus.jpg";
+import CH_CS55 from "./assets/changan-models/cs55.jpg";
+import CH_ALSVIN from "./assets/changan-models/alsvin.jpg";
 // Deepal assets
 import DP_BRAND from "./assets/deepal-brand.jpg";
 import DP_S07 from "./assets/deepal-models/s07.jpg";
 import DP_S05 from "./assets/deepal-models/s05.jpg";
 import DP_G318 from "./assets/deepal-models/g318.jpg";
+import DP_SL03 from "./assets/deepal-models/sl03.jpg";
+import DP_L07 from "./assets/deepal-models/l07.jpg";
 // Nevo assets
 import NV_BRAND from "./assets/nevo-brand.jpg";
 import NV_A07 from "./assets/nevo-models/a07.jpg";
 import NV_A05 from "./assets/nevo-models/a05.jpg";
 import NV_Q05 from "./assets/nevo-models/q05.jpg";
+import NV_A06 from "./assets/nevo-models/a06.jpg";
+import NV_E07 from "./assets/nevo-models/e07.jpg";
 
-// Jordan showroom data shared across the three brands (decorative radar pins).
 const JORDAN_SATELLITES = [
   { name: "Irbid", x: 62, y: 24 },
   { name: "Zarqa", x: 66, y: 45 },
@@ -39,44 +44,41 @@ export const CHANGAN = {
   name: "Changan",
   wordmark: { text: "Changan", transform: "uppercase" },
   theme: {
-    deep: "#000e2e",
-    accent: "#00437C",
-    accentBright: "#12A5F4",
-    glow: "#7ecbff",
-    mist: "#c9d6e6",
-    white: "#ffffff",
-    ink: "#0a0f1a",
+    deep: "#000e2e", accent: "#00437C", accentBright: "#12A5F4",
+    glow: "#7ecbff", mist: "#c9d6e6", white: "#ffffff", ink: "#0a0f1a",
   },
-  shaderColors: {
-    base: [0.0, 0.055, 0.18],
-    accent: [0.07, 0.647, 0.957],
-    bright: [0.75, 0.92, 1.0],
-  },
+  shaderColors: { base: [0.0, 0.055, 0.18], accent: [0.07, 0.647, 0.957], bright: [0.75, 0.92, 1.0] },
   hero: { pre: "drive the world with", mark: "Changan" },
-  brand: {
+  brandGallery: {
     eyebrow: "The Brand",
     headline: "Engineered in China, driven across the world.",
-    body:
-      "Founded in 1862, Changan is one of China's\noldest and largest automakers — today a\nglobal new-energy brand trusted by more than\n28 million drivers across 60+ markets.\nEvery vehicle is built in fully digital,\nlow-carbon plants — design and craft at scale.",
-    image: CHANGAN_FACTORY,
+    description:
+      "Founded in 1862, Changan is one of China's largest automakers — an intelligent, new-energy brand trusted by 28 million+ drivers across 60+ markets.",
+    items: [
+      { img: CHANGAN_FACTORY, title: "Manufacturing", sub: "Fully digital, low-carbon plants", pos: "center" },
+      { img: CH_UNI_K, title: "UNI-K", sub: "Flagship SUV", pos: "center" },
+      { img: CH_UNI_T, title: "UNI-T", sub: "Coupe SUV", pos: "center" },
+      { img: CH_UNI_V, title: "UNI-V", sub: "Fastback Sedan", pos: "center" },
+      { img: CH_CS75, title: "CS75 PLUS", sub: "Best-selling SUV", pos: "center" },
+      { img: CH_CS55, title: "CS55 PLUS", sub: "Smart SUV", pos: "center" },
+      { img: CH_ALSVIN, title: "Alsvin", sub: "Compact Sedan", pos: "center" },
+    ],
   },
-  models: {
+  modelsGallery: {
+    eyebrow: "The Range",
     headline: "A Changan for every road.",
     items: [
-      { key: "uni-k", name: "UNI-K", cat: "Flagship SUV", blurb: "Commanding stance, lounge-grade cabin and a 2.0T heart.", img: CH_UNI_K },
-      { key: "uni-t", name: "UNI-T", cat: "Coupe SUV", blurb: "The design manifesto — sculpted, connected, unmistakably new.", img: CH_UNI_T },
-      { key: "uni-v", name: "UNI-V", cat: "Fastback Sedan", blurb: "A driver's sedan with a fastback silhouette and real punch.", img: CH_UNI_V },
-      { key: "cs75", name: "CS75 PLUS", cat: "Best-selling SUV", blurb: "The everyday flagship — space, tech and confidence for the family.", img: CH_CS75 },
+      { img: CH_UNI_K, title: "UNI-K", sub: "Flagship SUV", note: "Commanding stance, lounge-grade cabin, 2.0T.", pos: "center" },
+      { img: CH_UNI_T, title: "UNI-T", sub: "Coupe SUV", note: "The design manifesto — sculpted and connected.", pos: "center" },
+      { img: CH_UNI_V, title: "UNI-V", sub: "Fastback Sedan", note: "A driver's sedan with real punch.", pos: "center" },
+      { img: CH_CS75, title: "CS75 PLUS", sub: "Best-selling SUV", note: "Space, tech and confidence for the family.", pos: "center" },
     ],
   },
   location: {
     headline: "Experience Changan in Jordan.",
     showroom: "Mecca Street, Amman, Jordan",
-    phone: "+962 6 000 0000",
-    hours: "Sat–Thu · 9:00–19:00",
-    city: "Amman",
-    coords: JORDAN_COORDS,
-    satellites: JORDAN_SATELLITES,
+    phone: "+962 6 000 0000", hours: "Sat–Thu · 9:00–19:00",
+    city: "Amman", coords: JORDAN_COORDS, satellites: JORDAN_SATELLITES,
   },
 };
 
@@ -85,43 +87,40 @@ export const DEEPAL = {
   name: "Deepal",
   wordmark: { text: "deepal", transform: "lowercase" },
   theme: {
-    deep: "#04202a",
-    accent: "#0a8a97",
-    accentBright: "#18c8d6",
-    glow: "#8ef0f6",
-    mist: "#bfe0e4",
-    white: "#ffffff",
-    ink: "#04151a",
+    deep: "#04202a", accent: "#0a8a97", accentBright: "#18c8d6",
+    glow: "#8ef0f6", mist: "#bfe0e4", white: "#ffffff", ink: "#04151a",
   },
-  shaderColors: {
-    base: [0.0, 0.09, 0.12],
-    accent: [0.09, 0.78, 0.84],
-    bright: [0.82, 0.98, 1.0],
-  },
+  shaderColors: { base: [0.0, 0.09, 0.12], accent: [0.09, 0.78, 0.84], bright: [0.82, 0.98, 1.0] },
   hero: { pre: "drive electric with", mark: "deepal" },
-  brand: {
+  brandGallery: {
     eyebrow: "The Brand",
     headline: "Electric intelligence, beautifully designed.",
-    body:
-      "Launched in 2022, Deepal is Changan's\nnew-energy brand — pure-electric and\nrange-extended SUVs and sedans built around\na smart, driver-first cockpit.\nClean sculpted design, effortless software —\nelectric mobility made simple.",
-    image: DP_BRAND,
+    description:
+      "Launched in 2022, Deepal is Changan's new-energy brand — pure-electric and range-extended SUVs and sedans built around a smart, driver-first cockpit.",
+    items: [
+      { img: DP_BRAND, title: "S07", sub: "Design", pos: "center" },
+      { img: DP_S07, title: "S07", sub: "Coupe SUV", pos: "center" },
+      { img: DP_S05, title: "S05", sub: "Compact SUV", pos: "center" },
+      { img: DP_G318, title: "G318", sub: "Adventure SUV", pos: "center" },
+      { img: DP_SL03, title: "SL03", sub: "Sedan", pos: "center" },
+      { img: DP_L07, title: "L07", sub: "Sport Sedan", pos: "center" },
+    ],
   },
-  models: {
+  modelsGallery: {
+    eyebrow: "The Range",
     headline: "Electric, in every shape.",
     items: [
-      { key: "s07", name: "S07", cat: "Coupe SUV", blurb: "The flagship SUV — panoramic cabin, long range, smart everything.", img: DP_S07 },
-      { key: "s05", name: "S05", cat: "Compact SUV", blurb: "Agile, connected and made for the city and beyond.", img: DP_S05 },
-      { key: "g318", name: "G318", cat: "Adventure SUV", blurb: "Boxy, capable and electric — go off the map with confidence.", img: DP_G318 },
+      { img: DP_S07, title: "S07", sub: "Coupe SUV", note: "Panoramic cabin, long range, smart everything.", pos: "center" },
+      { img: DP_S05, title: "S05", sub: "Compact SUV", note: "Agile, connected and made for the city.", pos: "center" },
+      { img: DP_G318, title: "G318", sub: "Adventure SUV", note: "Boxy, capable and electric — off the map.", pos: "center" },
+      { img: DP_SL03, title: "SL03", sub: "Sedan", note: "The clean-sheet electric sedan.", pos: "center" },
     ],
   },
   location: {
     headline: "Discover Deepal in Jordan.",
     showroom: "Deepal Store, Amman, Jordan",
-    phone: "+962 6 000 0000",
-    hours: "Sat–Thu · 9:00–19:00",
-    city: "Amman",
-    coords: JORDAN_COORDS,
-    satellites: JORDAN_SATELLITES,
+    phone: "+962 6 000 0000", hours: "Sat–Thu · 9:00–19:00",
+    city: "Amman", coords: JORDAN_COORDS, satellites: JORDAN_SATELLITES,
   },
 };
 
@@ -130,43 +129,40 @@ export const NEVO = {
   name: "Nevo",
   wordmark: { text: "Nevo", transform: "uppercase" },
   theme: {
-    deep: "#140a2e",
-    accent: "#5a2fb0",
-    accentBright: "#a26bff",
-    glow: "#d3b8ff",
-    mist: "#d6cdec",
-    white: "#ffffff",
-    ink: "#0d0720",
+    deep: "#140a2e", accent: "#5a2fb0", accentBright: "#a26bff",
+    glow: "#d3b8ff", mist: "#d6cdec", white: "#ffffff", ink: "#0d0720",
   },
-  shaderColors: {
-    base: [0.06, 0.02, 0.16],
-    accent: [0.55, 0.35, 1.0],
-    bright: [0.92, 0.86, 1.0],
-  },
+  shaderColors: { base: [0.06, 0.02, 0.16], accent: [0.55, 0.35, 1.0], bright: [0.92, 0.86, 1.0] },
   hero: { pre: "power the new era with", mark: "Nevo" },
-  brand: {
+  brandGallery: {
     eyebrow: "The Brand",
     headline: "New-energy, made for everyone.",
-    body:
-      "Nevo is Changan's accessible new-energy line —\nhybrid and electric sedans and SUVs\nengineered for real-world range, low running\ncosts and everyday intelligence.\nSmart, efficient and confidently styled —\nthe future, within reach.",
-    image: NV_BRAND,
+    description:
+      "Nevo is Changan's accessible new-energy line — hybrid and electric sedans and SUVs engineered for real-world range, low running costs and everyday intelligence.",
+    items: [
+      { img: NV_BRAND, title: "A07", sub: "Design", pos: "center" },
+      { img: NV_A07, title: "A07", sub: "Fastback Sedan", pos: "center" },
+      { img: NV_A05, title: "A05", sub: "Sedan", pos: "center" },
+      { img: NV_Q05, title: "Q05", sub: "Compact SUV", pos: "center" },
+      { img: NV_A06, title: "A06", sub: "Sedan", pos: "center" },
+      { img: NV_E07, title: "E07", sub: "Electric SUV", pos: "center" },
+    ],
   },
-  models: {
+  modelsGallery: {
+    eyebrow: "The Range",
     headline: "The new-energy line-up.",
     items: [
-      { key: "a07", name: "A07", cat: "Fastback Sedan", blurb: "Flagship sedan — sleek, spacious and seriously efficient.", img: NV_A07 },
-      { key: "a05", name: "A05", cat: "Sedan", blurb: "The smart commuter — plug-in range that fits real life.", img: NV_A05 },
-      { key: "q05", name: "Q05", cat: "Compact SUV", blurb: "High-riding, connected and easy to live with, every day.", img: NV_Q05 },
+      { img: NV_A07, title: "A07", sub: "Fastback Sedan", note: "Sleek, spacious and seriously efficient.", pos: "center" },
+      { img: NV_A05, title: "A05", sub: "Sedan", note: "The smart commuter — plug-in range for real life.", pos: "center" },
+      { img: NV_Q05, title: "Q05", sub: "Compact SUV", note: "High-riding, connected and easy to live with.", pos: "center" },
+      { img: NV_A06, title: "A06", sub: "Sedan", note: "Aero-styled comfort with everyday range.", pos: "center" },
     ],
   },
   location: {
     headline: "Meet Nevo in Jordan.",
     showroom: "Nevo Store, Amman, Jordan",
-    phone: "+962 6 000 0000",
-    hours: "Sat–Thu · 9:00–19:00",
-    city: "Amman",
-    coords: JORDAN_COORDS,
-    satellites: JORDAN_SATELLITES,
+    phone: "+962 6 000 0000", hours: "Sat–Thu · 9:00–19:00",
+    city: "Amman", coords: JORDAN_COORDS, satellites: JORDAN_SATELLITES,
   },
 };
 

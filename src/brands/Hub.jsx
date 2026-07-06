@@ -11,14 +11,16 @@ import { useViewport } from "./useViewport";
 const HUB_DEEP = "#000e2e";
 const HUB_SHADOW = "#1e63c8";
 
-// Wide brand "slider" panel, built on the newer liquid-glass (the
-// #glass-distortion refraction): the brand image shows through the frosted,
-// refracting glass; wordmark + explore sit crisp on top. Click routes in.
-function HubBrandPanel({ brand, image, isMobile }) {
+// Empty wide liquid-glass tile — no image; the newer liquid-glass
+// (#glass-distortion refraction) simply refracts the deep-blue ethereal field
+// behind it. Just the brand name on the glass, with a smooth springy hover.
+const SPRING = "cubic-bezier(0.175, 0.885, 0.32, 2.2)";
+
+function HubBrandPanel({ brand, isMobile }) {
   const t = brand.theme;
   const [hover, setHover] = useState(false);
   const go = () => { window.location.hash = `#/${brand.slug}`; };
-  const R = 26;
+  const R = 22;
 
   return (
     <a
@@ -31,64 +33,37 @@ function HubBrandPanel({ brand, image, isMobile }) {
         display: "block",
         textDecoration: "none",
         flex: isMobile ? "0 0 auto" : "1 1 0",
-        width: isMobile ? "min(90vw, 460px)" : undefined,
-        maxWidth: isMobile ? undefined : 440,
-        height: isMobile ? 190 : 320,
+        width: isMobile ? "min(78vw, 340px)" : undefined,
+        maxWidth: isMobile ? undefined : 300,
+        height: isMobile ? 116 : 150,
         borderRadius: R,
         overflow: "hidden",
-        boxShadow: hover ? `0 34px 74px ${t.accent}55` : "0 18px 44px rgba(0,0,0,0.4)",
-        transform: hover ? "translateY(-8px) scale(1.02)" : "none",
-        transition: "transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s",
+        boxShadow: hover
+          ? `0 22px 50px ${t.accent}55, 0 6px 6px rgba(0,0,0,0.2)`
+          : "0 6px 6px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0,0.14)",
+        transform: hover ? "translateY(-7px) scale(1.05)" : "none",
+        transition: `transform .7s ${SPRING}, box-shadow .7s ${SPRING}`,
         cursor: "pointer",
       }}
     >
-      {/* brand image */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `url(${image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          transform: hover ? "scale(1.07)" : "scale(1.0)",
-          transition: "transform .7s ease",
-        }}
-      />
-      <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, ${t.deep}22 0%, ${t.deep}55 55%, ${t.deep}dd 100%)` }} />
+      {/* liquid-glass layers refracting the ethereal background behind */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: R, backdropFilter: "blur(3px)", WebkitBackdropFilter: "blur(3px)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: R, background: hover ? "rgba(255,255,255,0.28)" : "rgba(255,255,255,0.18)", transition: `background .7s ${SPRING}` }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: R, boxShadow: "inset 2px 2px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 1px 1px rgba(255,255,255,0.35)" }} />
 
-      {/* newer liquid-glass layers refracting the image */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 1, backdropFilter: "blur(3px)", WebkitBackdropFilter: "blur(3px)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
-      <div style={{ position: "absolute", inset: 0, zIndex: 2, background: "rgba(255,255,255,0.16)" }} />
-      <div style={{ position: "absolute", inset: 0, zIndex: 3, boxShadow: "inset 2px 2px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 1px 1px rgba(255,255,255,0.35)" }} />
-
-      {/* content */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 4, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: isMobile ? 20 : 26 }}>
+      {/* brand name on the glass */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Wordmark
           text={brand.wordmark.text}
           transform={brand.wordmark.transform}
           color="#ffffff"
-          style={{ fontSize: isMobile ? "clamp(1.7rem, 6vw, 2.1rem)" : "clamp(1.7rem, 2vw, 2.2rem)", textShadow: `0 2px 20px ${t.accent}` }}
+          style={{
+            fontSize: isMobile ? "clamp(1.6rem, 6vw, 2rem)" : "clamp(1.6rem, 1.9vw, 2.1rem)",
+            textShadow: `0 2px 22px ${t.accent}`,
+            transform: hover ? "scale(1.06)" : "none",
+            transition: `transform .7s ${SPRING}`,
+          }}
         />
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase", color: "#fff" }}>Explore</span>
-          <span
-            style={{
-              display: "grid",
-              placeContent: "center",
-              width: 36,
-              height: 36,
-              borderRadius: "50%",
-              background: "#fff",
-              color: t.accent,
-              fontSize: 17,
-              boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
-              transform: hover ? "translateX(4px)" : "none",
-              transition: "transform .4s",
-            }}
-          >
-            →
-          </span>
-        </div>
       </div>
     </a>
   );
@@ -198,7 +173,7 @@ export default function Hub() {
           >
             {brands.map((b, i) => (
               <motion.div key={b.slug} style={{ opacity: cardO[i], y: cardY[i], flex: isMobile ? "0 0 auto" : "1 1 0", display: "flex", justifyContent: "center", minWidth: 0, width: isMobile ? "auto" : "100%" }}>
-                <HubBrandPanel brand={b} image={b.description.images[0].src} isMobile={isMobile} />
+                <HubBrandPanel brand={b} isMobile={isMobile} />
               </motion.div>
             ))}
           </div>

@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { PageBackdrop } from "./PageBackdrop";
+import { GlassFilter } from "./ui/LiquidGlass";
 import { GlassBrandCard } from "./ui/GlassBrandCard";
 import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
@@ -38,6 +39,7 @@ export default function Hub() {
 
   return (
     <div style={{ background: "transparent", position: "relative" }}>
+      <GlassFilter />
       <PageBackdrop />
 
       <section ref={stageRef} style={{ height: isMobile ? "300vh" : "220vh", position: "relative" }}>

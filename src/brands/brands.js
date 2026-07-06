@@ -46,6 +46,7 @@ const JORDAN_SHOWROOMS = [
 export const CHANGAN = {
   slug: "changan",
   name: "Changan",
+  heroShadow: "#1e63c8",
   wordmark: { text: "Changan", transform: "uppercase" },
   theme: {
     deep: "#000e2e", accent: "#00437C", accentBright: "#12A5F4",
@@ -90,6 +91,7 @@ export const CHANGAN = {
 export const DEEPAL = {
   slug: "deepal",
   name: "Deepal",
+  heroShadow: "#0fa6b6",
   wordmark: { text: "deepal", transform: "lowercase" },
   theme: {
     deep: "#04202a", accent: "#0a8a97", accentBright: "#18c8d6",
@@ -134,6 +136,7 @@ export const DEEPAL = {
 export const NEVO = {
   slug: "nevo",
   name: "Nevo",
+  heroShadow: "#7a4fe0",
   wordmark: { text: "Nevo", transform: "uppercase" },
   theme: {
     deep: "#140a2e", accent: "#5a2fb0", accentBright: "#a26bff",

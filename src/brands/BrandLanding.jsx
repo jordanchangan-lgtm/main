@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ShaderAnimation } from "./ui/ShaderAnimation";
+import { EtherealShadow } from "./ui/EtherealShadow";
 import { TextEffect } from "./ui/TextEffect";
 import { Wordmark } from "./ui/Wordmark";
 import { BrandZoom } from "./BrandZoom";
@@ -10,6 +10,7 @@ import { BrandModels } from "./BrandModels";
 import { BrandLocation } from "./BrandLocation";
 import { BrandSwitcher } from "./BrandSwitcher";
 import { PageBackdrop } from "./PageBackdrop";
+import { GlassFilter } from "./ui/LiquidGlass";
 import { useViewport } from "./useViewport";
 
 /* ======================================================================
@@ -26,7 +27,13 @@ function Hero({ brand }) {
   return (
     <section style={{ position: "relative", height: "100vh", overflow: "hidden", background: t.deep }}>
       <div style={{ position: "absolute", inset: 0 }}>
-        <ShaderAnimation colors={brand.shaderColors} background={t.deep} />
+        <EtherealShadow
+          color={brand.heroShadow || t.accent}
+          animation={{ scale: 100, speed: 90 }}
+          noise={{ opacity: 0.5, scale: 1.3 }}
+          sizing="fill"
+          style={{ background: t.deep }}
+        />
       </div>
 
       <div
@@ -117,6 +124,7 @@ export default function BrandLanding({ brand }) {
   const { isMobile } = useViewport();
   return (
     <div style={{ background: "transparent", position: "relative" }}>
+      <GlassFilter />
       <PageBackdrop paper={t.paper} />
       <BrandSwitcher current={brand.slug} />
 

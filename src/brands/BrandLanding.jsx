@@ -8,6 +8,7 @@ import { Wordmark } from "./ui/Wordmark";
 import { BrandZoom } from "./BrandZoom";
 import { BrandGallery } from "./BrandGallery";
 import { BrandLocation } from "./BrandLocation";
+import { BrandSwitcher } from "./BrandSwitcher";
 
 /* ======================================================================
    Generic brand landing page — renders from a brand config (see brands.js).
@@ -139,6 +140,7 @@ export default function BrandLanding({ brand }) {
   return (
     <div style={{ background: "transparent", position: "relative" }}>
       <PageBackdrop t={t} />
+      <BrandSwitcher current={brand.slug} />
 
       <div style={{ position: "fixed", top: 26, left: 34, zIndex: 50, mixBlendMode: "difference" }}>
         <Wordmark text={brand.wordmark.text} transform={brand.wordmark.transform} color="#ffffff" style={{ fontSize: 22 }} />

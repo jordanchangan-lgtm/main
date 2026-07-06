@@ -10,5 +10,6 @@ export default defineConfig({
     cssCodeSplit: false,
     sourcemap: false,
     chunkSizeWarningLimit: 100000,
+    rollupOptions: { input: 'preview.html' },
   },
 });

@@ -54,10 +54,10 @@ export function BrandGallery({
   }, []);
 
   return (
-    <section ref={ref} style={{ height: `${heightVh}vh`, position: "relative", background: t.deep }}>
+    <section ref={ref} style={{ height: `${heightVh}vh`, position: "relative", background: "transparent" }}>
       <div ref={stickyRef} style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         {/* ambient brand glow */}
-        <div style={{ position: "absolute", inset: 0, background: `radial-gradient(60% 50% at 50% 45%, ${t.accent}33 0%, transparent 65%)` }} />
+        <div style={{ position: "absolute", inset: 0, background: `radial-gradient(55% 45% at 50% 45%, ${t.accent}12 0%, transparent 62%)` }} />
 
         {/* title / description pinned at top (demo layout — keeps the ring's
             centre clear, since the front-facing card sweeps through it) */}
@@ -71,10 +71,10 @@ export function BrandGallery({
             textAlign: "center",
             width: "min(620px, 88vw)",
             pointerEvents: "none",
-            color: t.white,
+            color: t.ink,
           }}
         >
-          <div style={{ fontSize: 12, letterSpacing: "0.34em", textTransform: "uppercase", color: t.glow, marginBottom: 14 }}>
+          <div style={{ fontSize: 12, letterSpacing: "0.34em", textTransform: "uppercase", color: t.accent, marginBottom: 14, fontWeight: 600 }}>
             {gallery.eyebrow}
           </div>
           <TextEffect
@@ -91,6 +91,7 @@ export function BrandGallery({
               letterSpacing: "-0.015em",
               lineHeight: 1.08,
               justifyContent: "center",
+              color: t.ink,
             }}
           >
             {gallery.headline}
@@ -127,10 +128,11 @@ export function BrandGallery({
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 6,
-            color: `${t.glow}cc`,
             fontSize: 11,
             letterSpacing: "0.3em",
             textTransform: "uppercase",
+            color: t.accent,
+            fontWeight: 600,
           }}
         >
           Scroll to rotate

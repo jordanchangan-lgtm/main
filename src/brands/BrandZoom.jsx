@@ -14,7 +14,7 @@ export function BrandZoom({ brand }) {
   const inView = useInView(introRef, { amount: 0.5, once: false });
 
   return (
-    <div style={{ background: t.deep }}>
+    <div style={{ background: "transparent" }}>
       {/* lead-in copy */}
       <section
         ref={introRef}
@@ -27,9 +27,9 @@ export function BrandZoom({ brand }) {
           overflow: "hidden",
         }}
       >
-        <div style={{ position: "absolute", inset: 0, background: `radial-gradient(60% 55% at 50% 45%, ${t.accent}33 0%, transparent 65%)` }} />
-        <div style={{ position: "relative", zIndex: 2, textAlign: "center", width: "min(720px, 88vw)", color: t.white, padding: "0 6vw" }}>
-          <div style={{ fontSize: 12, letterSpacing: "0.34em", textTransform: "uppercase", color: t.glow, marginBottom: 18 }}>
+        <div style={{ position: "absolute", inset: 0, background: `radial-gradient(55% 50% at 50% 45%, ${t.accent}12 0%, transparent 62%)` }} />
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center", width: "min(720px, 88vw)", color: t.ink, padding: "0 6vw" }}>
+          <div style={{ fontSize: 12, letterSpacing: "0.34em", textTransform: "uppercase", color: t.accent, marginBottom: 18, fontWeight: 600 }}>
             {d.eyebrow}
           </div>
           <TextEffect
@@ -46,6 +46,7 @@ export function BrandZoom({ brand }) {
               letterSpacing: "-0.015em",
               lineHeight: 1.08,
               justifyContent: "center",
+              color: t.ink,
             }}
           >
             {d.headline}
@@ -60,7 +61,7 @@ export function BrandZoom({ brand }) {
               fontWeight: 300,
               fontSize: "clamp(1rem, 1.4vw, 1.2rem)",
               lineHeight: 1.75,
-              color: t.mist,
+              color: t.muted,
             }}
           >
             {d.body}
@@ -69,7 +70,7 @@ export function BrandZoom({ brand }) {
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}
-            style={{ marginTop: 30, fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: `${t.glow}cc` }}
+            style={{ marginTop: 30, fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: t.accent, fontWeight: 600 }}
           >
             Scroll ↓
           </motion.div>

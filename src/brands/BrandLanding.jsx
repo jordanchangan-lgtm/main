@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ShaderAnimation } from "./ui/ShaderAnimation";
 import { TextEffect } from "./ui/TextEffect";
 import { Wordmark } from "./ui/Wordmark";
+import { BrandZoom } from "./BrandZoom";
 import { BrandGallery } from "./BrandGallery";
 import { BrandLocation } from "./BrandLocation";
 
@@ -118,16 +119,8 @@ export default function BrandLanding({ brand }) {
 
       <Hero brand={brand} />
 
-      {/* Panel 2 — brand story (circular gallery of brand imagery) */}
-      <BrandGallery
-        brand={brand}
-        gallery={brand.brandGallery}
-        radius={620}
-        cardW={240}
-        cardH={330}
-        turns={1.2}
-        heightVh={400}
-      />
+      {/* Panel 2 — brand description (zoom-parallax of brand imagery) */}
+      <BrandZoom brand={brand} />
 
       {/* Panel 3 — the range (circular gallery of the models) */}
       <BrandGallery

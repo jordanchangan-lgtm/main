@@ -24,6 +24,7 @@ import DP_S05 from "./assets/deepal-models/s05.jpg";
 import DP_G318 from "./assets/deepal-models/g318.jpg";
 import DP_SL03 from "./assets/deepal-models/sl03.jpg";
 import DP_L07 from "./assets/deepal-models/l07.jpg";
+import DP_S07B from "./assets/deepal-models/s07b.jpg";
 // Nevo assets
 import NV_BRAND from "./assets/nevo-brand.jpg";
 import NV_A07 from "./assets/nevo-models/a07.jpg";
@@ -31,6 +32,7 @@ import NV_A05 from "./assets/nevo-models/a05.jpg";
 import NV_Q05 from "./assets/nevo-models/q05.jpg";
 import NV_A06 from "./assets/nevo-models/a06.jpg";
 import NV_E07 from "./assets/nevo-models/e07.jpg";
+import NV_A07B from "./assets/nevo-models/a07b.jpg";
 
 const JORDAN_SATELLITES = [
   { name: "Irbid", x: 62, y: 24 },
@@ -49,19 +51,19 @@ export const CHANGAN = {
   },
   shaderColors: { base: [0.0, 0.055, 0.18], accent: [0.07, 0.647, 0.957], bright: [0.75, 0.92, 1.0] },
   hero: { pre: "drive the world with", mark: "Changan" },
-  brandGallery: {
+  description: {
     eyebrow: "The Brand",
     headline: "Engineered in China, driven across the world.",
-    description:
-      "Founded in 1862, Changan is one of China's largest automakers — an intelligent, new-energy brand trusted by 28 million+ drivers across 60+ markets.",
-    items: [
-      { img: CHANGAN_FACTORY, title: "Manufacturing", sub: "Fully digital, low-carbon plants", pos: "center" },
-      { img: CH_UNI_K, title: "UNI-K", sub: "Flagship SUV", pos: "center" },
-      { img: CH_UNI_T, title: "UNI-T", sub: "Coupe SUV", pos: "center" },
-      { img: CH_UNI_V, title: "UNI-V", sub: "Fastback Sedan", pos: "center" },
-      { img: CH_CS75, title: "CS75 PLUS", sub: "Best-selling SUV", pos: "center" },
-      { img: CH_CS55, title: "CS55 PLUS", sub: "Smart SUV", pos: "center" },
-      { img: CH_ALSVIN, title: "Alsvin", sub: "Compact Sedan", pos: "center" },
+    body:
+      "Founded in 1862, Changan is one of China's oldest and largest automakers — today an intelligent, new-energy brand trusted by more than 28 million drivers across 60+ markets, built in fully digital, low-carbon plants.",
+    images: [
+      { src: CH_UNI_K, alt: "Changan UNI-K" },
+      { src: CHANGAN_FACTORY, alt: "Changan manufacturing" },
+      { src: CH_UNI_T, alt: "Changan UNI-T" },
+      { src: CH_UNI_V, alt: "Changan UNI-V" },
+      { src: CH_CS75, alt: "Changan CS75 PLUS" },
+      { src: CH_CS55, alt: "Changan CS55 PLUS" },
+      { src: CH_ALSVIN, alt: "Changan Alsvin" },
     ],
   },
   modelsGallery: {
@@ -92,18 +94,19 @@ export const DEEPAL = {
   },
   shaderColors: { base: [0.0, 0.09, 0.12], accent: [0.09, 0.78, 0.84], bright: [0.82, 0.98, 1.0] },
   hero: { pre: "drive electric with", mark: "deepal" },
-  brandGallery: {
+  description: {
     eyebrow: "The Brand",
     headline: "Electric intelligence, beautifully designed.",
-    description:
-      "Launched in 2022, Deepal is Changan's new-energy brand — pure-electric and range-extended SUVs and sedans built around a smart, driver-first cockpit.",
-    items: [
-      { img: DP_BRAND, title: "S07", sub: "Design", pos: "center" },
-      { img: DP_S07, title: "S07", sub: "Coupe SUV", pos: "center" },
-      { img: DP_S05, title: "S05", sub: "Compact SUV", pos: "center" },
-      { img: DP_G318, title: "G318", sub: "Adventure SUV", pos: "center" },
-      { img: DP_SL03, title: "SL03", sub: "Sedan", pos: "center" },
-      { img: DP_L07, title: "L07", sub: "Sport Sedan", pos: "center" },
+    body:
+      "Launched in 2022, Deepal is Changan's new-energy brand — pure-electric and range-extended SUVs and sedans built around a smart, driver-first cockpit, with clean sculpted design and effortless software.",
+    images: [
+      { src: DP_BRAND, alt: "Deepal S07" },
+      { src: DP_S07, alt: "Deepal S07" },
+      { src: DP_S05, alt: "Deepal S05" },
+      { src: DP_G318, alt: "Deepal G318" },
+      { src: DP_SL03, alt: "Deepal SL03" },
+      { src: DP_L07, alt: "Deepal L07" },
+      { src: DP_S07B, alt: "Deepal S07" },
     ],
   },
   modelsGallery: {
@@ -134,18 +137,19 @@ export const NEVO = {
   },
   shaderColors: { base: [0.06, 0.02, 0.16], accent: [0.55, 0.35, 1.0], bright: [0.92, 0.86, 1.0] },
   hero: { pre: "power the new era with", mark: "Nevo" },
-  brandGallery: {
+  description: {
     eyebrow: "The Brand",
     headline: "New-energy, made for everyone.",
-    description:
-      "Nevo is Changan's accessible new-energy line — hybrid and electric sedans and SUVs engineered for real-world range, low running costs and everyday intelligence.",
-    items: [
-      { img: NV_BRAND, title: "A07", sub: "Design", pos: "center" },
-      { img: NV_A07, title: "A07", sub: "Fastback Sedan", pos: "center" },
-      { img: NV_A05, title: "A05", sub: "Sedan", pos: "center" },
-      { img: NV_Q05, title: "Q05", sub: "Compact SUV", pos: "center" },
-      { img: NV_A06, title: "A06", sub: "Sedan", pos: "center" },
-      { img: NV_E07, title: "E07", sub: "Electric SUV", pos: "center" },
+    body:
+      "Nevo is Changan's accessible new-energy line — hybrid and electric sedans and SUVs engineered for real-world range, low running costs and everyday intelligence, confidently styled and within reach.",
+    images: [
+      { src: NV_BRAND, alt: "Nevo A07" },
+      { src: NV_A07, alt: "Nevo A07" },
+      { src: NV_A07B, alt: "Nevo A07" },
+      { src: NV_A05, alt: "Nevo A05" },
+      { src: NV_Q05, alt: "Nevo Q05" },
+      { src: NV_A06, alt: "Nevo A06" },
+      { src: NV_E07, alt: "Nevo E07" },
     ],
   },
   modelsGallery: {

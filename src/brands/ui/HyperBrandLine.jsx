@@ -56,26 +56,28 @@ function BrandWord({ brand, dimmed, onHoverStart, onHoverEnd }) {
         transition: `transform .4s ${SPRING}, opacity .35s ease, filter .35s ease`,
       }}
     >
-      {/* liquid-glass square — fades in on hover only */}
+      {/* liquid-glass square — fades in on hover only (clearly visible) */}
       <span
         aria-hidden
         style={{
           position: "absolute",
-          inset: "-4px -14px",
-          borderRadius: 12,
+          inset: "-6px -16px",
+          borderRadius: 14,
           zIndex: 0,
           overflow: "hidden",
           opacity: hover ? 1 : 0,
-          transform: hover ? "scale(1)" : "scale(0.86)",
+          transform: hover ? "scale(1)" : "scale(0.85)",
           transition: "opacity .28s ease, transform .28s ease",
           pointerEvents: "none",
-          boxShadow: hover ? "0 12px 30px rgba(37,99,235,0.22), 0 4px 10px rgba(0,0,0,0.12)" : "none",
+          boxShadow: hover ? "0 18px 40px rgba(37,99,235,0.32), 0 6px 16px rgba(0,0,0,0.2)" : "none",
         }}
       >
-        <span style={{ position: "absolute", inset: 0, borderRadius: 12, backdropFilter: "blur(7px) saturate(140%)", WebkitBackdropFilter: "blur(7px) saturate(140%)", filter: "url(#glass-distortion)" }} />
-        <span style={{ position: "absolute", inset: 0, borderRadius: 12, background: "rgba(255,255,255,0.35)" }} />
-        <span style={{ position: "absolute", inset: 0, borderRadius: 12, padding: 1.2, background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(37,99,235,0.25) 45%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.85) 100%)", WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude" }} />
-        <span style={{ position: "absolute", top: 0, left: "8%", right: "8%", height: "46%", borderRadius: 12, background: "linear-gradient(180deg, rgba(255,255,255,0.7), transparent)" }} />
+        <span style={{ position: "absolute", inset: 0, borderRadius: 14, backdropFilter: "blur(9px) saturate(150%)", WebkitBackdropFilter: "blur(9px) saturate(150%)" }} />
+        <span style={{ position: "absolute", inset: 0, borderRadius: 14, background: "linear-gradient(180deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.55) 100%)" }} />
+        {/* bright, blue-kissed shining edge */}
+        <span style={{ position: "absolute", inset: 0, borderRadius: 14, padding: 1.5, background: "linear-gradient(135deg, #ffffff 0%, rgba(37,99,235,0.55) 42%, rgba(255,255,255,0.1) 60%, #ffffff 100%)", WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude" }} />
+        {/* top sheen */}
+        <span style={{ position: "absolute", top: 0, left: "7%", right: "7%", height: "48%", borderRadius: 14, background: "linear-gradient(180deg, rgba(255,255,255,0.9), transparent)" }} />
       </span>
 
       <span style={{ position: "relative", zIndex: 1, color: BLUE, fontWeight: 600, whiteSpace: "nowrap" }}>

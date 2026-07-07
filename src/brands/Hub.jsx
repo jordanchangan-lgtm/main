@@ -17,12 +17,54 @@ export default function Hub() {
   const { isMobile } = useViewport();
   const triGradient = `linear-gradient(90deg, ${BRANDS.changan.theme.accentBright}, ${BRANDS.deepal.theme.accentBright}, ${BRANDS.nevo.theme.accentBright})`;
 
-  // Panel 1 headline word auto-cycles: future → technology → perfection.
-  const [wi, setWi] = useState(0);
+  // Panel 1 is scroll-locked until the words finish changing: future is shown,
+  // then each scroll advances one word (technology, perfection); the last word
+  // is held for one more locked scroll, after which the page unlocks and you can
+  // scroll down to panel 2.
+  const [step, setStep] = useState(0); // 0 future · 1 technology · 2 perfection · 3 unlocked
+  const stepRef = useRef(0);
+  const cooldownRef = useRef(false);
   useEffect(() => {
-    const id = setInterval(() => setWi((v) => (v + 1) % WORDS.length), 1900);
-    return () => clearInterval(id);
+    window.scrollTo(0, 0);
+    const advance = () => {
+      if (cooldownRef.current || stepRef.current >= 3) return;
+      const next = stepRef.current + 1;
+      stepRef.current = next;
+      setStep(next);
+      cooldownRef.current = true;
+      setTimeout(() => { cooldownRef.current = false; }, 700);
+    };
+    const onWheel = (e) => {
+      if (stepRef.current >= 3) return; // unlocked → normal scroll
+      e.preventDefault();
+      window.scrollTo(0, 0);
+      if (e.deltaY > 0) advance();
+    };
+    const onKey = (e) => {
+      if (stepRef.current >= 3) return;
+      if (["ArrowDown", "PageDown", " ", "Spacebar"].includes(e.key)) { e.preventDefault(); advance(); }
+    };
+    let ty = null;
+    const onTouchStart = (e) => { ty = e.touches[0].clientY; };
+    const onTouchMove = (e) => {
+      if (stepRef.current >= 3) return;
+      if (ty == null) return;
+      const dy = ty - e.touches[0].clientY;
+      if (Math.abs(dy) > 24) { e.preventDefault(); window.scrollTo(0, 0); if (dy > 0) advance(); ty = e.touches[0].clientY; }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("touchstart", onTouchStart, { passive: false });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+    };
   }, []);
+  const wi = Math.min(step, WORDS.length - 1);
+  const showCue = step < 3;
 
   // Panel 2 — the bio text fades in as you reach the middle of the panel.
   const panel2Ref = useRef(null);
@@ -31,7 +73,7 @@ export default function Hub() {
   const bioY = useTransform(scrollYProgress, [0.24, 0.48], [30, 0]);
 
   return (
-    <div style={{ position: "relative", background: "#ffffff" }}>
+    <div style={{ position: "relative", background: "#e4e7ee" }}>
       <GlassFilter />
 
       {/* ===== Panel 1 — ocean hero with the decoding headline ===== */}
@@ -77,6 +119,8 @@ export default function Hub() {
         </div>
 
         <motion.div
+          animate={{ opacity: showCue ? 1 : 0 }}
+          transition={{ duration: 0.4 }}
           style={{ position: "absolute", bottom: 30, left: "50%", transform: "translateX(-50%)", zIndex: 4, color: "rgba(255,255,255,0.65)", fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
         >
           Scroll
@@ -85,9 +129,9 @@ export default function Hub() {
       </section>
 
       {/* ===== Panel 2 — clean white with moving edge dots + the bio ===== */}
-      <section ref={panel2Ref} style={{ position: "relative", height: "150vh", background: "#ffffff" }}>
+      <section ref={panel2Ref} style={{ position: "relative", height: "150vh", background: "#e4e7ee" }}>
         <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "#ffffff" }} />
+          <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "#e4e7ee" }} />
           <div className="hub-edge-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
 
           <div style={{ position: "absolute", inset: 0, zIndex: 2, display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? "0 7vw" : "0 8vw" }}>
@@ -99,7 +143,7 @@ export default function Hub() {
 
         <style>{`
           .hub-edge-dots {
-            background-image: radial-gradient(circle, rgba(20,28,45,0.16) 1.1px, transparent 1.7px);
+            background-image: radial-gradient(circle, rgba(20,28,45,0.22) 1.1px, transparent 1.7px);
             background-size: 26px 26px;
             -webkit-mask-image: radial-gradient(ellipse 60% 58% at 50% 50%, transparent 42%, #000 84%);
             mask-image: radial-gradient(ellipse 60% 58% at 50% 50%, transparent 42%, #000 84%);

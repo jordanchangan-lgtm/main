@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { EtherealShadow } from "./ui/EtherealShadow";
+import { VideoBackground } from "./ui/VideoBackground";
 import { GlassFilter } from "./ui/LiquidGlass";
 import { GlassButton } from "./ui/GlassButton";
 import { FlipWord } from "./ui/FlipWords";
@@ -11,7 +11,6 @@ import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
 
 const HUB_DEEP = "#000e2e";
-const HUB_SHADOW = "#1e63c8";
 
 const WORDS = ["future", "technology", "perfection"];
 const FLIP_MS = 450;  // fast flip: the word disappears + reappears quickly
@@ -94,9 +93,9 @@ export default function Hub() {
     <div style={{ background: HUB_DEEP, position: "relative", height: "100vh", overflow: "hidden" }}>
       <GlassFilter />
       <div style={{ position: "absolute", inset: 0, height: "100vh", overflow: "hidden" }}>
-        {/* deep-blue ethereal-shadow background */}
+        {/* seamless looping ocean video background (desktop / phone cut) */}
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <EtherealShadow color={HUB_SHADOW} animation={{ scale: 100, speed: 90 }} noise={{ opacity: 0.5, scale: 1.3 }} sizing="fill" style={{ background: HUB_DEEP }} />
+          <VideoBackground />
         </div>
 
         {/* headline — big & centred while the word flips, then it rises */}

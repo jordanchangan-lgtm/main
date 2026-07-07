@@ -19,8 +19,9 @@ export function Brand3DGallery({ brand }) {
   const progressRef = useRef(0);
   useMotionValueEvent(scrollYProgress, "change", (v) => { progressRef.current = v; });
 
-  // Brand-related images to fly through — description shots + the model line-up.
+  // Dedicated per-brand gallery images (falls back to brand imagery).
   const images = useMemo(() => {
+    if (brand.galleryImages?.length) return brand.galleryImages;
     const desc = (brand.description?.images || []).map((i) => i.src);
     const models = (brand.modelsGallery?.items || []).map((i) => i.img);
     return [...desc, ...models].filter(Boolean);
@@ -32,8 +33,8 @@ export function Brand3DGallery({ brand }) {
   return (
     <section ref={sectionRef} style={{ height: isMobile ? "280vh" : "340vh", position: "relative", background: t.deep }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
-        {/* deep gradient base behind the transparent canvas */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 0, background: `radial-gradient(120% 100% at 50% 0%, ${t.accent}22 0%, ${t.deep} 55%)` }} />
+        {/* dark base behind the transparent canvas — images read on near-black */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0, background: `radial-gradient(120% 100% at 50% 0%, ${t.accent}14 0%, ${t.deep} 42%, #04040b 100%)` }} />
 
         {/* the flying gallery */}
         <div style={{ position: "absolute", inset: 0, zIndex: 1 }}>

@@ -35,12 +35,15 @@ function createClothMaterial() {
       void main() {
         vUv = uv;
         vec3 pos = position;
-        float curveIntensity = scrollForce * 0.3;
+        // continuous "pump" — each plane breathes/bulges so it always looks
+        // weird & warped like the reference, independent of scrolling.
+        float pump = sin(time * 1.6) * 0.20;
+        float curveIntensity = scrollForce * 0.5 + pump;
         float distanceFromCenter = length(pos.xy);
         float curve = distanceFromCenter * distanceFromCenter * curveIntensity;
-        float ripple1 = sin(pos.x * 2.0 + scrollForce * 3.0) * 0.02;
-        float ripple2 = sin(pos.y * 2.5 + scrollForce * 2.0) * 0.015;
-        float clothEffect = (ripple1 + ripple2) * abs(curveIntensity) * 2.0;
+        float ripple1 = sin(pos.x * 2.0 + time * 1.2 + scrollForce * 3.0) * 0.035;
+        float ripple2 = sin(pos.y * 2.5 + time * 0.9 + scrollForce * 2.0) * 0.028;
+        float clothEffect = ripple1 + ripple2;
         pos.z -= (curve + clothEffect);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
       }

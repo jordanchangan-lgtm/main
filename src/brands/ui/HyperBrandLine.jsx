@@ -128,6 +128,15 @@ export function HyperBrandParagraph({ show = true, style }) {
       <motion.div {...lineAnim(0)}>{chip("changan")}{txt(" drives innovation forward,", "a")}</motion.div>
       <motion.div {...lineAnim(1)}>{txt("with intelligence from ", "b")}{chip("deepal")}{txt(",", "c")}</motion.div>
       <motion.div {...lineAnim(2)}>{chip("nevo")}{txt(" opens the new-energy era.", "d")}</motion.div>
+
+      <motion.div
+        initial={false}
+        animate={show ? { opacity: dim ? 0.25 : 0.55, y: 0 } : { opacity: 0, y: 12 }}
+        transition={{ duration: 0.6, ease: EASE, delay: show ? 0.55 : 0 }}
+        style={{ marginTop: "1.6em", fontSize: "clamp(0.72rem, 1.3vw, 0.9rem)", fontWeight: 500, letterSpacing: "0.18em", textTransform: "uppercase", color: "#5b6472" }}
+      >
+        Hover a name to decrypt it · click to enter
+      </motion.div>
     </div>
   );
 }

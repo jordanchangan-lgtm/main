@@ -165,9 +165,9 @@ export default function Hub() {
                 style={{ display: "flex", justifyContent: "center" }}
               >
                 <GlassButton
-                  href={`#/${b.slug}/intro`}
+                  href={`#/${b.slug}`}
                   accent={b.theme.accent}
-                  onClick={(e) => { e.preventDefault(); window.location.hash = `#/${b.slug}/intro`; }}
+                  onClick={(e) => { e.preventDefault(); window.location.hash = `#/${b.slug}`; }}
                   style={{ width: PILL_W, height: PILL_H }}
                 >
                   <Wordmark

@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useRef, useState, useEffect, useMemo } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { VideoBackground } from "./ui/VideoBackground";
 import { GlassFilter } from "./ui/LiquidGlass";
-import { GlassButton } from "./ui/GlassButton";
 import { SpecialText } from "./ui/SpecialText";
-import { Wordmark } from "./ui/Wordmark";
+import { HyperBrandLine } from "./ui/HyperBrandLine";
 import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
 
@@ -21,7 +20,6 @@ const EASE = [0.22, 1, 0.36, 1];
 // perfection) automatically, 2nd scroll reveals the brand pills.
 export default function Hub() {
   const { isMobile } = useViewport();
-  const brands = useMemo(() => Object.values(BRANDS), []);
   const triGradient = `linear-gradient(90deg, ${BRANDS.changan.theme.accentBright}, ${BRANDS.deepal.theme.accentBright}, ${BRANDS.nevo.theme.accentBright})`;
 
   const [wi, setWi] = useState(0);
@@ -87,9 +85,6 @@ export default function Hub() {
   const reveal = stage === "reveal";
   const showCue = stage === "idle" || stage === "wordsDone";
 
-  const PILL_W = isMobile ? "min(80vw, 340px)" : 280;
-  const PILL_H = isMobile ? 78 : 88;
-
   return (
     <div style={{ background: HUB_DEEP, position: "relative", height: "100vh", overflow: "hidden" }}>
       <GlassFilter />
@@ -140,49 +135,14 @@ export default function Hub() {
           </h1>
         </motion.div>
 
-        {/* pills — identical size, horizontal, revealed on the 2nd scroll */}
+        {/* brand line — the three names as interactive liquid-glass chips that
+            decrypt on hover and route on click. Revealed on the 2nd scroll. */}
         <motion.div
-          animate={{ opacity: reveal ? 1 : 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          animate={{ opacity: reveal ? 1 : 0, y: reveal ? 0 : 40 }}
+          transition={{ duration: 0.6, ease: EASE, delay: reveal ? 0.15 : 0 }}
           style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 5vw", zIndex: 2, pointerEvents: ready ? "auto" : "none" }}
         >
-          <div
-            style={{
-              width: "min(1100px, 94vw)",
-              display: "flex",
-              flexDirection: isMobile ? "column" : "row",
-              gap: isMobile ? 16 : "clamp(18px, 2.4vw, 34px)",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: isMobile ? "18vh" : 96,
-            }}
-          >
-            {brands.map((b, i) => (
-              <motion.div
-                key={b.slug}
-                animate={{ opacity: reveal ? 1 : 0, y: reveal ? 0 : 70 }}
-                transition={{ duration: 0.6, ease: EASE, delay: reveal ? 0.15 + i * 0.12 : 0 }}
-                style={{ display: "flex", justifyContent: "center" }}
-              >
-                <GlassButton
-                  href={`#/${b.slug}`}
-                  accent={b.theme.accent}
-                  onClick={(e) => { e.preventDefault(); window.location.hash = `#/${b.slug}`; }}
-                  style={{ width: PILL_W, height: PILL_H }}
-                >
-                  <Wordmark
-                    text={b.wordmark.text}
-                    transform={b.wordmark.transform}
-                    color="#ffffff"
-                    style={{
-                      fontSize: isMobile ? "clamp(1.5rem, 5.5vw, 1.9rem)" : "clamp(1.5rem, 1.8vw, 2rem)",
-                      textShadow: `0 2px 22px ${b.theme.accent}, 0 1px 2px rgba(0,0,0,0.3)`,
-                    }}
-                  />
-                </GlassButton>
-              </motion.div>
-            ))}
-          </div>
+          <HyperBrandLine style={{ marginTop: isMobile ? "16vh" : 104 }} />
         </motion.div>
 
         {/* scroll cue — shown when a scroll is expected */}

@@ -1,11 +1,8 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { EtherealShadow } from "./ui/EtherealShadow";
-import { TextEffect } from "./ui/TextEffect";
 import { Wordmark } from "./ui/Wordmark";
-import { Brand3DGallery } from "./Brand3DGallery";
+import { BrandIntroScene } from "./BrandIntroScene";
 import { BrandLocation } from "./BrandLocation";
 import { BrandSwitcher } from "./BrandSwitcher";
 import { PageBackdrop } from "./PageBackdrop";
@@ -20,103 +17,6 @@ import { useViewport } from "./useViewport";
    Panel 4 (location): interactive radar map. Plain vertical scrolling —
    no split transition.
    ====================================================================== */
-
-function Hero({ brand }) {
-  const t = brand.theme;
-  return (
-    <section style={{ position: "relative", height: "100vh", overflow: "hidden", background: t.deep }}>
-      <div style={{ position: "absolute", inset: 0 }}>
-        <EtherealShadow
-          color={brand.heroShadow || t.accent}
-          animation={{ scale: 100, speed: 90 }}
-          noise={{ opacity: 0.5, scale: 1.3 }}
-          sizing="fill"
-          style={{ background: t.deep }}
-        />
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          pointerEvents: "none",
-        }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-            color: t.white,
-            padding: "min(7vh, 60px) 6vw",
-            userSelect: "none",
-            borderRadius: "50%",
-            background: "radial-gradient(60% 55% at 50% 50%, rgba(0,10,40,0.55) 0%, rgba(0,10,40,0.28) 45%, transparent 72%)",
-          }}
-        >
-          <TextEffect
-            per="word"
-            as="h1"
-            preset="blur"
-            style={{
-              margin: 0,
-              fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-              fontWeight: 300,
-              fontSize: "clamp(1.45rem, 6vw, 5.25rem)",
-              lineHeight: 1.05,
-              letterSpacing: "-0.01em",
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: "0.28em",
-            }}
-          >
-            {brand.hero.pre}
-          </TextEffect>
-
-          <motion.div
-            initial={{ opacity: 0, filter: "blur(14px)", y: 18 }}
-            animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-            transition={{ delay: 0.55, duration: 0.7, ease: "easeOut" }}
-            style={{ marginTop: "0.15em" }}
-          >
-            <Wordmark
-              text={brand.hero.mark}
-              transform={brand.wordmark.transform}
-              color={t.white}
-              style={{ fontSize: "clamp(3rem, 11vw, 9rem)", lineHeight: 1, textShadow: `0 0 40px ${t.accentBright}66` }}
-            />
-          </motion.div>
-        </div>
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          bottom: 30,
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 2,
-          color: t.glow,
-          fontSize: 11,
-          letterSpacing: "0.3em",
-          textTransform: "uppercase",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 8,
-        }}
-      >
-        Scroll
-        <motion.span animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }} style={{ fontSize: 16, lineHeight: 1 }}>
-          ↓
-        </motion.span>
-      </div>
-    </section>
-  );
-}
 
 export default function BrandLanding({ brand }) {
   const t = brand.theme;
@@ -134,14 +34,13 @@ export default function BrandLanding({ brand }) {
       )}
 
       <div style={{ position: "relative", zIndex: 1 }}>
-      <Hero brand={brand} />
+      {/* Scroll-locked intro: hero → 3D description carousel → swipe to enter */}
+      <BrandIntroScene brand={brand} />
 
-      {/* Panel 2 — brand story: 3D infinite photography gallery of the brand's
-          images (replaces the old intro + image gallery + models) */}
-      <Brand3DGallery brand={brand} />
-
-      {/* Panel 3 — location (globe) */}
-      <BrandLocation brand={brand} />
+      {/* "The world" — revealed after the swipe */}
+      <div id="brand-world">
+        <BrandLocation brand={brand} />
+      </div>
       </div>
     </div>
   );

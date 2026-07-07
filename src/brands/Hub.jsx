@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { VideoBackground } from "./ui/VideoBackground";
 import { GlassFilter } from "./ui/LiquidGlass";
 import { GlassButton } from "./ui/GlassButton";
-import { FlipWord } from "./ui/FlipWords";
+import { SpecialText } from "./ui/SpecialText";
 import { Wordmark } from "./ui/Wordmark";
 import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
@@ -13,7 +13,7 @@ import { useViewport } from "./useViewport";
 const HUB_DEEP = "#000e2e";
 
 const WORDS = ["future", "technology", "perfection"];
-const WORD_HOLD = 750;   // each word holds briefly, then auto-flips to the next
+const WORD_HOLD = 1100;  // long enough for the decode scramble to finish + hold
 const REVEAL_LOCK = 500; // pills become clickable shortly after they appear
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -125,7 +125,18 @@ export default function Hub() {
             }}
           >
             <span>dive into</span>
-            <FlipWord word={WORDS[wi]} gradient={triGradient} />
+            <SpecialText
+              text={WORDS[wi]}
+              speed={18}
+              style={{
+                fontWeight: 700,
+                backgroundImage: triGradient,
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+                WebkitTextFillColor: "transparent",
+              }}
+            />
           </h1>
         </motion.div>
 

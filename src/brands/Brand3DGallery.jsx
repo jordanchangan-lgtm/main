@@ -52,6 +52,11 @@ export function Brand3DGallery({ brand }) {
           <h2 style={{ margin: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.9rem, 5vw, 4rem)", lineHeight: 1.08, letterSpacing: "-0.02em", color: "#ffffff", maxWidth: "16ch", textShadow: "0 2px 30px rgba(0,0,0,0.65)" }}>
             {brand.description?.headline}
           </h2>
+          {brand.description?.body && (
+            <p style={{ margin: "22px 0 0", maxWidth: "48ch", fontSize: "clamp(0.95rem, 1.5vw, 1.15rem)", lineHeight: 1.65, fontWeight: 300, color: "rgba(255,255,255,0.82)", textShadow: "0 1px 16px rgba(0,0,0,0.7)" }}>
+              {brand.description.body}
+            </p>
+          )}
         </motion.div>
       </div>
     </section>

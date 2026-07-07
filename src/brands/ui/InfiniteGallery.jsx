@@ -35,14 +35,14 @@ function createClothMaterial() {
       void main() {
         vUv = uv;
         vec3 pos = position;
-        // continuous "pump" — each plane breathes/bulges so it always looks
-        // weird & warped like the reference, independent of scrolling.
-        float pump = sin(time * 1.6) * 0.20;
-        float curveIntensity = scrollForce * 0.5 + pump;
+        // gentle continuous "pump" — a subtle breathing warp so planes still
+        // look a little weird, without the heavy stretch when pulled in.
+        float pump = sin(time * 1.4) * 0.07;
+        float curveIntensity = scrollForce * 0.2 + pump;
         float distanceFromCenter = length(pos.xy);
         float curve = distanceFromCenter * distanceFromCenter * curveIntensity;
-        float ripple1 = sin(pos.x * 2.0 + time * 1.2 + scrollForce * 3.0) * 0.035;
-        float ripple2 = sin(pos.y * 2.5 + time * 0.9 + scrollForce * 2.0) * 0.028;
+        float ripple1 = sin(pos.x * 2.0 + time * 1.1) * 0.016;
+        float ripple2 = sin(pos.y * 2.5 + time * 0.8) * 0.012;
         float clothEffect = ripple1 + ripple2;
         pos.z -= (curve + clothEffect);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
@@ -104,8 +104,8 @@ function GalleryScene({
   progressRef,
   travel = 62,
   driftSpeed = 0.32,
-  fadeSettings = { fadeIn: { start: 0.05, end: 0.2 }, fadeOut: { start: 0.85, end: 0.97 } },
-  blurSettings = { blurIn: { start: 0.0, end: 0.12 }, blurOut: { start: 0.88, end: 1.0 }, maxBlur: 6.0 },
+  fadeSettings = { fadeIn: { start: 0.02, end: 0.12 }, fadeOut: { start: 0.9, end: 1.0 } },
+  blurSettings = { blurIn: { start: 0.0, end: 0.1 }, blurOut: { start: 0.95, end: 1.0 }, maxBlur: 5.0 },
 }) {
   const srcs = useMemo(
     () => images.map((i) => (typeof i === "string" ? i : i.src)),
@@ -207,7 +207,7 @@ function GalleryScene({
 export default function InfiniteGallery({ images, progressRef, visibleCount = 12, className, style }) {
   return (
     <div className={className} style={style}>
-      <Canvas camera={{ position: [0, 0, 0], fov: 55 }} gl={{ antialias: true, alpha: true }} dpr={[1, 1.6]}>
+      <Canvas camera={{ position: [0, 0, 7], fov: 55, near: 0.05, far: 200 }} gl={{ antialias: true, alpha: true }} dpr={[1, 1.6]}>
         <Suspense fallback={null}>
           <GalleryScene images={images} progressRef={progressRef} visibleCount={visibleCount} />
         </Suspense>

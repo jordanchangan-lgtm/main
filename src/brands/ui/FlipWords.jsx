@@ -25,18 +25,18 @@ export function FlipWord({ word, gradient, color = "#ffffff", className, style }
       <AnimatePresence mode="wait">
         <motion.span
           key={word}
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 100, damping: 10 }}
-          exit={{ opacity: 0, y: -40, x: 40, filter: "blur(8px)", scale: 2, position: "absolute" }}
+          transition={{ duration: 0.14, ease: "easeOut" }}
+          exit={{ opacity: 0, y: -22, x: 22, filter: "blur(6px)", scale: 1.4, position: "absolute", transition: { duration: 0.14, ease: "easeIn" } }}
           style={{ display: "inline-block", whiteSpace: "nowrap", fontWeight: 700 }}
         >
           {word.split("").map((letter, letterIndex) => (
             <motion.span
               key={word + letterIndex}
-              initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
+              initial={{ opacity: 0, y: 6, filter: "blur(6px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ delay: letterIndex * 0.05, duration: 0.25 }}
+              transition={{ delay: letterIndex * 0.015, duration: 0.12 }}
               style={letterStyle}
             >
               {letter}

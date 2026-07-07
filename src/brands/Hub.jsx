@@ -14,7 +14,9 @@ const HUB_DEEP = "#000e2e";
 const HUB_SHADOW = "#1e63c8";
 
 const WORDS = ["future", "technology", "perfection"];
-const LOCK_MS = 2000; // every scroll is locked for 2s before the next change
+const FLIP_MS = 450;  // fast flip: the word disappears + reappears quickly
+const HOLD_MS = 2000; // then the whole sentence is locked/held for 2s AFTER it
+const LOCK_MS = FLIP_MS + HOLD_MS;
 const EASE = [0.22, 1, 0.36, 1];
 
 // step 0 = "future", 1 = "technology", 2 = "perfection", 3 = brand pills revealed
@@ -75,7 +77,7 @@ export default function Hub() {
   // before the pills become interactive.
   useEffect(() => {
     if (step >= MAX_STEP) {
-      const t = setTimeout(() => setReady(true), LOCK_MS);
+      const t = setTimeout(() => setReady(true), HOLD_MS);
       return () => clearTimeout(t);
     }
     setReady(false);

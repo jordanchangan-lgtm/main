@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { VideoBackground } from "./ui/VideoBackground";
 import { GlassFilter } from "./ui/LiquidGlass";
 import { SpecialText } from "./ui/SpecialText";
-import { HyperBrandLine } from "./ui/HyperBrandLine";
+import { HyperBrandParagraph } from "./ui/HyperBrandLine";
 import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
 
@@ -94,10 +94,10 @@ export default function Hub() {
           <VideoBackground />
         </div>
 
-        {/* headline — big & centred while the word flips, then it rises */}
+        {/* headline — centred while the word decodes, then it disappears */}
         <motion.div
-          animate={{ y: reveal ? (isMobile ? -150 : -185) : 0, scale: reveal ? 0.92 : 1.12 }}
-          transition={{ duration: 0.8, ease: EASE }}
+          animate={{ opacity: reveal ? 0 : 1, scale: reveal ? 1.0 : 1.12 }}
+          transition={{ duration: 0.5, ease: EASE }}
           style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 5vw", zIndex: 3, textAlign: "center", pointerEvents: "none" }}
         >
           <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", marginBottom: 18, fontWeight: 600 }}>
@@ -135,14 +135,14 @@ export default function Hub() {
           </h1>
         </motion.div>
 
-        {/* brand line — the three names as interactive liquid-glass chips that
-            decrypt on hover and route on click. Revealed on the 2nd scroll. */}
+        {/* brand paragraph — appears AFTER the headline disappears. Names are
+            highlighted in colour; the liquid-glass square + decrypt run on hover. */}
         <motion.div
-          animate={{ opacity: reveal ? 1 : 0, y: reveal ? 0 : 40 }}
-          transition={{ duration: 0.6, ease: EASE, delay: reveal ? 0.15 : 0 }}
-          style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 5vw", zIndex: 2, pointerEvents: ready ? "auto" : "none" }}
+          animate={{ opacity: reveal ? 1 : 0, y: reveal ? 0 : 24 }}
+          transition={{ duration: 0.6, ease: EASE, delay: reveal ? 0.5 : 0 }}
+          style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 5vw", zIndex: 4, pointerEvents: ready ? "auto" : "none" }}
         >
-          <HyperBrandLine style={{ marginTop: isMobile ? "16vh" : 104 }} />
+          <HyperBrandParagraph />
         </motion.div>
 
         {/* scroll cue — shown when a scroll is expected */}

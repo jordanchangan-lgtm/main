@@ -14,7 +14,7 @@ export function BrandLocation({ brand }) {
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.3, once: false });
 
-  const labelStyle = { fontSize: 11, letterSpacing: "0.24em", textTransform: "uppercase", color: t.accent, marginBottom: 6, fontWeight: 600 };
+  const labelStyle = { fontSize: 11, letterSpacing: "0.24em", textTransform: "uppercase", color: t.accentBright, marginBottom: 6, fontWeight: 600 };
 
   return (
     <section
@@ -22,13 +22,16 @@ export function BrandLocation({ brand }) {
       style={{
         position: "relative",
         minHeight: "100vh",
-        background: "transparent",
+        background: t.deep,
         display: "flex",
         alignItems: isMobile ? "flex-start" : "center",
         overflow: "hidden",
       }}
     >
-      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(65% 55% at 75% 45%, ${t.accent}14 0%, transparent 60%)` }} />
+      {/* dark base + soft accent glow behind the globe */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: t.deep }} />
+      <div className="loc-edge-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: `radial-gradient(60% 55% at 74% 46%, ${t.accentBright}22 0%, transparent 62%)` }} />
 
       <div
         style={{
@@ -46,9 +49,9 @@ export function BrandLocation({ brand }) {
         }}
       >
         {/* left — copy + showroom list */}
-        <div style={{ flex: "1 1 400px", color: t.ink, maxWidth: 540 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, fontSize: 12, letterSpacing: "0.34em", textTransform: "uppercase", color: t.accent, marginBottom: 18, fontWeight: 600 }}>
-            <span style={{ width: 34, height: 1, background: t.accent }} />
+        <div style={{ flex: "1 1 400px", color: "#ffffff", maxWidth: 540 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, fontSize: 12, letterSpacing: "0.34em", textTransform: "uppercase", color: t.accentBright, marginBottom: 18, fontWeight: 600 }}>
+            <span style={{ width: 34, height: 1, background: t.accentBright }} />
             Visit us
           </div>
 
@@ -65,7 +68,7 @@ export function BrandLocation({ brand }) {
               fontSize: "clamp(1.8rem, 3.8vw, 3.2rem)",
               lineHeight: 1.08,
               letterSpacing: "-0.015em",
-              color: t.ink,
+              color: "#ffffff",
             }}
           >
             {loc.headline}
@@ -93,8 +96,8 @@ export function BrandLocation({ brand }) {
                     }}
                   />
                   <div>
-                    <div style={{ fontSize: "clamp(1rem, 1.35vw, 1.15rem)", fontWeight: 600, color: t.ink }}>{s.name}</div>
-                    <div style={{ fontSize: 13.5, fontWeight: 400, color: t.muted }}>{s.address}</div>
+                    <div style={{ fontSize: "clamp(1rem, 1.35vw, 1.15rem)", fontWeight: 600, color: "#ffffff" }}>{s.name}</div>
+                    <div style={{ fontSize: 13.5, fontWeight: 400, color: "rgba(255,255,255,0.6)" }}>{s.address}</div>
                   </div>
                 </div>
               ))}
@@ -103,11 +106,11 @@ export function BrandLocation({ brand }) {
             <div style={{ display: "flex", gap: 48, flexWrap: "wrap", marginBottom: 26 }}>
               <div>
                 <div style={labelStyle}>Call</div>
-                <div style={{ fontSize: "1.1rem", fontWeight: 400, color: t.ink }}>{loc.phone}</div>
+                <div style={{ fontSize: "1.1rem", fontWeight: 400, color: "#ffffff" }}>{loc.phone}</div>
               </div>
               <div>
                 <div style={labelStyle}>Hours</div>
-                <div style={{ fontSize: "1.1rem", fontWeight: 400, color: t.ink }}>{loc.hours}</div>
+                <div style={{ fontSize: "1.1rem", fontWeight: 400, color: "#ffffff" }}>{loc.hours}</div>
               </div>
             </div>
 
@@ -119,13 +122,13 @@ export function BrandLocation({ brand }) {
                 gap: 12,
                 padding: "15px 30px",
                 borderRadius: 999,
-                background: t.accent,
-                color: "#ffffff",
+                background: t.accentBright,
+                color: "#04101f",
                 fontWeight: 700,
                 fontSize: 14,
                 letterSpacing: "0.06em",
                 textDecoration: "none",
-                boxShadow: `0 12px 30px ${t.accent}44`,
+                boxShadow: `0 12px 30px ${t.accentBright}55`,
               }}
             >
               Book a test drive <span style={{ fontSize: 16 }}>→</span>
@@ -144,16 +147,27 @@ export function BrandLocation({ brand }) {
               accent={t.accentBright}
               inView={inView}
             />
-            <div style={{ marginTop: 12, textAlign: "center", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: t.muted }}>
+            <div style={{ marginTop: 12, textAlign: "center", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
               Drag to explore · Jordan
             </div>
           </div>
         </div>
       </div>
 
-      <div style={{ position: "absolute", bottom: 26, left: "50%", transform: "translateX(-50%)", zIndex: 2, opacity: 0.55 }}>
-        <Wordmark text={brand.wordmark.text} transform={brand.wordmark.transform} color={t.muted} style={{ fontSize: 16 }} />
+      <div style={{ position: "absolute", bottom: 26, left: "50%", transform: "translateX(-50%)", zIndex: 2, opacity: 0.4 }}>
+        <Wordmark text={brand.wordmark.text} transform={brand.wordmark.transform} color="#ffffff" style={{ fontSize: 16 }} />
       </div>
+
+      <style>{`
+        .loc-edge-dots {
+          background-image: radial-gradient(circle, rgba(255,255,255,0.11) 1.1px, transparent 1.7px);
+          background-size: 26px 26px;
+          -webkit-mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, transparent 44%, #000 86%);
+          mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, transparent 44%, #000 86%);
+          animation: locDotsDrift 7s linear infinite;
+        }
+        @keyframes locDotsDrift { from { background-position: 0 0; } to { background-position: 26px 52px; } }
+      `}</style>
     </section>
   );
 }

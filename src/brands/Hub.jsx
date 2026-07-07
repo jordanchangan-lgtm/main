@@ -21,6 +21,7 @@ export default function Hub() {
   // (technology, perfection); the last word is held one more locked scroll,
   // then the page unlocks and the arc curtain reveal drives panel 2.
   const [step, setStep] = useState(0); // 0 future · 1 technology · 2 perfection · 3 unlocked
+  const [wi, setWi] = useState(0);
   const stepRef = useRef(0);
   const cooldownRef = useRef(false);
   useEffect(() => {
@@ -30,6 +31,7 @@ export default function Hub() {
       const next = stepRef.current + 1;
       stepRef.current = next;
       setStep(next);
+      if (next <= WORDS.length - 1) setWi(next);
       cooldownRef.current = true;
       setTimeout(() => { cooldownRef.current = false; }, 700);
     };
@@ -62,7 +64,13 @@ export default function Hub() {
       window.removeEventListener("touchmove", onTouchMove);
     };
   }, []);
-  const wi = Math.min(step, WORDS.length - 1);
+  // Once unlocked, the words keep looping (future → technology → perfection …)
+  // by themselves — even if you scroll back up to panel 1.
+  useEffect(() => {
+    if (step < 3) return;
+    const id = setInterval(() => setWi((v) => (v + 1) % WORDS.length), 1900);
+    return () => clearInterval(id);
+  }, [step]);
   const showCue = step < 3;
 
   // Arc curtain reveal — driven by page scroll after the words unlock.

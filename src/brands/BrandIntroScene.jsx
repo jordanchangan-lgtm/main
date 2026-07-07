@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { EtherealShadow } from "./ui/EtherealShadow";
 import { Wordmark } from "./ui/Wordmark";
-import { Brand3DCarousel } from "./ui/Brand3DCarousel";
+import TextBlockAnimation from "./ui/TextBlockAnimation";
 import { SwipeButton } from "./ui/SwipeButton";
 import { useViewport } from "./useViewport";
 
@@ -98,14 +98,28 @@ export function BrandIntroScene({ brand }) {
         </div>
       </motion.div>
 
-      {/* Step 1 — description as a 3D horizontal carousel sliding in from the right */}
-      <motion.div
-        animate={{ opacity: step >= 1 ? 1 : 0, x: step >= 1 ? "0%" : "60%", y: step >= 2 ? (isMobile ? -60 : -70) : 0 }}
-        transition={{ duration: 0.7, ease: EASE }}
-        style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? "0 6vw" : "0 7vw", pointerEvents: step >= 1 ? "auto" : "none" }}
-      >
-        <Brand3DCarousel brand={brand} active={step >= 1} />
-      </motion.div>
+      {/* Step 1 — description on the LEFT, revealed with the block-wipe effect */}
+      {step >= 1 && (
+        <div style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", alignItems: "center", justifyContent: isMobile ? "center" : "flex-start", padding: isMobile ? "0 8vw" : "0 clamp(48px, 8vw, 140px)", pointerEvents: "none" }}>
+          <TextBlockAnimation
+            animateOnScroll={false}
+            blockColor={t.accentBright}
+            duration={0.7}
+            stagger={0.08}
+            style={{ maxWidth: isMobile ? "100%" : "min(620px, 52vw)", textAlign: isMobile ? "center" : "left", color: "#fff" }}
+          >
+            <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: t.accentBright, fontWeight: 600, marginBottom: 18 }}>
+              {brand.description?.eyebrow}
+            </div>
+            <h2 style={{ margin: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.7rem, 4.2vw, 3.2rem)", lineHeight: 1.08, letterSpacing: "-0.02em" }}>
+              {brand.description?.headline}
+            </h2>
+            <p style={{ margin: "22px 0 0", fontSize: "clamp(0.95rem, 1.5vw, 1.15rem)", lineHeight: 1.7, fontWeight: 300, color: "rgba(255,255,255,0.85)" }}>
+              {brand.description?.body}
+            </p>
+          </TextBlockAnimation>
+        </div>
+      )}
 
       {/* Step 2 — swipe to enter */}
       <motion.div

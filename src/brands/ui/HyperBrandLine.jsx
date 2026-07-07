@@ -1,18 +1,23 @@
 "use client";
 
-// Three-line monospace bio (in the spirit of the hyper-text demo). Non-brand
-// text is dark grey; the three brand names are highlighted in the same blue and
-// placed at different spots across the three lines. By default they are only
-// coloured — on hover a liquid-glass square fades in behind the name, the
-// letters run the decrypt scramble, the name lifts and the rest dims. Click
-// routes to the brand's landing page.
+// Three-line monospace bio. Non-brand text is dark grey; the three brand names
+// are highlighted in the same blue at different spots. On hover a liquid-glass
+// square fades in behind the name, the letters run the decrypt scramble, the
+// name lifts and the rest dims. Each line animates in smoothly when `show`
+// flips true. Click routes to the brand's landing page.
+//
+// NOTE: helper elements are plain factory functions / stable motion components —
+// never components defined inside render — so hovering a word does not remount
+// (and reset) the interactive BrandWord state.
 import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { BRANDS } from "../brands";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+";
 const SCRAMBLE_SPEED = 12;
 const CYCLES = 3;
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
+const EASE = [0.22, 1, 0.36, 1];
 const BLUE = "#2563eb";
 const INK = "#1f2937";
 
@@ -56,7 +61,7 @@ function BrandWord({ brand, dimmed, onHoverStart, onHoverEnd }) {
         transition: `transform .4s ${SPRING}, opacity .35s ease, filter .35s ease`,
       }}
     >
-      {/* liquid-glass square — fades in on hover only (clearly visible) */}
+      {/* liquid-glass square — fades in on hover only */}
       <span
         aria-hidden
         style={{
@@ -74,9 +79,7 @@ function BrandWord({ brand, dimmed, onHoverStart, onHoverEnd }) {
       >
         <span style={{ position: "absolute", inset: 0, borderRadius: 14, backdropFilter: "blur(9px) saturate(150%)", WebkitBackdropFilter: "blur(9px) saturate(150%)" }} />
         <span style={{ position: "absolute", inset: 0, borderRadius: 14, background: "linear-gradient(180deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.55) 100%)" }} />
-        {/* bright, blue-kissed shining edge */}
         <span style={{ position: "absolute", inset: 0, borderRadius: 14, padding: 1.5, background: "linear-gradient(135deg, #ffffff 0%, rgba(37,99,235,0.55) 42%, rgba(255,255,255,0.1) 60%, #ffffff 100%)", WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude" }} />
-        {/* top sheen */}
         <span style={{ position: "absolute", top: 0, left: "7%", right: "7%", height: "48%", borderRadius: 14, background: "linear-gradient(180deg, rgba(255,255,255,0.9), transparent)" }} />
       </span>
 
@@ -87,21 +90,25 @@ function BrandWord({ brand, dimmed, onHoverStart, onHoverEnd }) {
   );
 }
 
-export function HyperBrandParagraph({ style }) {
+export function HyperBrandParagraph({ show = true, style }) {
   const B = BRANDS;
   const [hovered, setHovered] = useState(false);
   const on = () => setHovered(true);
   const off = () => setHovered(false);
   const dim = hovered;
 
+  // plain factories (NOT components) — no remounting on hover re-render
   const txt = (s, key) => (
     <span key={key} style={{ opacity: dim ? 0.32 : 1, transition: "opacity .35s ease" }}>{s}</span>
   );
   const chip = (slug) => <BrandWord key={slug} brand={B[slug]} dimmed={dim} onHoverStart={on} onHoverEnd={off} />;
 
-  const Line = ({ children }) => (
-    <div style={{ whiteSpace: "pre-wrap" }}>{children}</div>
-  );
+  const lineAnim = (i) => ({
+    initial: false,
+    animate: show ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 16, filter: "blur(6px)" },
+    transition: { duration: 0.6, ease: EASE, delay: show ? 0.08 + i * 0.14 : 0 },
+    style: { whiteSpace: "pre-wrap" },
+  });
 
   return (
     <div
@@ -118,9 +125,9 @@ export function HyperBrandParagraph({ style }) {
         ...style,
       }}
     >
-      <Line>{chip("changan")}{txt(" drives innovation forward,", "a")}</Line>
-      <Line>{txt("with intelligence from ", "b")}{chip("deepal")}{txt(",", "c")}</Line>
-      <Line>{chip("nevo")}{txt(" opens the new-energy era.", "d")}</Line>
+      <motion.div {...lineAnim(0)}>{chip("changan")}{txt(" drives innovation forward,", "a")}</motion.div>
+      <motion.div {...lineAnim(1)}>{txt("with intelligence from ", "b")}{chip("deepal")}{txt(",", "c")}</motion.div>
+      <motion.div {...lineAnim(2)}>{chip("nevo")}{txt(" opens the new-energy era.", "d")}</motion.div>
     </div>
   );
 }

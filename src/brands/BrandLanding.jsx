@@ -5,8 +5,7 @@ import { motion } from "framer-motion";
 import { EtherealShadow } from "./ui/EtherealShadow";
 import { TextEffect } from "./ui/TextEffect";
 import { Wordmark } from "./ui/Wordmark";
-import { BrandZoom } from "./BrandZoom";
-import { BrandModels } from "./BrandModels";
+import { Brand3DGallery } from "./Brand3DGallery";
 import { BrandLocation } from "./BrandLocation";
 import { BrandSwitcher } from "./BrandSwitcher";
 import { PageBackdrop } from "./PageBackdrop";
@@ -137,13 +136,11 @@ export default function BrandLanding({ brand }) {
       <div style={{ position: "relative", zIndex: 1 }}>
       <Hero brand={brand} />
 
-      {/* Panel 2 — brand description (zoom-parallax of brand imagery) */}
-      <BrandZoom brand={brand} />
+      {/* Panel 2 — brand story: 3D infinite photography gallery of the brand's
+          images (replaces the old intro + image gallery + models) */}
+      <Brand3DGallery brand={brand} />
 
-      {/* Panel 3 — the range (fan carousel of the models) */}
-      <BrandModels brand={brand} />
-
-      {/* Panel 4 — location */}
+      {/* Panel 3 — location (globe) */}
       <BrandLocation brand={brand} />
       </div>
     </div>

@@ -54,7 +54,7 @@ export const CHANGAN = {
     muted: "#5b6675", paper: "#ffffff",
   },
   shaderColors: { base: [0.0, 0.055, 0.18], accent: [0.07, 0.647, 0.957], bright: [0.75, 0.92, 1.0] },
-  hero: { pre: "drive the world with", mark: "Changan" },
+  hero: { pre: "drive world with", mark: "Changan" },
   description: {
     eyebrow: "The Brand",
     headline: "Engineered in China, driven across the world.",
@@ -144,7 +144,7 @@ export const NEVO = {
     muted: "#5a5170", paper: "#ffffff",
   },
   shaderColors: { base: [0.06, 0.02, 0.16], accent: [0.55, 0.35, 1.0], bright: [0.92, 0.86, 1.0] },
-  hero: { pre: "power the new era with", mark: "Nevo" },
+  hero: { pre: "power new era with", mark: "Nevo" },
   description: {
     eyebrow: "The Brand",
     headline: "New-energy, made for everyone.",

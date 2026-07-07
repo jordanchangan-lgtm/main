@@ -124,7 +124,7 @@ export default function Hub() {
               gap: "0.28em",
             }}
           >
-            <span>dive into the</span>
+            <span>dive into</span>
             <FlipWord word={WORDS[wordIndex]} gradient={triGradient} />
           </h1>
         </motion.div>

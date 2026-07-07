@@ -2,6 +2,7 @@ import React, { useSyncExternalStore } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import BrandLanding from './brands/BrandLanding.jsx';
+import BrandIntro from './brands/BrandIntro.jsx';
 import Hub from './brands/Hub.jsx';
 import { BRANDS } from './brands/brands.js';
 
@@ -18,9 +19,11 @@ function useHash() {
 
 function Root() {
   const hash = useHash();
-  const slug = hash.replace(/^#\/?/, '').split(/[/?]/)[0];
+  const parts = hash.replace(/^#\/?/, '').split(/[/?]/);
+  const slug = parts[0];
+  const sub = parts[1];
   const brand = BRANDS[slug];
-  if (brand) return <BrandLanding brand={brand} />;
+  if (brand) return sub === 'intro' ? <BrandIntro brand={brand} /> : <BrandLanding brand={brand} />;
   if (slug === 'home' || slug === 'brands') return <Hub />;
   return <App />;
 }

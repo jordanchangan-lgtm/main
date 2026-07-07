@@ -13,52 +13,46 @@ import { useViewport } from "./useViewport";
 const HUB_DEEP = "#000e2e";
 
 const WORDS = ["future", "technology", "perfection"];
-const FLIP_MS = 450;  // fast flip: the word disappears + reappears quickly
-const HOLD_MS = 2000; // then the whole sentence is locked/held for 2s AFTER it
-const LOCK_MS = FLIP_MS + HOLD_MS;
+const WORD_HOLD = 750;   // each word holds briefly, then auto-flips to the next
+const REVEAL_LOCK = 500; // pills become clickable shortly after they appear
 const EASE = [0.22, 1, 0.36, 1];
 
-// step 0 = "future", 1 = "technology", 2 = "perfection", 3 = brand pills revealed
-const MAX_STEP = 3;
-
+// Two scrolls only: 1st scroll plays the word sequence (future → technology →
+// perfection) automatically, 2nd scroll reveals the brand pills.
 export default function Hub() {
   const { isMobile } = useViewport();
   const brands = useMemo(() => Object.values(BRANDS), []);
   const triGradient = `linear-gradient(90deg, ${BRANDS.changan.theme.accentBright}, ${BRANDS.deepal.theme.accentBright}, ${BRANDS.nevo.theme.accentBright})`;
 
-  const [step, setStep] = useState(0);
-  const [ready, setReady] = useState(false); // end section unlocked (2s after reveal)
-  const stepRef = useRef(0);
+  const [wi, setWi] = useState(0);
+  const [stage, setStage] = useState("idle"); // idle → words → wordsDone → reveal
+  const [ready, setReady] = useState(false);
+  const stageRef = useRef("idle");
   const lockedRef = useRef(false);
-  const lockTimer = useRef(null);
 
-  // Scroll is hijacked: each scroll gesture advances one step, then locks for
-  // 2 seconds before another change is allowed. Reaching the pills (step 3)
-  // also honours the 2s lock — "the entire end section" stays locked for 2s.
+  // Scroll hijack — only two forward gestures matter.
   useEffect(() => {
-    const advance = (dir) => {
+    const go = () => {
       if (lockedRef.current) return;
-      const next = Math.min(MAX_STEP, Math.max(0, stepRef.current + dir));
-      if (next === stepRef.current) return;
-      stepRef.current = next;
-      setStep(next);
-      lockedRef.current = true;
-      lockTimer.current = setTimeout(() => { lockedRef.current = false; }, LOCK_MS);
+      if (stageRef.current === "idle") {
+        stageRef.current = "words";
+        setStage("words");
+        lockedRef.current = true; // released when the word sequence finishes
+      } else if (stageRef.current === "wordsDone") {
+        stageRef.current = "reveal";
+        setStage("reveal");
+        lockedRef.current = true;
+      }
     };
-
-    const onWheel = (e) => { e.preventDefault(); advance(e.deltaY > 0 ? 1 : -1); };
-    const onKey = (e) => {
-      if (["ArrowDown", "PageDown", " ", "Spacebar"].includes(e.key)) { e.preventDefault(); advance(1); }
-      else if (["ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); advance(-1); }
-    };
-    let touchY = null;
-    const onTouchStart = (e) => { touchY = e.touches[0].clientY; };
+    const onWheel = (e) => { e.preventDefault(); if (e.deltaY > 0) go(); };
+    const onKey = (e) => { if (["ArrowDown", "PageDown", " ", "Spacebar"].includes(e.key)) { e.preventDefault(); go(); } };
+    let ty = null;
+    const onTouchStart = (e) => { ty = e.touches[0].clientY; };
     const onTouchMove = (e) => {
-      if (touchY == null) return;
-      const dy = touchY - e.touches[0].clientY;
-      if (Math.abs(dy) > 24) { e.preventDefault(); advance(dy > 0 ? 1 : -1); touchY = e.touches[0].clientY; }
+      if (ty == null) return;
+      const dy = ty - e.touches[0].clientY;
+      if (dy > 24) { e.preventDefault(); go(); ty = e.touches[0].clientY; }
     };
-
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("keydown", onKey);
     window.addEventListener("touchstart", onTouchStart, { passive: false });
@@ -68,24 +62,31 @@ export default function Hub() {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
-      if (lockTimer.current) clearTimeout(lockTimer.current);
     };
   }, []);
 
-  // When the end section is revealed, keep EVERYTHING locked for 2 seconds
-  // before the pills become interactive.
+  // Auto-advance the word while in the "words" stage; when the last word has
+  // held, unlock so the 2nd scroll can reveal the pills.
   useEffect(() => {
-    if (step >= MAX_STEP) {
-      const t = setTimeout(() => setReady(true), HOLD_MS);
+    if (stage !== "words") return;
+    if (wi < WORDS.length - 1) {
+      const t = setTimeout(() => setWi((v) => v + 1), WORD_HOLD);
       return () => clearTimeout(t);
     }
-    setReady(false);
-  }, [step]);
+    const t = setTimeout(() => { stageRef.current = "wordsDone"; setStage("wordsDone"); lockedRef.current = false; }, WORD_HOLD);
+    return () => clearTimeout(t);
+  }, [stage, wi]);
 
-  const reveal = step >= MAX_STEP;
-  const wordIndex = Math.min(step, WORDS.length - 1);
+  // Pills clickable shortly after the reveal.
+  useEffect(() => {
+    if (stage !== "reveal") return;
+    const t = setTimeout(() => { setReady(true); lockedRef.current = false; }, REVEAL_LOCK);
+    return () => clearTimeout(t);
+  }, [stage]);
 
-  // Equal, identical pill dimensions.
+  const reveal = stage === "reveal";
+  const showCue = stage === "idle" || stage === "wordsDone";
+
   const PILL_W = isMobile ? "min(80vw, 340px)" : 280;
   const PILL_H = isMobile ? 78 : 88;
 
@@ -124,11 +125,11 @@ export default function Hub() {
             }}
           >
             <span>dive into</span>
-            <FlipWord word={WORDS[wordIndex]} gradient={triGradient} />
+            <FlipWord word={WORDS[wi]} gradient={triGradient} />
           </h1>
         </motion.div>
 
-        {/* pills — identical size, horizontal, revealed at the end */}
+        {/* pills — identical size, horizontal, revealed on the 2nd scroll */}
         <motion.div
           animate={{ opacity: reveal ? 1 : 0 }}
           transition={{ duration: 0.6, ease: EASE }}
@@ -153,9 +154,9 @@ export default function Hub() {
                 style={{ display: "flex", justifyContent: "center" }}
               >
                 <GlassButton
-                  href={`#/${b.slug}`}
+                  href={`#/${b.slug}/intro`}
                   accent={b.theme.accent}
-                  onClick={(e) => { e.preventDefault(); window.location.hash = `#/${b.slug}`; }}
+                  onClick={(e) => { e.preventDefault(); window.location.hash = `#/${b.slug}/intro`; }}
                   style={{ width: PILL_W, height: PILL_H }}
                 >
                   <Wordmark
@@ -173,9 +174,9 @@ export default function Hub() {
           </div>
         </motion.div>
 
-        {/* scroll cue — hidden once the pills are revealed */}
+        {/* scroll cue — shown when a scroll is expected */}
         <motion.div
-          animate={{ opacity: reveal ? 0 : 1 }}
+          animate={{ opacity: showCue ? 1 : 0 }}
           transition={{ duration: 0.4 }}
           style={{ position: "absolute", bottom: 30, left: "50%", transform: "translateX(-50%)", zIndex: 4, color: "rgba(255,255,255,0.6)", fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
         >

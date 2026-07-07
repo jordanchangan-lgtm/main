@@ -57,10 +57,11 @@ export function GlassButton({ children, accent = "#12A5F4", href, onClick, style
           transition: `transform .55s ${SPRING}, box-shadow .55s ${SPRING}`,
         }}
       >
-        {/* refracting, smooth glass base */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 999, backdropFilter: "blur(7px) saturate(175%)", WebkitBackdropFilter: "blur(7px) saturate(175%)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
-        {/* subtle tinted fill */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 999, background: h ? "linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0.05))" : "linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.03))", transition: `background .5s ${SPRING}` }} />
+        {/* clear refracting glass base — blurs, brightens & bends whatever is
+            behind it (the ocean), iOS liquid-glass style. Almost no fill. */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 999, backdropFilter: "blur(9px) saturate(200%) brightness(1.12)", WebkitBackdropFilter: "blur(9px) saturate(200%) brightness(1.12)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
+        {/* whisper-thin wash so it reads as glass, not a hole */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 999, background: h ? "rgba(255,255,255,0.10)" : "rgba(255,255,255,0.05)", transition: `background .5s ${SPRING}` }} />
 
         {/* SHINING EDGE — a gradient border ring, bright where light catches it */}
         <div
@@ -79,8 +80,8 @@ export function GlassButton({ children, accent = "#12A5F4", href, onClick, style
         />
         {/* top sheen */}
         <div style={{ position: "absolute", top: 0, left: "7%", right: "7%", height: "48%", zIndex: 2, borderRadius: 999, background: "linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.08) 65%, transparent)", pointerEvents: "none" }} />
-        {/* inner rim + accent underglow */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 999, boxShadow: `inset 0 1px 1.5px rgba(255,255,255,0.7), inset 0 -10px 22px ${accent}22`, pointerEvents: "none" }} />
+        {/* inner rim + faint accent underglow (kept light so glass stays clear) */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 999, boxShadow: `inset 0 1px 1.5px rgba(255,255,255,0.75), inset 0 -8px 18px ${accent}14`, pointerEvents: "none" }} />
 
         {/* specular streak — sweeps across on hover */}
         <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 999, overflow: "hidden", pointerEvents: "none" }}>

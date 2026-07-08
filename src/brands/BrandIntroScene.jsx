@@ -10,7 +10,6 @@ import { motion } from "framer-motion";
 import { EtherealShadow } from "./ui/EtherealShadow";
 import { Wordmark } from "./ui/Wordmark";
 import TextBlockAnimation from "./ui/TextBlockAnimation";
-import { BrandLogo3D } from "./ui/BrandLogo3D";
 import { useViewport } from "./useViewport";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -71,7 +70,6 @@ export function BrandIntroScene({ brand }) {
   }, []);
 
   const showCue = !entered;
-  const logoSize = isMobile ? 150 : 330;
 
   return (
     <section style={{ position: "relative", height: "100vh", overflow: "hidden", background: t.deep }}>
@@ -96,20 +94,15 @@ export function BrandIntroScene({ brand }) {
         </div>
       </motion.div>
 
-      {/* Step 1 — description on the LEFT (block-wipe) + interactive 3D emblem */}
+      {/* Step 1 — description on the LEFT, revealed with the block-wipe effect */}
       {step >= 1 && (
-        <div style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: isMobile ? "center" : "space-between", gap: isMobile ? 12 : 40, padding: isMobile ? "9vh 8vw 4vh" : "0 clamp(48px, 8vw, 140px)", pointerEvents: "none" }}>
-          {isMobile && (
-            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, ease: EASE, delay: 0.1 }} style={{ pointerEvents: "auto" }}>
-              <BrandLogo3D brand={brand} size={logoSize} />
-            </motion.div>
-          )}
+        <div style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", alignItems: "center", justifyContent: isMobile ? "center" : "flex-start", padding: isMobile ? "0 8vw" : "0 clamp(48px, 8vw, 140px)", pointerEvents: "none" }}>
           <TextBlockAnimation
             animateOnScroll={false}
             blockColor={t.accentBright}
             duration={0.7}
             stagger={0.08}
-            style={{ maxWidth: isMobile ? "100%" : "min(560px, 48vw)", textAlign: isMobile ? "center" : "left", color: "#fff" }}
+            style={{ maxWidth: isMobile ? "100%" : "min(620px, 52vw)", textAlign: isMobile ? "center" : "left", color: "#fff" }}
           >
             <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: t.accentBright, fontWeight: 600, marginBottom: 18 }}>
               {brand.description?.eyebrow}
@@ -121,12 +114,6 @@ export function BrandIntroScene({ brand }) {
               {brand.description?.body}
             </p>
           </TextBlockAnimation>
-
-          {!isMobile && (
-            <motion.div initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, ease: EASE, delay: 0.15 }} style={{ pointerEvents: "auto", flex: "0 0 auto" }}>
-              <BrandLogo3D brand={brand} size={logoSize} />
-            </motion.div>
-          )}
         </div>
       )}
 

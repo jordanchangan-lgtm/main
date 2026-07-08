@@ -1,0 +1,8 @@
+# Netlify deploy config for the Changan Jordan landing site (Vite static build).
+# The app uses hash routing (#/changan, #/home, …) so no SPA redirects are needed.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"

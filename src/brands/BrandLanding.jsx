@@ -73,7 +73,7 @@ export default function BrandLanding({ brand }) {
       <BrandSwitcher current={brand.slug} />
 
       {/* dealer-group logo, top-left of every brand page */}
-      <div style={{ position: "fixed", top: isMobile ? 18 : 26, left: isMobile ? 20 : 34, zIndex: 50, mixBlendMode: "difference", pointerEvents: "none" }}>
+      <div style={{ position: "fixed", top: isMobile ? 14 : 20, left: isMobile ? 10 : 14, zIndex: 50, mixBlendMode: "difference", pointerEvents: "none" }}>
         <img src={MALLOUK_LOGO} alt="Mallouk" style={{ height: isMobile ? 17 : 22, width: "auto", display: "block" }} />
       </div>
 

@@ -7,8 +7,8 @@
 //   scroll → unlocks the page and glides down to the globe.
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Wordmark } from "./ui/Wordmark";
 import TextBlockAnimation from "./ui/TextBlockAnimation";
+import { BlurTextEffect } from "./ui/BlurTextEffect";
 import { useViewport } from "./useViewport";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -94,10 +94,26 @@ export function BrandIntroScene({ brand }) {
       >
         <div style={{ color: "#ffffff", borderRadius: "50%", padding: "min(7vh, 60px) 6vw", background: "radial-gradient(60% 55% at 50% 50%, rgba(10,12,16,0.5) 0%, rgba(10,12,16,0.24) 45%, transparent 72%)" }}>
           <div style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.4rem, 5.5vw, 4.5rem)", letterSpacing: "-0.01em" }}>
-            {brand.hero.pre}
+            <BlurTextEffect>{brand.hero.pre}</BlurTextEffect>
           </div>
           <div style={{ marginTop: "0.12em" }}>
-            <Wordmark text={brand.hero.mark} transform={brand.wordmark.transform} color={t.white} style={{ fontSize: "clamp(3rem, 11vw, 9rem)", lineHeight: 1, textShadow: `0 0 40px ${t.accentBright}66` }} />
+            {/* brand word — per-brand colour (Changan dark blue · Deepal silver · Nevo purple) */}
+            <BlurTextEffect
+              delay={0.35}
+              style={{
+                fontFamily: '"Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif',
+                fontWeight: 900,
+                textTransform: brand.wordmark.transform,
+                letterSpacing: brand.wordmark.transform === "lowercase" ? "0.02em" : "0.12em",
+                WebkitTextStroke: "0.5px currentColor",
+                color: brand.heroWordColor || t.white,
+                fontSize: "clamp(3rem, 11vw, 9rem)",
+                lineHeight: 1,
+                textShadow: `0 0 44px ${t.accentBright}66, 0 2px 4px rgba(0,0,0,0.35)`,
+              }}
+            >
+              {brand.hero.mark}
+            </BlurTextEffect>
           </div>
         </div>
       </motion.div>

@@ -47,6 +47,7 @@ export const CHANGAN = {
   slug: "changan",
   name: "Changan",
   heroShadow: "#1e63c8",
+  heroWordColor: "#00437C", // dark blue
   // TODO: replace with Changan Eado EV 2026 (dark-background) shots once provided.
   galleryImages: [CH_UNI_K, CH_UNI_T, CH_UNI_V, CH_CS75, CH_CS55],
   wordmark: { text: "Changan", transform: "uppercase" },
@@ -94,6 +95,7 @@ export const DEEPAL = {
   slug: "deepal",
   name: "Deepal",
   heroShadow: "#0fa6b6",
+  heroWordColor: "#c9ced8", // silver
   // Deepal gallery — G318, S07, S05 (GCC).
   galleryImages: [DP_G318, DP_S07, DP_S07B, DP_S05],
   wordmark: { text: "deepal", transform: "lowercase" },
@@ -141,6 +143,7 @@ export const NEVO = {
   slug: "nevo",
   name: "Nevo",
   heroShadow: "#7a4fe0",
+  heroWordColor: "#7a4fe0", // purple
   // Nevo gallery — all Q05 (GCC).
   galleryImages: [NV_Q05],
   wordmark: { text: "Nevo", transform: "uppercase" },

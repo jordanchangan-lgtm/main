@@ -7,7 +7,6 @@
 //   scroll → unlocks the page and glides down to the globe.
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import TextBlockAnimation from "./ui/TextBlockAnimation";
 import { BlurTextEffect } from "./ui/BlurTextEffect";
 import { useViewport } from "./useViewport";
 
@@ -118,26 +117,20 @@ export function BrandIntroScene({ brand }) {
         </div>
       </motion.div>
 
-      {/* Step 1 — description on the LEFT, revealed with the block-wipe effect */}
+      {/* Step 1 — description on the LEFT, revealed with the blur-text effect */}
       {step >= 1 && (
         <div style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", alignItems: "center", justifyContent: isMobile ? "center" : "flex-start", padding: isMobile ? "0 8vw" : "0 clamp(48px, 8vw, 140px)", pointerEvents: "none" }}>
-          <TextBlockAnimation
-            animateOnScroll={false}
-            blockColor={t.accentBright}
-            duration={0.7}
-            stagger={0.08}
-            style={{ maxWidth: isMobile ? "100%" : "min(620px, 52vw)", textAlign: isMobile ? "center" : "left", color: "#fff" }}
-          >
+          <div style={{ maxWidth: isMobile ? "100%" : "min(620px, 52vw)", textAlign: isMobile ? "center" : "left", color: "#fff" }}>
             <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: t.accentBright, fontWeight: 600, marginBottom: 18 }}>
-              {brand.description?.eyebrow}
+              <BlurTextEffect>{brand.description?.eyebrow || ""}</BlurTextEffect>
             </div>
             <h2 style={{ margin: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.7rem, 4.2vw, 3.2rem)", lineHeight: 1.08, letterSpacing: "-0.02em" }}>
-              {brand.description?.headline}
+              <BlurTextEffect delay={0.15}>{brand.description?.headline || ""}</BlurTextEffect>
             </h2>
             <p style={{ margin: "22px 0 0", fontSize: "clamp(0.95rem, 1.5vw, 1.15rem)", lineHeight: 1.7, fontWeight: 300, color: "rgba(255,255,255,0.85)" }}>
-              {brand.description?.body}
+              <BlurTextEffect delay={0.4}>{brand.description?.body || ""}</BlurTextEffect>
             </p>
-          </TextBlockAnimation>
+          </div>
         </div>
       )}
 

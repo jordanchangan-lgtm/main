@@ -80,7 +80,7 @@ export function FocusRail({ items, initialIndex = 0, loop = true, autoPlay = fal
         <AnimatePresence mode="popLayout">
           <motion.div key={`bg-${activeIndex}`} initial={{ opacity: 0 }} animate={{ opacity: 0.35 }} exit={{ opacity: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} style={{ position: "absolute", inset: 0 }}>
             <img src={activeItem.img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "blur(60px) saturate(190%)", transform: "scale(1.2)" }} />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, #0a0c10 0%, rgba(10,12,16,0.55) 45%, transparent 100%)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, #26292f 0%, rgba(38,41,47,0.5) 45%, transparent 100%)" }} />
           </motion.div>
         </AnimatePresence>
       </div>

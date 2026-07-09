@@ -19,6 +19,7 @@ import { useViewport } from "./useViewport";
    ====================================================================== */
 
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
+const GREY = "#26292f"; // shared page grey (matches the brand hero background)
 
 // Big liquid-glass CTA. href is a placeholder — external links to come.
 function DiveButton({ brand, isMobile }) {
@@ -43,18 +44,18 @@ function DiveButton({ brand, isMobile }) {
         cursor: "pointer",
         transform: h ? "translateY(-5px) scale(1.03)" : "none",
         boxShadow: h
-          ? `0 26px 56px rgba(0,0,0,0.5), 0 0 44px ${t.accent}55`
+          ? "0 26px 56px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.16)"
           : "0 14px 36px rgba(0,0,0,0.4)",
         transition: `transform .5s ${SPRING}, box-shadow .5s ${SPRING}`,
       }}
     >
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 999, backdropFilter: "blur(7px) saturate(150%) brightness(1.15)", WebkitBackdropFilter: "blur(7px) saturate(150%) brightness(1.15)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 999, backdropFilter: "blur(7px) saturate(40%) brightness(1.35)", WebkitBackdropFilter: "blur(7px) saturate(40%) brightness(1.35)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
       <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 999, background: h ? "rgba(255,255,255,0.09)" : "rgba(255,255,255,0.045)", transition: `background .5s ${SPRING}` }} />
       <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 999, padding: 1.5, background: "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.16) 30%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.22) 70%, rgba(255,255,255,0.85) 100%)", WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude", pointerEvents: "none" }} />
       <div style={{ position: "absolute", top: 0, left: "7%", right: "7%", height: "46%", zIndex: 2, borderRadius: 999, background: "linear-gradient(180deg, rgba(255,255,255,0.34), transparent)", pointerEvents: "none" }} />
       <span style={{ position: "relative", zIndex: 3, display: "flex", alignItems: "baseline", gap: "0.45em", color: "#ffffff", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: isMobile ? "clamp(1.05rem, 4.6vw, 1.4rem)" : "clamp(1.3rem, 2.2vw, 1.9rem)", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
         Dive into
-        <Wordmark text={brand.wordmark.text} transform={brand.wordmark.transform} color="#ffffff" style={{ fontSize: "1.15em", textShadow: `0 2px 20px ${t.accent}` }} />
+        <Wordmark text={brand.wordmark.text} transform={brand.wordmark.transform} color="#ffffff" style={{ fontSize: "1.15em", textShadow: "0 1px 3px rgba(0,0,0,0.4)" }} />
         world
       </span>
     </a>
@@ -66,7 +67,7 @@ export default function BrandLanding({ brand }) {
   const { isMobile } = useViewport();
   const models = brand.modelsGallery?.items || [];
   return (
-    <div style={{ background: "#0a0c10", position: "relative" }}>
+    <div style={{ background: GREY, position: "relative" }}>
       <GlassFilter />
       <BrandSwitcher current={brand.slug} />
 
@@ -81,7 +82,7 @@ export default function BrandLanding({ brand }) {
         <BrandIntroScene brand={brand} />
 
         {/* 2 — the model line-up as a 3D focus rail */}
-        <section id="brand-world" style={{ position: "relative", background: "#0a0c10", padding: isMobile ? "10vh 0 4vh" : "12vh 0 6vh" }}>
+        <section id="brand-world" style={{ position: "relative", background: GREY, padding: isMobile ? "10vh 0 4vh" : "12vh 0 6vh" }}>
           <div style={{ textAlign: "center", marginBottom: isMobile ? 8 : 14, padding: "0 6vw", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
             <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: t.accentBright, fontWeight: 600, marginBottom: 12 }}>
               {brand.modelsGallery?.eyebrow || "The Range"}
@@ -97,7 +98,7 @@ export default function BrandLanding({ brand }) {
         <BrandLocation brand={brand} />
 
         {/* 4 — big glass CTA */}
-        <section style={{ position: "relative", background: t.deep, padding: isMobile ? "14vh 6vw" : "16vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: 26, overflow: "hidden" }}>
+        <section style={{ position: "relative", background: GREY, padding: isMobile ? "14vh 6vw" : "16vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: 26, overflow: "hidden" }}>
           <div className="cta-dots" style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
           <motion.div
             initial={{ opacity: 0, y: 30 }}

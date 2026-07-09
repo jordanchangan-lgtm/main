@@ -36,14 +36,15 @@ function BrandGlassPanel({ brand, isMobile }) {
         cursor: "pointer",
         transform: h ? "translateY(-5px) scale(1.05)" : "none",
         boxShadow: h
-          ? `0 18px 40px rgba(0,0,0,0.45), 0 0 30px ${t.accent}44`
+          ? "0 18px 40px rgba(0,0,0,0.45), 0 0 30px rgba(255,255,255,0.16)"
           : "0 8px 22px rgba(0,0,0,0.3)",
         transition: `transform .5s ${SPRING}, box-shadow .5s ${SPRING}`,
       }}
     >
-      {/* clear refracting glass — light blur, lifted brightness so the dots
-          visibly bend and shine through */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 20, backdropFilter: "blur(3px) saturate(130%) brightness(1.5)", WebkitBackdropFilter: "blur(3px) saturate(130%) brightness(1.5)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
+      {/* clear refracting glass — DESATURATED so it reads as neutral/silver
+          glass (no blue tint) even over the blue field, brightened so the dots
+          shine through */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 20, backdropFilter: "blur(3px) saturate(35%) brightness(1.7)", WebkitBackdropFilter: "blur(3px) saturate(35%) brightness(1.7)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
       {/* near-zero wash — keeps it clear, not milky */}
       <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 20, background: h ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)", transition: `background .5s ${SPRING}` }} />
       {/* crisp shining edge */}
@@ -64,7 +65,7 @@ function BrandGlassPanel({ brand, isMobile }) {
           color="#ffffff"
           style={{
             fontSize: isMobile ? "clamp(1.1rem, 4.6vw, 1.35rem)" : "clamp(1.15rem, 1.4vw, 1.45rem)",
-            textShadow: `0 2px 18px ${t.accent}, 0 1px 2px rgba(0,0,0,0.3)`,
+            textShadow: "0 1px 3px rgba(0,0,0,0.4)",
             transform: h ? "scale(1.05)" : "none",
             transition: `transform .5s ${SPRING}`,
           }}
@@ -115,7 +116,7 @@ export default function Hub() {
       <section style={{ position: "relative", minHeight: "100vh", background: HUB_DEEP, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div className="hub2-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
         {/* soft ambient light behind the panels so the glass has something to refract */}
-        <div style={{ position: "absolute", left: "50%", top: "58%", transform: "translate(-50%, -50%)", width: "min(900px, 90vw)", height: 300, zIndex: 0, pointerEvents: "none", background: "radial-gradient(50% 55% at 50% 50%, rgba(120,170,255,0.22) 0%, rgba(120,170,255,0.07) 55%, transparent 78%)", filter: "blur(6px)" }} />
+        <div style={{ position: "absolute", left: "50%", top: "58%", transform: "translate(-50%, -50%)", width: "min(900px, 90vw)", height: 300, zIndex: 0, pointerEvents: "none", background: "radial-gradient(50% 55% at 50% 50%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 55%, transparent 78%)", filter: "blur(6px)" }} />
 
         <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 1200, margin: "0 auto", padding: "14vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: isMobile ? 40 : 56 }}>
           <div style={{ textAlign: "center", color: "#ffffff", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>

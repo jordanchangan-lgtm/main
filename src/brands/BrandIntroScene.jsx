@@ -7,7 +7,6 @@
 //   scroll → unlocks the page and glides down to the globe.
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { EtherealShadow } from "./ui/EtherealShadow";
 import { Wordmark } from "./ui/Wordmark";
 import TextBlockAnimation from "./ui/TextBlockAnimation";
 import { useViewport } from "./useViewport";
@@ -72,11 +71,20 @@ export function BrandIntroScene({ brand }) {
   const showCue = !entered;
 
   return (
-    <section style={{ position: "relative", height: "100vh", overflow: "hidden", background: t.deep }}>
-      {/* same ethereal background throughout */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-        <EtherealShadow color={brand.heroShadow || t.accent} animation={{ scale: 100, speed: 90 }} noise={{ opacity: 0.5, scale: 1.3 }} sizing="fill" style={{ background: t.deep }} />
-      </div>
+    <section style={{ position: "relative", height: "100vh", overflow: "hidden", background: "#26292f" }}>
+      {/* grey backdrop with the moving dots */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "#26292f" }} />
+      <div className="intro-grey-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
+      <style>{`
+        .intro-grey-dots {
+          background-image: radial-gradient(circle, rgba(255,255,255,0.13) 1.1px, transparent 1.7px);
+          background-size: 26px 26px;
+          -webkit-mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, transparent 40%, #000 85%);
+          mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, transparent 40%, #000 85%);
+          animation: introDotsDrift 7s linear infinite;
+        }
+        @keyframes introDotsDrift { from { background-position: 0 0; } to { background-position: 26px 52px; } }
+      `}</style>
 
       {/* Step 0 — hero */}
       <motion.div
@@ -84,7 +92,7 @@ export function BrandIntroScene({ brand }) {
         transition={{ duration: 0.6, ease: EASE }}
         style={{ position: "absolute", inset: 0, zIndex: 2, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", pointerEvents: "none", padding: "0 6vw" }}
       >
-        <div style={{ color: t.white, borderRadius: "50%", padding: "min(7vh, 60px) 6vw", background: "radial-gradient(60% 55% at 50% 50%, rgba(0,10,40,0.5) 0%, rgba(0,10,40,0.24) 45%, transparent 72%)" }}>
+        <div style={{ color: "#ffffff", borderRadius: "50%", padding: "min(7vh, 60px) 6vw", background: "radial-gradient(60% 55% at 50% 50%, rgba(10,12,16,0.5) 0%, rgba(10,12,16,0.24) 45%, transparent 72%)" }}>
           <div style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.4rem, 5.5vw, 4.5rem)", letterSpacing: "-0.01em" }}>
             {brand.hero.pre}
           </div>

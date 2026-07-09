@@ -5,14 +5,14 @@ import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
 import { GlassEffect } from "./ui/LiquidGlass";
 
-// Small fixed nav across the three connected brand sites, built on the liquid-
-// glass panel. Hash links work in-app and inside a static/iframe preview.
+// Fixed vertical nav on the RIGHT edge — labels rotated 90° (perpendicular).
+// Hash links work in-app and inside a static/iframe preview.
 export function BrandSwitcher({ current }) {
   const { isSmall } = useViewport();
   return (
-    <div style={{ position: "fixed", top: isSmall ? 12 : 22, left: "50%", transform: "translateX(-50%)", zIndex: 60 }}>
+    <div style={{ position: "fixed", right: isSmall ? 8 : 18, top: "50%", transform: "translateY(-50%)", zIndex: 60 }}>
       <GlassEffect radius={999} style={{ padding: 4 }}>
-        <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
           <a
             href="#/home"
             aria-label="All brands"
@@ -38,7 +38,7 @@ export function BrandSwitcher({ current }) {
                 href={`#/${b.slug}`}
                 style={{
                   textDecoration: "none",
-                  padding: isSmall ? "6px 12px" : "7px 16px",
+                  padding: isSmall ? "12px 6px" : "16px 7px",
                   borderRadius: 999,
                   fontSize: isSmall ? 12 : 13,
                   fontWeight: 700,
@@ -47,6 +47,7 @@ export function BrandSwitcher({ current }) {
                   color: active ? "#ffffff" : "#1c2740",
                   background: active ? b.theme.accent : "transparent",
                   transition: "background 0.25s, color 0.25s",
+                  writingMode: "vertical-rl",
                 }}
               >
                 {b.name}

@@ -9,6 +9,7 @@ import { BrandSwitcher } from "./BrandSwitcher";
 import { FocusRail } from "./ui/FocusRail";
 import { GlassFilter } from "./ui/LiquidGlass";
 import { useViewport } from "./useViewport";
+import MALLOUK_LOGO from "./assets/mallouk-logo.png";
 
 /* ======================================================================
    Generic brand landing page — renders from a brand config (see brands.js).
@@ -71,11 +72,10 @@ export default function BrandLanding({ brand }) {
       <GlassFilter />
       <BrandSwitcher current={brand.slug} />
 
-      {!isMobile && (
-        <div style={{ position: "fixed", top: 26, left: 34, zIndex: 50, mixBlendMode: "difference" }}>
-          <Wordmark text={brand.wordmark.text} transform={brand.wordmark.transform} color="#ffffff" style={{ fontSize: 22 }} />
-        </div>
-      )}
+      {/* dealer-group logo, top-left of every brand page */}
+      <div style={{ position: "fixed", top: isMobile ? 18 : 26, left: isMobile ? 20 : 34, zIndex: 50, mixBlendMode: "difference", pointerEvents: "none" }}>
+        <img src={MALLOUK_LOGO} alt="Mallouk" style={{ height: isMobile ? 17 : 22, width: "auto", display: "block" }} />
+      </div>
 
       <div style={{ position: "relative", zIndex: 1 }}>
         {/* 1 — grey+dots hero → block-wipe description (scroll-locked) */}

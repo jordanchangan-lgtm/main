@@ -29,26 +29,33 @@ function BrandGlassPanel({ brand, isMobile }) {
         alignItems: "center",
         justifyContent: "center",
         textDecoration: "none",
-        width: isMobile ? "min(84vw, 360px)" : 300,
-        height: isMobile ? 110 : 150,
-        borderRadius: 24,
+        width: isMobile ? "min(64vw, 250px)" : 210,
+        height: isMobile ? 66 : 76,
+        borderRadius: 20,
         overflow: "hidden",
         cursor: "pointer",
-        transform: h ? "translateY(-6px) scale(1.045)" : "none",
+        transform: h ? "translateY(-5px) scale(1.05)" : "none",
         boxShadow: h
-          ? `0 22px 48px rgba(0,0,0,0.5), 0 0 38px ${t.accent}55`
-          : "0 12px 30px rgba(0,0,0,0.4)",
+          ? `0 18px 40px rgba(0,0,0,0.45), 0 0 30px ${t.accent}44`
+          : "0 8px 22px rgba(0,0,0,0.3)",
         transition: `transform .5s ${SPRING}, box-shadow .5s ${SPRING}`,
       }}
     >
-      {/* clear refracting glass */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 24, backdropFilter: "blur(6px) saturate(140%) brightness(1.15)", WebkitBackdropFilter: "blur(6px) saturate(140%) brightness(1.15)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
-      {/* whisper wash */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 24, background: h ? "rgba(255,255,255,0.09)" : "rgba(255,255,255,0.045)", transition: `background .5s ${SPRING}` }} />
-      {/* shining edge */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 24, padding: 1.5, background: "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.16) 30%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.22) 70%, rgba(255,255,255,0.85) 100%)", WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude", pointerEvents: "none" }} />
-      {/* top sheen */}
-      <div style={{ position: "absolute", top: 0, left: "7%", right: "7%", height: "46%", zIndex: 2, borderRadius: 24, background: "linear-gradient(180deg, rgba(255,255,255,0.34), transparent)", pointerEvents: "none" }} />
+      {/* clear refracting glass — light blur, lifted brightness so the dots
+          visibly bend and shine through */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 20, backdropFilter: "blur(3px) saturate(130%) brightness(1.5)", WebkitBackdropFilter: "blur(3px) saturate(130%) brightness(1.5)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
+      {/* near-zero wash — keeps it clear, not milky */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 20, background: h ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)", transition: `background .5s ${SPRING}` }} />
+      {/* crisp shining edge */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 20, padding: 1.2, background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.2) 26%, rgba(255,255,255,0) 46%, rgba(255,255,255,0.26) 68%, rgba(255,255,255,0.9) 100%)", WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude", pointerEvents: "none" }} />
+      {/* inner rim highlight */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 20, boxShadow: "inset 0 1px 1px rgba(255,255,255,0.55), inset 0 -1px 1.5px rgba(255,255,255,0.22)", pointerEvents: "none" }} />
+      {/* thin top sheen */}
+      <div style={{ position: "absolute", top: 0, left: "9%", right: "9%", height: "40%", zIndex: 2, borderRadius: 20, background: "linear-gradient(180deg, rgba(255,255,255,0.28), transparent)", pointerEvents: "none" }} />
+      {/* specular streak on hover */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 20, overflow: "hidden", pointerEvents: "none" }}>
+        <div style={{ position: "absolute", top: "-40%", left: h ? "115%" : "-45%", width: "45%", height: "180%", transform: "rotate(18deg)", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)", filter: "blur(5px)", transition: "left .8s ease" }} />
+      </div>
 
       <div style={{ position: "relative", zIndex: 3 }}>
         <Wordmark
@@ -56,8 +63,8 @@ function BrandGlassPanel({ brand, isMobile }) {
           transform={brand.wordmark.transform}
           color="#ffffff"
           style={{
-            fontSize: isMobile ? "clamp(1.5rem, 6vw, 1.9rem)" : "clamp(1.6rem, 2vw, 2.1rem)",
-            textShadow: `0 2px 22px ${t.accent}, 0 1px 2px rgba(0,0,0,0.3)`,
+            fontSize: isMobile ? "clamp(1.1rem, 4.6vw, 1.35rem)" : "clamp(1.15rem, 1.4vw, 1.45rem)",
+            textShadow: `0 2px 18px ${t.accent}, 0 1px 2px rgba(0,0,0,0.3)`,
             transform: h ? "scale(1.05)" : "none",
             transition: `transform .5s ${SPRING}`,
           }}
@@ -107,6 +114,8 @@ export default function Hub() {
       {/* ===== Panel 2 — darkest blue + moving dots, three glass brand panels ===== */}
       <section style={{ position: "relative", minHeight: "100vh", background: HUB_DEEP, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div className="hub2-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
+        {/* soft ambient light behind the panels so the glass has something to refract */}
+        <div style={{ position: "absolute", left: "50%", top: "58%", transform: "translate(-50%, -50%)", width: "min(900px, 90vw)", height: 300, zIndex: 0, pointerEvents: "none", background: "radial-gradient(50% 55% at 50% 50%, rgba(120,170,255,0.22) 0%, rgba(120,170,255,0.07) 55%, transparent 78%)", filter: "blur(6px)" }} />
 
         <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 1200, margin: "0 auto", padding: "14vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: isMobile ? 40 : 56 }}>
           <div style={{ textAlign: "center", color: "#ffffff", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>

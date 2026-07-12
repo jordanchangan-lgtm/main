@@ -30,6 +30,7 @@ export function BrandSwitcher({ current }) {
                 <a
                   key={b.slug}
                   href={`#/${b.slug}`}
+                  onClick={() => window.scrollTo(0, 0)}
                   style={{
                     textDecoration: "none",
                     padding: "8px 12px",
@@ -71,6 +72,7 @@ export function BrandSwitcher({ current }) {
               <a
                 key={b.slug}
                 href={`#/${b.slug}`}
+                onClick={() => window.scrollTo(0, 0)}
                 style={{
                   textDecoration: "none",
                   padding: "16px 7px",

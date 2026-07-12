@@ -21,7 +21,9 @@ function Root() {
   const slug = parts[0];
   const sub = parts[1];
   const brand = BRANDS[slug];
-  if (brand) return sub === 'intro' ? <BrandIntro brand={brand} /> : <BrandLanding brand={brand} />;
+  // key by slug so switching brands remounts the page — you land back on the
+  // brand's opening ("dive into") hero section instead of keeping the old scroll.
+  if (brand) return sub === 'intro' ? <BrandIntro key={slug} brand={brand} /> : <BrandLanding key={slug} brand={brand} />;
   return <Hub />;
 }
 

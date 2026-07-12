@@ -10,6 +10,7 @@ import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
 
 const HUB_DEEP = "#000e2e";
+const HUB_BLACK = "#000000";
 const WORDS = ["future", "technology", "perfection"];
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
 
@@ -124,7 +125,7 @@ export default function Hub() {
           <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "#ffffff", marginBottom: 18, fontWeight: 600 }}>
             Changan Jordan
           </div>
-          <h1 style={{ margin: 0, fontWeight: 300, fontSize: "clamp(2.2rem, 7vw, 5rem)", lineHeight: 1.05, letterSpacing: "-0.02em", color: "#ffffff", display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "0.28em" }}>
+          <h1 style={{ margin: 0, fontWeight: 300, fontSize: "clamp(2.2rem, 7vw, 5rem)", lineHeight: 1.05, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#ffffff", display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "0.28em" }}>
             <span>dive into</span>
             <ContainerTextFlip
               words={WORDS}
@@ -140,8 +141,8 @@ export default function Hub() {
         </div>
       </section>
 
-      {/* ===== Panel 2 — darkest blue + moving dots, three glass brand panels ===== */}
-      <section style={{ position: "relative", minHeight: "100vh", background: HUB_DEEP, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* ===== Panel 2 — dark-blue → black gradient + moving dots, brand links ===== */}
+      <section style={{ position: "relative", minHeight: "100vh", background: `linear-gradient(180deg, ${HUB_DEEP} 0%, ${HUB_BLACK} 100%)`, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div className="hub2-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
         {/* soft ambient light behind the panels so the glass has something to refract */}
         <div style={{ position: "absolute", left: "50%", top: "58%", transform: "translate(-50%, -50%)", width: "min(900px, 90vw)", height: 300, zIndex: 0, pointerEvents: "none", background: "radial-gradient(50% 55% at 50% 50%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 55%, transparent 78%)", filter: "blur(6px)" }} />

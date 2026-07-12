@@ -1,10 +1,9 @@
 "use client";
 
-// Port of cascade-text.tsx to JSX + inline styles. Each character sits in a
-// 1em overflow-hidden slot; when the `text` changes, the outgoing word's
-// letters roll up and out while the incoming word's letters roll up into place,
-// staggered left-to-right — a "cascade" flip. Original triggered on hover; here
-// it triggers on every word change so the headline word flips on its own.
+// Word-swap headline effect. Two variants:
+//   "cascade" — each character rolls up/out while the next rolls up into place,
+//               staggered left-to-right (port of cascade-text.tsx).
+//   "fade"    — the whole word crossfades to the next one.
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -25,24 +24,44 @@ export function CascadeText({
   staggerDelay = 0.035,
   duration = 0.42,
   direction = "up",
+  variant = "cascade", // "cascade" (per-char roll) | "fade" (crossfade)
   style,
 }) {
   const chars = React.useMemo(() => split(text), [text]);
   const sign = direction === "up" ? 1 : -1;
 
+  const base = {
+    position: "relative",
+    display: "inline-flex",
+    color,
+    fontSize,
+    lineHeight: 1,
+    whiteSpace: "pre",
+    ...style,
+  };
+
+  // Simple crossfade: the old word fades out while the new fades in.
+  if (variant === "fade") {
+    return (
+      <span aria-label={text} style={base}>
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={text}
+            style={{ display: "inline-flex" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.55, ease: "easeInOut" }}
+          >
+            {text}
+          </motion.span>
+        </AnimatePresence>
+      </span>
+    );
+  }
+
   return (
-    <span
-      aria-label={text}
-      style={{
-        position: "relative",
-        display: "inline-flex",
-        color,
-        fontSize,
-        lineHeight: 1,
-        whiteSpace: "pre",
-        ...style,
-      }}
-    >
+    <span aria-label={text} style={base}>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span key={text} style={{ display: "inline-flex" }} aria-hidden="true">
           {chars.map((c, i) => (

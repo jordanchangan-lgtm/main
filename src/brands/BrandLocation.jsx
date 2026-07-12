@@ -19,6 +19,7 @@ export function BrandLocation({ brand }) {
   return (
     <section
       ref={ref}
+      data-panel-gate
       style={{
         position: "relative",
         minHeight: "100vh",

@@ -9,6 +9,7 @@ import { BrandSwitcher } from "./BrandSwitcher";
 import { FocusRail } from "./ui/FocusRail";
 import { GlassFilter } from "./ui/LiquidGlass";
 import { useViewport } from "./useViewport";
+import { useMobilePanelGate } from "./useMobilePanelGate";
 import MALLOUK_LOGO from "./assets/mallouk-logo.png";
 
 /* ======================================================================
@@ -61,6 +62,7 @@ export default function BrandLanding({ brand }) {
   const t = brand.theme;
   const { isMobile } = useViewport();
   const models = brand.modelsGallery?.items || [];
+  useMobilePanelGate();
   return (
     <div style={{ background: GREY, position: "relative" }}>
       <GlassFilter />
@@ -76,7 +78,7 @@ export default function BrandLanding({ brand }) {
         <BrandIntroScene brand={brand} />
 
         {/* 2 — the model line-up as a 3D focus rail */}
-        <section id="brand-world" style={{ position: "relative", background: GREY, padding: isMobile ? "10vh 0 4vh" : "12vh 0 6vh" }}>
+        <section id="brand-world" data-panel-gate style={{ position: "relative", background: GREY, padding: isMobile ? "10vh 0 4vh" : "12vh 0 6vh" }}>
           <div style={{ textAlign: "center", marginBottom: isMobile ? 8 : 14, padding: "0 6vw", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
             <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: t.accentBright, fontWeight: 600, marginBottom: 12 }}>
               {brand.modelsGallery?.eyebrow || "The Range"}
@@ -92,7 +94,7 @@ export default function BrandLanding({ brand }) {
         <BrandLocation brand={brand} />
 
         {/* 4 — big glass CTA */}
-        <section style={{ position: "relative", background: GREY, padding: isMobile ? "14vh 6vw" : "16vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: 26, overflow: "hidden" }}>
+        <section data-panel-gate style={{ position: "relative", background: GREY, padding: isMobile ? "14vh 6vw" : "16vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: 26, overflow: "hidden" }}>
           <div className="cta-dots" style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
           <motion.div
             initial={{ opacity: 0, y: 30 }}

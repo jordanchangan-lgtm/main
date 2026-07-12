@@ -7,6 +7,7 @@ import { GlassFilter } from "./ui/LiquidGlass";
 import { ContainerTextFlip } from "./ui/ContainerTextFlip";
 import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
+import { useMobilePanelGate } from "./useMobilePanelGate";
 import CHANGAN_LOGO from "./assets/changan-logo-white.png";
 import DEEPAL_LOGO from "./assets/deepal-logo-white.png";
 import NEVO_LOGO from "./assets/nevo-logo-white.png";
@@ -60,6 +61,7 @@ function BrandGlassPanel({ brand, isMobile }) {
 export default function Hub() {
   const { isMobile } = useViewport();
   const brands = Object.values(BRANDS);
+  useMobilePanelGate();
 
   // Hero is scroll-LOCKED: each scroll advances the headline word (blur flip).
   // The page stays pinned until the final word has fully appeared (3 scrolls),
@@ -160,7 +162,7 @@ export default function Hub() {
       </section>
 
       {/* ===== Panel 2 — dark-blue → black gradient + moving dots, brand links ===== */}
-      <section style={{ position: "relative", minHeight: "100vh", background: `linear-gradient(180deg, ${HUB_DEEP} 0%, ${HUB_BLACK} 100%)`, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <section data-panel-gate style={{ position: "relative", minHeight: "100vh", background: `linear-gradient(180deg, ${HUB_DEEP} 0%, ${HUB_BLACK} 100%)`, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div className="hub2-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
 
         <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 1200, margin: "0 auto", padding: "14vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: isMobile ? 40 : 56 }}>

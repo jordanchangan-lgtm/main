@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { VideoBackground } from "./ui/VideoBackground";
 import { GlassFilter } from "./ui/LiquidGlass";
@@ -54,9 +54,59 @@ export default function Hub() {
   const { isMobile } = useViewport();
   const brands = Object.values(BRANDS);
 
-  // The headline word slides slowly on a continuous vertical loop (TextMarquee);
-  // the page scrolls normally.
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  // Hero is scroll-LOCKED: each scroll advances the headline word (blur flip).
+  // The page stays pinned until the final word has fully appeared (3 scrolls),
+  // then the lock releases and normal scrolling resumes.
+  const [wi, setWi] = useState(0);
+  const wiRef = useRef(0);
+  const unlockedRef = useRef(false);
+  const cooldownRef = useRef(false);
+  const FLIP_MS = 720; // let the blur reveal finish before the next scroll counts
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const forward = () => {
+      if (unlockedRef.current || cooldownRef.current) return;
+      if (wiRef.current < WORDS.length - 1) {
+        wiRef.current += 1;
+        setWi(wiRef.current);
+        cooldownRef.current = true;
+        setTimeout(() => { cooldownRef.current = false; }, FLIP_MS);
+      } else {
+        // final word already revealed → release the lock
+        unlockedRef.current = true;
+      }
+    };
+
+    const onWheel = (e) => {
+      if (unlockedRef.current) return;
+      e.preventDefault();
+      window.scrollTo(0, 0);
+      if (e.deltaY > 0) forward();
+    };
+    const onKey = (e) => {
+      if (unlockedRef.current) return;
+      if (["ArrowDown", "PageDown", " ", "Spacebar"].includes(e.key)) { e.preventDefault(); forward(); }
+    };
+    let ty = null;
+    const onTouchStart = (e) => { ty = e.touches[0].clientY; };
+    const onTouchMove = (e) => {
+      if (unlockedRef.current || ty == null) return;
+      const dy = ty - e.touches[0].clientY;
+      if (Math.abs(dy) > 24) { e.preventDefault(); window.scrollTo(0, 0); if (dy > 0) forward(); ty = e.touches[0].clientY; }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("touchstart", onTouchStart, { passive: false });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+    };
+  }, []);
 
   return (
     <div style={{ position: "relative", background: HUB_DEEP }}>
@@ -78,7 +128,7 @@ export default function Hub() {
             <span>dive into</span>
             <ContainerTextFlip
               words={WORDS}
-              interval={2600}
+              index={wi}
               style={{ fontFamily: "inherit", fontWeight: 300, color: "#ffffff", textShadow: "0 2px 16px rgba(0,0,0,0.35)" }}
             />
           </h1>

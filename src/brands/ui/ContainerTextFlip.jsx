@@ -10,12 +10,15 @@ import { motion } from "framer-motion";
 export function ContainerTextFlip({
   words = ["better", "modern", "beautiful", "awesome"],
   interval = 3000,
+  index, // when provided, the word is CONTROLLED externally (no auto-cycle)
   animationDuration = 700,
   style,
   textStyle,
 }) {
   const id = useId();
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const controlled = index != null;
+  const [autoIndex, setAutoIndex] = useState(0);
+  const currentWordIndex = controlled ? index % words.length : autoIndex;
   const [width, setWidth] = useState(null);
   const textRef = useRef(null);
 
@@ -24,11 +27,12 @@ export function ContainerTextFlip({
   }, [currentWordIndex]);
 
   useEffect(() => {
+    if (controlled) return;
     const intervalId = setInterval(() => {
-      setCurrentWordIndex((p) => (p + 1) % words.length);
+      setAutoIndex((p) => (p + 1) % words.length);
     }, interval);
     return () => clearInterval(intervalId);
-  }, [words, interval]);
+  }, [controlled, words, interval]);
 
   const word = words[currentWordIndex];
 

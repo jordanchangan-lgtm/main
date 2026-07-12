@@ -158,6 +158,8 @@ export default function Hub() {
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
           <VideoBackground />
         </div>
+        {/* blend the video hero into the deep-blue panel below — no hard seam */}
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "42vh", zIndex: 1, pointerEvents: "none", background: `linear-gradient(to bottom, rgba(0,14,46,0) 0%, ${HUB_DEEP} 88%)` }} />
 
         <div style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 5vw", textAlign: "center", pointerEvents: "none", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
           <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "#ffffff", marginBottom: 18, fontWeight: 600 }}>

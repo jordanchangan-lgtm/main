@@ -18,7 +18,10 @@ const WORDS = ["future", "technology", "perfection"];
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
 const BRAND_LOGOS = { changan: CHANGAN_LOGO, deepal: DEEPAL_LOGO, nevo: NEVO_LOGO };
 // each brand's emblem is a different shape — size by height so they read evenly
-const LOGO_H = { changan: 1.0, deepal: 0.62, nevo: 1.12 };
+// (deepal = tall triangle, nevo = short bracket)
+const LOGO_H = { changan: 1.0, deepal: 1.12, nevo: 0.62 };
+// left→right display order: Changan · Nevo · Deepal
+const HUB_ORDER = ["changan", "nevo", "deepal"];
 
 // Plain clickable brand emblem (white logo) — no glass panel; the logo is the link.
 function BrandGlassPanel({ brand, isMobile }) {
@@ -60,7 +63,7 @@ function BrandGlassPanel({ brand, isMobile }) {
 
 export default function Hub() {
   const { isMobile } = useViewport();
-  const brands = Object.values(BRANDS);
+  const brands = HUB_ORDER.map((slug) => BRANDS[slug]);
   useMobilePanelGate();
 
   // Hero is scroll-LOCKED: each scroll advances the headline word (blur flip).

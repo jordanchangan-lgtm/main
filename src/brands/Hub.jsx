@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { VideoBackground } from "./ui/VideoBackground";
 import { GlassFilter } from "./ui/LiquidGlass";
-import { SpecialText } from "./ui/SpecialText";
+import { CascadeText } from "./ui/CascadeText";
 import { Wordmark } from "./ui/Wordmark";
 import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
@@ -79,12 +79,75 @@ export default function Hub() {
   const { isMobile } = useViewport();
   const brands = Object.values(BRANDS);
 
-  // headline word loops on its own; page scrolls normally
+  // Hero is scroll-LOCKED: each scroll rolls the headline word to the next one
+  // (cascade flip). After 3 flips the lock releases, normal scrolling resumes
+  // and the word keeps flipping on its own.
   const [wi, setWi] = useState(0);
+  const [unlocked, setUnlocked] = useState(false);
+  const wiRef = useRef(0);
+  const flipsRef = useRef(0);
+  const unlockedRef = useRef(false);
+  const cooldownRef = useRef(false);
+  const FLIP_MS = 620; // must clear the cascade before the next scroll counts
+
   useEffect(() => {
-    const id = setInterval(() => setWi((v) => (v + 1) % WORDS.length), 1900);
-    return () => clearInterval(id);
+    window.scrollTo(0, 0);
+
+    const advance = () => {
+      wiRef.current = (wiRef.current + 1) % WORDS.length;
+      setWi(wiRef.current);
+      flipsRef.current += 1;
+      cooldownRef.current = true;
+      setTimeout(() => { cooldownRef.current = false; }, FLIP_MS);
+      // 3 scrolls through the words → unlock once the final flip has finished
+      if (flipsRef.current >= WORDS.length) {
+        setTimeout(() => {
+          unlockedRef.current = true;
+          setUnlocked(true);
+        }, FLIP_MS);
+      }
+    };
+
+    const forward = () => {
+      if (unlockedRef.current || cooldownRef.current) return;
+      advance();
+    };
+
+    const onWheel = (e) => {
+      if (unlockedRef.current) return;
+      e.preventDefault();
+      window.scrollTo(0, 0);
+      if (e.deltaY > 0) forward();
+    };
+    const onKey = (e) => {
+      if (unlockedRef.current) return;
+      if (["ArrowDown", "PageDown", " ", "Spacebar"].includes(e.key)) { e.preventDefault(); forward(); }
+    };
+    let ty = null;
+    const onTouchStart = (e) => { ty = e.touches[0].clientY; };
+    const onTouchMove = (e) => {
+      if (unlockedRef.current || ty == null) return;
+      const dy = ty - e.touches[0].clientY;
+      if (Math.abs(dy) > 24) { e.preventDefault(); window.scrollTo(0, 0); if (dy > 0) forward(); ty = e.touches[0].clientY; }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("touchstart", onTouchStart, { passive: false });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+    };
   }, []);
+
+  // once unlocked, the word keeps rolling automatically
+  useEffect(() => {
+    if (!unlocked) return;
+    const id = setInterval(() => { wiRef.current = (wiRef.current + 1) % WORDS.length; setWi(wiRef.current); }, 1900);
+    return () => clearInterval(id);
+  }, [unlocked]);
 
   return (
     <div style={{ position: "relative", background: HUB_DEEP }}>
@@ -102,7 +165,7 @@ export default function Hub() {
           </div>
           <h1 style={{ margin: 0, fontWeight: 300, fontSize: "clamp(2.2rem, 7vw, 5rem)", lineHeight: 1.05, letterSpacing: "-0.02em", color: "#ffffff", display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "baseline", gap: "0.28em" }}>
             <span>dive into</span>
-            <SpecialText text={WORDS[wi]} speed={18} style={{ fontFamily: "inherit", fontWeight: 300, color: "#ffffff" }} />
+            <CascadeText text={WORDS[wi]} style={{ fontFamily: "inherit", fontWeight: 300, color: "#ffffff", textShadow: "0 2px 16px rgba(0,0,0,0.35)" }} />
           </h1>
         </div>
 

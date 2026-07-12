@@ -44,9 +44,9 @@ function BrandGlassPanel({ brand, isMobile }) {
       {/* clear refracting glass — DESATURATED so it reads as neutral/silver
           glass (no blue tint) even over the blue field, brightened so the dots
           shine through */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 20, backdropFilter: "blur(3px) saturate(35%) brightness(1.7)", WebkitBackdropFilter: "blur(3px) saturate(35%) brightness(1.7)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
-      {/* near-zero wash — keeps it clear, not milky */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 20, background: h ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)", transition: `background .5s ${SPRING}` }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 20, backdropFilter: "blur(1px) saturate(55%) brightness(1.04)", WebkitBackdropFilter: "blur(1px) saturate(55%) brightness(1.04)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
+      {/* see-through — no milky wash, only a faint lift on hover */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 20, background: h ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0)", transition: `background .5s ${SPRING}` }} />
       {/* crisp shining edge */}
       <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 20, padding: 1.2, background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.2) 26%, rgba(255,255,255,0) 46%, rgba(255,255,255,0.26) 68%, rgba(255,255,255,0.9) 100%)", WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude", pointerEvents: "none" }} />
       {/* inner rim highlight */}

@@ -77,10 +77,9 @@ export const CHANGAN = {
     eyebrow: "The Range",
     headline: "A Changan for every road.",
     items: [
-      { img: CH_UNI_K, title: "UNI-K", sub: "Flagship SUV", note: "Commanding stance, lounge-grade cabin, 2.0T.", pos: "center" },
-      { img: CH_UNI_T, title: "UNI-T", sub: "Coupe SUV", note: "The design manifesto — sculpted and connected.", pos: "center" },
-      { img: CH_UNI_V, title: "UNI-V", sub: "Fastback Sedan", note: "A driver's sedan with real punch.", pos: "center" },
-      { img: CH_CS75, title: "CS75 PLUS", sub: "Best-selling SUV", note: "Space, tech and confidence for the family.", pos: "center" },
+      // NOTE: images are placeholders until the real Eado photos arrive.
+      { img: CH_UNI_V, title: "Eado DT", sub: "Compact Sedan", note: "Sharp, efficient and connected — the everyday Changan sedan.", pos: "center" },
+      { img: CH_ALSVIN, title: "Eado Plus EV", sub: "Electric Sedan", note: "Pure-electric range with the same confident Eado design.", pos: "center" },
     ],
   },
   location: {

@@ -50,8 +50,8 @@ function DiveButton({ brand, isMobile }) {
         transition: `transform .5s ${SPRING}, box-shadow .5s ${SPRING}`,
       }}
     >
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 999, backdropFilter: "blur(7px) saturate(40%) brightness(1.35)", WebkitBackdropFilter: "blur(7px) saturate(40%) brightness(1.35)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
-      <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 999, background: h ? "rgba(255,255,255,0.09)" : "rgba(255,255,255,0.045)", transition: `background .5s ${SPRING}` }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 999, backdropFilter: "blur(2px) saturate(55%) brightness(1.04)", WebkitBackdropFilter: "blur(2px) saturate(55%) brightness(1.04)", filter: "url(#glass-distortion)", isolation: "isolate" }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 1, borderRadius: 999, background: h ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)", transition: `background .5s ${SPRING}` }} />
       <div style={{ position: "absolute", inset: 0, zIndex: 2, borderRadius: 999, padding: 1.5, background: "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.16) 30%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.22) 70%, rgba(255,255,255,0.85) 100%)", WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude", pointerEvents: "none" }} />
       <div style={{ position: "absolute", top: 0, left: "7%", right: "7%", height: "46%", zIndex: 2, borderRadius: 999, background: "linear-gradient(180deg, rgba(255,255,255,0.34), transparent)", pointerEvents: "none" }} />
       <span style={{ position: "relative", zIndex: 3, display: "flex", alignItems: "baseline", gap: "0.45em", color: "#ffffff", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: isMobile ? "clamp(1.05rem, 4.6vw, 1.4rem)" : "clamp(1.3rem, 2.2vw, 1.9rem)", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
@@ -73,8 +73,8 @@ export default function BrandLanding({ brand }) {
       <BrandSwitcher current={brand.slug} />
 
       {/* dealer-group logo, top-left of every brand page */}
-      <div style={{ position: "fixed", top: isMobile ? 14 : 20, left: isMobile ? 10 : 14, zIndex: 50, mixBlendMode: "difference", pointerEvents: "none" }}>
-        <img src={MALLOUK_LOGO} alt="Mallouk" style={{ height: isMobile ? 17 : 22, width: "auto", display: "block" }} />
+      <div style={{ position: "fixed", top: isMobile ? 10 : 12, left: isMobile ? 8 : 10, zIndex: 50, mixBlendMode: "difference", pointerEvents: "none" }}>
+        <img src={MALLOUK_LOGO} alt="Mallouk" style={{ height: isMobile ? 13 : 15, width: "auto", display: "block" }} />
       </div>
 
       <div style={{ position: "relative", zIndex: 1 }}>

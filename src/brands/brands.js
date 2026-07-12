@@ -94,7 +94,7 @@ export const DEEPAL = {
   slug: "deepal",
   name: "Deepal",
   heroShadow: "#0fa6b6",
-  heroWordColor: "#c9ced8", // silver
+  heroWordColor: "#ffffff", // white
   // Deepal gallery — G318, S07, S05 (GCC).
   galleryImages: [DP_G318, DP_S07, DP_S07B, DP_S05],
   wordmark: { text: "deepal", transform: "uppercase" },
@@ -142,7 +142,7 @@ export const NEVO = {
   slug: "nevo",
   name: "Nevo",
   heroShadow: "#7a4fe0",
-  heroWordColor: "#7a4fe0", // purple
+  heroWordColor: "#ffffff", // white
   // Nevo gallery — all Q05 (GCC).
   galleryImages: [NV_Q05],
   wordmark: { text: "Nevo", transform: "uppercase" },

@@ -108,7 +108,7 @@ export function BrandIntroScene({ brand }) {
                 color: brand.heroWordColor || t.white,
                 fontSize: "clamp(3rem, 11vw, 9rem)",
                 lineHeight: 1,
-                textShadow: `0 0 44px ${t.accentBright}66, 0 2px 4px rgba(0,0,0,0.35)`,
+                textShadow: "0 2px 6px rgba(0,0,0,0.32)",
               }}
             >
               {brand.hero.mark}

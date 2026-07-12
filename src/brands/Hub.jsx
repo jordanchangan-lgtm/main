@@ -5,19 +5,24 @@ import { motion } from "framer-motion";
 import { VideoBackground } from "./ui/VideoBackground";
 import { GlassFilter } from "./ui/LiquidGlass";
 import { ContainerTextFlip } from "./ui/ContainerTextFlip";
-import { Wordmark } from "./ui/Wordmark";
 import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
+import CHANGAN_LOGO from "./assets/changan-logo-white.png";
+import DEEPAL_LOGO from "./assets/deepal-logo-white.png";
+import NEVO_LOGO from "./assets/nevo-logo-white.png";
 
 const HUB_DEEP = "#000e2e";
 const HUB_BLACK = "#000000";
 const WORDS = ["future", "technology", "perfection"];
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
+const BRAND_LOGOS = { changan: CHANGAN_LOGO, deepal: DEEPAL_LOGO, nevo: NEVO_LOGO };
+// each brand's emblem is a different shape — size by height so they read evenly
+const LOGO_H = { changan: 1.0, deepal: 0.62, nevo: 1.12 };
 
-// Plain clickable brand wordmark — no glass panel. The word itself is the link.
+// Plain clickable brand emblem (white logo) — no glass panel; the logo is the link.
 function BrandGlassPanel({ brand, isMobile }) {
-  const t = brand.theme;
   const [h, setH] = useState(false);
+  const base = isMobile ? 52 : 62;
   return (
     <a
       href={`#/${brand.slug}`}
@@ -29,22 +34,23 @@ function BrandGlassPanel({ brand, isMobile }) {
         alignItems: "center",
         justifyContent: "center",
         textDecoration: "none",
-        padding: isMobile ? "6px 10px" : "8px 14px",
+        padding: isMobile ? "10px 16px" : "14px 22px",
         cursor: "pointer",
-        transform: h ? "translateY(-3px) scale(1.06)" : "none",
+        transform: h ? "translateY(-3px) scale(1.08)" : "none",
         transition: `transform .45s ${SPRING}`,
       }}
+      aria-label={brand.name}
     >
-      <Wordmark
-        text={brand.wordmark.text}
-        transform={brand.wordmark.transform}
-        color="#ffffff"
+      <img
+        src={BRAND_LOGOS[brand.slug]}
+        alt={brand.name}
         style={{
-          fontSize: isMobile ? "clamp(1.35rem, 6vw, 1.7rem)" : "clamp(1.5rem, 1.9vw, 2rem)",
-          letterSpacing: "0.04em",
-          textShadow: h ? `0 0 26px ${t.accentBright}88, 0 2px 6px rgba(0,0,0,0.5)` : "0 2px 6px rgba(0,0,0,0.45)",
-          opacity: h ? 1 : 0.86,
-          transition: "text-shadow .45s ease, opacity .45s ease",
+          height: Math.round(base * (LOGO_H[brand.slug] || 1)),
+          width: "auto",
+          display: "block",
+          opacity: h ? 1 : 0.82,
+          filter: h ? "drop-shadow(0 4px 14px rgba(0,0,0,0.5))" : "none",
+          transition: "opacity .45s ease, filter .45s ease",
         }}
       />
     </a>
@@ -59,6 +65,7 @@ export default function Hub() {
   // The page stays pinned until the final word has fully appeared (3 scrolls),
   // then the lock releases and normal scrolling resumes.
   const [wi, setWi] = useState(0);
+  const [unlocked, setUnlocked] = useState(false);
   const wiRef = useRef(0);
   const unlockedRef = useRef(false);
   const cooldownRef = useRef(false);
@@ -75,8 +82,9 @@ export default function Hub() {
         cooldownRef.current = true;
         setTimeout(() => { cooldownRef.current = false; }, FLIP_MS);
       } else {
-        // final word already revealed → release the lock
+        // final word revealed → release the lock; the word keeps cycling on its own
         unlockedRef.current = true;
+        setUnlocked(true);
       }
     };
 
@@ -108,6 +116,16 @@ export default function Hub() {
       window.removeEventListener("touchmove", onTouchMove);
     };
   }, []);
+
+  // once the scroll-lock is done, the headline word keeps cycling on its own
+  useEffect(() => {
+    if (!unlocked) return;
+    const id = setInterval(() => {
+      wiRef.current = (wiRef.current + 1) % WORDS.length;
+      setWi(wiRef.current);
+    }, 2600);
+    return () => clearInterval(id);
+  }, [unlocked]);
 
   return (
     <div style={{ position: "relative", background: HUB_DEEP }}>
@@ -144,8 +162,6 @@ export default function Hub() {
       {/* ===== Panel 2 — dark-blue → black gradient + moving dots, brand links ===== */}
       <section style={{ position: "relative", minHeight: "100vh", background: `linear-gradient(180deg, ${HUB_DEEP} 0%, ${HUB_BLACK} 100%)`, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div className="hub2-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
-        {/* soft ambient light behind the panels so the glass has something to refract */}
-        <div style={{ position: "absolute", left: "50%", top: "58%", transform: "translate(-50%, -50%)", width: "min(900px, 90vw)", height: 300, zIndex: 0, pointerEvents: "none", background: "radial-gradient(50% 55% at 50% 50%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 55%, transparent 78%)", filter: "blur(6px)" }} />
 
         <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 1200, margin: "0 auto", padding: "14vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: isMobile ? 40 : 56 }}>
           <div style={{ textAlign: "center", color: "#ffffff", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>

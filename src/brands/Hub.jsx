@@ -176,8 +176,10 @@ export default function Hub() {
           .hub2-dots {
             background-image: radial-gradient(circle, rgba(255,255,255,0.13) 1.1px, transparent 1.7px);
             background-size: 26px 26px;
-            -webkit-mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, transparent 40%, #000 85%);
-            mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, transparent 40%, #000 85%);
+            /* grid starts lower — dotless across the top (below the seam), fading
+               in around the mid of the panel and holding to the bottom */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 30%, #000 46%, #000 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, transparent 30%, #000 46%, #000 100%);
             animation: hub2DotsDrift 7s linear infinite;
           }
           @keyframes hub2DotsDrift { from { background-position: 0 0; } to { background-position: 26px 52px; } }

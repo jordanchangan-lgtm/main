@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { VideoBackground } from "./ui/VideoBackground";
 import { GlassFilter } from "./ui/LiquidGlass";
-import { TextMarquee } from "./ui/TextMarquee";
+import { ContainerTextFlip } from "./ui/ContainerTextFlip";
 import { Wordmark } from "./ui/Wordmark";
 import { BRANDS } from "./brands";
 import { useViewport } from "./useViewport";
@@ -76,16 +76,11 @@ export default function Hub() {
           </div>
           <h1 style={{ margin: 0, fontWeight: 300, fontSize: "clamp(2.2rem, 7vw, 5rem)", lineHeight: 1.05, letterSpacing: "-0.02em", color: "#ffffff", display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "0.28em" }}>
             <span>dive into</span>
-            <TextMarquee
-              speed={2.6}
-              height={isMobile ? 120 : 200}
-              itemHeight={isMobile ? 54 : 92}
-              style={{ textShadow: "0 2px 16px rgba(0,0,0,0.35)" }}
-            >
-              {WORDS.map((w) => (
-                <span key={w} style={{ fontFamily: "inherit", fontWeight: 300, color: "#ffffff", whiteSpace: "nowrap" }}>{w}</span>
-              ))}
-            </TextMarquee>
+            <ContainerTextFlip
+              words={WORDS}
+              interval={2600}
+              style={{ fontFamily: "inherit", fontWeight: 300, color: "#ffffff", textShadow: "0 2px 16px rgba(0,0,0,0.35)" }}
+            />
           </h1>
         </div>
 

@@ -4000,3 +4000,101 @@ a {
     #hero .hero__car { align-self: start; }
     #hero .hero__car img { width: 78.2vw; margin: -1.73vw 0 0 -32.5vw; }
 }
+
+
+/* ======================================================================
+   MOBILE OPTIMIZATION OVERRIDES (phones ≤ 767px)
+   Tightens section rhythm and media sizing to match the design's
+   proportions on small screens. Appended last so it wins the cascade.
+   ====================================================================== */
+@media (max-width: 767px) {
+    /* Hero: remove dead space below the spec row */
+    #hero.hero {
+        min-height: 0 !important;
+        height: auto;
+        padding: 24px 0 40px;
+    }
+
+    /* Performance video: full-width panel at the footage's aspect ratio
+       instead of a zoomed 2-screen-tall crop */
+    #performance.video-section {
+        min-height: 0 !important;
+        height: auto;
+        padding: 0;
+    }
+
+    #performance .video-wrap,
+    #performance .video-bg {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+
+    /* Colors: compact stacked cards with even gaps */
+    #colors {
+        min-height: 0 !important;
+        padding: 32px 20px 24px !important;
+    }
+
+    .colors-content {
+        row-gap: 32px;
+        align-content: start;
+    }
+
+    .car-card {
+        margin: 0 !important;
+        height: auto !important;
+    }
+
+    /* Rear view */
+    .section--rear {
+        padding: 24px 0 !important;
+    }
+
+    .section--rear img {
+        margin-top: 0 !important;
+    }
+
+    /* Top view: keep the roof-fade scroll room but trim the empty tail */
+    #tech {
+        min-height: 110vh !important;
+        padding: 24px 0 !important;
+    }
+
+    /* Panoramic roof */
+    #PanoramicView {
+        padding: 24px 0 !important;
+        margin-bottom: 24px !important;
+    }
+
+    /* Wide interior panels: tight rhythm like the design */
+    .section--extra {
+        padding: 12px 0 !important;
+    }
+
+    #interior {
+        padding: 12px 0 32px !important;
+        margin-top: 0 !important;
+    }
+
+    #exterior {
+        padding: 24px 0 40px !important;
+    }
+
+    /* Learn more */
+    .learn-section {
+        padding: 48px 20px !important;
+    }
+
+    .learn-title {
+        font-size: 24px;
+        margin-left: 0 !important;
+    }
+
+    /* Footer: keep phone + email on one comfortable line */
+    .contact-footer {
+        padding: 28px 16px !important;
+        font-size: 15px;
+    }
+}

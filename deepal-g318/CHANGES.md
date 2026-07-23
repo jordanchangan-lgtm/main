@@ -72,3 +72,21 @@ The second panel's background video was replaced with the new Wadi Rum footage
 - `Videos/G318-poster.jpg` — first-frame poster ("WADI RUM" title card). Optional: replace
   `/Assets/Deepal/Images/G318/Lights.jpg` with it (or update the `poster` attribute) so the
   pre-play frame matches the new footage instead of the old desert/trailer scene.
+
+## 7. Mobile optimization (`G318.css`, phones ≤ 767px)
+
+Appended a `MOBILE OPTIMIZATION OVERRIDES` block that fixes the phone layout
+(audited at 390×844) while keeping all text sizes legible and the design's rhythm:
+
+| Fix | Before → After |
+|-----|----------------|
+| Hero | Forced 100vh with ~340px of dead space below the specs → content-sized section. |
+| Performance video | Rendered as a ~2-screen-tall zoomed crop → full-width 16:9 panel (`aspect-ratio`, `object-fit: cover`). |
+| Colors | Forced viewport-height section with large uneven gaps between the three color cards → compact stacked cards with even 32px gaps. |
+| Rear view | 160px stray top margin on the image → removed; section padding tightened. |
+| Top view | 150vh section with a long empty tail → 110vh (the scroll-driven roof cross-fade still has room). |
+| Panoramic / interior panels | 40–60px paddings + 80–128px margins stacking into big gray voids → tight 12–32px rhythm matching the design. |
+| Learn more | Padding reduced (80→48px), title sized for phones (24px). |
+| Footer | Phone + email were touching the screen edge → 15px font with tighter padding; fits one line on 390px screens. |
+
+Total mobile page height went from ~8,650px to ~6,700px with no content removed.

@@ -59,3 +59,16 @@ The design shows these four panels as clean imagery with no text. Removed:
   shows the desert/trailer scene as a plain image. Kept as video.
 - The design PDF spells the nav items "Deepla SO5 / SO7 / G318" — treated as a typo in the
   design; the build keeps "Deepal S05 / S07 / G318".
+
+## 6. Video replacement (performance section)
+
+The second panel's background video was replaced with the new Wadi Rum footage
+(client-supplied, 2026-07-23).
+
+- `Videos/G318.mp4` — web-encoded version of the new video: 1080p, 25 fps, H.264,
+  muted (the section plays muted anyway), ~16 MB (source master was 185 MB / 40 Mbps).
+  **Deploy by replacing `/Assets/Deepal/Videos/G318/G318.mp4` on the server** — the page
+  markup already points there, so no code change is needed.
+- `Videos/G318-poster.jpg` — first-frame poster ("WADI RUM" title card). Optional: replace
+  `/Assets/Deepal/Images/G318/Lights.jpg` with it (or update the `poster` attribute) so the
+  pre-play frame matches the new footage instead of the old desert/trailer scene.

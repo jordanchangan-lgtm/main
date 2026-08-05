@@ -17,6 +17,8 @@ import CH_UNI_V from "./assets/changan-models/uni-v.jpg";
 import CH_CS75 from "./assets/changan-models/cs75plus.jpg";
 import CH_CS55 from "./assets/changan-models/cs55.jpg";
 import CH_ALSVIN from "./assets/changan-models/alsvin.jpg";
+import CH_EADO_DT from "./assets/changan-models/eado-dt.jpg";
+import CH_EADO_PLUS_EV from "./assets/changan-models/eado-plus-ev.jpg";
 // Deepal assets
 import DP_BRAND from "./assets/deepal-brand.jpg";
 import DP_S07 from "./assets/deepal-models/s07.jpg";
@@ -78,8 +80,8 @@ export const CHANGAN = {
     headline: "A Changan for every road.",
     items: [
       // NOTE: images are placeholders until the real Eado photos arrive.
-      { img: CH_UNI_V, title: "Eado DT", sub: "Compact Sedan", note: "Sharp, efficient and connected — the everyday Changan sedan.", pos: "center" },
-      { img: CH_ALSVIN, title: "Eado Plus EV", sub: "Electric Sedan", note: "Pure-electric range with the same confident Eado design.", pos: "center" },
+      { img: CH_EADO_DT, title: "Eado DT", sub: "Compact Sedan", note: "Sharp, efficient and connected — the everyday Changan sedan.", pos: "center" },
+      { img: CH_EADO_PLUS_EV, title: "Eado Plus EV", sub: "Electric Sedan", note: "Pure-electric range with the same confident Eado design.", pos: "center" },
     ],
   },
   location: {

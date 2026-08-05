@@ -1,5 +1,6 @@
 import React, { useSyncExternalStore } from 'react';
 import ReactDOM from 'react-dom/client';
+import './index.css';
 import App from './App.jsx';
 import BrandLanding from './brands/BrandLanding.jsx';
 import BrandIntro from './brands/BrandIntro.jsx';

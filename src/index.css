@@ -1,0 +1,21 @@
+/* global reset — kill the default body margin (white edges on mobile) and
+   contain any horizontal overflow so the layout is exactly viewport-wide.
+   This also makes position:fixed centering (Mallouk logo) line up with the
+   visual centre instead of a document that was wider than the screen. */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: #000000;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+#root {
+  width: 100%;
+  overflow-x: clip;
+}
+
+img, video, canvas { max-width: 100%; }

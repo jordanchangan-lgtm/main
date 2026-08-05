@@ -17,16 +17,15 @@ const HUB_BLACK = "#000000";
 const WORDS = ["future", "technology", "perfection"];
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
 const BRAND_LOGOS = { changan: CHANGAN_LOGO, deepal: DEEPAL_LOGO, nevo: NEVO_LOGO };
-// each brand's emblem is a different shape — size by height so they read evenly
-// (deepal = tall triangle, nevo = wider bracket, sized up so it reads as large)
-const LOGO_H = { changan: 1.0, deepal: 1.12, nevo: 0.98 };
 // left→right display order: Changan · Nevo · Deepal
 const HUB_ORDER = ["changan", "nevo", "deepal"];
 
 // Plain clickable brand emblem (white logo) — no glass panel; the logo is the link.
+// Every emblem is fit inside the SAME square box (object-fit: contain) so all three
+// read at exactly the same visual size regardless of the shape's aspect ratio.
 function BrandGlassPanel({ brand, isMobile }) {
   const [h, setH] = useState(false);
-  const base = isMobile ? 52 : 62;
+  const box = isMobile ? 80 : 100;
   return (
     <a
       href={`#/${brand.slug}`}
@@ -38,7 +37,7 @@ function BrandGlassPanel({ brand, isMobile }) {
         alignItems: "center",
         justifyContent: "center",
         textDecoration: "none",
-        padding: isMobile ? "10px 16px" : "14px 22px",
+        padding: isMobile ? "8px 14px" : "12px 20px",
         cursor: "pointer",
         transform: h ? "translateY(-3px) scale(1.08)" : "none",
         transition: `transform .45s ${SPRING}`,
@@ -49,8 +48,9 @@ function BrandGlassPanel({ brand, isMobile }) {
         src={BRAND_LOGOS[brand.slug]}
         alt={brand.name}
         style={{
-          height: Math.round(base * (LOGO_H[brand.slug] || 1)),
-          width: "auto",
+          height: box,
+          width: box,
+          objectFit: "contain",
           display: "block",
           opacity: h ? 1 : 0.82,
           filter: h ? "drop-shadow(0 4px 14px rgba(0,0,0,0.5))" : "none",
@@ -148,7 +148,7 @@ export default function Hub() {
           <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "#ffffff", marginBottom: 18, fontWeight: 600 }}>
             Changan Jordan
           </div>
-          <h1 style={{ margin: 0, fontWeight: 300, fontSize: "clamp(2.2rem, 7vw, 5rem)", lineHeight: 1.05, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#ffffff", display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "0.28em" }}>
+          <h1 style={{ margin: 0, fontWeight: 300, fontSize: isMobile ? "clamp(1.3rem, 5.4vw, 1.7rem)" : "clamp(2.2rem, 7vw, 5rem)", lineHeight: 1.05, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#ffffff", display: "flex", flexWrap: "nowrap", whiteSpace: "nowrap", justifyContent: "center", alignItems: "center", gap: "0.28em" }}>
             <span>dive into</span>
             <ContainerTextFlip
               words={WORDS}

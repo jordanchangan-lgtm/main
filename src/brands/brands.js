@@ -93,17 +93,17 @@ export const CHANGAN = {
 export const DEEPAL = {
   slug: "deepal",
   name: "Deepal",
-  heroShadow: "#0fa6b6",
+  heroShadow: "#1e63c8",
   heroWordColor: "#ffffff", // white
   // Deepal gallery — G318, S07, S05 (GCC).
   galleryImages: [DP_G318, DP_S07, DP_S07B, DP_S05],
   wordmark: { text: "deepal", transform: "uppercase" },
   theme: {
-    deep: "#04202a", accent: "#0a8a97", accentBright: "#18c8d6",
-    glow: "#8ef0f6", mist: "#bfe0e4", white: "#ffffff", ink: "#08222a",
-    muted: "#4a6870", paper: "#ffffff",
+    deep: "#000e2e", accent: "#00437C", accentBright: "#12A5F4",
+    glow: "#7ecbff", mist: "#c9d6e6", white: "#ffffff", ink: "#0a1420",
+    muted: "#5b6675", paper: "#ffffff",
   },
-  shaderColors: { base: [0.0, 0.09, 0.12], accent: [0.09, 0.78, 0.84], bright: [0.82, 0.98, 1.0] },
+  shaderColors: { base: [0.0, 0.055, 0.18], accent: [0.07, 0.647, 0.957], bright: [0.75, 0.92, 1.0] },
   hero: { pre: "drive electric with", mark: "deepal" },
   description: {
     eyebrow: "The Brand",
@@ -134,24 +134,24 @@ export const DEEPAL = {
     headline: "Discover Deepal in Jordan.",
     phone: "+962 6 000 0000", hours: "Sat–Thu · 9:00–19:00",
     showrooms: JORDAN_SHOWROOMS,
-    globe: { base: [0.82, 0.92, 0.93], marker: [0.02, 0.55, 0.6], glow: [0.85, 0.97, 0.98] },
+    globe: { base: [0.82, 0.88, 0.96], marker: [0.02, 0.42, 0.86], glow: [0.86, 0.92, 1.0] },
   },
 };
 
 export const NEVO = {
   slug: "nevo",
   name: "Nevo",
-  heroShadow: "#7a4fe0",
+  heroShadow: "#1e63c8",
   heroWordColor: "#ffffff", // white
   // Nevo gallery — all Q05 (GCC).
   galleryImages: [NV_Q05],
   wordmark: { text: "Nevo", transform: "uppercase" },
   theme: {
-    deep: "#140a2e", accent: "#5a2fb0", accentBright: "#a26bff",
-    glow: "#d3b8ff", mist: "#d6cdec", white: "#ffffff", ink: "#160c2e",
-    muted: "#5a5170", paper: "#ffffff",
+    deep: "#000e2e", accent: "#00437C", accentBright: "#12A5F4",
+    glow: "#7ecbff", mist: "#c9d6e6", white: "#ffffff", ink: "#0a1420",
+    muted: "#5b6675", paper: "#ffffff",
   },
-  shaderColors: { base: [0.06, 0.02, 0.16], accent: [0.55, 0.35, 1.0], bright: [0.92, 0.86, 1.0] },
+  shaderColors: { base: [0.0, 0.055, 0.18], accent: [0.07, 0.647, 0.957], bright: [0.75, 0.92, 1.0] },
   hero: { pre: "power new era with", mark: "Nevo" },
   description: {
     eyebrow: "The Brand",
@@ -182,7 +182,7 @@ export const NEVO = {
     headline: "Meet Nevo in Jordan.",
     phone: "+962 6 000 0000", hours: "Sat–Thu · 9:00–19:00",
     showrooms: JORDAN_SHOWROOMS,
-    globe: { base: [0.9, 0.88, 0.96], marker: [0.42, 0.22, 0.86], glow: [0.9, 0.86, 1.0] },
+    globe: { base: [0.82, 0.88, 0.96], marker: [0.02, 0.42, 0.86], glow: [0.86, 0.92, 1.0] },
   },
 };
 

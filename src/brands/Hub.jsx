@@ -18,8 +18,8 @@ const WORDS = ["future", "technology", "perfection"];
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
 const BRAND_LOGOS = { changan: CHANGAN_LOGO, deepal: DEEPAL_LOGO, nevo: NEVO_LOGO };
 // each brand's emblem is a different shape — size by height so they read evenly
-// (deepal = tall triangle, nevo = short bracket)
-const LOGO_H = { changan: 1.0, deepal: 1.12, nevo: 0.62 };
+// (deepal = tall triangle, nevo = wider bracket, sized up so it reads as large)
+const LOGO_H = { changan: 1.0, deepal: 1.12, nevo: 0.98 };
 // left→right display order: Changan · Nevo · Deepal
 const HUB_ORDER = ["changan", "nevo", "deepal"];
 
@@ -178,7 +178,7 @@ export default function Hub() {
             </h2>
           </div>
 
-          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 20 : "clamp(20px, 3vw, 44px)", alignItems: "center", justifyContent: "center", width: "100%" }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 40 : "clamp(40px, 6vw, 88px)", alignItems: "center", justifyContent: "center", width: "100%" }}>
             {brands.map((b, i) => (
               <motion.div
                 key={b.slug}

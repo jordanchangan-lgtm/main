@@ -172,6 +172,7 @@ export const NEVO = {
   modelsGallery: {
     eyebrow: "The Range",
     headline: "The new-energy line-up.",
+    comingSoon: true,
     items: [
       { img: NV_Q05, title: "Q05", sub: "Compact SUV", note: "High-riding, connected and easy to live with.", pos: "center" },
     ],

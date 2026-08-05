@@ -22,7 +22,7 @@ const ChevronR = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 6 15 12 9 18" /></svg>
 );
 
-export function FocusRail({ items, initialIndex = 0, loop = true, autoPlay = false, interval = 4000, accent = "#12A5F4" }) {
+export function FocusRail({ items, initialIndex = 0, loop = true, autoPlay = false, interval = 4000, accent = "#12A5F4", soon = false }) {
   const { isMobile } = useViewport();
   const [active, setActive] = React.useState(initialIndex);
   const [hovering, setHovering] = React.useState(false);
@@ -137,6 +137,15 @@ export function FocusRail({ items, initialIndex = 0, loop = true, autoPlay = fal
             );
           })}
         </motion.div>
+
+        {/* "Soon" — directly beneath the image card */}
+        {soon && (
+          <div style={{ textAlign: "center", marginTop: isMobile ? 12 : 18 }}>
+            <span style={{ fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700, textTransform: "uppercase", color: "#ffffff", opacity: 0.9, fontSize: isMobile ? "clamp(1.4rem, 6vw, 2.1rem)" : "clamp(1.6rem, 3vw, 2.4rem)", letterSpacing: "0.2em", textShadow: "0 2px 18px rgba(0,0,0,0.5)" }}>
+              Soon
+            </span>
+          </div>
+        )}
 
         {/* info + controls */}
         <div style={{ margin: "0 auto", marginTop: isMobile ? 22 : 34, width: "100%", maxWidth: 900, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "space-between", gap: 18 }}>

@@ -82,14 +82,7 @@ export default function BrandLanding({ brand }) {
               {brand.modelsGallery?.headline || "The line-up."}
             </h2>
           </div>
-          <FocusRail items={models} accent={t.accentBright} loop autoPlay interval={4200} />
-          {brand.modelsGallery?.comingSoon && (
-            <div style={{ textAlign: "center", marginTop: isMobile ? 10 : 18 }}>
-              <span style={{ fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700, textTransform: "uppercase", color: "#ffffff", opacity: 0.9, fontSize: isMobile ? "clamp(1.5rem, 7vw, 2.4rem)" : "clamp(1.9rem, 3.4vw, 3rem)", letterSpacing: "0.2em", textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}>
-                Soon
-              </span>
-            </div>
-          )}
+          <FocusRail items={models} accent={t.accentBright} loop autoPlay interval={4200} soon={brand.modelsGallery?.comingSoon} />
         </section>
 
         {/* 3 — location globe */}

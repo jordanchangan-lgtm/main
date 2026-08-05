@@ -131,7 +131,7 @@ export function FocusRail({ items, initialIndex = 0, loop = true, autoPlay = fal
                   overflow: "hidden",
                 }}
               >
-                <img src={item.img} alt={item.title} draggable={false} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 18, pointerEvents: "none" }} />
+                <img src={item.img} alt={item.title} draggable={false} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 18, pointerEvents: "none", filter: soon ? "blur(9px)" : undefined }} />
                 <div style={{ position: "absolute", inset: 0, borderRadius: 18, background: "linear-gradient(180deg, rgba(255,255,255,0.1), transparent)", pointerEvents: "none" }} />
               </motion.div>
             );

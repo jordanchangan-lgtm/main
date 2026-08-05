@@ -52,7 +52,7 @@ export const CHANGAN = {
   galleryImages: [CH_UNI_K, CH_UNI_T, CH_UNI_V, CH_CS75, CH_CS55],
   wordmark: { text: "Changan", transform: "uppercase" },
   theme: {
-    deep: "#000e2e", accent: "#00437C", accentBright: "#12A5F4",
+    deep: "#000e2e", accent: "#0B4FC4", accentBright: "#0B4FC4",
     glow: "#7ecbff", mist: "#c9d6e6", white: "#ffffff", ink: "#0a1420",
     muted: "#5b6675", paper: "#ffffff",
   },
@@ -99,7 +99,7 @@ export const DEEPAL = {
   galleryImages: [DP_G318, DP_S07, DP_S07B, DP_S05],
   wordmark: { text: "deepal", transform: "uppercase" },
   theme: {
-    deep: "#000e2e", accent: "#00437C", accentBright: "#12A5F4",
+    deep: "#000e2e", accent: "#0B4FC4", accentBright: "#0B4FC4",
     glow: "#7ecbff", mist: "#c9d6e6", white: "#ffffff", ink: "#0a1420",
     muted: "#5b6675", paper: "#ffffff",
   },
@@ -147,7 +147,7 @@ export const NEVO = {
   galleryImages: [NV_Q05],
   wordmark: { text: "Nevo", transform: "uppercase" },
   theme: {
-    deep: "#000e2e", accent: "#00437C", accentBright: "#12A5F4",
+    deep: "#000e2e", accent: "#0B4FC4", accentBright: "#0B4FC4",
     glow: "#7ecbff", mist: "#c9d6e6", white: "#ffffff", ink: "#0a1420",
     muted: "#5b6675", paper: "#ffffff",
   },

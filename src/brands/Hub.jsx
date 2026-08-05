@@ -148,7 +148,7 @@ export default function Hub() {
           <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "#ffffff", marginBottom: 18, fontWeight: 600 }}>
             Changan Jordan
           </div>
-          <h1 style={{ margin: 0, fontWeight: 300, fontSize: isMobile ? "clamp(1.3rem, 5.4vw, 1.7rem)" : "clamp(2.2rem, 7vw, 5rem)", lineHeight: 1.05, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#ffffff", display: "flex", flexWrap: "nowrap", whiteSpace: "nowrap", justifyContent: "center", alignItems: "center", gap: "0.28em" }}>
+          <h1 style={{ margin: 0, fontWeight: 300, fontSize: isMobile ? "clamp(1.5rem, 6vw, 1.85rem)" : "clamp(2.6rem, 8vw, 5.8rem)", lineHeight: 1.05, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#ffffff", display: "flex", flexWrap: "nowrap", whiteSpace: "nowrap", justifyContent: "center", alignItems: "center", gap: "0.28em" }}>
             <span>dive into</span>
             <ContainerTextFlip
               words={WORDS}

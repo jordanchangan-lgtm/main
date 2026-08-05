@@ -124,7 +124,7 @@ export function BrandLocation({ brand }) {
                 padding: "15px 30px",
                 borderRadius: 999,
                 background: t.accentBright,
-                color: "#ffffff",
+                color: "#14181d",
                 fontWeight: 700,
                 fontSize: 14,
                 letterSpacing: "0.06em",

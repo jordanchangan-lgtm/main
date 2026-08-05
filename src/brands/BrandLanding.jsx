@@ -82,14 +82,13 @@ export default function BrandLanding({ brand }) {
               {brand.modelsGallery?.headline || "The line-up."}
             </h2>
           </div>
-          {brand.modelsGallery?.comingSoon ? (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? "9vh 6vw" : "12vh 6vw" }}>
-              <div style={{ fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700, textTransform: "uppercase", color: "#ffffff", opacity: 0.92, fontSize: isMobile ? "clamp(3rem, 22vw, 6rem)" : "clamp(5rem, 14vw, 12rem)", letterSpacing: "0.12em", lineHeight: 1, textShadow: "0 2px 30px rgba(0,0,0,0.5)" }}>
+          <FocusRail items={models} accent={t.accentBright} loop autoPlay interval={4200} />
+          {brand.modelsGallery?.comingSoon && (
+            <div style={{ textAlign: "center", marginTop: isMobile ? 10 : 18 }}>
+              <span style={{ fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700, textTransform: "uppercase", color: "#ffffff", opacity: 0.9, fontSize: isMobile ? "clamp(1.5rem, 7vw, 2.4rem)" : "clamp(1.9rem, 3.4vw, 3rem)", letterSpacing: "0.2em", textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}>
                 Soon
-              </div>
+              </span>
             </div>
-          ) : (
-            <FocusRail items={models} accent={t.accentBright} loop autoPlay interval={4200} />
           )}
         </section>
 

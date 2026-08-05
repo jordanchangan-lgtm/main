@@ -23,14 +23,14 @@ export function BrandLocation({ brand }) {
       style={{
         position: "relative",
         minHeight: "100vh",
-        background: "#26292f",
+        background: "transparent",
         display: "flex",
         alignItems: isMobile ? "flex-start" : "center",
         overflow: "hidden",
       }}
     >
-      {/* dark base + soft accent glow behind the globe */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "#26292f" }} />
+      {/* dark base (from the page gradient) + soft accent glow behind the globe */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "transparent" }} />
       <div className="loc-edge-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
       <div style={{ position: "absolute", inset: 0, zIndex: 0, background: `radial-gradient(60% 55% at 74% 46%, ${t.accentBright}22 0%, transparent 62%)` }} />
 

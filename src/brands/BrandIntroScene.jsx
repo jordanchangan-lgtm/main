@@ -70,9 +70,9 @@ export function BrandIntroScene({ brand }) {
   const showCue = !entered;
 
   return (
-    <section style={{ position: "relative", height: "100vh", overflow: "hidden", background: "#26292f" }}>
-      {/* grey backdrop with the moving dots */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "#26292f" }} />
+    <section style={{ position: "relative", height: "100vh", overflow: "hidden", background: "transparent" }}>
+      {/* dark navy backdrop (from the page gradient) with the moving dots */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "transparent" }} />
       <div className="intro-grey-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
       <style>{`
         .intro-grey-dots {

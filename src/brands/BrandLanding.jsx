@@ -20,7 +20,8 @@ import { useMobilePanelGate } from "./useMobilePanelGate";
    ====================================================================== */
 
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
-const GREY = "#26292f"; // shared page grey (matches the brand hero background)
+// dark navy → black, matching the hub's panel-2 background (applies on desktop + mobile)
+const PAGE_BG = "linear-gradient(180deg, #000e2e 0%, #000a1e 40%, #00060f 72%, #000000 100%)";
 
 // Plain clickable CTA — no glass. The words are the link. href is a placeholder.
 function DiveButton({ brand, isMobile }) {
@@ -63,7 +64,7 @@ export default function BrandLanding({ brand }) {
   const models = brand.modelsGallery?.items || [];
   useMobilePanelGate();
   return (
-    <div style={{ background: GREY, position: "relative" }}>
+    <div style={{ background: PAGE_BG, position: "relative" }}>
       <GlassFilter />
       <BrandSwitcher current={brand.slug} />
 
@@ -72,7 +73,7 @@ export default function BrandLanding({ brand }) {
         <BrandIntroScene brand={brand} />
 
         {/* 2 — the model line-up as a 3D focus rail */}
-        <section id="brand-world" data-panel-gate style={{ position: "relative", background: GREY, padding: isMobile ? "10vh 0 4vh" : "12vh 0 6vh" }}>
+        <section id="brand-world" data-panel-gate style={{ position: "relative", background: "transparent", padding: isMobile ? "10vh 0 4vh" : "12vh 0 6vh" }}>
           <div style={{ textAlign: "center", marginBottom: isMobile ? 8 : 14, padding: "0 6vw", fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
             <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: t.accentBright, fontWeight: 600, marginBottom: 12 }}>
               {brand.modelsGallery?.eyebrow || "The Range"}
@@ -88,7 +89,7 @@ export default function BrandLanding({ brand }) {
         <BrandLocation brand={brand} />
 
         {/* 4 — big glass CTA */}
-        <section data-panel-gate style={{ position: "relative", background: GREY, padding: isMobile ? "14vh 6vw" : "16vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: 26, overflow: "hidden" }}>
+        <section data-panel-gate style={{ position: "relative", background: "transparent", padding: isMobile ? "14vh 6vw" : "16vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: 26, overflow: "hidden" }}>
           <div className="cta-dots" style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
           <motion.div
             initial={{ opacity: 0, y: 30 }}

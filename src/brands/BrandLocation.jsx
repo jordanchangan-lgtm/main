@@ -64,7 +64,7 @@ export function BrandLocation({ brand }) {
             preset="slide"
             style={{
               margin: 0,
-              fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+              fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif',
               fontWeight: 600,
               fontSize: "clamp(1.8rem, 3.8vw, 3.2rem)",
               lineHeight: 1.08,

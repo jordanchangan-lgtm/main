@@ -62,7 +62,7 @@ export function Brand3DCarousel({ brand, active }) {
         <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: t.accentBright, fontWeight: 600, marginBottom: 12 }}>
           {brand.description?.eyebrow}
         </div>
-        <h2 style={{ margin: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.5rem, 3.6vw, 2.6rem)", lineHeight: 1.1, letterSpacing: "-0.02em", textShadow: "0 2px 24px rgba(0,0,0,0.55)" }}>
+        <h2 style={{ margin: 0, fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.5rem, 3.6vw, 2.6rem)", lineHeight: 1.1, letterSpacing: "-0.02em", textShadow: "0 2px 24px rgba(0,0,0,0.55)" }}>
           {brand.description?.headline}
         </h2>
         {!isMobile && brand.description?.body && (

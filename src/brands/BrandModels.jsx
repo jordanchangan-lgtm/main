@@ -46,7 +46,7 @@ export function BrandModels({ brand }) {
           preset="slide"
           style={{
             margin: 0,
-            fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+            fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif',
             fontWeight: 600,
             fontSize: "clamp(1.7rem, 3.6vw, 3rem)",
             letterSpacing: "-0.015em",

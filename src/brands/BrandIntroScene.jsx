@@ -92,7 +92,7 @@ export function BrandIntroScene({ brand }) {
         style={{ position: "absolute", inset: 0, zIndex: 2, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", pointerEvents: "none", padding: "0 6vw" }}
       >
         <div style={{ color: "#ffffff", borderRadius: "50%", padding: "min(7vh, 60px) 6vw", background: "radial-gradient(60% 55% at 50% 50%, rgba(10,12,16,0.5) 0%, rgba(10,12,16,0.24) 45%, transparent 72%)" }}>
-          <div style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.4rem, 5.5vw, 4.5rem)", letterSpacing: "-0.01em" }}>
+          <div style={{ fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.4rem, 5.5vw, 4.5rem)", letterSpacing: "-0.01em" }}>
             <BlurTextEffect>{brand.hero.pre}</BlurTextEffect>
           </div>
           <div style={{ marginTop: "0.12em" }}>
@@ -100,7 +100,7 @@ export function BrandIntroScene({ brand }) {
             <BlurTextEffect
               delay={0.35}
               style={{
-                fontFamily: '"Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif',
+                fontFamily: '"AVATR", "Arial Black", sans-serif',
                 fontWeight: 900,
                 textTransform: brand.wordmark.transform,
                 letterSpacing: brand.wordmark.transform === "lowercase" ? "0.02em" : "0.12em",
@@ -124,7 +124,7 @@ export function BrandIntroScene({ brand }) {
             <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: t.accentBright, fontWeight: 600, marginBottom: 18 }}>
               <BlurTextEffect>{brand.description?.eyebrow || ""}</BlurTextEffect>
             </div>
-            <h2 style={{ margin: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.7rem, 4.2vw, 3.2rem)", lineHeight: 1.08, letterSpacing: "-0.02em" }}>
+            <h2 style={{ margin: 0, fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.7rem, 4.2vw, 3.2rem)", lineHeight: 1.08, letterSpacing: "-0.02em" }}>
               <BlurTextEffect delay={0.15}>{brand.description?.headline || ""}</BlurTextEffect>
             </h2>
             <p style={{ margin: "22px 0 0", fontSize: "clamp(0.95rem, 1.5vw, 1.15rem)", lineHeight: 1.7, fontWeight: 300, color: "rgba(255,255,255,0.85)" }}>

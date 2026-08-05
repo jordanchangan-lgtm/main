@@ -127,7 +127,6 @@ export const DEEPAL = {
       { img: DP_S07, title: "S07", sub: "Coupe SUV", note: "Panoramic cabin, long range, smart everything.", pos: "center" },
       { img: DP_S05, title: "S05", sub: "Compact SUV", note: "Agile, connected and made for the city.", pos: "center" },
       { img: DP_G318, title: "G318", sub: "Adventure SUV", note: "Boxy, capable and electric — off the map.", pos: "center" },
-      { img: DP_SL03, title: "SL03", sub: "Sedan", note: "The clean-sheet electric sedan.", pos: "center" },
     ],
   },
   location: {
@@ -172,10 +171,7 @@ export const NEVO = {
     eyebrow: "The Range",
     headline: "The new-energy line-up.",
     items: [
-      { img: NV_A07, title: "A07", sub: "Fastback Sedan", note: "Sleek, spacious and seriously efficient.", pos: "center" },
-      { img: NV_A05, title: "A05", sub: "Sedan", note: "The smart commuter — plug-in range for real life.", pos: "center" },
       { img: NV_Q05, title: "Q05", sub: "Compact SUV", note: "High-riding, connected and easy to live with.", pos: "center" },
-      { img: NV_A06, title: "A06", sub: "Sedan", note: "Aero-styled comfort with everyday range.", pos: "center" },
     ],
   },
   location: {

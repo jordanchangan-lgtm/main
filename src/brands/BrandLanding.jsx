@@ -40,7 +40,7 @@ function DiveButton({ brand, isMobile }) {
         textDecoration: "none",
         cursor: "pointer",
         color: "#ffffff",
-        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+        fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif',
         fontWeight: 300,
         fontSize: isMobile ? "clamp(1.35rem, 6.4vw, 1.9rem)" : "clamp(1.9rem, 3.2vw, 2.8rem)",
         letterSpacing: "-0.01em",
@@ -73,7 +73,7 @@ export default function BrandLanding({ brand }) {
 
         {/* 2 — the model line-up as a 3D focus rail */}
         <section id="brand-world" data-panel-gate style={{ position: "relative", background: GREY, padding: isMobile ? "10vh 0 4vh" : "12vh 0 6vh" }}>
-          <div style={{ textAlign: "center", marginBottom: isMobile ? 8 : 14, padding: "0 6vw", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+          <div style={{ textAlign: "center", marginBottom: isMobile ? 8 : 14, padding: "0 6vw", fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
             <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: t.accentBright, fontWeight: 600, marginBottom: 12 }}>
               {brand.modelsGallery?.eyebrow || "The Range"}
             </div>
@@ -97,7 +97,7 @@ export default function BrandLanding({ brand }) {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 26 }}
           >
-            <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", fontWeight: 600, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+            <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", fontWeight: 600, fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
               Ready for more?
             </div>
             <DiveButton brand={brand} isMobile={isMobile} />

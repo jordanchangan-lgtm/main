@@ -6,7 +6,7 @@ export function Wordmark({ text, color = "#ffffff", transform = "uppercase", sty
   return (
     <span
       style={{
-        fontFamily: '"Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif',
+        fontFamily: '"AVATR", "AVATR", "Arial Black", sans-serif',
         fontWeight: 900,
         textTransform: transform,
         letterSpacing: transform === "lowercase" ? "0.02em" : "0.12em",

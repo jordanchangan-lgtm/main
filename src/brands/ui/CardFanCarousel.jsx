@@ -253,7 +253,7 @@ export function CardFanCarousel({ cards, accent = "#12A5F4", cardW = 15, cardH =
                       {card.sub}
                     </div>
                   )}
-                  <div style={{ fontFamily: '"Arial Black", sans-serif', fontWeight: 900, fontSize: "1.15rem", lineHeight: 1 }}>{card.label}</div>
+                  <div style={{ fontFamily: '"AVATR", "Arial Black", sans-serif', fontWeight: 900, fontSize: "1.15rem", lineHeight: 1 }}>{card.label}</div>
                 </div>
               )}
             </div>

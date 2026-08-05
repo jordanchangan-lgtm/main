@@ -47,7 +47,7 @@ export function Brand3DGallery({ brand }) {
           <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "#ffffff", marginBottom: 18, fontWeight: 600 }}>
             {brand.description?.eyebrow}
           </div>
-          <h2 style={{ margin: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.9rem, 5vw, 4rem)", lineHeight: 1.08, letterSpacing: "-0.02em", color: "#ffffff", maxWidth: "16ch" }}>
+          <h2 style={{ margin: 0, fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300, fontSize: "clamp(1.9rem, 5vw, 4rem)", lineHeight: 1.08, letterSpacing: "-0.02em", color: "#ffffff", maxWidth: "16ch" }}>
             {brand.description?.headline}
           </h2>
           {brand.description?.body && (

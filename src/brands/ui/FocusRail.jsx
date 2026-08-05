@@ -152,7 +152,7 @@ export function FocusRail({ items, initialIndex = 0, loop = true, autoPlay = fal
                 {activeItem.sub && (
                   <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.18em", color: accent, marginBottom: 6 }}>{activeItem.sub}</div>
                 )}
-                <h3 style={{ margin: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700, fontSize: "clamp(1.5rem, 3vw, 2.2rem)", letterSpacing: "-0.02em", color: "#fff" }}>{activeItem.title}</h3>
+                <h3 style={{ margin: 0, fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700, fontSize: "clamp(1.5rem, 3vw, 2.2rem)", letterSpacing: "-0.02em", color: "#fff" }}>{activeItem.title}</h3>
                 {activeItem.note && (
                   <p style={{ margin: "8px 0 0", maxWidth: 430, fontSize: 14.5, lineHeight: 1.55, color: "rgba(255,255,255,0.6)", fontWeight: 300 }}>{activeItem.note}</p>
                 )}

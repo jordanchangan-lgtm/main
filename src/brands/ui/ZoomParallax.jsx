@@ -98,7 +98,7 @@ export function ZoomParallax({ images, overlay, heightVh = 340 }) {
                 <h2
                   style={{
                     margin: 0,
-                    fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                    fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif',
                     fontWeight: 600,
                     fontSize: "clamp(1.7rem, 4vw, 3.2rem)",
                     lineHeight: 1.08,

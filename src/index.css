@@ -1,8 +1,35 @@
+/* AVATR — site typeface. Weights map: normal → Regular, bold → Bold, thin → Light. */
+@font-face {
+  font-family: "AVATR";
+  src: url("./brands/assets/fonts/AVATRFont-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "AVATR";
+  src: url("./brands/assets/fonts/AVATRFont-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "AVATR";
+  src: url("./brands/assets/fonts/AVATRFont-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* global reset — kill the default body margin (white edges on mobile) and
    contain any horizontal overflow so the layout is exactly viewport-wide.
    This also makes position:fixed centering (Mallouk logo) line up with the
    visual centre instead of a document that was wider than the screen. */
 * { box-sizing: border-box; }
+
+html, body, #root, button, input, textarea, select {
+  font-family: "AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
 html, body {
   margin: 0;

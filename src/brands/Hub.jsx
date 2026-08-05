@@ -144,7 +144,7 @@ export default function Hub() {
         {/* blend the video hero into the deep-blue panel below — no hard seam */}
         <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "42vh", zIndex: 1, pointerEvents: "none", background: `linear-gradient(to bottom, rgba(0,14,46,0) 0%, ${HUB_DEEP} 88%)` }} />
 
-        <div style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 5vw", textAlign: "center", pointerEvents: "none", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+        <div style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 5vw", textAlign: "center", pointerEvents: "none", fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
           <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "#ffffff", marginBottom: 18, fontWeight: 600 }}>
             Changan Jordan
           </div>
@@ -158,7 +158,7 @@ export default function Hub() {
           </h1>
         </div>
 
-        <div style={{ position: "absolute", bottom: 30, left: "50%", transform: "translateX(-50%)", zIndex: 4, color: "rgba(255,255,255,0.65)", fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+        <div style={{ position: "absolute", bottom: 30, left: "50%", transform: "translateX(-50%)", zIndex: 4, color: "rgba(255,255,255,0.65)", fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
           Scroll
           <motion.span animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }} style={{ fontSize: 16, lineHeight: 1 }}>↓</motion.span>
         </div>
@@ -169,7 +169,7 @@ export default function Hub() {
         <div className="hub2-dots" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
 
         <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 1200, margin: "0 auto", padding: "14vh 6vw", display: "flex", flexDirection: "column", alignItems: "center", gap: isMobile ? 40 : 56 }}>
-          <div style={{ textAlign: "center", color: "#ffffff", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+          <div style={{ textAlign: "center", color: "#ffffff", fontFamily: '"AVATR", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
             <div style={{ fontSize: 12, letterSpacing: "0.4em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", fontWeight: 600, marginBottom: 14 }}>
               Choose your brand
             </div>

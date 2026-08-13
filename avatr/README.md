@@ -10,10 +10,10 @@ No framework, no build step — `index.html` + `styles.css` + `app.js`.
 
 | File | What it is |
 |---|---|
-| `background.jpg` | Full-bleed background photo (a dark gradient shows until you add it) |
-| `logo.png` | AVATR logo, white on transparent (an "AVATR" text wordmark shows until you add it) |
+| `icecream.jpg` | The AVATR ice cream cup photo, shown at the end of the form and voucher screens (the section hides itself until the file exists) |
 
-The three brand font files are already in `fonts/`.
+The three brand font files are already in `fonts/`, and the AVATR logo is
+built into the page as an inline SVG (emblem + wordmark in the brand font).
 
 ## Backend setup (Google Sheet + Apps Script) — ~3 minutes
 

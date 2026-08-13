@@ -6,14 +6,12 @@ voucher screen to show at the Crema Creme cart.
 
 No framework, no build step — `index.html` + `styles.css` + `app.js`.
 
-## Files you still need to drop in
+## Assets
 
-| File | What it is |
-|---|---|
-| `icecream.jpg` | The AVATR ice cream cup photo, shown at the end of the form and voucher screens (the section hides itself until the file exists) |
-
-The three brand font files are already in `fonts/`, and the AVATR logo is
-built into the page as an inline SVG (emblem + wordmark in the brand font).
+All assets are in place: the brand fonts in `fonts/`, the AVATR lockup as
+`logo.png` (recolored to ink for the white page), and the ice cream cup as
+`icecream.jpg` (cropped from the delivered poster — the poster's baked-in
+draw text is rendered by the page itself instead, properly localized).
 
 ## Backend setup (Google Sheet + Apps Script) — ~3 minutes
 

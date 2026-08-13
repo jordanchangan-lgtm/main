@@ -73,17 +73,8 @@ body {
 .topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: max(14px, env(safe-area-inset-top)) 22px 10px;
-}
-.brand { display: flex; align-items: center; gap: 12px; }
-.mark { height: 28px; width: auto; display: block; color: var(--ink); }
-.brand-word {
-  font-family: 'AVATR Font', sans-serif;
-  font-weight: 700;
-  letter-spacing: .42em;
-  margin-inline-end: -.42em;
-  font-size: 19px;
+  justify-content: flex-end;
+  padding: max(14px, env(safe-area-inset-top)) 22px 0;
 }
 .lang-toggle {
   min-width: 58px;
@@ -107,7 +98,13 @@ body {
 }
 
 /* ---------- hero ---------- */
-.hero { text-align: center; padding: 8vh 0 7vh; }
+.hero { text-align: center; padding: 4vh 0 7vh; }
+.hero-logo {
+  width: 108px;
+  height: auto;
+  display: block;
+  margin: 0 auto 22px;
+}
 .hero-eyebrow {
   font-weight: 300;
   color: var(--dim);

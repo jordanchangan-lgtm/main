@@ -33,6 +33,7 @@ const I18N = {
     tdWeek: 'Yes — this week', tdLater: 'Yes — later', tdNo: 'No',
     whatsappLabel: 'Send me AVATR offers on WhatsApp',
     submit: 'Get my ice cream 🍦',
+    finaleCaption: 'Free at the Crema Creme cart',
     sending: 'Sending…',
     netErr: 'Connection problem — your details are saved, nothing was lost.',
     retry: 'Try again',
@@ -60,6 +61,7 @@ const I18N = {
     tdWeek: 'نعم — هذا الأسبوع', tdLater: 'نعم — لاحقاً', tdNo: 'لا',
     whatsappLabel: 'أرسلوا لي عروض AVATR على واتساب',
     submit: 'أعطوني الآيس كريم 🍦',
+    finaleCaption: 'مجاناً عند عربة Crema Creme',
     sending: 'جارٍ الإرسال…',
     netErr: 'مشكلة في الاتصال — بياناتك محفوظة ولم تُفقد.',
     retry: 'حاول مجدداً',
@@ -314,6 +316,17 @@ $('redeemBtn').addEventListener('click', () => {
   localStorage.setItem(LS.LEAD, JSON.stringify(lead));
   markRedeemed();
 });
+
+/* ---------------- scroll reveal ---------------- */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
 
 /* ---------------- init ---------------- */
 applyLang();

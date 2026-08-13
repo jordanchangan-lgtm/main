@@ -1,4 +1,6 @@
-/* ================= AVATR 07 — The Walk, Amman ================= */
+/* ================= AVATR 07 — The Walk, Amman =================
+   Clean light treatment: white ground, no panels, hairline fields,
+   content reveals on scroll. Latin/digits: AVATR Font. Arabic: Almarai. */
 
 @font-face {
   font-family: 'AVATR Font';
@@ -23,44 +25,48 @@
 }
 
 :root {
-  --accent: #C8A968;
-  --bg: #0a0a0c;
-  --card: rgba(20, 20, 24, 0.72);
-  --line: rgba(255, 255, 255, 0.16);
-  --text: #ffffff;
-  --dim: rgba(255, 255, 255, 0.62);
-  --err: #ff6b6b;
-  --ok: #4cd98a;
+  --bg: #ffffff;
+  --ink: #16130e;            /* near-black, warmed toward the gold */
+  --dim: #7a7266;            /* warm grey, same bias */
+  --accent: #C8A968;         /* champagne gold — surfaces & borders */
+  --accent-ink: #9a7d40;     /* darker gold for text on white */
+  --hairline: #e6e0d4;
+  --err: #b3402f;
+  --ok: #2fa96b;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+/* the voucher screen sets display:flex, which would beat the hidden attribute */
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   min-height: 100dvh;
   background: var(--bg);
-  color: var(--text);
-  /* AVATR Font has no Arabic glyphs — Arabic falls back to Noto Kufi Arabic,
+  color: var(--ink);
+  /* AVATR Font has no Arabic glyphs — Arabic falls back to Almarai,
      Latin letters and digits always render in AVATR Font */
-  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  font-family: 'AVATR Font', 'Almarai', sans-serif;
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.5;
   overflow-x: hidden;
 }
 
 /* Force AVATR Font on pure Latin/number runs regardless of surrounding text */
 .num { font-family: 'AVATR Font', sans-serif; }
 
-/* ---------- full-bleed background + dark overlay ---------- */
-.bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(180deg, rgba(6,6,8,.82) 0%, rgba(6,6,8,.66) 40%, rgba(6,6,8,.88) 100%),
-    url('background.jpg') center / cover no-repeat,
-    radial-gradient(120% 90% at 50% 0%, #1c1c22 0%, #0a0a0c 70%); /* fallback if jpg missing */
+/* ---------- scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
 }
 
 /* ---------- top bar ---------- */
@@ -68,7 +74,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: max(10px, env(safe-area-inset-top)) 18px 6px;
+  padding: max(14px, env(safe-area-inset-top)) 22px 10px;
 }
 .brand { display: flex; align-items: center; gap: 10px; }
 .logo { height: 30px; width: auto; display: block; }
@@ -85,94 +91,99 @@ body {
   min-height: 40px;
   padding: 6px 14px;
   background: transparent;
-  border: 1px solid var(--line);
+  border: 1px solid var(--hairline);
   border-radius: 999px;
-  color: var(--text);
-  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  color: var(--ink);
+  font-family: 'AVATR Font', 'Almarai', sans-serif;
   font-size: 15px;
   cursor: pointer;
 }
-.lang-toggle:active { border-color: var(--accent); color: var(--accent); }
+.lang-toggle:active { border-color: var(--accent); color: var(--accent-ink); }
 
 /* ---------- layout ---------- */
-.screen {
-  max-width: 460px;
+#formScreen, .voucher-screen {
+  max-width: 440px;
   margin: 0 auto;
-  padding: 4px 18px calc(18px + env(safe-area-inset-bottom));
+  padding: 8px 26px calc(40px + env(safe-area-inset-bottom));
 }
 
-.hero { text-align: center; margin-bottom: 12px; }
+/* ---------- hero ---------- */
+.hero { text-align: center; padding: 8vh 0 7vh; }
+.hero-eyebrow {
+  font-weight: 300;
+  color: var(--dim);
+  font-size: 13px;
+  letter-spacing: .08em;
+}
 .hero-title {
   font-family: 'AVATR Font', sans-serif;
   font-weight: 700;
-  font-size: clamp(26px, 8vw, 34px);
-  letter-spacing: .14em;
-  margin-inline-end: -.14em;
+  font-size: clamp(34px, 11vw, 46px);
+  letter-spacing: .12em;
+  margin-inline-end: -.12em;
+  line-height: 1.15;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  direction: ltr;
 }
-.hero-title .reev { color: var(--accent); }
-.hero-sub { font-weight: 300; color: var(--dim); font-size: 13.5px; margin-top: 2px; }
-.hero-hook { color: var(--accent); font-size: 15px; margin-top: 6px; font-weight: 400; }
+.hero-title .reev { color: var(--accent); font-weight: 300; letter-spacing: .3em; margin-right: -.3em; font-size: .62em; }
+.hero-hook { color: var(--accent-ink); font-size: 16px; margin-top: 18px; }
 
-/* ---------- form ---------- */
-#leadForm {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 16px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.field { margin-bottom: 12px; }
+/* ---------- form (no panels: hairline underlines on white) ---------- */
+.field { margin-bottom: 34px; }
 
 label, .chip-label {
   display: block;
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--dim);
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-weight: 300;
+  letter-spacing: .04em;
 }
 
 input[type="text"],
 input[type="tel"] {
   width: 100%;
-  min-height: 48px;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  color: var(--text);
-  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
-  font-size: 16px; /* prevents iOS zoom */
+  min-height: 46px;
+  padding: 6px 2px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--hairline);
+  border-radius: 0;
+  color: var(--ink);
+  font-family: 'AVATR Font', 'Almarai', sans-serif;
+  font-size: 17px; /* prevents iOS zoom */
+  transition: border-color .25s;
 }
-input::placeholder { color: rgba(255,255,255,.3); font-family: 'AVATR Font', sans-serif; }
-input:focus { outline: none; border-color: var(--accent); }
-input.invalid { border-color: var(--err); }
+input::placeholder { color: #c9c2b4; font-family: 'AVATR Font', sans-serif; }
+input:focus { outline: none; border-bottom-color: var(--accent); }
+input.invalid { border-bottom-color: var(--err); }
 
 /* phone digits are always Latin */
 #mobile { direction: ltr; text-align: start; font-family: 'AVATR Font', sans-serif; }
 [dir="rtl"] #mobile { text-align: right; }
 
-.err { color: var(--err); font-size: 12.5px; margin-top: 4px; }
+.err { color: var(--err); font-size: 13px; margin-top: 7px; }
 
 /* ---------- chips ---------- */
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
 .chip {
   min-height: 44px;
-  padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--line);
+  padding: 9px 18px;
+  background: transparent;
+  border: 1px solid var(--hairline);
   border-radius: 999px;
-  color: var(--text);
-  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  color: var(--ink);
+  font-family: 'AVATR Font', 'Almarai', sans-serif;
   font-size: 14px;
   cursor: pointer;
-  transition: border-color .15s, background .15s, color .15s;
+  transition: border-color .2s, color .2s, background .2s;
 }
 .chip[aria-pressed="true"] {
-  background: rgba(200, 169, 104, 0.16);
   border-color: var(--accent);
-  color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -180,43 +191,44 @@ input.invalid { border-color: var(--err); }
 .optin {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   min-height: 44px;
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--dim);
   cursor: pointer;
-  margin: 2px 0 12px;
+  margin-bottom: 30px;
 }
 .optin input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .optin .box {
   flex: 0 0 auto;
   width: 22px;
   height: 22px;
-  border: 1.5px solid var(--line);
+  border: 1.5px solid var(--hairline);
   border-radius: 6px;
   position: relative;
-  transition: border-color .15s, background .15s;
+  transition: border-color .2s, background .2s;
 }
 .optin input:checked + .box { background: var(--accent); border-color: var(--accent); }
 .optin input:checked + .box::after {
   content: "";
   position: absolute;
   inset: 4px 7px 7px 4px;
-  border: solid #0a0a0c;
+  border: solid #ffffff;
   border-width: 0 0 2.5px 2.5px;
   transform: rotate(-45deg);
 }
-.optin input:checked ~ span:last-child { color: var(--text); }
+.optin input:checked ~ span:last-child { color: var(--ink); }
+.optin input:focus-visible + .box { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---------- submit ---------- */
 .cta {
   width: 100%;
-  min-height: 54px;
+  min-height: 56px;
   border: none;
-  border-radius: 14px;
-  background: var(--accent);
-  color: #17130a;
-  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #ffffff;
+  font-family: 'AVATR Font', 'Almarai', sans-serif;
   font-weight: 700;
   font-size: 17px;
   cursor: pointer;
@@ -224,15 +236,16 @@ input.invalid { border-color: var(--err); }
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: opacity .15s;
+  transition: opacity .2s, background .2s;
 }
-.cta:disabled { opacity: .55; cursor: default; }
+.cta:active { background: #000000; }
+.cta:disabled { opacity: .5; cursor: default; }
 
 .spinner {
   width: 18px;
   height: 18px;
-  border: 2.5px solid rgba(23, 19, 10, 0.3);
-  border-top-color: #17130a;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
   border-radius: 50%;
   animation: spin .7s linear infinite;
 }
@@ -240,24 +253,39 @@ input.invalid { border-color: var(--err); }
 
 /* ---------- retry ---------- */
 .retry-box {
-  margin-top: 12px;
-  padding: 12px;
-  border: 1px solid var(--err);
-  border-radius: 12px;
+  margin-top: 18px;
   text-align: center;
   font-size: 14px;
+  color: var(--err);
 }
 .retry-btn {
-  margin-top: 8px;
+  margin-top: 10px;
   min-height: 44px;
-  padding: 8px 26px;
+  padding: 8px 28px;
   background: transparent;
-  border: 1px solid var(--text);
+  border: 1px solid var(--ink);
   border-radius: 999px;
-  color: var(--text);
-  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  color: var(--ink);
+  font-family: 'AVATR Font', 'Almarai', sans-serif;
   font-size: 15px;
   cursor: pointer;
+}
+
+/* ---------- ice cream finale ---------- */
+.finale {
+  text-align: center;
+  padding: 8vh 0 2vh;
+}
+.finale-img {
+  width: min(78%, 320px);
+  height: auto;
+}
+.finale figcaption {
+  color: var(--dim);
+  font-weight: 300;
+  font-size: 13.5px;
+  margin-top: 6px;
+  letter-spacing: .06em;
 }
 
 /* ================= voucher screen ================= */
@@ -265,29 +293,22 @@ input.invalid { border-color: var(--err); }
   min-height: calc(100dvh - 70px);
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 6px;
+  text-align: center;
   animation: fadeUp .5s ease both;
 }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: none; }
 }
-
-.voucher-card {
-  position: relative;
-  background: var(--card);
-  border: 1px solid var(--accent);
-  border-radius: 22px;
-  padding: 26px 20px 20px;
-  text-align: center;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  overflow: hidden;
+@media (prefers-reduced-motion: reduce) {
+  .voucher-screen { animation: none; }
 }
 
 /* animated checkmark */
-.check { width: 74px; height: 74px; margin-bottom: 8px; }
+.check { width: 72px; height: 72px; }
 .check-circle {
   stroke: var(--ok);
   stroke-width: 2.5;
@@ -306,14 +327,14 @@ input.invalid { border-color: var(--err); }
 }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 
-.voucher-title { font-weight: 700; font-size: 24px; }
-.voucher-hint { color: var(--dim); font-size: 14px; margin-top: 4px; }
+.voucher-title { font-weight: 700; font-size: 26px; margin-top: 10px; }
+.voucher-hint { color: var(--dim); font-size: 14.5px; font-weight: 300; }
+
+.voucher-card { position: relative; width: 100%; margin-top: 20px; }
 
 .code-block {
-  margin: 18px auto 14px;
-  padding: 14px 10px;
-  border: 1.5px dashed var(--accent);
-  border-radius: 16px;
+  padding: 20px 10px;
+  border-block: 1.5px dashed var(--accent); /* ticket edges, not a panel */
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -322,67 +343,62 @@ input.invalid { border-color: var(--err); }
 .code-label { font-size: 11px; letter-spacing: .5em; margin-right: -.5em; color: var(--dim); }
 .code {
   font-weight: 700;
-  font-size: clamp(52px, 19vw, 74px);
+  font-size: clamp(56px, 20vw, 80px);
   letter-spacing: .22em;
   margin-right: -.22em;
-  color: var(--accent);
+  color: var(--accent-ink);
   line-height: 1.1;
 }
 .clock { font-weight: 300; font-size: 15px; color: var(--dim); font-variant-numeric: tabular-nums; }
 
 .redeem-btn {
   width: 100%;
+  margin-top: 16px;
   min-height: 50px;
   background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
   color: var(--dim);
-  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  font-family: 'AVATR Font', 'Almarai', sans-serif;
   font-size: 14.5px;
   cursor: pointer;
 }
 .redeem-btn.confirm { border-color: var(--err); color: var(--err); font-weight: 700; }
 
 /* redeemed state */
-.voucher-card.redeemed { filter: grayscale(1); opacity: .55; border-color: var(--line); }
-.voucher-card.redeemed .check-circle,
-.voucher-card.redeemed .check-mark { animation: none; stroke-dashoffset: 0; stroke: var(--dim); }
+.voucher-card.redeemed { filter: grayscale(1); opacity: .45; }
 .redeemed-stamp {
   position: absolute;
-  top: 50%;
+  top: 42%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-14deg);
-  border: 3px solid var(--text);
+  border: 3px solid var(--ink);
   border-radius: 10px;
   padding: 6px 18px;
   font-weight: 700;
   font-size: 26px;
-  letter-spacing: .1em;
+  letter-spacing: .08em;
   white-space: nowrap;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.75);
   z-index: 2;
 }
 .voucher-card.redeemed .redeem-btn { display: none; }
 
-.draw { text-align: center; font-size: 14px; color: var(--dim); padding: 0 8px; }
+.draw { font-size: 14px; color: var(--dim); margin-top: 26px; padding: 0 8px; }
 .ig {
   display: inline-block;
   direction: ltr;
   unicode-bidi: isolate;
-  margin-top: 8px;
+  margin-top: 10px;
   min-height: 44px;
   line-height: 44px;
-  padding: 0 18px;
+  padding: 0 20px;
   border: 1px solid var(--accent);
   border-radius: 999px;
-  color: var(--accent);
+  color: var(--accent-ink);
   text-decoration: none;
   font-size: 15px;
 }
 
-/* short phones: tighten */
-@media (max-height: 700px) {
-  .hero { margin-bottom: 8px; }
-  .hero-hook { margin-top: 2px; }
-  .field { margin-bottom: 9px; }
-  #leadForm { padding: 13px; }
-}
+.voucher-finale { padding: 4vh 0 0; }

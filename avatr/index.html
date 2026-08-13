@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0c">
+  <title>AVATR 07 — The Walk, Amman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="logo.png" alt="AVATR" class="logo" onerror="this.remove()">
+      <span class="brand-word">AVATR</span>
+    </div>
+    <button type="button" id="langToggle" class="lang-toggle" aria-label="Switch language">EN</button>
+  </header>
+
+  <!-- ============ FORM SCREEN ============ -->
+  <main id="formScreen" class="screen">
+    <section class="hero">
+      <h1 class="hero-title"><span class="num">AVATR 07</span> <span class="reev num">REEV</span></h1>
+      <p class="hero-sub" data-i18n="heroSub"></p>
+      <p class="hero-hook" data-i18n="heroHook"></p>
+    </section>
+
+    <form id="leadForm" novalidate>
+      <div class="field">
+        <label for="name" data-i18n="nameLabel"></label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+        <p class="err" id="nameErr" data-i18n="nameErr" hidden></p>
+      </div>
+
+      <div class="field">
+        <label for="mobile" data-i18n="mobileLabel"></label>
+        <input id="mobile" name="mobile" type="tel" inputmode="numeric" autocomplete="tel"
+               placeholder="07XXXXXXXX" maxlength="17" required>
+        <p class="err" id="mobileErr" data-i18n="mobileErr" hidden></p>
+        <p class="err" id="dupErr" data-i18n="dupErr" hidden></p>
+      </div>
+
+      <div class="field">
+        <label for="car" data-i18n="carLabel"></label>
+        <input id="car" name="car" type="text" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <span class="chip-label" data-i18n="timelineLabel"></span>
+        <div class="chips" id="timelineChips" role="group">
+          <button type="button" class="chip num" data-value="0-3 months"   data-i18n="t03"></button>
+          <button type="button" class="chip num" data-value="3-6 months"   data-i18n="t36"></button>
+          <button type="button" class="chip num" data-value="6-12 months"  data-i18n="t612"></button>
+          <button type="button" class="chip"     data-value="Just looking" data-i18n="tLook"></button>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="chip-label" data-i18n="testDriveLabel"></span>
+        <div class="chips" id="testDriveChips" role="group">
+          <button type="button" class="chip" data-value="Yes - this week" data-i18n="tdWeek"></button>
+          <button type="button" class="chip" data-value="Yes - later"     data-i18n="tdLater"></button>
+          <button type="button" class="chip" data-value="No"              data-i18n="tdNo"></button>
+        </div>
+      </div>
+
+      <label class="optin">
+        <input type="checkbox" id="whatsapp">
+        <span class="box" aria-hidden="true"></span>
+        <span data-i18n="whatsappLabel"></span>
+      </label>
+
+      <button type="submit" id="submitBtn" class="cta">
+        <span class="cta-label" data-i18n="submit"></span>
+        <span class="spinner" hidden aria-hidden="true"></span>
+      </button>
+
+      <div class="retry-box" id="retryBox" hidden>
+        <p data-i18n="netErr"></p>
+        <button type="button" id="retryBtn" class="retry-btn" data-i18n="retry"></button>
+      </div>
+    </form>
+  </main>
+
+  <!-- ============ VOUCHER SCREEN ============ -->
+  <section id="voucherScreen" class="screen voucher-screen" hidden>
+    <div class="voucher-card" id="voucherCard">
+      <svg class="check" viewBox="0 0 52 52" aria-hidden="true">
+        <circle class="check-circle" cx="26" cy="26" r="24" fill="none"/>
+        <path class="check-mark" fill="none" d="M14 27l8 8 16-17"/>
+      </svg>
+      <h2 class="voucher-title" data-i18n="enjoy"></h2>
+      <p class="voucher-hint" data-i18n="showAtCart"></p>
+
+      <div class="code-block">
+        <span class="code-label num">VOUCHER</span>
+        <span class="code num" id="voucherCode">----</span>
+        <span class="clock num" id="voucherClock"></span>
+      </div>
+
+      <div class="redeemed-stamp num" id="redeemedStamp" hidden>
+        <span data-i18n="redeemedStamp"></span>
+      </div>
+
+      <button type="button" id="redeemBtn" class="redeem-btn">
+        <span data-i18n="redeemBtn"></span>
+      </button>
+    </div>
+
+    <div class="draw">
+      <p data-i18n="draw"></p>
+      <a id="igLink" class="ig num" target="_blank" rel="noopener"></a>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

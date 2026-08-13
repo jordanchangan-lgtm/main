@@ -1,0 +1,388 @@
+/* ================= AVATR 07 — The Walk, Amman ================= */
+
+@font-face {
+  font-family: 'AVATR Font';
+  src: url('fonts/AVATRFont-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'AVATR Font';
+  src: url('fonts/AVATRFont-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'AVATR Font';
+  src: url('fonts/AVATRFont-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --accent: #C8A968;
+  --bg: #0a0a0c;
+  --card: rgba(20, 20, 24, 0.72);
+  --line: rgba(255, 255, 255, 0.16);
+  --text: #ffffff;
+  --dim: rgba(255, 255, 255, 0.62);
+  --err: #ff6b6b;
+  --ok: #4cd98a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  /* AVATR Font has no Arabic glyphs — Arabic falls back to Noto Kufi Arabic,
+     Latin letters and digits always render in AVATR Font */
+  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  font-weight: 400;
+  line-height: 1.45;
+  overflow-x: hidden;
+}
+
+/* Force AVATR Font on pure Latin/number runs regardless of surrounding text */
+.num { font-family: 'AVATR Font', sans-serif; }
+
+/* ---------- full-bleed background + dark overlay ---------- */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(6,6,8,.82) 0%, rgba(6,6,8,.66) 40%, rgba(6,6,8,.88) 100%),
+    url('background.jpg') center / cover no-repeat,
+    radial-gradient(120% 90% at 50% 0%, #1c1c22 0%, #0a0a0c 70%); /* fallback if jpg missing */
+}
+
+/* ---------- top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(10px, env(safe-area-inset-top)) 18px 6px;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.logo { height: 30px; width: auto; display: block; }
+.logo + .brand-word { display: none; } /* text wordmark only if logo.png missing */
+.brand-word {
+  font-family: 'AVATR Font', sans-serif;
+  font-weight: 700;
+  letter-spacing: .42em;
+  margin-inline-end: -.42em;
+  font-size: 19px;
+}
+.lang-toggle {
+  min-width: 58px;
+  min-height: 40px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+}
+.lang-toggle:active { border-color: var(--accent); color: var(--accent); }
+
+/* ---------- layout ---------- */
+.screen {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 4px 18px calc(18px + env(safe-area-inset-bottom));
+}
+
+.hero { text-align: center; margin-bottom: 12px; }
+.hero-title {
+  font-family: 'AVATR Font', sans-serif;
+  font-weight: 700;
+  font-size: clamp(26px, 8vw, 34px);
+  letter-spacing: .14em;
+  margin-inline-end: -.14em;
+}
+.hero-title .reev { color: var(--accent); }
+.hero-sub { font-weight: 300; color: var(--dim); font-size: 13.5px; margin-top: 2px; }
+.hero-hook { color: var(--accent); font-size: 15px; margin-top: 6px; font-weight: 400; }
+
+/* ---------- form ---------- */
+#leadForm {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.field { margin-bottom: 12px; }
+
+label, .chip-label {
+  display: block;
+  font-size: 13.5px;
+  color: var(--dim);
+  margin-bottom: 5px;
+  font-weight: 300;
+}
+
+input[type="text"],
+input[type="tel"] {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  font-size: 16px; /* prevents iOS zoom */
+}
+input::placeholder { color: rgba(255,255,255,.3); font-family: 'AVATR Font', sans-serif; }
+input:focus { outline: none; border-color: var(--accent); }
+input.invalid { border-color: var(--err); }
+
+/* phone digits are always Latin */
+#mobile { direction: ltr; text-align: start; font-family: 'AVATR Font', sans-serif; }
+[dir="rtl"] #mobile { text-align: right; }
+
+.err { color: var(--err); font-size: 12.5px; margin-top: 4px; }
+
+/* ---------- chips ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  min-height: 44px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.chip[aria-pressed="true"] {
+  background: rgba(200, 169, 104, 0.16);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---------- whatsapp opt-in ---------- */
+.optin {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 14px;
+  color: var(--dim);
+  cursor: pointer;
+  margin: 2px 0 12px;
+}
+.optin input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.optin .box {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  position: relative;
+  transition: border-color .15s, background .15s;
+}
+.optin input:checked + .box { background: var(--accent); border-color: var(--accent); }
+.optin input:checked + .box::after {
+  content: "";
+  position: absolute;
+  inset: 4px 7px 7px 4px;
+  border: solid #0a0a0c;
+  border-width: 0 0 2.5px 2.5px;
+  transform: rotate(-45deg);
+}
+.optin input:checked ~ span:last-child { color: var(--text); }
+
+/* ---------- submit ---------- */
+.cta {
+  width: 100%;
+  min-height: 54px;
+  border: none;
+  border-radius: 14px;
+  background: var(--accent);
+  color: #17130a;
+  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: opacity .15s;
+}
+.cta:disabled { opacity: .55; cursor: default; }
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(23, 19, 10, 0.3);
+  border-top-color: #17130a;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- retry ---------- */
+.retry-box {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--err);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 14px;
+}
+.retry-btn {
+  margin-top: 8px;
+  min-height: 44px;
+  padding: 8px 26px;
+  background: transparent;
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  color: var(--text);
+  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* ================= voucher screen ================= */
+.voucher-screen {
+  min-height: calc(100dvh - 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  animation: fadeUp .5s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.voucher-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--accent);
+  border-radius: 22px;
+  padding: 26px 20px 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+/* animated checkmark */
+.check { width: 74px; height: 74px; margin-bottom: 8px; }
+.check-circle {
+  stroke: var(--ok);
+  stroke-width: 2.5;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  animation: draw .6s ease-out forwards;
+}
+.check-mark {
+  stroke: var(--ok);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: draw .35s ease-out .5s forwards;
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+.voucher-title { font-weight: 700; font-size: 24px; }
+.voucher-hint { color: var(--dim); font-size: 14px; margin-top: 4px; }
+
+.code-block {
+  margin: 18px auto 14px;
+  padding: 14px 10px;
+  border: 1.5px dashed var(--accent);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  direction: ltr;
+}
+.code-label { font-size: 11px; letter-spacing: .5em; margin-right: -.5em; color: var(--dim); }
+.code {
+  font-weight: 700;
+  font-size: clamp(52px, 19vw, 74px);
+  letter-spacing: .22em;
+  margin-right: -.22em;
+  color: var(--accent);
+  line-height: 1.1;
+}
+.clock { font-weight: 300; font-size: 15px; color: var(--dim); font-variant-numeric: tabular-nums; }
+
+.redeem-btn {
+  width: 100%;
+  min-height: 50px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--dim);
+  font-family: 'AVATR Font', 'Noto Kufi Arabic', sans-serif;
+  font-size: 14.5px;
+  cursor: pointer;
+}
+.redeem-btn.confirm { border-color: var(--err); color: var(--err); font-weight: 700; }
+
+/* redeemed state */
+.voucher-card.redeemed { filter: grayscale(1); opacity: .55; border-color: var(--line); }
+.voucher-card.redeemed .check-circle,
+.voucher-card.redeemed .check-mark { animation: none; stroke-dashoffset: 0; stroke: var(--dim); }
+.redeemed-stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-14deg);
+  border: 3px solid var(--text);
+  border-radius: 10px;
+  padding: 6px 18px;
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: .1em;
+  white-space: nowrap;
+  z-index: 2;
+}
+.voucher-card.redeemed .redeem-btn { display: none; }
+
+.draw { text-align: center; font-size: 14px; color: var(--dim); padding: 0 8px; }
+.ig {
+  display: inline-block;
+  direction: ltr;
+  unicode-bidi: isolate;
+  margin-top: 8px;
+  min-height: 44px;
+  line-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 15px;
+}
+
+/* short phones: tighten */
+@media (max-height: 700px) {
+  .hero { margin-bottom: 8px; }
+  .hero-hook { margin-top: 2px; }
+  .field { margin-bottom: 9px; }
+  #leadForm { padding: 13px; }
+}

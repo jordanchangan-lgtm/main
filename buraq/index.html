@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Buraq Al Omur — car trading, import and export out of the Zarqa Free Zone, Jordan. 70,000 m² of yard and warehousing, licensing, inspection and distribution across the Kingdom and the Arab world." />
+<meta name="description" content="Buraq Al Omur — car trading, import and export out of the Zarqa Free Zone, Jordan. 70,000 m² of yard and warehousing, licensing, inspection and distribution across the Middle East and beyond." />
 <!--CONTENT-START-->
 <title>Buraq Al Omur</title>
 <link rel="canonical" href="https://buraqalomur.com/" />
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://buraqalomur.com/" />
 <meta property="og:title" content="Buraq Al Omur — Car Trading Company" />
-<meta property="og:description" content="Vehicle import and export out of the Zarqa Free Zone, Jordan. 70,000 m² of yard and bonded warehousing, licensing, registration and technical inspection under one roof." />
+<meta property="og:description" content="Vehicle import and export out of the Zarqa Free Zone, Jordan — shipped and delivered across the Middle East and beyond. 70,000 m² of yard and bonded warehousing, licensing, registration and technical inspection under one roof." />
 <meta property="og:image" content="https://buraqalomur.com/assets/cars/s7-1.jpg" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:locale:alternate" content="ar_JO" />
@@ -20,7 +20,12 @@
 <link rel="icon" href="assets/logo-mark.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Almarai:wght@300;400;700;800&display=swap" />
+<!-- Loaded async: a render-blocking stylesheet also blocks the scripts after
+     it, so a slow or unreachable Google Fonts would stall the intro before it
+     starts. display=swap means the faces arrive without a second layout gate. -->
+<link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Almarai:wght@300;400;700;800&display=swap" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Almarai:wght@300;400;700;800&display=swap" /></noscript>
 <style>
 /* ============================================================
    BURAQ AL OMUR — base layout, palette, backgrounds
@@ -277,11 +282,10 @@ section{ position:relative; scroll-margin-top:84px; }
 
 .bg{ position:absolute; inset:0; z-index:-1; pointer-events:none; }
 
-/* 0. the yard film, graded down hard — the three words have to win */
+/* 0. the yard film, ungraded — the scrim alone carries the type */
 .hero-film{ overflow:hidden; background:var(--ink); }
 .hero-film video{
   width:100%; height:100%; object-fit:cover; display:block;
-  filter:saturate(.55) contrast(1.12) brightness(.46);
   transform:scale(1.06);
 }
 .hero-film::after{
@@ -348,7 +352,7 @@ section{ position:relative; scroll-margin-top:84px; }
 
 .hero h1{
   transform-origin:left top;
-  transition:transform 1.15s cubic-bezier(.2,.75,.2,1);
+  transition:transform .78s cubic-bezier(.2,.75,.2,1);
   font-size:clamp(2.5rem, 7.2vw, 6.4rem);
   font-variation-settings:"wdth" 112, "wght" 900;
   margin:0;
@@ -357,13 +361,13 @@ section{ position:relative; scroll-margin-top:84px; }
 .hero h1 .w{ display:block; overflow:hidden; padding-bottom:.1em; margin-bottom:-.1em; }
 .hero h1 .w > span{
   display:block; transform:translateY(112%);
-  transition:transform 1.05s cubic-bezier(.16,.84,.32,1);
+  transition:transform .72s cubic-bezier(.16,.84,.32,1);
 }
 body.words .hero h1 .w > span{ transform:none; }
 body:not(.s2) .hero h1{ transform:translateY(var(--lift, 0px)) scale(var(--zoom, 1)); }
-body.words .hero h1 .w:nth-child(1) > span{ transition-delay:.10s; }
-body.words .hero h1 .w:nth-child(2) > span{ transition-delay:.34s; }
-body.words .hero h1 .w:nth-child(3) > span{ transition-delay:.58s; }
+body.words .hero h1 .w:nth-child(1) > span{ transition-delay:.04s; }
+body.words .hero h1 .w:nth-child(2) > span{ transition-delay:.19s; }
+body.words .hero h1 .w:nth-child(3) > span{ transition-delay:.34s; }
 
 .hero h1 .cut{ position:relative; display:inline-block; color:var(--red); }
 .hero h1 .cut::after{
@@ -371,26 +375,27 @@ body.words .hero h1 .w:nth-child(3) > span{ transition-delay:.58s; }
   background:var(--red);
   clip-path:polygon(0 40%, 100% 0, 100% 58%, 0 100%);
   transform:scaleX(0); transform-origin:left;
-  transition:transform .9s var(--ease) 1.5s;
+  transition:transform .6s var(--ease) .85s;
 }
 body.words .hero h1 .cut::after{ transform:scaleX(1); }
 
 /* everything that waits for the second beat */
 .hero-rest{
   opacity:0; transform:translateY(20px); pointer-events:none;
-  transition:opacity 1s var(--ease), transform 1s var(--ease);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
 }
 body.s2 .hero-rest{ opacity:1; transform:none; pointer-events:auto; }
 body.s2 .hero-rest.d-a{ transition-delay:.06s } 
 body.s2 .hero-rest.d-b{ transition-delay:.14s }
 body.s2 .hero-rest.d-c{ transition-delay:.22s }
 body.s2 .hero-rest.d-d{ transition-delay:.30s }
+body.s3 .hero-nums{ transition-delay:0s }
 body.locked{ overflow:hidden; }
 
 /* the number strip waits for a beat of its own */
 .hero-nums{
   opacity:0; transform:translateY(26px); pointer-events:none;
-  transition:opacity .95s var(--ease), transform .95s var(--ease);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
 }
 body.s3 .hero-nums{ opacity:1; transform:none; pointer-events:auto; }
 
@@ -407,9 +412,18 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
   margin:clamp(20px,2.4vw,30px) 0 0; text-align:left;
   color:var(--t3); font-size:clamp(.95rem,.5vw + .8rem,1.1rem);
 }
+.hero-line{
+  margin:20px 0 0;
+  font-family:"Archivo", sans-serif;
+  font-variation-settings:"wdth" 100, "wght" 800;
+  text-transform:uppercase; letter-spacing:-.02em; line-height:1.05;
+  font-size:clamp(1.15rem,1.5vw + .7rem,1.9rem);
+  color:var(--t1);
+}
+.hero-line em{ font-style:normal; color:var(--red); }
 .hero-lede{
-  max-width:50ch; margin:18px 0 0;
-  color:var(--t2); font-size:clamp(1rem,1.05vw + .8rem,1.18rem);
+  max-width:52ch; margin:16px 0 0;
+  color:var(--t2); font-size:clamp(.98rem,.9vw + .78rem,1.12rem);
 }
 
 /* the numbers sit in their own column, unframed */
@@ -420,6 +434,15 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
 .hero-main{ min-width:0; }
 
 .hero-nums{ display:grid; gap:clamp(16px,2.2vw,28px); align-content:end; }
+/* type sits straight on moving footage now, so it gets its own separation
+   rather than the film being dimmed to make room for it */
+.hero h1, .hero-main .hero-line,
+.hero-main .hero-ar, .hero-main .hero-lede,
+.hero .stat .num, .hero .stat .lbl{
+  text-shadow:0 2px 18px rgba(6,6,9,.55), 0 1px 3px rgba(6,6,9,.4);
+}
+.hero .stat .lbl{ color:rgba(242,240,236,.74); }
+.hero .hero-ar{ color:rgba(242,240,236,.7); }
 @media (max-width:939px){ .hero-nums{ grid-template-columns:repeat(2,1fr); } }
 .stat .num{
   font-family:"Archivo", sans-serif;
@@ -719,7 +742,7 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
   will-change:transform;
 }
 .fb-media video{ display:none; }
-.fb-media img, .fb-media video{ filter:saturate(.78) contrast(1.07) brightness(.88); }
+
 .fb-media.has-video video{ display:block; }
 .fb-media.has-video img{ display:none; }
 .fb-media.empty img, .fb-media.empty video{ display:none; }
@@ -1192,14 +1215,16 @@ body.s2 .glassbar{ transform:translateX(-50%); }
           <span class="w"><span>Deliver.</span></span>
         </h1>
         <p class="hero-ar ar hero-rest d-a">شركة براق العمر لتجارة السيارات</p>
-        <p class="hero-lede hero-rest d-b">
-          Vehicles in and out of Jordan's Zarqa Free Zone — 70,000 m² of yard and
-          bonded warehousing, with licensing, registration and technical inspection
-          under one roof.
+        <p class="hero-line hero-rest d-b">Thousands leave the port. <em>One arrives.</em></p>
+        <p class="hero-lede hero-rest d-c">
+          Loaded at origin, shipped, cleared through Jordan's Zarqa Free Zone —
+          70,000 m² of yard and bonded warehousing, with licensing, registration
+          and technical inspection under one roof — and handed over across the
+          Middle East and beyond.
         </p>
       </div>
 
-      <div class="hero-nums">
+      <div class="hero-nums hero-rest d-d">
         <div class="stat">
           <div class="num" data-count="2022" data-plain="1">2022</div>
           <div class="mono lbl">Established</div>
@@ -1251,7 +1276,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
           with its own logistics offices, licensing and registration offices, and
           inspection and technical testing bays on site. A 2,500 m² showroom, backed by
           2,000 m² of dedicated showroom storage, is where vehicles are handed over —
-          and from there they move out to every part of the Kingdom and the Arab world.
+          and from there they go out across the Kingdom, the Middle East and beyond.
         </p>
         <p class="ar" style="margin-top:26px">
           تأسست الشركة عام 2022 ومركزها الرئيسي في المنطقة الحرة في الزرقاء، وهي شركة استيراد
@@ -1267,7 +1292,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
         <li><span class="mono k">Main branch</span><span class="v">Free Zone — Al Zarqa, Jordan</span></li>
         <li><span class="mono k">Business</span><span class="v">Vehicle import &amp; export</span></li>
         <li><span class="mono k">On site</span><span class="v">Logistics · Licensing · Registration · Inspection</span></li>
-        <li><span class="mono k">Distribution</span><span class="v">Jordan &amp; the Arab world</span></li>
+        <li><span class="mono k">Distribution</span><span class="v">Jordan · the Middle East · worldwide</span></li>
       </ul>
     </div>
   </div>
@@ -1368,17 +1393,17 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     <div class="fb-scrim"></div>
     <div class="fb-copy">
       <div class="wrap">
-        <p class="mono eyebrow" data-at="0.06">من الميناء إلى المملكة / From port to Kingdom</p>
+        <p class="mono eyebrow" data-at="0.06">على متن السفينة / Onto the ship</p>
         <h2 class="display">
-          <span class="ln"><b data-at="0.17">Thousands leave</b></span>
-          <span class="ln"><b data-at="0.28">the port.</b></span>
-          <span class="ln"><b data-at="0.42"><em>One arrives.</em></b></span>
+          <span class="ln"><b data-at="0.17">Loaded here.</b></span>
+          <span class="ln"><b data-at="0.28">Unloaded</b></span>
+          <span class="ln"><b data-at="0.42"><em>anywhere.</em></b></span>
         </h2>
         <p class="lede" data-at="0.56">
-          Loaded at origin, shipped, cleared through the Zarqa Free Zone — and handed
-          over across the Kingdom.
+          Ro-ro sailings out of the region's ports — cleared through the Zarqa Free
+          Zone and delivered wherever the buyer is.
         </p>
-        <p class="ar" data-at="0.68">من الميناء إلى المنطقة الحرة في الزرقاء، ثم إلى كافة أرجاء المملكة.</p>
+        <p class="ar" data-at="0.68">من المنطقة الحرة في الزرقاء إلى الشرق الأوسط والعالم.</p>
       </div>
     </div>
   </div>
@@ -1409,7 +1434,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
         <span class="idx">01</span>
         <h3>Import &amp; Export</h3>
         <p class="h-ar ar">استيراد وتصدير</p>
-        <p>Sourcing, shipping and customs handling for vehicles moving in and out of Jordan.</p>
+        <p>Sourcing, sea freight and customs handling for vehicles moving in and out of Jordan.</p>
         <span class="mono arw">→</span>
       </article>
       <article class="card glass rv d2">
@@ -1580,12 +1605,12 @@ body.s2 .glassbar{ transform:translateX(-50%); }
   <div class="rail"><span>05 — Distribution</span></div>
   <div class="wrap">
     <div class="head rv">
-      <h2 class="display">Out of the zone,<br /><em>across the region.</em></h2>
+      <h2 class="display">Out of the zone,<br /><em>out to the world.</em></h2>
       <div class="side">
         <span class="mono eyebrow kick">الانتشار / Reach</span>
         <p>
-          Vehicles leave the Zarqa yard for every governorate of the Kingdom — and onward
-          into the wider Arab market.
+          Vehicles leave the Zarqa yard for every governorate of the Kingdom, on into
+          Syria, Iraq, Egypt and the Gulf — and onward wherever a buyer is.
         </p>
       </div>
     </div>
@@ -1654,7 +1679,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
               <text class="cap" x="178" y="101" style="letter-spacing:.1em">Free Zone</text>
             </g>
           </svg>
-          <p class="mono legend">Plotted on true bearings from the yard.</p>
+          <p class="mono legend">Named markets plotted on true bearings from the yard — sailings reach further.</p>
         </div>
         </div>
       </div>
@@ -1674,7 +1699,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
           <div class="dest glass out" data-city="gulf"><b>The Gulf</b><span class="ar">الخليج</span></div>
         </div>
         <p class="mono" style="margin-top:22px;color:var(--t3)">
-          Every governorate of the Kingdom · onward to Syria, Iraq, Egypt and the Gulf.
+          Every governorate of the Kingdom · Syria · Iraq · Egypt · the Gulf · and beyond.
         </p>
       </div>
     </div>
@@ -1746,7 +1771,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
      2 · held again, then the next scroll brings in the numbers
      4 · the page scrolls normally                                       */
   var stage = 0;
-  var WORDS = 1750, HOLD_1 = 1800, HOLD_2 = 1300, SETTLE = 900, IDLE = 9000;
+  var WORDS = 1150, HOLD_1 = 550, HOLD_2 = 650, SETTLE = 450, IDLE = 5000;
   var h1 = document.querySelector(".hero h1");
   var idleTimer = null;
 
@@ -2167,7 +2192,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
   "logo": "https://buraqalomur.com/assets/logo-lockup.svg",
   "image": "https://buraqalomur.com/assets/cars/s7-1.jpg",
   "foundingDate": "2022",
-  "description": "Vehicle import and export out of the Zarqa Free Zone, Jordan, with 70,000 m² of yard and bonded warehousing, on-site licensing, registration and technical inspection, and a 2,500 m² showroom.",
+  "description": "Vehicle import and export out of the Zarqa Free Zone, Jordan, with 70,000 m² of yard and bonded warehousing, on-site licensing, registration and technical inspection, and a 2,500 m² showroom. Vehicles are shipped and delivered across the Middle East and beyond.",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Free Zone",
@@ -2180,7 +2205,13 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     "email": "info@buraqalomur.com",
     "availableLanguage": ["ar", "en"]
   },
-  "areaServed": { "@type": "Country", "name": "Jordan" },
+  "areaServed": [
+    { "@type": "Country", "name": "Jordan" },
+    { "@type": "Country", "name": "Syria" },
+    { "@type": "Country", "name": "Iraq" },
+    { "@type": "Country", "name": "Egypt" },
+    { "@type": "Place", "name": "The Gulf" }
+  ],
   "brand": [
     { "@type": "Brand", "name": "Changan" },
     { "@type": "Brand", "name": "Deepal" },

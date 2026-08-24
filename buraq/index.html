@@ -263,7 +263,12 @@ section{ position:relative; scroll-margin-top:84px; }
    ============================================================ */
 
 .hero{
-  position:relative; min-height:100svh;
+  position:relative;
+  /* svh is the SMALL viewport height — when a phone retracts its address bar
+     the viewport grows and the next section's off-white edge shows underneath.
+     lvh is the large one, so the hero always covers whatever is on screen. */
+  min-height:100svh;
+  min-height:100lvh;
   display:flex; flex-direction:column; justify-content:center;
   padding-top:118px; padding-bottom:clamp(74px,8vh,98px);
   overflow:hidden;
@@ -271,6 +276,20 @@ section{ position:relative; scroll-margin-top:84px; }
 }
 
 .bg{ position:absolute; inset:0; z-index:-1; pointer-events:none; }
+
+/* 0. the yard film, graded down hard — the three words have to win */
+.hero-film{ overflow:hidden; background:var(--ink); }
+.hero-film video{
+  width:100%; height:100%; object-fit:cover; display:block;
+  filter:saturate(.55) contrast(1.12) brightness(.46);
+  transform:scale(1.06);
+}
+.hero-film::after{
+  content:""; position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, rgba(8,8,11,.72), rgba(8,8,11,.30) 34%, rgba(8,8,11,.88)),
+    linear-gradient(90deg, rgba(8,8,11,.78), rgba(8,8,11,.34) 46%, rgba(8,8,11,.12));
+}
 
 /* 1. floodlight pools */
 .bg-glow{
@@ -687,7 +706,8 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
 }
 @media (max-width:900px){ .fullbleed{ height:260vh; } }
 .fb-stick{
-  position:sticky; top:0; height:100svh;
+  position:sticky; top:0;
+  height:100svh; height:100dvh;
   display:flex; align-items:flex-end;
   overflow:hidden; isolation:isolate;
 }
@@ -808,7 +828,8 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
 .fleet{ position:relative; height:500vh; background:#050507; }
 @media (max-width:900px){ .fleet{ height:360vh; } }
 .fleet-sticky{
-  position:sticky; top:0; height:100svh;
+  position:sticky; top:0;
+  height:100svh; height:100dvh;
   display:flex; align-items:center; justify-content:center; overflow:hidden;
   background:#050507;
 }
@@ -908,24 +929,30 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
   display:flex; align-items:center; justify-content:space-between; gap:16px;
 }
 .dest b{ color:var(--t1); font-weight:500; font-size:1.02rem; }
+.dest.out b::before{
+  content:""; display:inline-block; width:6px; height:6px; margin-inline-end:9px;
+  background:var(--red); transform:rotate(45deg) translateY(-1px);
+}
 .dest .ar{ color:var(--t3); font-size:.9rem; }
 
 .map{ position:relative; }
 .map svg{
-  width:100%; max-width:1060px; height:auto; display:block;
+  width:100%; max-width:860px; height:auto; display:block;
   overflow:visible; margin-inline:auto;
 }
-@media (max-width:720px){
-  /* the plate is 2.6:1 — below this it scrolls rather than shrinking to nothing.
-     min-width:0 on the map AND its grid parent is what makes overflow-x:auto
-     actually contain it; without it the intrinsic width inflates the whole
-     page's layout viewport and pushes the fixed nav off-screen. */
-  .map{ overflow-x:auto; scrollbar-width:none; }
-  .map::-webkit-scrollbar{ display:none; }
-  .map svg{ min-width:620px; }
-}
+/* one 2:1 plate for both ends — label size is set in user units per
+   breakpoint so it lands at a readable pixel size either way */
 .map{ min-width:0; }
 .reach .cols > *{ min-width:0; }
+.map .cap{ font-size:8px; }
+.map .dom .dot{ fill:var(--t3); }
+.map .out .dot{ fill:var(--red); }
+.map .out .cap{ fill:var(--t2); }
+@media (max-width:720px){
+  .map svg{ max-width:100%; margin-inline:0; }
+  .map .cap{ font-size:15px; }
+  .map .northmark{ display:none; }
+}
 .map .link{
   stroke:var(--line-2); stroke-width:1;
   transition:stroke .35s var(--ease), stroke-dashoffset .34s ease-out;
@@ -1140,6 +1167,13 @@ body.s2 .glassbar{ transform:translateX(-50%); }
 
 <!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero" id="top">
+  <div class="bg hero-film" id="heroFilm">
+    <video id="heroVideo" poster="assets/building.jpg"
+           muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="assets/site.webm" type="video/webm" />
+      <source src="assets/site.mp4" type="video/mp4" />
+    </video>
+  </div>
   <div class="bg bg-glow"></div>
   <div class="bg bg-grid"></div>
   <div class="bg bg-sweep"></div>
@@ -1317,17 +1351,17 @@ body.s2 .glassbar{ transform:translateX(-50%); }
 <section class="fullbleed" id="site">
   <div class="fb-stick">
     <div class="fb-media" id="fbMedia">
-      <video id="siteVideo" poster="assets/building.jpg"
+      <video id="siteVideo" poster="assets/ship.jpg"
              muted loop playsinline preload="metadata" aria-hidden="true">
-        <source src="assets/site.webm" type="video/webm" />
-        <source src="assets/site.mp4" type="video/mp4" />
+        <source src="assets/ship.webm" type="video/webm" />
+        <source src="assets/ship.mp4" type="video/mp4" />
       </video>
-      <img id="buildingImg" src="assets/building.jpg" alt="Vehicles staged in rows at the port before shipping" />
+      <img id="buildingImg" src="assets/ship.jpg" alt="Vehicles being loaded onto a ro-ro vessel" />
       <div class="fb-slot">
         <div>
           <i></i>
-          <b>Yard footage goes here</b>
-          <span class="mono">Drop a film at <code>buraq/assets/site.mp4</code> and it fills this screen.</span>
+          <b>Ship footage goes here</b>
+          <span class="mono">Drop a film at <code>buraq/assets/ship.mp4</code> and <code>.webm</code> — it fills this screen with no code change.</span>
         </div>
       </div>
     </div>
@@ -1559,54 +1593,65 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     <div class="cols">
       <div class="rv d1">
         <div class="map" id="map">
-          <svg viewBox="0 0 780 300" role="img" aria-label="Distribution map: vehicles leave the Zarqa Free Zone for Amman, Mafraq, Balqa, Irbid, Karak and Aqaba, and onward to the Arab world. North is to the left.">
+          <svg class="mapfig" viewBox="0 20 542 270" role="img" aria-label="Reach map: vehicles leave the Zarqa Free Zone for every governorate of Jordan, and on to Syria, Iraq, Egypt and the Gulf.">
             <g class="northmark">
-              <line x1="72" y1="276" x2="36" y2="276"/>
-              <polygon points="28,276 40,271 40,281"/>
-              <text class="cap" x="80" y="280">North</text>
+              <line x1="30" y1="272" x2="30" y2="246"/>
+              <polygon points="30,236 25,250 35,250"/>
+              <text class="cap" x="30" y="288" text-anchor="middle">North</text>
             </g>
 
-            <g class="node" id="n-amman">
-              <line class="link" x1="130.7" y1="59.5" x2="153.3" y2="85.5"/>
-              <circle class="dot" cx="153.3" cy="85.5" r="4"/>
-              <text class="cap" x="164" y="90">Amman</text>
+            <g class="node dom" data-step="1" data-city="irbid">
+              <line class="link" x1="166.3" y1="91.4" x2="161" y2="79.3"/>
+              <circle class="dot" cx="161" cy="79.3" r="3"/>
             </g>
-            <g class="node" id="n-mafraq">
-              <line class="link" x1="130.7" y1="59.5" x2="79.7" y2="40"/>
-              <circle class="dot" cx="79.7" cy="40" r="4"/>
-              <text class="cap" x="70" y="44" text-anchor="end">Mafraq</text>
+            <g class="node dom" data-step="1" data-city="mafraq">
+              <line class="link" x1="166.3" y1="91.4" x2="168.9" y2="84.6"/>
+              <circle class="dot" cx="168.9" cy="84.6" r="3"/>
             </g>
-            <g class="node" id="n-balqa">
-              <line class="link" x1="130.7" y1="59.5" x2="136.3" y2="118"/>
-              <circle class="dot" cx="136.3" cy="118" r="4"/>
-              <text class="cap" x="136.3" y="104" text-anchor="middle">Balqa</text>
+            <g class="node dom" data-step="1" data-city="balqa">
+              <line class="link" x1="166.3" y1="91.4" x2="158.4" y2="92.2"/>
+              <circle class="dot" cx="158.4" cy="92.2" r="3"/>
             </g>
-            <g class="node" id="n-irbid">
-              <line class="link" x1="130.7" y1="59.5" x2="40" y2="98.5"/>
-              <circle class="dot" cx="40" cy="98.5" r="4"/>
-              <text class="cap" x="40" y="84" text-anchor="middle">Irbid</text>
+            <g class="node dom" data-step="1" data-city="amman">
+              <line class="link" x1="166.3" y1="91.4" x2="162.8" y2="94.5"/>
+              <circle class="dot" cx="162.8" cy="94.5" r="3"/>
             </g>
-            <g class="node" id="n-karak">
-              <line class="link" x1="130.7" y1="59.5" x2="298.8" y2="122.8"/>
-              <circle class="dot" cx="298.8" cy="122.8" r="4"/>
-              <text class="cap" x="298.8" y="108" text-anchor="middle">Karak</text>
+            <g class="node dom" data-step="2" data-city="karak">
+              <line class="link" x1="166.3" y1="91.4" x2="157.7" y2="114"/>
+              <circle class="dot" cx="157.7" cy="114" r="3"/>
             </g>
-            <g class="node" id="n-aqaba">
-              <line class="link" x1="130.7" y1="59.5" x2="610.5" y2="236.6"/>
-              <circle class="dot" cx="610.5" cy="236.6" r="4"/>
-              <text class="cap" x="610.5" y="222" text-anchor="middle">Aqaba</text>
+            <g class="node dom" data-step="2" data-city="aqaba">
+              <line class="link" x1="166.3" y1="91.4" x2="142.4" y2="155.7"/>
+              <circle class="dot" cx="142.4" cy="155.7" r="3"/>
+              <text class="cap" x="142.4" y="172" text-anchor="middle">Jordan — every governorate</text>
             </g>
 
-            <g class="node onward" id="n-onward">
-              <line class="link export" x1="618" y1="240" x2="706" y2="266"/>
-              <text class="cap" x="772" y="284" text-anchor="end">Onward — the Arab world</text>
+            <g class="node out" data-step="3" data-city="syria">
+              <line class="link export" x1="166.3" y1="91.4" x2="170.6" y2="55"/>
+              <circle class="dot" cx="170.6" cy="55" r="4.5"/>
+              <text class="cap" x="170.6" y="41" text-anchor="middle">Syria</text>
+            </g>
+            <g class="node out" data-step="4" data-city="iraq">
+              <line class="link export" x1="166.3" y1="91.4" x2="347.5" y2="60.1"/>
+              <circle class="dot" cx="347.5" cy="60.1" r="4.5"/>
+              <text class="cap" x="347.5" y="46" text-anchor="middle">Iraq</text>
+            </g>
+            <g class="node out" data-step="5" data-city="egypt">
+              <line class="link export" x1="166.3" y1="91.4" x2="60" y2="142.8"/>
+              <circle class="dot" cx="60" cy="142.8" r="4.5"/>
+              <text class="cap" x="60" y="129" text-anchor="middle">Egypt</text>
+            </g>
+            <g class="node out" data-step="6" data-city="gulf">
+              <line class="link export" x1="166.3" y1="91.4" x2="482" y2="245"/>
+              <circle class="dot" cx="482" cy="245" r="4.5"/>
+              <text class="cap" x="482" y="231" text-anchor="middle">The Gulf</text>
             </g>
 
-            <g class="origin" id="n-zarqa">
-              <circle class="pulse" cx="130.7" cy="59.5" r="5"/>
-              <circle class="dot" cx="130.7" cy="59.5" r="6"/>
-              <text class="cap" x="130.7" y="34" text-anchor="middle">Zarqa</text>
-              <text class="cap" x="130.7" y="47" text-anchor="middle" style="letter-spacing:.1em">Free Zone</text>
+            <g class="origin" data-step="0" data-city="zarqa">
+              <circle class="pulse" cx="166.3" cy="91.4" r="5"/>
+              <circle class="dot" cx="166.3" cy="91.4" r="6"/>
+              <text class="cap" x="178" y="88">Zarqa</text>
+              <text class="cap" x="178" y="101" style="letter-spacing:.1em">Free Zone</text>
             </g>
           </svg>
           <p class="mono legend">Plotted on true bearings from the yard.</p>
@@ -1623,10 +1668,13 @@ body.s2 .glassbar{ transform:translateX(-50%); }
           <div class="dest glass" data-city="balqa"><b>Balqa</b><span class="ar">البلقاء</span></div>
           <div class="dest glass" data-city="karak"><b>Karak</b><span class="ar">الكرك</span></div>
           <div class="dest glass" data-city="mafraq"><b>Mafraq</b><span class="ar">المفرق</span></div>
-          <div class="dest glass"><b>The Arab world</b><span class="ar">الوطن العربي</span></div>
+          <div class="dest glass out" data-city="syria"><b>Syria</b><span class="ar">سوريا</span></div>
+          <div class="dest glass out" data-city="iraq"><b>Iraq</b><span class="ar">العراق</span></div>
+          <div class="dest glass out" data-city="egypt"><b>Egypt</b><span class="ar">مصر</span></div>
+          <div class="dest glass out" data-city="gulf"><b>The Gulf</b><span class="ar">الخليج</span></div>
         </div>
         <p class="mono" style="margin-top:22px;color:var(--t3)">
-          Export markets served on request — placeholder list, confirm before launch.
+          Every governorate of the Kingdom · onward to Syria, Iraq, Egypt and the Gulf.
         </p>
       </div>
     </div>
@@ -1837,52 +1885,77 @@ body.s2 .glassbar{ transform:translateX(-50%); }
   }, { threshold: 0.5 });
   document.querySelectorAll("[data-count]").forEach(function (el) { cio.observe(el); });
 
-  /* ══ the map draws itself once it is on screen ════════════════════════ */
+  /* ══ each plate draws itself once the map is on screen ═══════════════ */
   var mapEl = document.getElementById("map");
   if (mapEl) {
-    /* nearest first, which is also the order they read on the plate */
-    var seq = ["n-zarqa", "n-amman", "n-mafraq", "n-balqa", "n-irbid",
-               "n-karak", "n-aqaba", "n-onward"].map(function (id) {
-      return document.getElementById(id);
-    }).filter(Boolean);
-
-    /* a line can only be dashed out of view once its true length is known */
-    seq.forEach(function (g) {
-      var link = g.querySelector(".link");
-      if (!link) return;
-      var len = link.getTotalLength();
-      link.style.strokeDasharray = len;
-      link.style.strokeDashoffset = len;
-    });
-
     var drawn = false;
     new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (en) {
         if (!en.isIntersecting || drawn) return;
         drawn = true;
         obs.disconnect();
-        var north = mapEl.querySelector(".northmark");
-        seq.forEach(function (g, i) {
-          var t = reduce ? 0 : i * 190;
-          setTimeout(function () { g.classList.add("p"); }, t);
-          setTimeout(function () { g.classList.add("l"); }, t + (reduce ? 0 : 70));
-          setTimeout(function () { g.classList.add("c"); }, t + (reduce ? 0 : 250));
+        mapEl.querySelectorAll("svg").forEach(function (svg) {
+          /* paint order puts the origin last so it sits on top; draw order is
+             nearest-first, so it is carried on data-step instead */
+          var groups = [].slice.call(svg.querySelectorAll("[data-step]"))
+            .sort(function (a, b) { return a.dataset.step - b.dataset.step; });
+
+          groups.forEach(function (g, i) {
+            var link = g.querySelector(".link");
+            if (link) {
+              /* a plate hidden at this breakpoint measures 0 — leave those
+                 lines solid rather than dashing them out of existence */
+              /* getTotalLength throws outright on a non-rendered element, and
+                 an uncaught throw here aborts the whole sequence */
+              try {
+                var len = link.getTotalLength();
+                if (len > 0) {
+                  link.style.strokeDasharray = len;
+                  link.style.strokeDashoffset = len;
+                }
+              } catch (err) { /* leave the line solid */ }
+            }
+            var t = reduce ? 0 : i * 190;
+            setTimeout(function () { g.classList.add("p"); }, t);
+            setTimeout(function () { g.classList.add("l"); }, t + (reduce ? 0 : 70));
+            setTimeout(function () { g.classList.add("c"); }, t + (reduce ? 0 : 250));
+          });
+          var north = svg.querySelector(".northmark");
+          if (north) setTimeout(function () { north.classList.add("c"); },
+                                reduce ? 0 : groups.length * 190);
         });
-        if (north) setTimeout(function () { north.classList.add("c"); },
-                              reduce ? 0 : seq.length * 190);
       });
     }, { threshold: 0.3 }).observe(mapEl);
   }
 
   /* ══ destination rows light up their map node ═════════════════════════ */
   document.querySelectorAll(".dest[data-city]").forEach(function (row) {
-    var node = document.getElementById("n-" + row.getAttribute("data-city"));
-    if (!node) return;
-    row.addEventListener("pointerenter", function () { node.classList.add("hot"); });
-    row.addEventListener("pointerleave", function () { node.classList.remove("hot"); });
+    var city = row.getAttribute("data-city");
+    var nodes = mapEl ? mapEl.querySelectorAll('[data-city="' + city + '"]') : [];
+    if (!nodes.length) return;
+    var set = function (on) {
+      nodes.forEach(function (n) { n.classList.toggle("hot", on); });
+    };
+    row.addEventListener("pointerenter", function () { set(true); });
+    row.addEventListener("pointerleave", function () { set(false); });
   });
 
-  /* ══ the building slot — shows its placeholder until the photo lands ══ */
+  /* ══ the hero film ═══════════════════════════════════════════════════ */
+  var heroVideo = document.getElementById("heroVideo");
+  if (heroVideo && !reduce) {
+    var heroPlay = function () {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) heroVideo.play().catch(function () {});
+          else heroVideo.pause();
+        });
+      }, { threshold: 0.1 }).observe(heroVideo);
+    };
+    if (heroVideo.readyState >= 1) heroPlay();
+    else heroVideo.addEventListener("loadedmetadata", heroPlay, { once: true });
+  }
+
+  /* ══ the building slot — shows its placeholder until the film lands ═══ */
   var fbMedia = document.getElementById("fbMedia");
   var bImg = document.getElementById("buildingImg");
   if (bImg && fbMedia) {

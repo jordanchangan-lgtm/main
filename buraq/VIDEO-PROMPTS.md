@@ -113,3 +113,68 @@ Two honest ways round it:
 1. **Change the copy** to the origin/shipping story — "Loaded at origin. Cleared in Zarqa." —
    and let the film be exactly what it is: the supply chain arriving.
 2. **Keep the Zarqa copy** and shoot or source footage of the actual Zarqa yard.
+
+
+---
+
+# The ship film · `assets/ship.mp4`
+
+The yard film moved to the **hero**, behind the three words. The full-bleed
+`#site` panel is now waiting on this one — drop `ship.webm` + `ship.mp4` (and a
+`ship.jpg` poster) into `buraq/assets/` and it fills the screen with no code
+change. Copy on that panel already reads *"Thousands leave the port. One
+arrives."*, which is exactly what this footage shows.
+
+## The direction
+
+| | |
+|---|---|
+| **Intent** | Show the export leg. The yard film proves the volume; this proves it *moves*. |
+| **One idea** | A single sailing swallowing a whole yard's worth of cars. |
+| **Material moment** | **The ramp lip** — the instant a car crests the edge and drops into the dark of the hold. Everything builds to that. |
+| **Light** | Overcast harbour daylight, matching the yard film so the two cut together. |
+| **Grade** | Identical to the yard film — the panel applies it in CSS, so shoot/generate neutral. |
+
+## The one rule — inverted from the yard film
+
+On the yard film the rule was *the cars must not move*. **Here they must.** The
+failure mode flips: expect warping bodywork mid-roll, wheels that spin
+backwards or slide without rotating, and the ramp geometry bending. Guard those
+instead.
+
+**Negative prompt for all three:**
+
+> morphing car bodies, warping panels, melting geometry, wheels sliding without rotating, wheels spinning backwards, duplicated or extra wheels, bending ramp, deforming ship hull, distorted badges, unreadable text, invented license plates, floating objects, people clipping through vehicles, cartoon, illustration, 3D render, CGI look, plastic surfaces, oversaturated colour, HDR halo, over-sharpened edges, flicker, strobing, watermark, subtitles, timestamp, smooth robotic camera, sudden zoom
+
+Same settings: Kling 2.5 · Professional · 5 s · 16:9 · CFG low (0.3–0.5).
+
+## SHOT 1 · THE VESSEL — text-to-video
+
+> Wide static shot of a ro-ro car carrier berthed at a container port, its stern ramp lowered onto the quay. A long queue of brand-new sedans and SUVs waits on the concrete, and one at a time they roll slowly up the ramp and disappear into the dark opening of the hull. Overcast maritime daylight, flat shadowless light, gantry cranes and stacked containers behind. The camera holds on one unbroken frame — no cut, no zoom. Vehicles move at walking pace with correct wheel rotation and natural motion blur; everything else is still. Desaturated cool graphite grade, crushed blacks, muted steel-blue midtones, filmic contrast. 24fps at a 180-degree shutter, subtle organic drift rather than a locked robotic tripod, faint fine grain.
+
+## SHOT 2 · THE QUEUE — image-to-video
+
+**Source:** any of your quay photographs with a line of cars receding.
+
+> The camera tracks slowly forward alongside a waiting line of new cars on the quay, the hull of a ro-ro vessel filling the background. The nearest cars creep forward a car length as the queue advances; wheels turn at the correct speed for the movement. Dock workers in high-visibility vests stand at the margins, still. Flat overcast harbour light, wet concrete, painted lane markings. One continuous move, the shot holds. Desaturated cool graphite grade, crushed blacks, filmic contrast. 24fps at a 180-degree shutter, natural motion blur on the moving cars only, faint fine grain.
+
+## SHOT 3 · THE LIP — text-to-video · *the money shot*
+
+> Low camera at the edge of a ship's stern ramp, close to the steel plate. A new car climbs the ramp toward the lens, crests the lip, and its nose drops away into the dark interior of the hold as it rolls past. The suspension compresses over the crest. Ribbed steel decking, chains and lashing points in the foreground, the black of the hold swallowing the far end of the frame. Overcast light outside, deep shadow inside — a hard line between the two. The camera holds low and static as the car passes. Desaturated cool graphite grade, crushed blacks, filmic contrast. 24fps at a 180-degree shutter, natural motion blur, faint fine grain.
+
+## Assembly and export
+
+Three 5 s shots → cut to **~12 s**, looping on the ramp. Trim the first ~6
+frames of each clip. Then, exactly as before:
+
+```bash
+ffmpeg -i edit.mov -an -vf "scale=1280:-2,format=yuv420p" \
+  -c:v libx264 -preset slow -crf 26 -movflags +faststart  buraq/assets/ship.mp4
+ffmpeg -i buraq/assets/ship.mp4 -an -c:v libvpx-vp9 -crf 34 -b:v 0 -row-mt 1 \
+  -deadline good -cpu-used 2  buraq/assets/ship.webm
+ffmpeg -i buraq/assets/ship.mp4 -ss 0.2 -frames:v 1 -q:v 4  buraq/assets/ship.jpg
+```
+
+Ship **both** formats: Playwright's Chromium carries no H.264 decoder, so an
+MP4-only panel cannot be verified in this repo at all, and WebM is smaller for
+the browsers that take it. Safari falls through to the MP4.

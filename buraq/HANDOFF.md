@@ -172,7 +172,7 @@ To re-fetch: the folder page HTML embeds `window['_DRIVE_ivd']` with file ids; i
 
 **⚠ Flagged to the client, unanswered:** every photo carries a **"LEVANT AUTOMOTIVE" dealer plate**. Toyota is excluded (not on the brand list). Five brands have **no photography at all**: Bestune, Dongfeng, BAIC, Arcfox, BYD.
 
-### The yard film — `#site`
+### The two films
 
 `#site` is a **pinned panel**: a 300vh section (260vh on phone) with a `100svh` sticky inner.
 Scroll progress through the section drives everything — the frame eases out of its push
@@ -181,8 +181,14 @@ passes its threshold. `classList.toggle` rather than `add`, so the lines replay 
 back up. Headline lines are mask reveals (`.ln > b` translating out of an `overflow:hidden`
 parent); everything else is a fade-and-rise.
 
-Media order of preference: `assets/site.webm` → `assets/site.mp4` → `assets/building.jpg`
-(also the poster) → the labelled placeholder. The video plays only while on screen and holds
+**The yard film moved to the hero**, behind the three words, ungraded. The `#site`
+panel now carries the **ship film** — a ro-ro carrier with its ramp down, the hold,
+and a car crossing the ramp lip. Order of preference in each slot:
+`.webm` → `.mp4` → poster `.jpg` → the labelled placeholder.
+
+The ship source arrived as **HEVC 10-bit** (hvc1, yuv420p10le), which most browsers
+will not decode — it had to be transcoded to H.264 8-bit as well as VP9.
+13.6 MB → 0.99 MB + 0.86 MB. The video plays only while on screen and holds
 its poster frame under `prefers-reduced-motion`.
 
 **Two encoding notes.** The supplied source was 18.2 MB, 1280×720, 24fps, 9.5 Mbps with an
@@ -209,9 +215,10 @@ buraq/
   assets/
     logo-lockup.svg     full logo, brand colours
     logo-mark.svg       B plate; favicon
-    site.webm           the yard film (VP9, preferred)
-    site.mp4            the yard film (H.264, Safari fallback)
-    building.jpg        poster frame for the film
+    site.webm/.mp4      the yard film — plays behind the HERO
+    building.jpg        poster frame for the yard film
+    ship.webm/.mp4      the ro-ro loading film — plays in the #site panel
+    ship.jpg            poster frame for the ship film
     cars/*.jpg          34 showroom photographs
     cars/manifest.json  file → brand → model
 ```

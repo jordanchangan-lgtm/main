@@ -6,6 +6,17 @@
 <meta name="description" content="Buraq Al Omur — car trading, import and export out of the Zarqa Free Zone, Jordan. 70,000 m² of yard and warehousing, licensing, inspection and distribution across the Kingdom and the Arab world." />
 <!--CONTENT-START-->
 <title>Buraq Al Omur</title>
+<link rel="canonical" href="https://buraqalomur.com/" />
+<meta name="theme-color" content="#0E0E12" />
+<meta property="og:site_name" content="Buraq Al Omur" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://buraqalomur.com/" />
+<meta property="og:title" content="Buraq Al Omur — Car Trading Company" />
+<meta property="og:description" content="Vehicle import and export out of the Zarqa Free Zone, Jordan. 70,000 m² of yard and bonded warehousing, licensing, registration and technical inspection under one roof." />
+<meta property="og:image" content="https://buraqalomur.com/assets/cars/s7-1.jpg" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="ar_JO" />
+<meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" href="assets/logo-mark.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -869,12 +880,15 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
 @media (min-width:860px){ .contact .row{ grid-template-columns:repeat(3,1fr); } }
 .cblock .k{ color:var(--t3); }
 .cblock .v{ color:var(--t1); margin-top:10px; font-size:1.05rem; }
+.cblock .v.pending{ color:var(--t3); font-style:italic; }
 .cblock .v a{ border-bottom:1px solid var(--line-2); padding-bottom:2px; transition:border-color .3s; }
 .cblock .v a:hover{ border-color:var(--red); }
 
 footer{ background:#08080B; border-top:1px solid var(--line); padding:30px 0 clamp(86px,9vw,108px); }
 footer .wrap{ display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between; }
 footer .mono{ color:var(--t3); }
+footer .mono a{ transition:color .3s var(--ease); }
+footer .mono a:hover{ color:var(--t1); }
 
 /* ============================================================
    LIQUID GLASS SECTION BAR
@@ -1530,15 +1544,16 @@ body.s2 .glassbar{ transform:translateX(-50%); }
       </div>
       <div class="cblock rv d3">
         <div class="mono k">Phone</div>
-        <div class="v"><a href="tel:+962000000000">+962 0 000 0000</a></div>
+        <div class="v pending">To be confirmed</div>
       </div>
       <div class="cblock rv d4">
         <div class="mono k">Email</div>
         <div class="v"><a href="mailto:info@buraqalomur.com">info@buraqalomur.com</a></div>
+        <div class="v"><a href="https://buraqalomur.com">buraqalomur.com</a></div>
       </div>
     </div>
     <div class="rv d5" style="margin-top:clamp(36px,5vw,56px)">
-      <a class="btn solid" href="mailto:info@buraqalomur.com"><span>Send an enquiry</span></a>
+      <a class="btn solid" href="mailto:info@buraqalomur.com?subject=Enquiry%20via%20buraqalomur.com"><span>Send an enquiry</span></a>
     </div>
   </div>
 </section>
@@ -1546,6 +1561,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
 <footer>
   <div class="wrap">
     <span class="mono">© <span id="year">2026</span> Buraq Al Omur · Car Trading Company</span>
+    <span class="mono"><a href="https://buraqalomur.com">buraqalomur.com</a> · <a href="mailto:info@buraqalomur.com">info@buraqalomur.com</a></span>
     <span class="mono ar" style="direction:rtl">شركة براق العمر لتجارة السيارات</span>
   </div>
 </footer>
@@ -1831,6 +1847,45 @@ body.s2 .glassbar{ transform:translateX(-50%); }
   window.addEventListener("resize", remeasure);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
 })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutoDealer",
+  "name": "Buraq Al Omur Car Trading Company",
+  "alternateName": "شركة براق العمر لتجارة السيارات",
+  "url": "https://buraqalomur.com/",
+  "email": "info@buraqalomur.com",
+  "logo": "https://buraqalomur.com/assets/logo-lockup.svg",
+  "image": "https://buraqalomur.com/assets/cars/s7-1.jpg",
+  "foundingDate": "2022",
+  "description": "Vehicle import and export out of the Zarqa Free Zone, Jordan, with 70,000 m² of yard and bonded warehousing, on-site licensing, registration and technical inspection, and a 2,500 m² showroom.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Free Zone",
+    "addressLocality": "Al Zarqa",
+    "addressCountry": "JO"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "email": "info@buraqalomur.com",
+    "availableLanguage": ["ar", "en"]
+  },
+  "areaServed": { "@type": "Country", "name": "Jordan" },
+  "brand": [
+    { "@type": "Brand", "name": "Changan" },
+    { "@type": "Brand", "name": "Deepal" },
+    { "@type": "Brand", "name": "Avatr" },
+    { "@type": "Brand", "name": "Bestune" },
+    { "@type": "Brand", "name": "Dongfeng" },
+    { "@type": "Brand", "name": "BAIC" },
+    { "@type": "Brand", "name": "Arcfox" },
+    { "@type": "Brand", "name": "Volkswagen" },
+    { "@type": "Brand", "name": "Audi" },
+    { "@type": "Brand", "name": "BYD" }
+  ]
+}
 </script>
 <!--CONTENT-END-->
 </body>

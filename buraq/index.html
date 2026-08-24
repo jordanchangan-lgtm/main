@@ -263,7 +263,7 @@ section{ position:relative; scroll-margin-top:84px; }
 .hero{
   position:relative; min-height:100svh;
   display:flex; flex-direction:column; justify-content:flex-end;
-  padding-top:118px; padding-bottom:0;
+  padding-top:118px; padding-bottom:clamp(74px,8vh,98px);
   overflow:hidden;
   isolation:isolate;
 }
@@ -326,8 +326,9 @@ section{ position:relative; scroll-margin-top:84px; }
 @media (min-width:1100px){ .hero-inner > .wrap{ padding-left:calc(var(--rail) + var(--pad)); } }
 
 .hero h1{
-  transition:transform 1.1s var(--ease);
-  font-size:clamp(2.9rem, 9.6vw, 8.6rem);
+  transform-origin:left top;
+  transition:transform 1.15s cubic-bezier(.2,.75,.2,1);
+  font-size:clamp(2.5rem, 7.2vw, 6.4rem);
   font-variation-settings:"wdth" 112, "wght" 900;
   margin:0;
   letter-spacing:-.04em;
@@ -338,7 +339,7 @@ section{ position:relative; scroll-margin-top:84px; }
   transition:transform 1.05s cubic-bezier(.16,.84,.32,1);
 }
 body.words .hero h1 .w > span{ transform:none; }
-body:not(.s2) .hero h1{ transform:translateY(var(--lift, 0px)); }
+body:not(.s2) .hero h1{ transform:translateY(var(--lift, 0px)) scale(var(--zoom, 1)); }
 body.words .hero h1 .w:nth-child(1) > span{ transition-delay:.10s; }
 body.words .hero h1 .w:nth-child(2) > span{ transition-delay:.34s; }
 body.words .hero h1 .w:nth-child(3) > span{ transition-delay:.58s; }
@@ -364,6 +365,13 @@ body.s2 .hero-rest.d-b{ transition-delay:.14s }
 body.s2 .hero-rest.d-c{ transition-delay:.22s }
 body.s2 .hero-rest.d-d{ transition-delay:.30s }
 body.locked{ overflow:hidden; }
+
+/* the number strip waits for a beat of its own */
+.hero-nums{
+  opacity:0; transform:translateY(26px); pointer-events:none;
+  transition:opacity .95s var(--ease), transform .95s var(--ease);
+}
+body.s3 .hero-nums{ opacity:1; transform:none; pointer-events:auto; }
 
 /* nudge shown while the intro holds */
 .hold{
@@ -966,7 +974,6 @@ body.s2 .glassbar{ transform:translateX(-50%); }
    ============================================================ */
 @media (max-width:720px){
   /* the floating bar owns the bottom of the screen — keep content clear of it */
-  .strip .cell:nth-last-child(-n+2){ padding-bottom:74px; }
   footer{ padding-bottom:104px; }
 
   .hero{ padding-top:96px; }
@@ -1006,7 +1013,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
   .rv{ opacity:1; transform:none; }
   .hero h1 .cut::after{ transform:scaleX(1); }
   .hero h1 .w > span{ transform:none; }
-  .hero-rest{ opacity:1; transform:none; pointer-events:auto; }
+  .hero-rest, .hero-nums{ opacity:1; transform:none; pointer-events:auto; }
   .slash::after{ transform:scaleX(1); }
 }
 </style>
@@ -1077,7 +1084,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
 
   <p class="mono hold">Scroll to continue</p>
 
-  <div class="strip hero-rest d-d">
+  <div class="strip hero-nums">
     <div class="scroll-cue"><span class="mono">Scroll</span><b></b></div>
     <div class="wrap">
       <div class="cell">
@@ -1582,23 +1589,45 @@ body.s2 .glassbar{ transform:translateX(-50%); }
      3 · the page scrolls normally                                          */
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
+  /* three beats:
+     0 · the words land, huge and centred
+     1 · held, then the first scroll shrinks them to the top and brings
+         in the brief
+     2 · held again, then the next scroll brings in the numbers
+     4 · the page scrolls normally                                       */
   var stage = 0;
-  var WORDS = 1750, HOLD = 2000;
+  var WORDS = 1750, HOLD_1 = 1800, HOLD_2 = 1300, SETTLE = 900, IDLE = 9000;
   var h1 = document.querySelector(".hero h1");
+  var idleTimer = null;
 
-  /* hold the three words at optical centre; they lift as the brief arrives */
-  function centerWords() {
+  /* Measure the widest of the three words so the opening zoom can never
+     push them past the column, then centre the zoomed block. */
+  function frameWords() {
     if (reduce || body.classList.contains("s2")) return;
     h1.style.transition = "none";
     docEl.style.setProperty("--lift", "0px");
+    docEl.style.setProperty("--zoom", "1");
+
+    var widest = 0;
+    document.querySelectorAll(".hero h1 .w").forEach(function (w) {
+      var rng = document.createRange();
+      rng.selectNodeContents(w);
+      widest = Math.max(widest, rng.getBoundingClientRect().width);
+    });
+    var avail = h1.parentElement.clientWidth;
+    var zoom = widest > 0 ? Math.min(1.9, avail / widest) : 1;
+    if (!isFinite(zoom) || zoom < 1) zoom = 1;
+
     var r = h1.getBoundingClientRect();
-    docEl.style.setProperty("--lift",
-      Math.max(0, Math.round(window.innerHeight / 2 - (r.top + r.height / 2))) + "px");
+    var lift = Math.round(window.innerHeight / 2 - (r.height * zoom) / 2 - r.top);
+
+    docEl.style.setProperty("--zoom", zoom.toFixed(3));
+    docEl.style.setProperty("--lift", Math.max(0, lift) + "px");
     void h1.offsetWidth;
     h1.style.transition = "";
   }
-  centerWords();
-  window.addEventListener("resize", centerWords);
+  frameWords();
+  window.addEventListener("resize", frameWords);
 
   function lock(on) {
     body.classList.toggle("locked", on);
@@ -1607,17 +1636,34 @@ body.s2 .glassbar{ transform:translateX(-50%); }
   }
   function block(e) { if (body.classList.contains("locked")) e.preventDefault(); }
 
+  function arm(next) {
+    stage = next;
+    body.classList.add("armed");
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(advance, IDLE);   /* never strand a reader who does not scroll */
+  }
   function toBrief() {
-    if (stage !== 1) return;
     stage = 2;
-    body.classList.add("s2");
     body.classList.remove("armed");
-    setTimeout(function () { stage = 3; lock(false); }, HOLD);
+    body.classList.add("s2");                /* words shrink to the top, brief follows */
+    clearTimeout(idleTimer);
+    setTimeout(function () { arm(3); }, HOLD_2);
+  }
+  function toNumbers() {
+    stage = 4;
+    body.classList.remove("armed");
+    body.classList.add("s3");
+    clearTimeout(idleTimer);
+    setTimeout(function () { stage = 5; lock(false); }, SETTLE);
+  }
+  function advance() {
+    if (stage === 1) toBrief();
+    else if (stage === 3) toNumbers();
   }
 
   if (reduce) {
-    body.classList.add("words", "s2");
-    stage = 3;
+    body.classList.add("words", "s2", "s3");
+    stage = 5;
   } else {
     lock(true);
     window.addEventListener("wheel", block, { passive: false });
@@ -1625,15 +1671,13 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     requestAnimationFrame(function () {
       requestAnimationFrame(function () { body.classList.add("words"); });
     });
-    setTimeout(function () { stage = 1; body.classList.add("armed"); }, WORDS + HOLD);
+    setTimeout(function () { arm(1); }, WORDS + HOLD_1);
     ["wheel", "touchmove", "pointerdown", "keydown"].forEach(function (ev) {
       window.addEventListener(ev, function (e) {
         if (ev === "keydown" && (e.key === "Tab" || e.key === "Shift")) return;
-        toBrief();
+        advance();
       }, { passive: true });
     });
-    /* never leave the page stuck if nobody touches it */
-    setTimeout(function () { if (stage < 2) { stage = 1; toBrief(); } }, 14000);
   }
 
   /* ══ scroll progress + sticky nav ═════════════════════════════════════ */

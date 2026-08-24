@@ -172,9 +172,28 @@ To re-fetch: the folder page HTML embeds `window['_DRIVE_ivd']` with file ids; i
 
 **⚠ Flagged to the client, unanswered:** every photo carries a **"LEVANT AUTOMOTIVE" dealer plate**. Toyota is excluded (not on the brand list). Five brands have **no photography at all**: Bestune, Dongfeng, BAIC, Arcfox, BYD.
 
-### Building photograph — a reserved slot
+### The yard film — `#site`
 
-`#site` is a full-bleed 100vh section with a labelled placeholder. **Drop a file at `buraq/assets/building.jpg` and it fills the screen automatically** — no code change. The `error` handler on `#buildingImg` adds `.empty` to `#fbMedia`, which swaps in the placeholder. The image drifts against the scroll via `--par`.
+`#site` is a **pinned panel**: a 300vh section (260vh on phone) with a `100svh` sticky inner.
+Scroll progress through the section drives everything — the frame eases out of its push
+(`--vz` 1.14 → 1.04) and each element carrying `data-at="<0–1>"` toggles `.in` when progress
+passes its threshold. `classList.toggle` rather than `add`, so the lines replay on the way
+back up. Headline lines are mask reveals (`.ln > b` translating out of an `overflow:hidden`
+parent); everything else is a fade-and-rise.
+
+Media order of preference: `assets/site.webm` → `assets/site.mp4` → `assets/building.jpg`
+(also the poster) → the labelled placeholder. The video plays only while on screen and holds
+its poster frame under `prefers-reduced-motion`.
+
+**Two encoding notes.** The supplied source was 18.2 MB, 1280×720, 24fps, 9.5 Mbps with an
+audio track — wildly over-bitrated for a muted background loop. Re-encoded to ~1.7 MB with
+`-an`. And **Playwright's bundled Chromium has no H.264 decoder** (`canPlayType` for
+`avc1` returns empty, media error 4), so an MP4-only panel cannot be verified in this
+sandbox at all. The WebM/VP9 source exists partly so the pipeline is provable here, and
+partly because it is smaller for the browsers that take it; Safari falls through to the MP4.
+
+Grade is applied in CSS, not baked in: `filter: saturate(.78) contrast(1.07) brightness(.88)`
+pulls the bright flat footage toward the site's cool graphite.
 
 ---
 
@@ -190,7 +209,9 @@ buraq/
   assets/
     logo-lockup.svg     full logo, brand colours
     logo-mark.svg       B plate; favicon
-    building.jpg        ← MISSING ON PURPOSE. Drop it here.
+    site.webm           the yard film (VP9, preferred)
+    site.mp4            the yard film (H.264, Safari fallback)
+    building.jpg        poster frame for the film
     cars/*.jpg          34 showroom photographs
     cars/manifest.json  file → brand → model
 ```

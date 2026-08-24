@@ -662,19 +662,24 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
    THE SITE — full-bleed building frame
    ============================================================ */
 .fullbleed{
-  position:relative; min-height:100svh;
-  display:flex; align-items:flex-end;
-  overflow:hidden; background:var(--ink);
+  position:relative; height:300vh; background:var(--ink);
   --t1:#F2F0EC; --t2:#B2B2BE; --t3:#8C8C99;
+}
+@media (max-width:900px){ .fullbleed{ height:260vh; } }
+.fb-stick{
+  position:sticky; top:0; height:100svh;
+  display:flex; align-items:flex-end;
+  overflow:hidden; isolation:isolate;
 }
 .fb-media{ position:absolute; inset:0; z-index:0; }
 .fb-media img,
 .fb-media video{
   width:100%; height:100%; object-fit:cover;
-  transform:scale(1.12) translateY(var(--par, 0px));
+  transform:scale(var(--vz, 1.14));
   will-change:transform;
 }
 .fb-media video{ display:none; }
+.fb-media img, .fb-media video{ filter:saturate(.78) contrast(1.07) brightness(.88); }
 .fb-media.has-video video{ display:block; }
 .fb-media.has-video img{ display:none; }
 .fb-media.empty img, .fb-media.empty video{ display:none; }
@@ -703,8 +708,9 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
 .fb-scrim{
   position:absolute; inset:0; z-index:1; pointer-events:none;
   background:
-    linear-gradient(180deg, rgba(8,8,11,.72) 0%, rgba(8,8,11,.12) 32%, rgba(8,8,11,.86) 100%),
-    radial-gradient(70vw 60vh at 4% 104%, rgba(237,28,47,.30), transparent 62%);
+    linear-gradient(180deg, rgba(8,8,11,.66) 0%, rgba(8,8,11,.10) 26%, rgba(8,8,11,.94) 100%),
+    linear-gradient(90deg, rgba(8,8,11,.82) 0%, rgba(8,8,11,.34) 42%, transparent 68%),
+    radial-gradient(70vw 60vh at 4% 104%, rgba(237,28,47,.26), transparent 62%);
 }
 .fb-copy{ position:relative; z-index:2; width:100%; padding-bottom:clamp(72px,10vw,132px); }
 @media (min-width:1100px){ .fb-copy > .wrap{ padding-left:calc(var(--rail) + var(--pad)); } }
@@ -714,8 +720,34 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
   margin:20px 0 0; max-width:18ch;
 }
 .fb-copy h2 em{ font-style:normal; color:var(--red); }
+
+/* every element carrying data-at waits for its point in the scroll */
+.fb-copy [data-at]{
+  opacity:0; transform:translateY(20px);
+  transition:opacity .85s var(--ease), transform .85s var(--ease);
+}
+.fb-copy [data-at].in{ opacity:1; transform:none; }
+.fb-copy .ln{ display:block; overflow:hidden; padding-bottom:.1em; margin-bottom:-.1em; }
+.fb-copy .ln > b{
+  display:block; font-weight:inherit; opacity:1;
+  transform:translateY(114%);
+  transition:transform 1.05s cubic-bezier(.16,.84,.32,1);
+}
+.fb-copy .ln > b.in{ transform:none; }
 .fb-copy p.lede{ margin:22px 0 0; max-width:46ch; color:var(--t2); font-size:clamp(1rem,1vw + .8rem,1.14rem); }
-.fb-copy .ar{ margin:12px 0 0; color:var(--t3); text-align:left; }
+.fb-copy .ar{ margin:12px 0 0; color:var(--t3); text-align:left; max-width:44ch; }
+
+/* narrow screens: the copy spans the full width, so the scrim has to be a
+   floor rather than a left-hand wash */
+@media (max-width:720px){
+  .fb-scrim{
+    background:
+      linear-gradient(180deg, rgba(8,8,11,.60) 0%, rgba(8,8,11,.10) 16%, rgba(8,8,11,.90) 56%, rgba(8,8,11,.97) 100%),
+      radial-gradient(90vw 50vh at 6% 104%, rgba(237,28,47,.24), transparent 64%);
+  }
+  .fb-copy{ padding-bottom:104px; }
+  .fb-copy .ar{ max-width:32ch; }
+}
 
 /* ============================================================
    BRAND ROWS — two marquees running against each other
@@ -1012,6 +1044,9 @@ body.s2 .glassbar{ transform:translateX(-50%); }
 
 /* reduced motion */
 @media (prefers-reduced-motion:reduce){
+  .fullbleed{ height:auto; }
+  .fb-stick{ position:static; height:100svh; }
+  .fb-copy [data-at], .fb-copy .ln > b{ opacity:1 !important; transform:none !important; }
   html{ scroll-behavior:auto; }
   *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
   .rv{ opacity:1; transform:none; }
@@ -1237,28 +1272,37 @@ body.s2 .glassbar{ transform:translateX(-50%); }
 
 <!-- ═══════════════ THE SITE — full-bleed building frame ═══════════════ -->
 <section class="fullbleed" id="site">
-  <div class="fb-media" id="fbMedia">
-    <video id="siteVideo" src="assets/site.mp4" poster="assets/building.jpg"
-           muted loop playsinline preload="metadata" aria-hidden="true"></video>
-    <img id="buildingImg" src="assets/building.jpg" alt="The Buraq Al Omur site in the Zarqa Free Zone" />
-    <div class="fb-slot">
-      <div>
-        <i></i>
-        <b>Building photograph goes here</b>
-        <span class="mono">Drop a full-width shot at <code>buraq/assets/building.jpg</code> and it fills this screen.</span>
+  <div class="fb-stick">
+    <div class="fb-media" id="fbMedia">
+      <video id="siteVideo" poster="assets/building.jpg"
+             muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="assets/site.webm" type="video/webm" />
+        <source src="assets/site.mp4" type="video/mp4" />
+      </video>
+      <img id="buildingImg" src="assets/building.jpg" alt="Vehicles staged in rows at the port before shipping" />
+      <div class="fb-slot">
+        <div>
+          <i></i>
+          <b>Yard footage goes here</b>
+          <span class="mono">Drop a film at <code>buraq/assets/site.mp4</code> and it fills this screen.</span>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="fb-scrim"></div>
-  <div class="fb-copy">
-    <div class="wrap">
-      <p class="mono eyebrow rv">المنطقة الحرة، الزرقاء / Free Zone, Al Zarqa</p>
-      <h2 class="display rv d1">The gate every<br />vehicle <em>passes through.</em></h2>
-      <p class="lede rv d2">
-        Head office, showroom and yard on one site — the last place a vehicle
-        stands still before it goes out to the Kingdom.
-      </p>
-      <p class="ar rv d3">المقر الرئيسي وصالة العرض والمستودعات في موقع واحد.</p>
+    <div class="fb-scrim"></div>
+    <div class="fb-copy">
+      <div class="wrap">
+        <p class="mono eyebrow" data-at="0.06">من الميناء إلى المملكة / From port to Kingdom</p>
+        <h2 class="display">
+          <span class="ln"><b data-at="0.17">Thousands leave</b></span>
+          <span class="ln"><b data-at="0.28">the port.</b></span>
+          <span class="ln"><b data-at="0.42"><em>One arrives.</em></b></span>
+        </h2>
+        <p class="lede" data-at="0.56">
+          Loaded at origin, shipped, cleared through the Zarqa Free Zone — and handed
+          over across the Kingdom.
+        </p>
+        <p class="ar" data-at="0.68">من الميناء إلى المنطقة الحرة في الزرقاء، ثم إلى كافة أرجاء المملكة.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1762,7 +1806,12 @@ body.s2 .glassbar{ transform:translateX(-50%); }
      a looping background video off-screen is pure battery cost. */
   var siteVideo = document.getElementById("siteVideo");
   if (siteVideo && fbMedia) {
-    siteVideo.addEventListener("loadeddata", function () {
+    var videoArmed = false;
+    /* preload="metadata" stops at readyState 1, so loadeddata never fires —
+       metadata is enough to know the file is really there. */
+    var videoReady = function () {
+      if (videoArmed) return;
+      videoArmed = true;
       fbMedia.classList.add("has-video");
       fbMedia.classList.remove("empty");
       if (reduce) return;                     /* reduced motion: hold the poster frame */
@@ -1771,8 +1820,13 @@ body.s2 .glassbar{ transform:translateX(-50%); }
           if (en.isIntersecting) siteVideo.play().catch(function () {});
           else siteVideo.pause();
         });
-      }, { threshold: 0.15 }).observe(site);
-    });
+        /* observe the video itself — `site` is assigned further down, and
+           this can run synchronously when the file is already cached */
+      }, { threshold: 0.15 }).observe(siteVideo);
+    };
+    siteVideo.addEventListener("loadedmetadata", videoReady);
+    siteVideo.addEventListener("canplay", videoReady);
+    if (siteVideo.readyState >= 1) videoReady();
   }
 
   /* ══ the fleet gallery — scroll-linked unfurl into a 3D matrix ═════════
@@ -1843,16 +1897,30 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     cur = target; paint();
   }
 
-  /* ══ the building image drifts against the scroll ═════════════════════ */
-  if (site && !reduce) {
-    var siteImg = site.querySelector(".fb-media img");
+  /* ══ the pinned panel: progress through it drives the copy ════════════ */
+  if (site) {
+    var beats = [].slice.call(site.querySelectorAll("[data-at]"));
+    var stick = site.querySelector(".fb-stick");
+
     function siteScroll() {
-      var r = site.getBoundingClientRect();
-      var mid = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
-      if (siteImg) siteImg.style.setProperty("--par", (mid * -46).toFixed(1) + "px");
+      var span = site.offsetHeight - window.innerHeight;
+      var p = span > 0 ? -site.getBoundingClientRect().top / span : 0;
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+
+      /* the frame eases out of its push as the panel plays through */
+      if (stick) stick.style.setProperty("--vz", (1.14 - 0.10 * p).toFixed(4));
+
+      /* toggle rather than add, so the lines replay on the way back up */
+      beats.forEach(function (el) {
+        el.classList.toggle("in", p >= parseFloat(el.getAttribute("data-at")));
+      });
     }
-    window.addEventListener("scroll", siteScroll, { passive: true });
-    siteScroll();
+    if (reduce) beats.forEach(function (el) { el.classList.add("in"); });
+    else {
+      window.addEventListener("scroll", siteScroll, { passive: true });
+      window.addEventListener("resize", siteScroll);
+      siteScroll();
+    }
   }
 
   /* ══ liquid glass section bar ═════════════════════════════════════════ */

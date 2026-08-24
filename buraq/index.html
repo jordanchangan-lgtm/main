@@ -233,7 +233,9 @@ section{ position:relative; scroll-margin-top:84px; }
 
 .btn{
   display:inline-flex; align-items:center; gap:.7em;
-  padding:13px 22px;
+  padding:13px 22px; border-radius:10px;
+  -webkit-backdrop-filter:blur(14px) saturate(160%);
+  backdrop-filter:blur(14px) saturate(160%);
   font-family:"IBM Plex Mono", monospace;
   font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
   border:1px solid var(--line-2); color:var(--t1);
@@ -251,7 +253,7 @@ section{ position:relative; scroll-margin-top:84px; }
 .btn:hover{ border-color:var(--red); color:#fff; }
 .btn:hover::before{ transform:translateY(0); }
 .btn span{ position:relative; }
-.btn.solid{ background:var(--red); border-color:var(--red); color:#fff; }
+.btn.solid{ background:var(--red); border-color:var(--red); color:#fff; backdrop-filter:none; -webkit-backdrop-filter:none; }
 .btn.solid::before{ background:#fff; }
 .btn.solid:hover{ color:var(--ink); }
 
@@ -262,7 +264,7 @@ section{ position:relative; scroll-margin-top:84px; }
 
 .hero{
   position:relative; min-height:100svh;
-  display:flex; flex-direction:column; justify-content:flex-end;
+  display:flex; flex-direction:column; justify-content:center;
   padding-top:118px; padding-bottom:clamp(74px,8vh,98px);
   overflow:hidden;
   isolation:isolate;
@@ -390,48 +392,23 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
   max-width:50ch; margin:18px 0 0;
   color:var(--t2); font-size:clamp(1rem,1.05vw + .8rem,1.18rem);
 }
-.hero-act{ display:flex; flex-wrap:wrap; gap:12px; margin-top:clamp(30px,3.6vw,44px); }
 
-/* hero footer strip: the live numbers */
-.strip{
-  position:relative;
-  margin-top:clamp(40px,5vw,72px);
-  border-top:1px solid var(--line);
-  background:linear-gradient(180deg, rgba(23,23,30,.5), rgba(14,14,18,.9));
-  backdrop-filter:blur(6px);
+/* the numbers sit in their own column, unframed */
+.hero-grid{ display:grid; gap:clamp(30px,4vw,64px); align-items:end; }
+@media (min-width:940px){
+  .hero-grid{ grid-template-columns:minmax(0,1fr) minmax(210px,.42fr); }
 }
-.strip .wrap{
-  display:grid; grid-template-columns:repeat(2,1fr);
-  gap:0;
-}
-@media (min-width:860px){ .strip .wrap{ grid-template-columns:repeat(4,1fr); } }
-.strip .cell{
-  padding:26px 0 30px;
-  border-inline-end:1px solid var(--line);
-  padding-inline:clamp(14px,2vw,28px);
-}
-.strip .cell:first-child{ padding-inline-start:0; }
-.strip .cell:last-child{ border-inline-end:0; }
-@media (max-width:859px){
-  .strip .cell:nth-child(2n){ border-inline-end:0; }
-  .strip .cell:nth-child(-n+2){ border-bottom:1px solid var(--line); }
-  .strip .cell:first-child{ padding-inline-start:clamp(14px,2vw,28px); }
-}
-.strip .num{
+.hero-main{ min-width:0; }
+
+.hero-nums{ display:grid; gap:clamp(16px,2.2vw,28px); align-content:end; }
+@media (max-width:939px){ .hero-nums{ grid-template-columns:repeat(2,1fr); } }
+.stat .num{
   font-family:"Archivo", sans-serif;
   font-variation-settings:"wdth" 96, "wght" 800;
-  font-size:clamp(1.9rem,3.4vw,2.9rem); color:var(--t1); line-height:1;
-  font-variant-numeric:tabular-nums;
+  font-size:clamp(1.7rem,2.5vw,2.5rem); color:var(--t1); line-height:1;
+  font-variant-numeric:tabular-nums; letter-spacing:-.02em;
 }
-.strip .num i{ font-style:normal; color:var(--red); font-size:.5em; margin-inline-start:.25em; vertical-align:.55em; }
-.strip .lbl{ margin-top:10px; color:var(--t3); }
-
-.scroll-cue{
-  position:absolute; right:var(--pad); bottom:calc(100% + 26px);
-  display:none; align-items:center; gap:10px; color:var(--t3);
-}
-@media (min-width:980px){ .scroll-cue{ display:flex; } }
-.scroll-cue b{ display:block; width:1px; height:44px; background:linear-gradient(180deg,var(--red),transparent); }
+.stat .lbl{ margin-top:8px; color:var(--t3); }
 </style>
 <style>
 /* ============================================================
@@ -456,6 +433,73 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
 /* ============================================================
    ABOUT
    ============================================================ */
+/* ============================================================
+   LIQUID GLASS — every panel on the page
+   ============================================================ */
+:root{
+  --glass-bg:rgba(30,30,39,.44);
+  --glass-rim:rgba(255,255,255,.20);
+  --glass-rim-lo:rgba(255,255,255,.05);
+  --glass-edge:rgba(255,255,255,.085);
+  --glass-cast:0 16px 42px rgba(0,0,0,.44), 0 2px 8px rgba(0,0,0,.26);
+  --glass-sheen:rgba(255,255,255,.11);
+  --glass-sheen-lo:rgba(255,255,255,.035);
+  --glass-spec:rgba(255,255,255,.15);
+  --glass-r:16px;
+}
+.tone-light{
+  --glass-bg:rgba(255,255,255,.46);
+  --glass-rim:rgba(255,255,255,.9);
+  --glass-rim-lo:rgba(255,255,255,.45);
+  --glass-edge:rgba(20,20,26,.10);
+  --glass-cast:0 14px 36px rgba(20,20,26,.10), 0 2px 6px rgba(20,20,26,.06);
+  --glass-sheen:rgba(255,255,255,.55);
+  --glass-sheen-lo:rgba(255,255,255,.14);
+  --glass-spec:rgba(255,255,255,.62);
+}
+
+.glass{
+  --gx:50%; --gy:50%;
+  position:relative; isolation:isolate;
+  border-radius:var(--glass-r); overflow:hidden;
+  background:var(--glass-bg);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-rim),
+    inset 0 -1px 1px var(--glass-rim-lo),
+    inset 0 0 0 1px var(--glass-edge),
+    var(--glass-cast);
+  transition:box-shadow .45s var(--ease), background .45s var(--ease),
+             transform .45s var(--ease);
+}
+/* the light caught along the rim */
+.glass::before{
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  pointer-events:none; z-index:3;
+  background:linear-gradient(180deg, var(--glass-sheen), transparent 44%, var(--glass-sheen-lo));
+}
+/* the highlight that slides under the cursor */
+.glass::after{
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  pointer-events:none; z-index:3; mix-blend-mode:screen;
+  background:radial-gradient(240px 170px at var(--gx) var(--gy), var(--glass-spec), transparent 62%);
+  opacity:0; transition:opacity .45s var(--ease);
+}
+.glass:hover::after{ opacity:1; }
+.glass:hover{
+  box-shadow:
+    inset 0 1px 0 var(--glass-rim),
+    inset 0 -1px 1px var(--glass-rim-lo),
+    inset 0 0 0 1px rgba(237,28,47,.55),
+    var(--glass-cast);
+}
+.glass > *{ position:relative; z-index:2; }
+/* stacking many blurred layers is expensive on a phone */
+@media (max-width:720px){
+  .glass{ -webkit-backdrop-filter:blur(12px) saturate(150%); backdrop-filter:blur(12px) saturate(150%); }
+}
+
 /* ============================================================
    SECTION TONES — the page cuts between black+red and off-white
    ============================================================ */
@@ -544,13 +588,9 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
 .plan{ display:grid; gap:clamp(30px,4vw,60px); align-items:start; }
 @media (min-width:1000px){ .plan{ grid-template-columns:1.25fr .75fr; } }
 
-.planbox{
-  position:relative; border:1px solid var(--line-2);
-  background:linear-gradient(160deg, rgba(34,34,43,.75), rgba(14,14,18,.75));
-  padding:clamp(16px,2.4vw,28px);
-}
+.planbox{ padding:clamp(16px,2.4vw,28px); --glass-r:18px; }
 .planbox .tag{
-  position:absolute; top:-1px; left:-1px;
+  position:absolute; top:0; left:0; z-index:4;
   background:var(--red); color:#fff; padding:7px 12px;
   font-family:"IBM Plex Mono",monospace; font-size:.62rem; letter-spacing:.19em;
 }
@@ -567,19 +607,8 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
   .plan-key{ display:grid; }
 }
 
-.metrics{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
-.metric{
-  background:var(--panel); padding:clamp(20px,2.6vw,30px);
-  position:relative; overflow:hidden;
-  transition:background .4s var(--ease);
-}
-.metric:hover{ background:var(--panel-2); }
-.metric::after{
-  content:""; position:absolute; right:-30px; bottom:-30px; width:110px; height:110px;
-  background:radial-gradient(circle, rgba(237,28,47,.24), transparent 70%);
-  opacity:0; transition:opacity .45s var(--ease);
-}
-.metric:hover::after{ opacity:1; }
+.metrics{ display:grid; gap:clamp(10px,1.2vw,16px); }
+.metric{ padding:clamp(20px,2.6vw,30px); }
 .metric .n{
   font-family:"Archivo",sans-serif; font-variation-settings:"wdth" 94,"wght" 800;
   font-size:clamp(2rem,4vw,3.1rem); color:var(--t1); line-height:1;
@@ -593,22 +622,13 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
    SERVICES
    ============================================================ */
 
-.grid-cards{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+.grid-cards{ display:grid; gap:clamp(10px,1.2vw,16px); }
 @media (min-width:720px){ .grid-cards{ grid-template-columns:repeat(2,1fr); } }
 @media (min-width:1120px){ .grid-cards{ grid-template-columns:repeat(3,1fr); } }
 .card{
-  background:var(--panel); padding:clamp(26px,3vw,40px);
-  position:relative; overflow:hidden; min-height:250px;
+  padding:clamp(26px,3vw,40px); min-height:250px;
   display:flex; flex-direction:column;
-  transition:background .45s var(--ease);
 }
-.card::before{
-  content:""; position:absolute; left:0; right:0; top:0; height:2px;
-  background:var(--red); transform:scaleX(0); transform-origin:left;
-  transition:transform .5s var(--ease);
-}
-.card:hover{ background:var(--panel-2); }
-.card:hover::before{ transform:scaleX(1); }
 .card .idx{
   font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.2em;
   color:var(--t3);
@@ -880,22 +900,50 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
    ============================================================ */
 
 .reach .cols{ display:grid; gap:clamp(30px,4vw,64px); }
-@media (min-width:1000px){ .reach .cols{ grid-template-columns:.68fr 1.32fr; align-items:start; } }
-.dests{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+
+.dests{ display:grid; gap:clamp(8px,1vw,12px); }
 @media (min-width:640px){ .dests{ grid-template-columns:repeat(2,1fr); } }
 .dest{
-  background:var(--panel); padding:20px clamp(18px,2vw,26px);
+  padding:18px clamp(18px,2vw,26px); --glass-r:12px;
   display:flex; align-items:center; justify-content:space-between; gap:16px;
-  transition:background .35s var(--ease);
 }
-.dest:hover{ background:var(--panel-2); }
 .dest b{ color:var(--t1); font-weight:500; font-size:1.02rem; }
 .dest .ar{ color:var(--t3); font-size:.9rem; }
 
 .map{ position:relative; }
-.map svg{ width:100%; max-width:340px; height:auto; display:block; }
-.map .link{ stroke:var(--line-2); stroke-width:1; transition:stroke .35s var(--ease); }
-.map .dot{ fill:var(--t3); transition:fill .35s var(--ease), r .35s var(--ease); }
+.map svg{
+  width:100%; max-width:1060px; height:auto; display:block;
+  overflow:visible; margin-inline:auto;
+}
+@media (max-width:720px){
+  /* the plate is 2.6:1 — below this it scrolls rather than shrinking to nothing.
+     min-width:0 on the map AND its grid parent is what makes overflow-x:auto
+     actually contain it; without it the intrinsic width inflates the whole
+     page's layout viewport and pushes the fixed nav off-screen. */
+  .map{ overflow-x:auto; scrollbar-width:none; }
+  .map::-webkit-scrollbar{ display:none; }
+  .map svg{ min-width:620px; }
+}
+.map{ min-width:0; }
+.reach .cols > *{ min-width:0; }
+.map .link{
+  stroke:var(--line-2); stroke-width:1;
+  transition:stroke .35s var(--ease), stroke-dashoffset .34s ease-out;
+}
+.map .dot{
+  fill:var(--t3);
+  transform:scale(0); transform-origin:center; transform-box:fill-box;
+  transition:fill .35s var(--ease), r .35s var(--ease),
+             transform .5s cubic-bezier(.34,1.6,.64,1);
+}
+.map .node.p .dot, .map .origin.p .dot{ transform:scale(1); }
+.map .node.l .link{ stroke-dashoffset:0 !important; }
+.map .cap{ opacity:0; transform:translateY(5px); transition:opacity .42s var(--ease), transform .42s var(--ease); }
+.map .node.c .cap, .map .origin.c .cap, .map .northmark.c .cap{ opacity:1; transform:none; }
+.map .northmark line, .map .northmark polygon{ stroke:var(--line-2); fill:var(--t3); opacity:0; transition:opacity .5s var(--ease); }
+.map .northmark.c line, .map .northmark.c polygon{ opacity:1; }
+.map .pulse{ opacity:0; }
+.map .origin.p .pulse{ opacity:.55; }
 .map .cap{
   font-family:"IBM Plex Mono", monospace; font-size:12px; letter-spacing:.14em;
   fill:var(--t3); text-transform:uppercase; transition:fill .35s var(--ease);
@@ -905,7 +953,7 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
 .map .node.hot .link{ stroke:var(--red); }
 .map .origin .dot{ fill:var(--red); }
 .map .origin .cap{ fill:var(--t1); letter-spacing:.16em; }
-.map .pulse{ fill:var(--red); opacity:.55; transform-origin:center; animation:pulse 3s var(--ease) infinite; }
+.map .pulse{ fill:var(--red); transform-origin:center; animation:pulse 3s var(--ease) infinite; }
 @keyframes pulse{ 0%{ r:5; opacity:.6 } 70%{ r:22; opacity:0 } 100%{ r:22; opacity:0 } }
 .map .export{ stroke:var(--red); stroke-width:1; stroke-dasharray:4 5; opacity:.7; }
 .map .legend{ margin-top:18px; color:var(--t3); }
@@ -1102,48 +1150,43 @@ body.s2 .glassbar{ transform:translateX(-50%); }
   <div class="rail on hero-rest"><span>Zarqa Free Zone / JO</span></div>
 
   <div class="hero-inner">
-    <div class="wrap">
-      <h1 class="display">
-        <span class="w"><span>Import.</span></span>
-        <span class="w"><span><span class="cut">Clear.</span></span></span>
-        <span class="w"><span>Deliver.</span></span>
-      </h1>
-      <p class="hero-ar ar hero-rest d-a">شركة براق العمر لتجارة السيارات</p>
-      <p class="hero-lede hero-rest d-b">
-        Vehicles in and out of Jordan's Zarqa Free Zone — 70,000 m² of yard and
-        bonded warehousing, with licensing, registration and technical inspection
-        under one roof.
-      </p>
-      <div class="hero-act hero-rest d-c">
-        <a class="btn solid" href="#brands"><span>Our brands</span></a>
-        <a class="btn" href="#facilities"><span>Inside the yard</span></a>
+    <div class="wrap hero-grid">
+      <div class="hero-main">
+        <h1 class="display">
+          <span class="w"><span>Import.</span></span>
+          <span class="w"><span><span class="cut">Clear.</span></span></span>
+          <span class="w"><span>Deliver.</span></span>
+        </h1>
+        <p class="hero-ar ar hero-rest d-a">شركة براق العمر لتجارة السيارات</p>
+        <p class="hero-lede hero-rest d-b">
+          Vehicles in and out of Jordan's Zarqa Free Zone — 70,000 m² of yard and
+          bonded warehousing, with licensing, registration and technical inspection
+          under one roof.
+        </p>
+      </div>
+
+      <div class="hero-nums">
+        <div class="stat">
+          <div class="num" data-count="2022" data-plain="1">2022</div>
+          <div class="mono lbl">Established</div>
+        </div>
+        <div class="stat">
+          <div class="num" data-count="70000">0</div>
+          <div class="mono lbl">m² free-zone yard</div>
+        </div>
+        <div class="stat">
+          <div class="num" data-count="2500">0</div>
+          <div class="mono lbl">m² showroom</div>
+        </div>
+        <div class="stat">
+          <div class="num" data-count="10">0</div>
+          <div class="mono lbl">Brands represented</div>
+        </div>
       </div>
     </div>
   </div>
 
   <p class="mono hold">Scroll to continue</p>
-
-  <div class="strip hero-nums">
-    <div class="scroll-cue"><span class="mono">Scroll</span><b></b></div>
-    <div class="wrap">
-      <div class="cell">
-        <div class="num" data-count="2022" data-plain="1">2022</div>
-        <div class="mono lbl">Established</div>
-      </div>
-      <div class="cell">
-        <div class="num" data-count="70000">0</div>
-        <div class="mono lbl">m² free-zone yard</div>
-      </div>
-      <div class="cell">
-        <div class="num" data-count="2500">0</div>
-        <div class="mono lbl">m² showroom</div>
-      </div>
-      <div class="cell">
-        <div class="num" data-count="10">0</div>
-        <div class="mono lbl">Brands represented</div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- ═══════════════ ABOUT ═══════════════ -->
@@ -1219,7 +1262,7 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     </div>
 
     <div class="plan">
-      <div class="planbox rv d1">
+      <div class="planbox glass rv d1">
         <span class="tag">Site plan · to scale</span>
         <svg viewBox="0 0 1000 580" role="img" aria-label="Site plan: 70,000 m² free-zone yard containing a 2,500 m² showroom and 2,000 m² of showroom storage, drawn to scale.">
           <defs>
@@ -1250,17 +1293,17 @@ body.s2 .glassbar{ transform:translateX(-50%); }
       </div>
 
       <div class="metrics rv d2">
-        <div class="metric">
+        <div class="metric glass">
           <div class="n" data-count="70000">0</div>
           <div class="mono t">Warehousing &amp; storage — m²</div>
           <div class="d">Bonded space inside the Zarqa Free Zone.</div>
         </div>
-        <div class="metric">
+        <div class="metric glass">
           <div class="n" data-count="2500">0</div>
           <div class="mono t">Showroom — m²</div>
           <div class="d">Where vehicles are presented and handed over.</div>
         </div>
-        <div class="metric">
+        <div class="metric glass">
           <div class="n" data-count="2000">0</div>
           <div class="mono t">Showroom storage — m²</div>
           <div class="d">Dedicated stock feeding the display floor.</div>
@@ -1328,42 +1371,42 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     </div>
 
     <div class="grid-cards">
-      <article class="card rv d1">
+      <article class="card glass rv d1">
         <span class="idx">01</span>
         <h3>Import &amp; Export</h3>
         <p class="h-ar ar">استيراد وتصدير</p>
         <p>Sourcing, shipping and customs handling for vehicles moving in and out of Jordan.</p>
         <span class="mono arw">→</span>
       </article>
-      <article class="card rv d2">
+      <article class="card glass rv d2">
         <span class="idx">02</span>
         <h3>Bonded Warehousing</h3>
         <p class="h-ar ar">مستودعات ومخازن</p>
         <p>70,000 m² of secured free-zone yard and covered storage for held and staged stock.</p>
         <span class="mono arw">→</span>
       </article>
-      <article class="card rv d3">
+      <article class="card glass rv d3">
         <span class="idx">03</span>
         <h3>Licensing &amp; Registration</h3>
         <p class="h-ar ar">مكاتب ترخيص وتسجيل</p>
         <p>Our own licensing and registration offices take a vehicle from paperwork to plates.</p>
         <span class="mono arw">→</span>
       </article>
-      <article class="card rv d4">
+      <article class="card glass rv d4">
         <span class="idx">04</span>
         <h3>Inspection &amp; Technical Testing</h3>
         <p class="h-ar ar">معاينة وفحص فني</p>
         <p>On-site inspection and technical testing bays — every unit checked before release.</p>
         <span class="mono arw">→</span>
       </article>
-      <article class="card rv d5">
+      <article class="card glass rv d5">
         <span class="idx">05</span>
         <h3>Logistics &amp; Transport</h3>
         <p class="h-ar ar">مكاتب لوجستية</p>
         <p>Dedicated logistics offices scheduling movement from the yard to any destination.</p>
         <span class="mono arw">→</span>
       </article>
-      <article class="card rv d6">
+      <article class="card glass rv d6">
         <span class="idx">06</span>
         <h3>Showroom &amp; Handover</h3>
         <p class="h-ar ar">صالة عرض</p>
@@ -1515,63 +1558,72 @@ body.s2 .glassbar{ transform:translateX(-50%); }
 
     <div class="cols">
       <div class="rv d1">
-        <div class="map">
-          <svg viewBox="0 108 340 656" role="img" aria-label="Distribution map: vehicles leave the Zarqa Free Zone for Irbid, Mafraq, Balqa, Amman, Karak and Aqaba, and onward to the Arab world.">
-            <g class="node" id="n-irbid">
-              <line class="link" x1="249.6" y1="215.7" x2="210.6" y2="125"/>
-              <circle class="dot" cx="210.6" cy="125" r="4"/>
-              <text class="cap" x="200" y="130" text-anchor="end">Irbid</text>
+        <div class="map" id="map">
+          <svg viewBox="0 0 780 300" role="img" aria-label="Distribution map: vehicles leave the Zarqa Free Zone for Amman, Mafraq, Balqa, Irbid, Karak and Aqaba, and onward to the Arab world. North is to the left.">
+            <g class="northmark">
+              <line x1="72" y1="276" x2="36" y2="276"/>
+              <polygon points="28,276 40,271 40,281"/>
+              <text class="cap" x="80" y="280">North</text>
+            </g>
+
+            <g class="node" id="n-amman">
+              <line class="link" x1="130.7" y1="59.5" x2="153.3" y2="85.5"/>
+              <circle class="dot" cx="153.3" cy="85.5" r="4"/>
+              <text class="cap" x="164" y="90">Amman</text>
             </g>
             <g class="node" id="n-mafraq">
-              <line class="link" x1="249.6" y1="215.7" x2="269.1" y2="164.7"/>
-              <circle class="dot" cx="269.1" cy="164.7" r="4"/>
-              <text class="cap" x="280" y="169">Mafraq</text>
+              <line class="link" x1="130.7" y1="59.5" x2="79.7" y2="40"/>
+              <circle class="dot" cx="79.7" cy="40" r="4"/>
+              <text class="cap" x="70" y="44" text-anchor="end">Mafraq</text>
             </g>
             <g class="node" id="n-balqa">
-              <line class="link" x1="249.6" y1="215.7" x2="191.1" y2="221.3"/>
-              <circle class="dot" cx="191.1" cy="221.3" r="4"/>
-              <text class="cap" x="181" y="226" text-anchor="end">Balqa</text>
+              <line class="link" x1="130.7" y1="59.5" x2="136.3" y2="118"/>
+              <circle class="dot" cx="136.3" cy="118" r="4"/>
+              <text class="cap" x="136.3" y="104" text-anchor="middle">Balqa</text>
             </g>
-            <g class="node" id="n-amman">
-              <line class="link" x1="249.6" y1="215.7" x2="223.6" y2="238.3"/>
-              <circle class="dot" cx="223.6" cy="238.3" r="4"/>
-              <text class="cap" x="213" y="256" text-anchor="end">Amman</text>
+            <g class="node" id="n-irbid">
+              <line class="link" x1="130.7" y1="59.5" x2="40" y2="98.5"/>
+              <circle class="dot" cx="40" cy="98.5" r="4"/>
+              <text class="cap" x="40" y="84" text-anchor="middle">Irbid</text>
             </g>
             <g class="node" id="n-karak">
-              <line class="link" x1="249.6" y1="215.7" x2="186.3" y2="383.8"/>
-              <circle class="dot" cx="186.3" cy="383.8" r="4"/>
-              <text class="cap" x="197" y="388">Karak</text>
+              <line class="link" x1="130.7" y1="59.5" x2="298.8" y2="122.8"/>
+              <circle class="dot" cx="298.8" cy="122.8" r="4"/>
+              <text class="cap" x="298.8" y="108" text-anchor="middle">Karak</text>
             </g>
             <g class="node" id="n-aqaba">
-              <line class="link" x1="249.6" y1="215.7" x2="72.5" y2="695.5"/>
-              <circle class="dot" cx="72.5" cy="695.5" r="4"/>
-              <text class="cap" x="84" y="700">Aqaba</text>
+              <line class="link" x1="130.7" y1="59.5" x2="610.5" y2="236.6"/>
+              <circle class="dot" cx="610.5" cy="236.6" r="4"/>
+              <text class="cap" x="610.5" y="222" text-anchor="middle">Aqaba</text>
             </g>
 
-            <line class="export" x1="72.5" y1="695.5" x2="20" y2="742"/>
-            <text class="cap" x="30" y="756">Onward — the Arab world</text>
+            <g class="node onward" id="n-onward">
+              <line class="link export" x1="618" y1="240" x2="706" y2="266"/>
+              <text class="cap" x="772" y="284" text-anchor="end">Onward — the Arab world</text>
+            </g>
 
             <g class="origin" id="n-zarqa">
-              <circle class="pulse" cx="249.6" cy="215.7" r="5"/>
-              <circle class="dot" cx="249.6" cy="215.7" r="6"/>
-              <text class="cap" x="262" y="212">Zarqa</text>
-              <text class="cap" x="262" y="228" style="letter-spacing:.1em">Free Zone</text>
+              <circle class="pulse" cx="130.7" cy="59.5" r="5"/>
+              <circle class="dot" cx="130.7" cy="59.5" r="6"/>
+              <text class="cap" x="130.7" y="34" text-anchor="middle">Zarqa</text>
+              <text class="cap" x="130.7" y="47" text-anchor="middle" style="letter-spacing:.1em">Free Zone</text>
             </g>
           </svg>
           <p class="mono legend">Plotted on true bearings from the yard.</p>
+        </div>
         </div>
       </div>
 
       <div class="rv d2">
         <div class="dests">
-          <div class="dest" data-city="amman"><b>Amman</b><span class="ar">عمّان</span></div>
-          <div class="dest" data-city="zarqa"><b>Zarqa</b><span class="ar">الزرقاء</span></div>
-          <div class="dest" data-city="irbid"><b>Irbid</b><span class="ar">إربد</span></div>
-          <div class="dest" data-city="aqaba"><b>Aqaba</b><span class="ar">العقبة</span></div>
-          <div class="dest" data-city="balqa"><b>Balqa</b><span class="ar">البلقاء</span></div>
-          <div class="dest" data-city="karak"><b>Karak</b><span class="ar">الكرك</span></div>
-          <div class="dest" data-city="mafraq"><b>Mafraq</b><span class="ar">المفرق</span></div>
-          <div class="dest"><b>The Arab world</b><span class="ar">الوطن العربي</span></div>
+          <div class="dest glass" data-city="amman"><b>Amman</b><span class="ar">عمّان</span></div>
+          <div class="dest glass" data-city="zarqa"><b>Zarqa</b><span class="ar">الزرقاء</span></div>
+          <div class="dest glass" data-city="irbid"><b>Irbid</b><span class="ar">إربد</span></div>
+          <div class="dest glass" data-city="aqaba"><b>Aqaba</b><span class="ar">العقبة</span></div>
+          <div class="dest glass" data-city="balqa"><b>Balqa</b><span class="ar">البلقاء</span></div>
+          <div class="dest glass" data-city="karak"><b>Karak</b><span class="ar">الكرك</span></div>
+          <div class="dest glass" data-city="mafraq"><b>Mafraq</b><span class="ar">المفرق</span></div>
+          <div class="dest glass"><b>The Arab world</b><span class="ar">الوطن العربي</span></div>
         </div>
         <p class="mono" style="margin-top:22px;color:var(--t3)">
           Export markets served on request — placeholder list, confirm before launch.
@@ -1785,6 +1837,43 @@ body.s2 .glassbar{ transform:translateX(-50%); }
   }, { threshold: 0.5 });
   document.querySelectorAll("[data-count]").forEach(function (el) { cio.observe(el); });
 
+  /* ══ the map draws itself once it is on screen ════════════════════════ */
+  var mapEl = document.getElementById("map");
+  if (mapEl) {
+    /* nearest first, which is also the order they read on the plate */
+    var seq = ["n-zarqa", "n-amman", "n-mafraq", "n-balqa", "n-irbid",
+               "n-karak", "n-aqaba", "n-onward"].map(function (id) {
+      return document.getElementById(id);
+    }).filter(Boolean);
+
+    /* a line can only be dashed out of view once its true length is known */
+    seq.forEach(function (g) {
+      var link = g.querySelector(".link");
+      if (!link) return;
+      var len = link.getTotalLength();
+      link.style.strokeDasharray = len;
+      link.style.strokeDashoffset = len;
+    });
+
+    var drawn = false;
+    new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting || drawn) return;
+        drawn = true;
+        obs.disconnect();
+        var north = mapEl.querySelector(".northmark");
+        seq.forEach(function (g, i) {
+          var t = reduce ? 0 : i * 190;
+          setTimeout(function () { g.classList.add("p"); }, t);
+          setTimeout(function () { g.classList.add("l"); }, t + (reduce ? 0 : 70));
+          setTimeout(function () { g.classList.add("c"); }, t + (reduce ? 0 : 250));
+        });
+        if (north) setTimeout(function () { north.classList.add("c"); },
+                              reduce ? 0 : seq.length * 190);
+      });
+    }, { threshold: 0.3 }).observe(mapEl);
+  }
+
   /* ══ destination rows light up their map node ═════════════════════════ */
   document.querySelectorAll(".dest[data-city]").forEach(function (row) {
     var node = document.getElementById("n-" + row.getAttribute("data-city"));
@@ -1948,6 +2037,17 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     });
   }
   function remeasure() { var id = current || "top"; current = null; setActive(id); }
+
+  /* every glass panel tracks the cursor for its specular highlight */
+  if (fine) {
+    document.addEventListener("pointermove", function (e) {
+      var g = e.target.closest && e.target.closest(".glass");
+      if (!g) return;
+      var r = g.getBoundingClientRect();
+      g.style.setProperty("--gx", (e.clientX - r.left) + "px");
+      g.style.setProperty("--gy", (e.clientY - r.top) + "px");
+    }, { passive: true });
+  }
 
   gbInner.addEventListener("pointermove", function (e) {
     var r = gbInner.getBoundingClientRect();

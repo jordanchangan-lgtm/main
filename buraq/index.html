@@ -1,0 +1,1256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Buraq Al Omur — car trading, import and export out of the Zarqa Free Zone, Jordan. 70,000 m² of yard and warehousing, licensing, inspection and distribution across the Kingdom and the Arab world." />
+<!--CONTENT-START-->
+<title>Buraq Al Omur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" />
+<style>
+/* ============================================================
+   BURAQ AL OMUR — base layout, palette, backgrounds
+   Committed dark identity: a floodlit free-zone yard at night.
+   ============================================================ */
+
+:root{
+  /* grounds */
+  --ink:        #0E0E12;
+  --ink-2:      #121218;
+  --surface:    #17171E;
+  --steel:      #22222B;
+  --bone-bg:    #EDEBE7;
+
+  /* text */
+  --t1:         #F2F0EC;
+  --t2:         #B2B2BE;
+  --t3:         #7C7C89;
+
+  /* signal */
+  --red:        #E4181E;
+  --red-hi:     #FF3F33;
+
+  /* lines */
+  --line:       rgba(242,240,236,.09);
+  --line-2:     rgba(242,240,236,.16);
+
+  /* metrics */
+  --rail:       74px;
+  --pad:        clamp(20px, 4.2vw, 68px);
+  --maxw:       1440px;
+
+  --ease:       cubic-bezier(.22,.61,.36,1);
+  --grain:      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--t2);
+  font-family:"Barlow", ui-sans-serif, system-ui, sans-serif;
+  font-size:clamp(15px, .48vw + 14px, 17px);
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+::selection{ background:var(--red); color:#fff; }
+
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+
+:focus-visible{
+  outline:2px solid var(--red-hi);
+  outline-offset:3px;
+}
+
+/* ---------- type roles ---------- */
+
+.display{
+  font-family:"Archivo", ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings:"wdth" 108, "wght" 900;
+  text-transform:uppercase;
+  line-height:.87;
+  letter-spacing:-.028em;
+  color:var(--t1);
+  text-wrap:balance;
+  margin:0;
+}
+
+.mono{
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+  font-size:.7rem;
+  letter-spacing:.19em;
+  text-transform:uppercase;
+  font-weight:500;
+}
+
+.ar{
+  font-family:"IBM Plex Sans Arabic", "Barlow", sans-serif;
+  direction:rtl;
+  line-height:1.85;
+}
+
+/* eyebrow: mono tag with a red bay-marker dot */
+.eyebrow{
+  display:inline-flex; align-items:center; gap:.7em;
+  color:var(--t3);
+}
+.eyebrow::before{
+  content:""; width:6px; height:6px; flex:none;
+  background:var(--red);
+  transform:rotate(45deg);
+  box-shadow:0 0 12px rgba(228,24,30,.9);
+}
+
+/* ---------- shell ---------- */
+
+.wrap{
+  max-width:var(--maxw);
+  margin-inline:auto;
+  padding-inline:var(--pad);
+}
+
+section{ position:relative; }
+
+.sec{
+  padding-block:clamp(84px, 11vw, 168px);
+}
+
+/* the left gutter rail — vertical bay markers */
+.rail{
+  position:absolute; top:0; bottom:0; width:var(--rail);
+  left:calc(max(0px, (100% - var(--maxw)) / 2) + var(--pad));
+  border-right:1px solid var(--line);
+  display:none;
+  pointer-events:none;
+}
+@media (min-width:1100px){ .rail{ display:block; } }
+.rail span{
+  position:absolute; top:clamp(84px,11vw,168px); left:50%;
+  transform:translateX(-50%) rotate(180deg);
+  writing-mode:vertical-rl;
+  color:var(--t3);
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.66rem; letter-spacing:.34em; text-transform:uppercase;
+}
+.rail::after{
+  content:""; position:absolute; left:-1px; top:0; width:1px; height:0;
+  background:linear-gradient(180deg, transparent, var(--red), transparent);
+  transition:height .8s var(--ease);
+}
+.rail.on::after{ height:100%; }
+
+@media (min-width:1100px){ .sec > .wrap{ padding-left:calc(var(--rail) + var(--pad)); } }
+
+/* the slash — logo device reused as a section rule */
+.slash{
+  height:1px; width:100%;
+  background:var(--line);
+  position:relative;
+  overflow:visible;
+}
+.slash::after{
+  content:""; position:absolute; left:0; top:-5px;
+  width:clamp(90px, 12vw, 190px); height:11px;
+  background:var(--red);
+  clip-path:polygon(0 46%, 100% 0, 100% 54%, 0 100%);
+  transform-origin:left center;
+  transform:scaleX(0);
+  transition:transform .9s var(--ease);
+}
+.slash.on::after{ transform:scaleX(1); }
+</style>
+<style>
+/* ============================================================
+   NAV
+   ============================================================ */
+
+.scrollbar{
+  position:fixed; top:0; left:0; height:2px; width:100%;
+  background:transparent; z-index:120; pointer-events:none;
+}
+.scrollbar i{
+  display:block; height:100%; width:0%;
+  background:linear-gradient(90deg, var(--red), var(--red-hi));
+  box-shadow:0 0 14px rgba(228,24,30,.7);
+}
+
+.nav{
+  position:fixed; inset:0 0 auto 0; z-index:100;
+  transition:background .4s var(--ease), border-color .4s var(--ease), backdrop-filter .4s;
+  border-bottom:1px solid transparent;
+}
+.nav.stuck{
+  background:rgba(14,14,18,.82);
+  backdrop-filter:blur(18px) saturate(140%);
+  border-bottom-color:var(--line);
+}
+.nav .wrap{
+  display:flex; align-items:center; gap:clamp(18px,3vw,52px);
+  height:76px;
+}
+
+/* logo lockup, rebuilt from the mark */
+.logo{ display:flex; align-items:center; gap:12px; flex:none; }
+.mark{
+  position:relative; width:38px; height:38px; border-radius:9px;
+  background:#26262C; flex:none;
+  display:grid; place-items:center;
+  overflow:hidden;
+}
+.mark b{
+  font-family:"Archivo", sans-serif;
+  font-variation-settings:"wdth" 88, "wght" 900;
+  font-size:26px; line-height:1; color:#fff;
+  transform:translateY(-1px);
+}
+.mark i{
+  position:absolute; left:-8%; top:57%; width:116%; height:9px;
+  background:var(--red);
+  clip-path:polygon(0 44%, 100% 0, 100% 62%, 0 100%);
+  transform:rotate(-9deg);
+}
+.logo-txt{ line-height:1; }
+.logo-txt strong{
+  display:block;
+  font-family:"Archivo", sans-serif;
+  font-variation-settings:"wdth" 92, "wght" 800;
+  font-size:17px; letter-spacing:-.005em; color:var(--t1);
+  text-transform:uppercase;
+}
+.logo-txt strong em{ font-style:normal; color:var(--red); }
+.logo-txt span{
+  display:block; margin-top:4px;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:8.5px; letter-spacing:.28em; color:var(--t3); text-transform:uppercase;
+}
+
+.links{ display:none; align-items:center; gap:clamp(14px,1.9vw,30px); margin-inline-start:auto; }
+@media (min-width:980px){ .links{ display:flex; } }
+.links a{
+  position:relative; padding:6px 0;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--t3);
+  transition:color .28s var(--ease);
+}
+.links a::after{
+  content:""; position:absolute; left:0; bottom:0; height:6px; width:100%;
+  background:var(--red);
+  clip-path:polygon(0 50%, 100% 0, 100% 50%, 0 100%);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .38s var(--ease);
+}
+.links a:hover{ color:var(--t1); }
+.links a:hover::after, .links a.active::after{ transform:scaleX(1); }
+.links a.active{ color:var(--t1); }
+
+.nav-cta{
+  margin-inline-start:auto; display:flex; align-items:center; gap:12px;
+}
+@media (min-width:980px){ .nav-cta{ margin-inline-start:0; } }
+
+.btn{
+  display:inline-flex; align-items:center; gap:.7em;
+  padding:13px 22px;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+  border:1px solid var(--line-2); color:var(--t1);
+  background:transparent; cursor:pointer;
+  position:relative; z-index:0; overflow:hidden;
+  transition:color .3s var(--ease), border-color .3s var(--ease);
+}
+.btn::before{
+  content:""; position:absolute; inset:0;
+  background:var(--red);
+  transform:translateY(101%);
+  transition:transform .4s var(--ease);
+  z-index:-1;
+}
+.btn:hover{ border-color:var(--red); color:#fff; }
+.btn:hover::before{ transform:translateY(0); }
+.btn span{ position:relative; }
+.btn.solid{ background:var(--red); border-color:var(--red); color:#fff; }
+.btn.solid::before{ background:#fff; }
+.btn.solid:hover{ color:var(--ink); }
+
+@media (max-width:559px){ .nav-cta .btn.solid{ display:none; } .logo-txt span{ display:none; } }
+.burger{
+  display:grid; place-items:center; width:42px; height:42px;
+  border:1px solid var(--line-2); background:transparent; cursor:pointer;
+}
+@media (min-width:980px){ .burger{ display:none; } }
+.burger i{ display:block; width:16px; height:1px; background:var(--t1); position:relative; }
+.burger i::before,.burger i::after{
+  content:""; position:absolute; left:0; width:16px; height:1px; background:var(--t1);
+}
+.burger i::before{ top:-5px; } .burger i::after{ top:5px; }
+
+.sheet{
+  position:fixed; inset:0; z-index:99;
+  background:rgba(14,14,18,.97);
+  backdrop-filter:blur(20px);
+  display:grid; align-content:center; gap:6px;
+  padding:0 var(--pad);
+  opacity:0; visibility:hidden;
+  transition:opacity .35s var(--ease), visibility .35s;
+}
+.sheet.open{ opacity:1; visibility:visible; }
+.sheet a{
+  font-family:"Archivo", sans-serif;
+  font-variation-settings:"wdth" 104, "wght" 800;
+  text-transform:uppercase; font-size:clamp(30px,8vw,52px);
+  color:var(--t1); line-height:1.12;
+  border-bottom:1px solid var(--line); padding:12px 0;
+}
+
+/* ============================================================
+   HERO + its background stack
+   ============================================================ */
+
+.hero{
+  position:relative; min-height:100svh;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding-top:118px; padding-bottom:0;
+  overflow:hidden;
+  isolation:isolate;
+}
+
+.bg{ position:absolute; inset:0; z-index:-1; pointer-events:none; }
+
+/* 1. floodlight pools */
+.bg-glow{
+  background:
+    radial-gradient(78vw 62vh at 12% 96%, rgba(228,24,30,.30), transparent 62%),
+    radial-gradient(60vw 55vh at 92% 6%,  rgba(96,110,160,.20), transparent 64%),
+    radial-gradient(90vw 90vh at 50% 120%, rgba(255,63,51,.10), transparent 70%);
+  animation:drift 22s var(--ease) infinite alternate;
+}
+@keyframes drift{
+  from{ transform:translate3d(-2%,1%,0) scale(1.02); }
+  to  { transform:translate3d(3%,-2%,0) scale(1.08); }
+}
+
+/* 2. yard grid, fading toward the horizon */
+.bg-grid{
+  background-image:
+    linear-gradient(to right, rgba(242,240,236,.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(242,240,236,.07) 1px, transparent 1px);
+  background-size:76px 76px;
+  mask-image:radial-gradient(120% 85% at 50% 100%, #000 12%, transparent 76%);
+  -webkit-mask-image:radial-gradient(120% 85% at 50% 100%, #000 12%, transparent 76%);
+  animation:crawl 34s linear infinite;
+}
+@keyframes crawl{ to{ background-position:0 76px, 0 76px; } }
+
+/* 3. headlight sweep — the slash, moving */
+.bg-sweep{ overflow:hidden; }
+.bg-sweep::after{
+  content:""; position:absolute; top:-30%; left:-40%;
+  width:34%; height:170%;
+  background:linear-gradient(90deg, transparent, rgba(242,240,236,.055) 44%, rgba(255,63,51,.10) 52%, transparent);
+  transform:rotate(14deg);
+  animation:sweep 11s var(--ease) infinite;
+}
+@keyframes sweep{
+  0%{ left:-45%; opacity:0; }
+  12%{ opacity:1; }
+  62%{ opacity:1; }
+  78%,100%{ left:118%; opacity:0; }
+}
+
+/* 4. cursor floodlight */
+.bg-spot{
+  background:radial-gradient(340px 340px at var(--mx,50%) var(--my,40%), rgba(255,63,51,.13), transparent 70%);
+  transition:opacity .5s;
+}
+
+/* 5. grain + vignette */
+.bg-grain{ background-image:var(--grain); background-size:180px 180px; opacity:.16; mix-blend-mode:overlay; }
+.bg-vig{ background:radial-gradient(120% 100% at 50% 45%, transparent 40%, rgba(6,6,9,.72) 100%); }
+
+.hero-inner{ position:relative; width:100%; }
+@media (min-width:1100px){ .hero-inner > .wrap{ padding-left:calc(var(--rail) + var(--pad)); } }
+
+.hero h1{
+  font-size:clamp(2.9rem, 9.6vw, 8.6rem);
+  font-variation-settings:"wdth" 112, "wght" 900;
+  margin:20px 0 0;
+  letter-spacing:-.04em;
+}
+.hero h1 .cut{ position:relative; display:inline-block; color:var(--red); }
+.hero h1 .cut::after{
+  content:""; position:absolute; left:0; right:-1%; top:92%; height:.085em;
+  background:var(--red);
+  clip-path:polygon(0 40%, 100% 0, 100% 58%, 0 100%);
+  transform:scaleX(0); transform-origin:left;
+  animation:cut 1s var(--ease) 1.15s forwards;
+}
+@keyframes cut{ to{ transform:scaleX(1); } }
+
+.hero-lede{
+  max-width:56ch; margin:26px 0 0;
+  color:var(--t2); font-size:clamp(1rem,1.15vw + .8rem,1.2rem);
+}
+.hero-ar{
+  margin:14px 0 0; max-width:52ch; text-align:left;
+  color:var(--t3); font-size:1rem;
+}
+.hero-act{ display:flex; flex-wrap:wrap; gap:12px; margin-top:38px; }
+
+/* hero footer strip: the live numbers */
+.strip{
+  position:relative;
+  margin-top:clamp(40px,5vw,72px);
+  border-top:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(23,23,30,.5), rgba(14,14,18,.9));
+  backdrop-filter:blur(6px);
+}
+.strip .wrap{
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:0;
+}
+@media (min-width:860px){ .strip .wrap{ grid-template-columns:repeat(4,1fr); } }
+.strip .cell{
+  padding:26px 0 30px;
+  border-inline-end:1px solid var(--line);
+  padding-inline:clamp(14px,2vw,28px);
+}
+.strip .cell:first-child{ padding-inline-start:0; }
+.strip .cell:last-child{ border-inline-end:0; }
+@media (max-width:859px){
+  .strip .cell:nth-child(2n){ border-inline-end:0; }
+  .strip .cell:nth-child(-n+2){ border-bottom:1px solid var(--line); }
+  .strip .cell:first-child{ padding-inline-start:clamp(14px,2vw,28px); }
+}
+.strip .num{
+  font-family:"Archivo", sans-serif;
+  font-variation-settings:"wdth" 96, "wght" 800;
+  font-size:clamp(1.9rem,3.4vw,2.9rem); color:var(--t1); line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.strip .num i{ font-style:normal; color:var(--red); font-size:.5em; margin-inline-start:.25em; vertical-align:.55em; }
+.strip .lbl{ margin-top:10px; color:var(--t3); }
+
+.scroll-cue{
+  position:absolute; right:var(--pad); bottom:calc(100% + 26px);
+  display:none; align-items:center; gap:10px; color:var(--t3);
+}
+@media (min-width:980px){ .scroll-cue{ display:flex; } }
+.scroll-cue b{ display:block; width:1px; height:44px; background:linear-gradient(180deg,var(--red),transparent); }
+</style>
+<style>
+/* ============================================================
+   SHARED SECTION FURNITURE
+   ============================================================ */
+
+.head{ display:grid; gap:18px; margin-bottom:clamp(40px,5.5vw,76px); }
+@media (min-width:940px){
+  .head{ grid-template-columns:minmax(0,1.05fr) minmax(0,.85fr); align-items:end; gap:clamp(30px,5vw,80px); }
+}
+.head h2{ font-size:clamp(2.1rem,5.6vw,4.4rem); font-variation-settings:"wdth" 106,"wght" 900; }
+.head h2 em{ font-style:normal; color:var(--red); }
+.head .side{ color:var(--t2); max-width:52ch; }
+.head .kick{ display:block; margin-bottom:20px; }
+
+/* reveal */
+.rv{ opacity:0; transform:translateY(26px); transition:opacity .85s var(--ease), transform .85s var(--ease); }
+.rv.on{ opacity:1; transform:none; }
+.rv.d1{ transition-delay:.08s } .rv.d2{ transition-delay:.16s } .rv.d3{ transition-delay:.24s }
+.rv.d4{ transition-delay:.32s } .rv.d5{ transition-delay:.4s } .rv.d6{ transition-delay:.48s }
+
+/* ============================================================
+   BRAND MARQUEE
+   ============================================================ */
+.marquee{
+  border-block:1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(23,23,30,.72), rgba(14,14,18,.72));
+  overflow:hidden; padding:20px 0;
+  mask-image:linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  -webkit-mask-image:linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+.marquee ul{
+  display:flex; gap:clamp(32px,5vw,74px); list-style:none; margin:0; padding:0;
+  width:max-content; animation:slide 34s linear infinite;
+}
+.marquee li{
+  font-family:"Archivo", sans-serif;
+  font-variation-settings:"wdth" 88,"wght" 700;
+  text-transform:uppercase; letter-spacing:.06em;
+  font-size:clamp(.95rem,1.5vw,1.25rem);
+  color:var(--t3); white-space:nowrap;
+  display:flex; align-items:center; gap:clamp(32px,5vw,74px);
+  transition:color .3s var(--ease);
+}
+.marquee li::after{ content:""; width:5px; height:5px; background:var(--red); transform:rotate(45deg); opacity:.55; }
+.marquee:hover ul{ animation-play-state:paused; }
+.marquee li:hover{ color:var(--t1); }
+@keyframes slide{ to{ transform:translateX(-50%); } }
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about{ background:var(--ink); }
+.about .cols{ display:grid; gap:clamp(28px,4vw,64px); }
+@media (min-width:940px){ .about .cols{ grid-template-columns:1.1fr .9fr; } }
+.about p{ max-width:62ch; }
+.about p + p{ margin-top:1.1em; }
+.about .ar{ color:var(--t2); border-inline-start:2px solid var(--red); padding-inline-start:22px; }
+
+.factlist{ list-style:none; margin:0; padding:0; border-top:1px solid var(--line); }
+.factlist li{
+  display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:baseline;
+  padding:18px 0; border-bottom:1px solid var(--line);
+  transition:padding-inline-start .35s var(--ease), background .35s var(--ease);
+}
+.factlist li:hover{ padding-inline-start:14px; background:linear-gradient(90deg, rgba(228,24,30,.07), transparent 60%); }
+.factlist .k{ color:var(--t3); }
+.factlist .v{ color:var(--t1); font-family:"Barlow",sans-serif; font-weight:500; }
+
+/* ============================================================
+   FACILITIES — site plan drawn to scale
+   ============================================================ */
+.facilities{
+  background:
+    radial-gradient(90vw 70vh at 100% 0%, rgba(228,24,30,.10), transparent 60%),
+    var(--ink-2);
+  border-block:1px solid var(--line);
+}
+.facilities > .wrap{ position:relative; z-index:1; }
+.facilities::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:repeating-linear-gradient(-45deg, rgba(242,240,236,.028) 0 1px, transparent 1px 11px);
+}
+.plan{ display:grid; gap:clamp(30px,4vw,60px); align-items:start; }
+@media (min-width:1000px){ .plan{ grid-template-columns:1.25fr .75fr; } }
+
+.planbox{
+  position:relative; border:1px solid var(--line-2);
+  background:linear-gradient(160deg, rgba(34,34,43,.75), rgba(14,14,18,.75));
+  padding:clamp(16px,2.4vw,28px);
+}
+.planbox .tag{
+  position:absolute; top:-1px; left:-1px;
+  background:var(--red); color:#fff; padding:7px 12px;
+  font-family:"IBM Plex Mono",monospace; font-size:.62rem; letter-spacing:.19em;
+}
+.planbox svg{ width:100%; height:auto; display:block; margin-top:26px; }
+.planbox .note{ margin-top:16px; color:var(--t3); }
+
+.metrics{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+.metric{
+  background:var(--surface); padding:clamp(20px,2.6vw,30px);
+  position:relative; overflow:hidden;
+  transition:background .4s var(--ease);
+}
+.metric:hover{ background:var(--steel); }
+.metric::after{
+  content:""; position:absolute; right:-30px; bottom:-30px; width:110px; height:110px;
+  background:radial-gradient(circle, rgba(228,24,30,.24), transparent 70%);
+  opacity:0; transition:opacity .45s var(--ease);
+}
+.metric:hover::after{ opacity:1; }
+.metric .n{
+  font-family:"Archivo",sans-serif; font-variation-settings:"wdth" 94,"wght" 800;
+  font-size:clamp(2rem,4vw,3.1rem); color:var(--t1); line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.metric .n sup{ font-size:.42em; color:var(--red); top:-.9em; }
+.metric .t{ margin-top:12px; color:var(--t3); }
+.metric .d{ margin-top:10px; color:var(--t2); font-size:.95rem; }
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.services{ background:var(--ink); }
+.grid-cards{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (min-width:720px){ .grid-cards{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1120px){ .grid-cards{ grid-template-columns:repeat(3,1fr); } }
+.card{
+  background:var(--surface); padding:clamp(26px,3vw,40px);
+  position:relative; overflow:hidden; min-height:250px;
+  display:flex; flex-direction:column;
+  transition:background .45s var(--ease);
+}
+.card::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:2px;
+  background:var(--red); transform:scaleX(0); transform-origin:left;
+  transition:transform .5s var(--ease);
+}
+.card:hover{ background:var(--steel); }
+.card:hover::before{ transform:scaleX(1); }
+.card .idx{
+  font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.2em;
+  color:var(--t3);
+}
+.card h3{
+  font-family:"Archivo",sans-serif; font-variation-settings:"wdth" 100,"wght" 800;
+  text-transform:uppercase; font-size:clamp(1.15rem,1.7vw,1.5rem);
+  color:var(--t1); margin:20px 0 0; line-height:1.1; letter-spacing:-.015em;
+}
+.card .h-ar{ margin-top:8px; color:var(--t3); font-size:.92rem; text-align:left; }
+.card p{ margin:16px 0 0; color:var(--t2); font-size:.97rem; }
+.card .arw{
+  margin-top:auto; padding-top:24px; color:var(--red);
+  transform:translateX(-6px); opacity:0;
+  transition:transform .4s var(--ease), opacity .4s var(--ease);
+}
+.card:hover .arw{ transform:none; opacity:1; }
+
+/* ============================================================
+   BRANDS — the one bone band
+   ============================================================ */
+.brands{
+  background:var(--bone-bg); color:#15151B;
+  --t1:#111117; --t2:#4A4A55; --t3:#7A7A86;
+  --line:rgba(20,20,26,.12); --line-2:rgba(20,20,26,.22);
+}
+.brands > .wrap{ position:relative; z-index:1; }
+.brands::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--grain); background-size:180px; opacity:.35; mix-blend-mode:multiply;
+}
+.brands .head h2{ color:#111117; }
+.bgrid{ display:grid; gap:1px; background:var(--line-2); border:1px solid var(--line-2); position:relative; }
+@media (min-width:560px){ .bgrid{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:860px){ .bgrid{ grid-template-columns:repeat(3,1fr); } }
+@media (min-width:1180px){ .bgrid{ grid-template-columns:repeat(5,1fr); } }
+.brand{
+  background:var(--bone-bg); padding:clamp(24px,2.6vw,34px);
+  min-height:150px; display:flex; flex-direction:column; justify-content:space-between;
+  position:relative; overflow:hidden;
+  transition:background .4s var(--ease), color .4s var(--ease);
+}
+.brand .bn{
+  font-family:"Archivo",sans-serif; font-variation-settings:"wdth" 86,"wght" 800;
+  text-transform:uppercase; font-size:clamp(1.25rem,2.2vw,1.7rem);
+  color:#111117; letter-spacing:-.01em; line-height:1;
+  transition:color .4s var(--ease);
+}
+.brand .bg-org{ color:var(--t3); margin-top:14px; transition:color .4s var(--ease); }
+.brand:hover{ background:#15151B; }
+.brand:hover .bn{ color:#fff; }
+.brand:hover .bg-org{ color:var(--red-hi); }
+.brand .slashmark{
+  position:absolute; right:-6px; top:16px; width:54px; height:8px;
+  background:var(--red); clip-path:polygon(0 46%,100% 0,100% 56%,0 100%);
+  opacity:0; transform:translateX(14px);
+  transition:opacity .4s var(--ease), transform .4s var(--ease);
+}
+.brand:hover .slashmark{ opacity:1; transform:none; }
+
+/* ============================================================
+   REACH
+   ============================================================ */
+.reach{
+  background:
+    radial-gradient(70vw 60vh at 8% 100%, rgba(228,24,30,.14), transparent 62%),
+    var(--ink);
+}
+.reach .cols{ display:grid; gap:clamp(30px,4vw,64px); }
+@media (min-width:1000px){ .reach .cols{ grid-template-columns:.68fr 1.32fr; align-items:start; } }
+.dests{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (min-width:640px){ .dests{ grid-template-columns:repeat(2,1fr); } }
+.dest{
+  background:var(--surface); padding:20px clamp(18px,2vw,26px);
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  transition:background .35s var(--ease);
+}
+.dest:hover{ background:var(--steel); }
+.dest b{ color:var(--t1); font-weight:500; font-size:1.02rem; }
+.dest .ar{ color:var(--t3); font-size:.9rem; }
+
+.map{ position:relative; }
+.map svg{ width:100%; max-width:340px; height:auto; display:block; }
+.map .link{ stroke:rgba(242,240,236,.16); stroke-width:1; transition:stroke .35s var(--ease); }
+.map .dot{ fill:var(--t3); transition:fill .35s var(--ease), r .35s var(--ease); }
+.map .cap{
+  font-family:"IBM Plex Mono", monospace; font-size:12px; letter-spacing:.14em;
+  fill:var(--t3); text-transform:uppercase; transition:fill .35s var(--ease);
+}
+.map .node.hot .dot{ fill:var(--red); r:6; }
+.map .node.hot .cap{ fill:var(--t1); }
+.map .node.hot .link{ stroke:var(--red); }
+.map .origin .dot{ fill:var(--red); }
+.map .origin .cap{ fill:var(--t1); letter-spacing:.16em; }
+.map .pulse{ fill:var(--red); opacity:.55; transform-origin:center; animation:pulse 3s var(--ease) infinite; }
+@keyframes pulse{ 0%{ r:5; opacity:.6 } 70%{ r:22; opacity:0 } 100%{ r:22; opacity:0 } }
+.map .export{ stroke:var(--red); stroke-width:1; stroke-dasharray:4 5; opacity:.7; }
+.map .legend{ margin-top:18px; color:var(--t3); }
+
+/* ============================================================
+   CONTACT + FOOTER
+   ============================================================ */
+.contact{
+  background:linear-gradient(180deg, var(--ink), #08080B);
+  border-top:1px solid var(--line);
+  overflow:hidden;
+}
+.contact > .wrap{ position:relative; z-index:1; }
+.contact::before{
+  content:""; position:absolute; left:-10%; bottom:-40%; width:70%; height:120%;
+  background:radial-gradient(circle, rgba(228,24,30,.20), transparent 62%);
+  pointer-events:none;
+}
+.contact h2{ font-size:clamp(2.4rem,8vw,6.5rem); font-variation-settings:"wdth" 112,"wght" 900; }
+.contact .row{ display:grid; gap:clamp(26px,4vw,60px); margin-top:clamp(36px,5vw,64px); }
+@media (min-width:860px){ .contact .row{ grid-template-columns:repeat(3,1fr); } }
+.cblock .k{ color:var(--t3); }
+.cblock .v{ color:var(--t1); margin-top:10px; font-size:1.05rem; }
+.cblock .v a{ border-bottom:1px solid var(--line-2); padding-bottom:2px; transition:border-color .3s; }
+.cblock .v a:hover{ border-color:var(--red); }
+
+footer{ background:#08080B; border-top:1px solid var(--line); padding:30px 0; }
+footer .wrap{ display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between; }
+footer .mono{ color:var(--t3); }
+
+/* reduced motion */
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  .rv{ opacity:1; transform:none; }
+  .hero h1 .cut::after{ transform:scaleX(1); }
+  .slash::after{ transform:scaleX(1); }
+}
+</style>
+</head>
+<body>
+
+<div class="scrollbar"><i id="progress"></i></div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Buraq Al Omur — home">
+      <span class="mark" aria-hidden="true"><b>B</b><i></i></span>
+      <span class="logo-txt">
+        <strong>Buraq <em>Al Omur</em></strong>
+        <span>Car Trading Company</span>
+      </span>
+    </a>
+
+    <nav class="links" id="links" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#facilities">Facilities</a>
+      <a href="#services">Services</a>
+      <a href="#brands">Brands</a>
+      <a href="#reach">Reach</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a class="btn solid" href="#contact"><span>Contact</span></a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><i></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <a href="#about">About</a>
+  <a href="#facilities">Facilities</a>
+  <a href="#services">Services</a>
+  <a href="#brands">Brands</a>
+  <a href="#reach">Reach</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero" id="top">
+  <div class="bg bg-glow"></div>
+  <div class="bg bg-grid"></div>
+  <div class="bg bg-sweep"></div>
+  <div class="bg bg-spot" id="spot"></div>
+  <div class="bg bg-grain"></div>
+  <div class="bg bg-vig"></div>
+
+  <div class="rail on"><span>Zarqa Free Zone / JO</span></div>
+
+  <div class="hero-inner">
+    <div class="wrap">
+      <p class="mono eyebrow">Established 2022 · Free Zone · Zarqa, Jordan</p>
+      <h1 class="display">
+        Import.<br />
+        <span class="cut">Clear.</span><br />
+        Deliver.
+      </h1>
+      <p class="hero-lede">
+        Buraq Al Omur trades vehicles out of Jordan's Zarqa Free Zone — 70,000 m² of
+        yard and bonded warehousing, licensing, registration and technical inspection
+        under one roof, and distribution across the Kingdom and the Arab world.
+      </p>
+      <p class="hero-ar ar">شركة براق العمر لتجارة السيارات — استيراد وتصدير السيارات من المنطقة الحرة في الزرقاء.</p>
+      <div class="hero-act">
+        <a class="btn solid" href="#brands"><span>Our brands</span></a>
+        <a class="btn" href="#facilities"><span>Inside the yard</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="scroll-cue"><span class="mono">Scroll</span><b></b></div>
+    <div class="wrap">
+      <div class="cell">
+        <div class="num" data-count="2022" data-plain="1">2022</div>
+        <div class="mono lbl">Established</div>
+      </div>
+      <div class="cell">
+        <div class="num" data-count="70000">0</div>
+        <div class="mono lbl">m² free-zone yard</div>
+      </div>
+      <div class="cell">
+        <div class="num" data-count="2500">0</div>
+        <div class="mono lbl">m² showroom</div>
+      </div>
+      <div class="cell">
+        <div class="num" data-count="10">0</div>
+        <div class="mono lbl">Brands represented</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MARQUEE ═══════════════ -->
+<div class="marquee" aria-hidden="true">
+  <ul id="marquee">
+    <li>Changan</li><li>Deepal</li><li>Avatr</li><li>Bestune</li><li>Dongfeng</li>
+    <li>BAIC</li><li>Arcfox</li><li>Volkswagen</li><li>Audi</li><li>BYD</li>
+  </ul>
+</div>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section class="sec about" id="about">
+  <div class="rail"><span>01 — Who we are</span></div>
+  <div class="wrap">
+    <div class="slash" style="margin-bottom:clamp(44px,6vw,80px)"></div>
+    <div class="head rv">
+      <h2 class="display">A free-zone operation,<br /><em>end to end.</em></h2>
+      <div class="side">
+        <span class="mono eyebrow kick">من نحن / About</span>
+        <p>
+          Founded in 2022 with its main branch in the Free Zone at Al Zarqa, Buraq Al Omur
+          imports and exports vehicles at scale — and owns every step in between.
+        </p>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="rv d1">
+        <p>
+          The company holds 70,000 m² of warehousing and storage inside the free zone,
+          with its own logistics offices, licensing and registration offices, and
+          inspection and technical testing bays on site. A 2,500 m² showroom, backed by
+          2,000 m² of dedicated showroom storage, is where vehicles are handed over —
+          and from there they move out to every part of the Kingdom and the Arab world.
+        </p>
+        <p class="ar" style="margin-top:26px">
+          تأسست الشركة عام 2022 ومركزها الرئيسي في المنطقة الحرة في الزرقاء، وهي شركة استيراد
+          وتصدير سيارات. تملك مستودعات ومخازن في المنطقة الحرة تبلغ مساحتها 70 ألف متر مربع،
+          ولديها مكاتب لوجستية ومكاتب ترخيص وتسجيل ومعاينة وفحص فني، وصالة عرض تبلغ مساحتها
+          2500 متر مربع ومساحة تخزين لصالة العرض 2000 متر مربع، ومنها يتم انتشار كافة المركبات
+          إلى كافة أرجاء المملكة والوطن العربي.
+        </p>
+      </div>
+
+      <ul class="factlist rv d2">
+        <li><span class="mono k">Founded</span><span class="v">2022</span></li>
+        <li><span class="mono k">Main branch</span><span class="v">Free Zone — Al Zarqa, Jordan</span></li>
+        <li><span class="mono k">Business</span><span class="v">Vehicle import &amp; export</span></li>
+        <li><span class="mono k">On site</span><span class="v">Logistics · Licensing · Registration · Inspection</span></li>
+        <li><span class="mono k">Distribution</span><span class="v">Jordan &amp; the Arab world</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FACILITIES ═══════════════ -->
+<section class="sec facilities" id="facilities">
+  <div class="rail"><span>02 — The site</span></div>
+  <div class="wrap">
+    <div class="head rv">
+      <h2 class="display">Seventy thousand<br />square metres of <em>ground.</em></h2>
+      <div class="side">
+        <span class="mono eyebrow kick">المرافق / Facilities</span>
+        <p>
+          Scale is the whole advantage. Everything a vehicle needs between the port and the
+          plate happens inside one perimeter — so nothing waits on a third party.
+        </p>
+      </div>
+    </div>
+
+    <div class="plan">
+      <div class="planbox rv d1">
+        <span class="tag">Site plan · to scale</span>
+        <svg viewBox="0 0 1000 580" role="img" aria-label="Site plan: 70,000 m² free-zone yard containing a 2,500 m² showroom and 2,000 m² of showroom storage, drawn to scale.">
+          <defs>
+            <pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+              <line x1="0" y1="0" x2="0" y2="14" stroke="rgba(242,240,236,.06)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect x="20" y="20" width="960" height="520" fill="url(#hatch)" stroke="rgba(242,240,236,.28)" stroke-width="1.5"/>
+          <text x="40" y="56" fill="#7C7C89" font-family="IBM Plex Mono, monospace" font-size="17" letter-spacing="3">YARD + BONDED WAREHOUSING — 70,000 m²</text>
+
+          <rect x="60" y="376" width="134" height="134" fill="#E4181E" opacity=".92"/>
+          <rect x="218" y="391" width="119" height="119" fill="rgba(242,240,236,.22)" stroke="rgba(242,240,236,.4)"/>
+
+          <line x1="127" y1="376" x2="127" y2="250" stroke="#E4181E" stroke-width="1.5"/>
+          <line x1="127" y1="250" x2="330" y2="250" stroke="#E4181E" stroke-width="1.5"/>
+          <text x="342" y="245" fill="#F2F0EC" font-family="IBM Plex Mono, monospace" font-size="17" letter-spacing="2">SHOWROOM — 2,500 m²</text>
+
+          <line x1="277" y1="391" x2="277" y2="310" stroke="rgba(242,240,236,.45)" stroke-width="1.5"/>
+          <line x1="277" y1="310" x2="430" y2="310" stroke="rgba(242,240,236,.45)" stroke-width="1.5"/>
+          <text x="442" y="305" fill="#B2B2BE" font-family="IBM Plex Mono, monospace" font-size="17" letter-spacing="2">SHOWROOM STORAGE — 2,000 m²</text>
+        </svg>
+        <p class="mono note">Areas drawn in true proportion — the showroom is roughly 1/28th of the yard.</p>
+      </div>
+
+      <div class="metrics rv d2">
+        <div class="metric">
+          <div class="n" data-count="70000">0</div>
+          <div class="mono t">Warehousing &amp; storage — m²</div>
+          <div class="d">Bonded space inside the Zarqa Free Zone.</div>
+        </div>
+        <div class="metric">
+          <div class="n" data-count="2500">0</div>
+          <div class="mono t">Showroom — m²</div>
+          <div class="d">Where vehicles are presented and handed over.</div>
+        </div>
+        <div class="metric">
+          <div class="n" data-count="2000">0</div>
+          <div class="mono t">Showroom storage — m²</div>
+          <div class="d">Dedicated stock feeding the display floor.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SERVICES ═══════════════ -->
+<section class="sec services" id="services">
+  <div class="rail"><span>03 — What we run</span></div>
+  <div class="wrap">
+    <div class="head rv">
+      <h2 class="display">Every office<br />on <em>one perimeter.</em></h2>
+      <div class="side">
+        <span class="mono eyebrow kick">خدماتنا / Services</span>
+        <p>
+          Import, clearance, plates and inspection are handled by our own offices inside the
+          free zone — one file, one team, one address.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid-cards">
+      <article class="card rv d1">
+        <span class="idx">01</span>
+        <h3>Import &amp; Export</h3>
+        <p class="h-ar ar">استيراد وتصدير</p>
+        <p>Sourcing, shipping and customs handling for vehicles moving in and out of Jordan.</p>
+        <span class="mono arw">→</span>
+      </article>
+      <article class="card rv d2">
+        <span class="idx">02</span>
+        <h3>Bonded Warehousing</h3>
+        <p class="h-ar ar">مستودعات ومخازن</p>
+        <p>70,000 m² of secured free-zone yard and covered storage for held and staged stock.</p>
+        <span class="mono arw">→</span>
+      </article>
+      <article class="card rv d3">
+        <span class="idx">03</span>
+        <h3>Licensing &amp; Registration</h3>
+        <p class="h-ar ar">مكاتب ترخيص وتسجيل</p>
+        <p>Our own licensing and registration offices take a vehicle from paperwork to plates.</p>
+        <span class="mono arw">→</span>
+      </article>
+      <article class="card rv d4">
+        <span class="idx">04</span>
+        <h3>Inspection &amp; Technical Testing</h3>
+        <p class="h-ar ar">معاينة وفحص فني</p>
+        <p>On-site inspection and technical testing bays — every unit checked before release.</p>
+        <span class="mono arw">→</span>
+      </article>
+      <article class="card rv d5">
+        <span class="idx">05</span>
+        <h3>Logistics &amp; Transport</h3>
+        <p class="h-ar ar">مكاتب لوجستية</p>
+        <p>Dedicated logistics offices scheduling movement from the yard to any destination.</p>
+        <span class="mono arw">→</span>
+      </article>
+      <article class="card rv d6">
+        <span class="idx">06</span>
+        <h3>Showroom &amp; Handover</h3>
+        <p class="h-ar ar">صالة عرض</p>
+        <p>A 2,500 m² floor with 2,000 m² of feeding storage, for retail and fleet delivery.</p>
+        <span class="mono arw">→</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ BRANDS ═══════════════ -->
+<section class="sec brands" id="brands">
+  <div class="rail"><span>04 — Portfolio</span></div>
+  <div class="wrap">
+    <div class="head rv">
+      <h2 class="display">Ten marques,<br />one <em>gate.</em></h2>
+      <div class="side">
+        <span class="mono eyebrow kick">العلامات / Brands</span>
+        <p>
+          A portfolio built around China's fastest-moving groups and two of Germany's
+          most established — traded, cleared and delivered through the same free-zone yard.
+        </p>
+      </div>
+    </div>
+
+    <div class="bgrid">
+      <div class="brand"><span class="slashmark"></span><span class="bn">Changan</span><span class="mono bg-org">Changan Auto</span></div>
+      <div class="brand"><span class="slashmark"></span><span class="bn">Deepal</span><span class="mono bg-org">Changan Group</span></div>
+      <div class="brand"><span class="slashmark"></span><span class="bn">Avatr</span><span class="mono bg-org">Changan · CATL · Huawei</span></div>
+      <div class="brand"><span class="slashmark"></span><span class="bn">Bestune</span><span class="mono bg-org">FAW Group</span></div>
+      <div class="brand"><span class="slashmark"></span><span class="bn">Dongfeng</span><span class="mono bg-org">Dongfeng Motor</span></div>
+      <div class="brand"><span class="slashmark"></span><span class="bn">BAIC</span><span class="mono bg-org">BAIC Group</span></div>
+      <div class="brand"><span class="slashmark"></span><span class="bn">Arcfox</span><span class="mono bg-org">BAIC Group</span></div>
+      <div class="brand"><span class="slashmark"></span><span class="bn">Volkswagen</span><span class="mono bg-org">Volkswagen Group</span></div>
+      <div class="brand"><span class="slashmark"></span><span class="bn">Audi</span><span class="mono bg-org">Volkswagen Group</span></div>
+      <div class="brand"><span class="slashmark"></span><span class="bn">BYD</span><span class="mono bg-org">BYD Auto</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ REACH ═══════════════ -->
+<section class="sec reach" id="reach">
+  <div class="rail"><span>05 — Distribution</span></div>
+  <div class="wrap">
+    <div class="head rv">
+      <h2 class="display">Out of the zone,<br /><em>across the region.</em></h2>
+      <div class="side">
+        <span class="mono eyebrow kick">الانتشار / Reach</span>
+        <p>
+          Vehicles leave the Zarqa yard for every governorate of the Kingdom — and onward
+          into the wider Arab market.
+        </p>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="rv d1">
+        <div class="map">
+          <svg viewBox="0 108 340 656" role="img" aria-label="Distribution map: vehicles leave the Zarqa Free Zone for Irbid, Mafraq, Balqa, Amman, Karak and Aqaba, and onward to the Arab world.">
+            <g class="node" id="n-irbid">
+              <line class="link" x1="249.6" y1="215.7" x2="210.6" y2="125"/>
+              <circle class="dot" cx="210.6" cy="125" r="4"/>
+              <text class="cap" x="200" y="130" text-anchor="end">Irbid</text>
+            </g>
+            <g class="node" id="n-mafraq">
+              <line class="link" x1="249.6" y1="215.7" x2="269.1" y2="164.7"/>
+              <circle class="dot" cx="269.1" cy="164.7" r="4"/>
+              <text class="cap" x="280" y="169">Mafraq</text>
+            </g>
+            <g class="node" id="n-balqa">
+              <line class="link" x1="249.6" y1="215.7" x2="191.1" y2="221.3"/>
+              <circle class="dot" cx="191.1" cy="221.3" r="4"/>
+              <text class="cap" x="181" y="226" text-anchor="end">Balqa</text>
+            </g>
+            <g class="node" id="n-amman">
+              <line class="link" x1="249.6" y1="215.7" x2="223.6" y2="238.3"/>
+              <circle class="dot" cx="223.6" cy="238.3" r="4"/>
+              <text class="cap" x="213" y="256" text-anchor="end">Amman</text>
+            </g>
+            <g class="node" id="n-karak">
+              <line class="link" x1="249.6" y1="215.7" x2="186.3" y2="383.8"/>
+              <circle class="dot" cx="186.3" cy="383.8" r="4"/>
+              <text class="cap" x="197" y="388">Karak</text>
+            </g>
+            <g class="node" id="n-aqaba">
+              <line class="link" x1="249.6" y1="215.7" x2="72.5" y2="695.5"/>
+              <circle class="dot" cx="72.5" cy="695.5" r="4"/>
+              <text class="cap" x="84" y="700">Aqaba</text>
+            </g>
+
+            <line class="export" x1="72.5" y1="695.5" x2="20" y2="742"/>
+            <text class="cap" x="30" y="756">Onward — the Arab world</text>
+
+            <g class="origin" id="n-zarqa">
+              <circle class="pulse" cx="249.6" cy="215.7" r="5"/>
+              <circle class="dot" cx="249.6" cy="215.7" r="6"/>
+              <text class="cap" x="262" y="212">Zarqa</text>
+              <text class="cap" x="262" y="228" style="letter-spacing:.1em">Free Zone</text>
+            </g>
+          </svg>
+          <p class="mono legend">Plotted on true bearings from the yard.</p>
+        </div>
+      </div>
+
+      <div class="rv d2">
+        <div class="dests">
+          <div class="dest" data-city="amman"><b>Amman</b><span class="ar">عمّان</span></div>
+          <div class="dest" data-city="zarqa"><b>Zarqa</b><span class="ar">الزرقاء</span></div>
+          <div class="dest" data-city="irbid"><b>Irbid</b><span class="ar">إربد</span></div>
+          <div class="dest" data-city="aqaba"><b>Aqaba</b><span class="ar">العقبة</span></div>
+          <div class="dest" data-city="balqa"><b>Balqa</b><span class="ar">البلقاء</span></div>
+          <div class="dest" data-city="karak"><b>Karak</b><span class="ar">الكرك</span></div>
+          <div class="dest" data-city="mafraq"><b>Mafraq</b><span class="ar">المفرق</span></div>
+          <div class="dest"><b>The Arab world</b><span class="ar">الوطن العربي</span></div>
+        </div>
+        <p class="mono" style="margin-top:22px;color:var(--t3)">
+          Export markets served on request — placeholder list, confirm before launch.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section class="sec contact" id="contact">
+  <div class="rail"><span>06 — Contact</span></div>
+  <div class="wrap">
+    <div class="slash" style="margin-bottom:clamp(44px,6vw,80px)"></div>
+    <span class="mono eyebrow rv">تواصل معنا / Get in touch</span>
+    <h2 class="display rv d1" style="margin-top:22px">Talk to the yard.</h2>
+    <div class="row">
+      <div class="cblock rv d2">
+        <div class="mono k">Main branch</div>
+        <div class="v">Free Zone — Al Zarqa<br />Hashemite Kingdom of Jordan</div>
+      </div>
+      <div class="cblock rv d3">
+        <div class="mono k">Phone</div>
+        <div class="v"><a href="tel:+962000000000">+962 0 000 0000</a></div>
+      </div>
+      <div class="cblock rv d4">
+        <div class="mono k">Email</div>
+        <div class="v"><a href="mailto:info@buraqalomur.com">info@buraqalomur.com</a></div>
+      </div>
+    </div>
+    <div class="rv d5" style="margin-top:clamp(36px,5vw,56px)">
+      <a class="btn solid" href="mailto:info@buraqalomur.com"><span>Send an enquiry</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">© <span id="year">2026</span> Buraq Al Omur · Car Trading Company</span>
+    <span class="mono ar" style="direction:rtl">شركة براق العمر لتجارة السيارات</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* year */
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---- scroll progress + sticky nav ---- */
+  var nav = document.getElementById("nav");
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var y = window.scrollY || 0;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
+    nav.classList.toggle("stuck", y > 40);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* ---- mobile sheet ---- */
+  var burger = document.getElementById("burger");
+  var sheet = document.getElementById("sheet");
+  burger.addEventListener("click", function () {
+    var open = sheet.classList.toggle("open");
+    burger.setAttribute("aria-expanded", String(open));
+    document.body.style.overflow = open ? "hidden" : "";
+  });
+  sheet.addEventListener("click", function (e) {
+    if (e.target.tagName === "A") {
+      sheet.classList.remove("open");
+      burger.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+    }
+  });
+
+  /* ---- hero floodlight follows the cursor ---- */
+  var spot = document.getElementById("spot");
+  if (spot && !reduce && window.matchMedia("(pointer:fine)").matches) {
+    var hero = spot.closest(".hero");
+    hero.addEventListener("pointermove", function (e) {
+      var r = hero.getBoundingClientRect();
+      spot.style.setProperty("--mx", ((e.clientX - r.left) / r.width) * 100 + "%");
+      spot.style.setProperty("--my", ((e.clientY - r.top) / r.height) * 100 + "%");
+    });
+    hero.addEventListener("pointerleave", function () { spot.style.opacity = "0"; });
+    hero.addEventListener("pointerenter", function () { spot.style.opacity = "1"; });
+  }
+
+  /* ---- marquee: duplicate the track so the loop is seamless ---- */
+  var mq = document.getElementById("marquee");
+  if (mq) mq.innerHTML += mq.innerHTML;
+
+  /* ---- reveal on scroll ---- */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add("on"); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
+  document.querySelectorAll(".rv, .rail, .slash").forEach(function (el) { io.observe(el); });
+
+  /* ---- counters ---- */
+  function fmt(n) { return n.toLocaleString("en-US"); }
+  var cio = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      var el = en.target;
+      cio.unobserve(el);
+      var target = parseInt(el.getAttribute("data-count"), 10) || 0;
+      if (el.hasAttribute("data-plain")) { el.textContent = String(target); return; }
+      if (reduce) { el.textContent = fmt(target); return; }
+      var dur = 1500, t0 = performance.now();
+      (function step(now) {
+        var p = Math.min((now - t0) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = fmt(Math.round(target * e));
+        if (p < 1) requestAnimationFrame(step);
+      })(t0);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll("[data-count]").forEach(function (el) { cio.observe(el); });
+
+  /* ---- destination rows light up their map node ---- */
+  document.querySelectorAll(".dest[data-city]").forEach(function (row) {
+    var node = document.getElementById("n-" + row.getAttribute("data-city"));
+    if (!node) return;
+    row.addEventListener("pointerenter", function () { node.classList.add("hot"); });
+    row.addEventListener("pointerleave", function () { node.classList.remove("hot"); });
+  });
+
+  /* ---- active nav link ---- */
+  var linkFor = {};
+  document.querySelectorAll("#links a").forEach(function (a) {
+    linkFor[a.getAttribute("href").slice(1)] = a;
+  });
+  var sio = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      var a = linkFor[en.target.id];
+      if (!a) return;
+      if (en.isIntersecting) {
+        Object.keys(linkFor).forEach(function (k) { linkFor[k].classList.remove("active"); });
+        a.classList.add("active");
+      }
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  ["about", "facilities", "services", "brands", "reach"].forEach(function (id) {
+    var s = document.getElementById(id);
+    if (s) sio.observe(s);
+  });
+})();
+</script>
+<!--CONTENT-END-->
+</body>
+</html>

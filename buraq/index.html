@@ -280,7 +280,7 @@ section{ position:relative; scroll-margin-top:84px; }
   isolation:isolate;
 }
 
-.bg{ position:absolute; inset:0; z-index:-1; pointer-events:none; }
+.bg{ position:absolute; inset:0; z-index:0; pointer-events:none; }
 
 /* 0. the yard film, ungraded — the scrim alone carries the type */
 .hero-film{ overflow:hidden; background:var(--ink); }
@@ -347,7 +347,7 @@ section{ position:relative; scroll-margin-top:84px; }
 .bg-grain{ background-image:var(--grain); background-size:180px 180px; opacity:.16; mix-blend-mode:overlay; }
 .bg-vig{ background:radial-gradient(120% 100% at 50% 45%, transparent 40%, rgba(6,6,9,.72) 100%); }
 
-.hero-inner{ position:relative; width:100%; }
+.hero-inner{ position:relative; width:100%; z-index:2; }
 @media (min-width:1100px){ .hero-inner > .wrap{ padding-left:calc(var(--rail) + var(--pad)); } }
 
 .hero h1{
@@ -401,7 +401,7 @@ body.s3 .hero-nums{ opacity:1; transform:none; pointer-events:auto; }
 
 /* nudge shown while the intro holds */
 .hold{
-  position:absolute; left:0; right:0; bottom:38px; text-align:center;
+  position:absolute; left:0; right:0; bottom:38px; text-align:center; z-index:2;
   color:var(--t3); opacity:0; transition:opacity .7s var(--ease);
   pointer-events:none;
 }
@@ -741,10 +741,12 @@ body.armed:not(.s2) .hold{ opacity:1; animation:bob 2.4s var(--ease) infinite; }
   transform:scale(var(--vz, 1.14));
   will-change:transform;
 }
-.fb-media video{ display:none; }
+.fb-media video{ display:block; }
+.fb-media img{ display:none; }
 
-.fb-media.has-video video{ display:block; }
-.fb-media.has-video img{ display:none; }
+/* the still only takes over once the film has actually failed */
+.fb-media.no-video video{ display:none; }
+.fb-media.no-video img{ display:block; }
 .fb-media.empty img, .fb-media.empty video{ display:none; }
 
 /* the slot, while the photograph is still to come */
@@ -1965,20 +1967,33 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     row.addEventListener("pointerleave", function () { set(false); });
   });
 
-  /* ══ the hero film ═══════════════════════════════════════════════════ */
-  var heroVideo = document.getElementById("heroVideo");
-  if (heroVideo && !reduce) {
-    var heroPlay = function () {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) heroVideo.play().catch(function () {});
-          else heroVideo.pause();
-        });
-      }, { threshold: 0.1 }).observe(heroVideo);
-    };
-    if (heroVideo.readyState >= 1) heroPlay();
-    else heroVideo.addEventListener("loadedmetadata", heroPlay, { once: true });
+  /* ══ films ═══════════════════════════════════════════════════════════
+     Two things a browser other than desktop Chromium needs:
+       · muted set as a PROPERTY, not only the attribute, or iOS declines
+         to autoplay and just sits on the poster frame
+       · an explicit load(), because preload="metadata" is treated as
+         "none" on iOS and on data-saver connections                     */
+  function filmIn(video, watch, onFail) {
+    if (!video) return;
+    video.muted = true;
+    video.setAttribute("webkit-playsinline", "");
+    if (onFail) video.addEventListener("error", onFail, true);
+
+    var started = false;
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          if (!started) { started = true; try { video.load(); } catch (e) {} }
+          if (!reduce) video.play().catch(function () {});
+        } else if (!video.paused) {
+          video.pause();
+        }
+      });
+    }, { threshold: 0.05 }).observe(watch || video);
   }
+
+  var heroVideo = document.getElementById("heroVideo");
+  filmIn(heroVideo, heroVideo);
 
   /* ══ the building slot — shows its placeholder until the film lands ═══ */
   var fbMedia = document.getElementById("fbMedia");
@@ -1989,31 +2004,13 @@ body.s2 .glassbar{ transform:translateX(-50%); }
     if (bImg.complete && bImg.naturalWidth === 0) markEmpty();
   }
 
-  /* A film in the panel wins over the still. It plays only while on screen —
-     a looping background video off-screen is pure battery cost. */
+  /* The film is shown from the outset; the still only replaces it if the
+     film errors, and the placeholder only if the still errors too. */
   var siteVideo = document.getElementById("siteVideo");
   if (siteVideo && fbMedia) {
-    var videoArmed = false;
-    /* preload="metadata" stops at readyState 1, so loadeddata never fires —
-       metadata is enough to know the file is really there. */
-    var videoReady = function () {
-      if (videoArmed) return;
-      videoArmed = true;
-      fbMedia.classList.add("has-video");
-      fbMedia.classList.remove("empty");
-      if (reduce) return;                     /* reduced motion: hold the poster frame */
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) siteVideo.play().catch(function () {});
-          else siteVideo.pause();
-        });
-        /* observe the video itself — `site` is assigned further down, and
-           this can run synchronously when the file is already cached */
-      }, { threshold: 0.15 }).observe(siteVideo);
-    };
-    siteVideo.addEventListener("loadedmetadata", videoReady);
-    siteVideo.addEventListener("canplay", videoReady);
-    if (siteVideo.readyState >= 1) videoReady();
+    filmIn(siteVideo, document.getElementById("site"), function () {
+      fbMedia.classList.add("no-video");
+    });
   }
 
   /* ══ the fleet gallery — scroll-linked unfurl into a 3D matrix ═════════

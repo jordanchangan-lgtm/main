@@ -1,6 +1,10 @@
-# Photographs, logos and fonts are content-addressed by filename — cache hard.
+# Assets are NOT content-hashed — site.mp4, ship.mp4, building.jpg and the
+# photographs keep the same filenames while their contents change between
+# deploys. `immutable` would tell a browser never to revalidate them for a
+# year, so anyone who visited an earlier deploy would keep being served the
+# old files. Cache them, but always let a redeploy through.
 /assets/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=3600, must-revalidate
 
 # The page itself changes on every edit — always revalidate.
 /

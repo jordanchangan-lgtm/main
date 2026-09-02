@@ -99,7 +99,7 @@ a{color:inherit}
   position:relative;z-index:1;
   border-radius:var(--slab-r) var(--slab-r) 0 0;
   padding:clamp(84px,11vh,132px) var(--gut) clamp(64px,9vh,104px);
-  box-shadow:0 -26px 60px rgba(0,0,0,.55);
+  box-shadow:0 -14px 34px rgba(0,0,0,.42);
 }
 .pin{
   position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
@@ -111,7 +111,7 @@ a{color:inherit}
 /* Every panel that rides up over another enters narrower and grows to full
    bleed — the mirror of the shrink above. */
 .rise{
-  transform-origin:50% 38%;
+  transform-origin:50% calc((1 - var(--cover,0)) * 100%);
   transform:scale(calc((1 - var(--enter,0) * .10) * (1 - var(--cover,0) * .085)));
   will-change:transform;
 }
@@ -139,7 +139,7 @@ a{color:inherit}
 .hero{
   min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
   padding:120px var(--gut) 76px;position:sticky;top:0;overflow:hidden;
-  transform-origin:50% 30%;
+  transform-origin:50% 0%;
   transform:scale(calc(1 - var(--cover,0) * .085));
 }
 @media (prefers-reduced-motion:reduce){.hero{transform:none}}
@@ -257,7 +257,7 @@ a{color:inherit}
   position:relative;z-index:1;overflow:hidden;background:#0C0C10;
   border-radius:var(--slab-r) var(--slab-r) 0 0;
   padding:clamp(84px,12vh,140px) var(--gut) clamp(64px,9vh,100px);
-  box-shadow:0 -26px 60px rgba(0,0,0,.6);
+  box-shadow:0 -14px 34px rgba(0,0,0,.48);
 }
 .case-glow{
   position:absolute;left:64%;top:18%;width:min(110vw,860px);aspect-ratio:1;

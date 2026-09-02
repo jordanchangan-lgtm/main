@@ -97,28 +97,22 @@ a{color:inherit}
    than the viewport would pin its own bottom out of reach). ---------- */
 .slab{
   position:relative;z-index:1;
-  border-radius:var(--slab-r) var(--slab-r) 0 0;
   padding:clamp(84px,11vh,132px) var(--gut) clamp(64px,9vh,104px);
   box-shadow:0 -14px 34px rgba(0,0,0,.42);
 }
-.pin{
-  position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-  border-radius:var(--slab-r) var(--slab-r)
-                calc(var(--cover,0) * var(--slab-r)) calc(var(--cover,0) * var(--slab-r));
-  will-change:transform;
-}
+.pin{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
 
 /* Every panel that rides up over another enters narrower and grows to full
    bleed — the mirror of the shrink above. */
 .rise{
+  --r:max(var(--enter,0), var(--cover,0));
   transform-origin:50% calc((1 - var(--cover,0)) * 100%);
-  transform:scale(calc((1 - var(--enter,0) * .10) * (1 - var(--cover,0) * .085)));
+  transform:scale(calc((1 - var(--enter,0) * .085) * (1 - var(--cover,0) * .075)));
+  border-radius:calc(var(--r) * 30px) calc(var(--r) * 30px)
+                calc(var(--cover,0) * 30px) calc(var(--cover,0) * 30px);
   will-change:transform;
 }
-@media (prefers-reduced-motion:reduce){
-  .pin,.rise{transform:none}
-  .pin{border-radius:var(--slab-r) var(--slab-r) 0 0}
-}
+@media (prefers-reduced-motion:reduce){.pin,.rise{transform:none;border-radius:0}}
 .light{background:var(--ivory);color:var(--ink)}
 .dark{background:var(--stage-2);color:var(--dark-fg)}
 .inner{width:100%;max-width:1180px;margin:0 auto}
@@ -178,11 +172,15 @@ a{color:inherit}
   font-weight:400;margin:0;max-width:21ch;text-wrap:balance;
 }
 .statement.wide{max-width:26ch}
-.w{color:var(--stone);transition:color .5s ease}
-.w.on{color:var(--ink)}
-.dark .w{color:var(--dark-dim)}
-.dark .w.on{color:var(--dark-fg)}
-@media (prefers-reduced-motion:reduce){.w{transition:none}}
+.statement{--lead:0}
+.w{
+  color:var(--ink);
+  /* Distance of this word behind the leading edge, softened over ~5 words. */
+  --d:calc((var(--lead) - var(--i)) / 5);
+  opacity:clamp(.14, var(--d), 1);
+}
+.dark .w,.contact .w{color:var(--ivory)}
+@media (prefers-reduced-motion:reduce){.w{opacity:1}}
 .statement-note{
   margin:clamp(26px,4vh,44px) 0 0;max-width:56ch;font-size:15px;line-height:1.6;color:var(--stone);
 }
@@ -195,25 +193,25 @@ a{color:inherit}
   padding:clamp(12px,2vh,20px) 0;border-bottom:1px solid var(--rule);
 }
 .focus li:last-child{border-bottom:0}
+.focus li{--f:0}
 .focus .nm{
   font-family:"Newsreader",Georgia,serif;font-weight:300;
   font-size:clamp(28px,5.4vw,64px);line-height:1.06;letter-spacing:-.015em;
-  color:#A9A296;transition:color .45s ease,transform .45s ease;
+  color:var(--ink);opacity:clamp(.17, var(--f), 1);
 }
-.focus li.on .nm{color:var(--ink)}
+/* The spec only belongs to whichever line is live. */
 .focus .sp{
   font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;
-  text-transform:uppercase;color:#8E887B;text-align:right;transition:color .45s ease;
+  text-transform:uppercase;color:var(--marrow);text-align:right;
+  opacity:clamp(0, calc(var(--f) * 2.6 - 1.6), 1);
 }
-.focus li.on .sp{color:var(--marrow)}
-@media (prefers-reduced-motion:reduce){.focus .nm,.focus .sp{transition:none}}
+@media (prefers-reduced-motion:reduce){.focus .nm,.focus .sp{opacity:1}}
 @media(max-width:560px){.focus li{grid-template-columns:1fr;gap:4px}.focus .sp{text-align:left}}
 
 /* ---------- the graphic break ---------- */
 .break{
   position:relative;z-index:1;overflow:hidden;background:var(--ink);
   min-height:100svh;display:flex;align-items:center;
-  border-radius:var(--slab-r) var(--slab-r) 0 0;
   padding:clamp(84px,11vh,132px) var(--gut);
 }
 .break .inner{position:relative;z-index:2}
@@ -255,10 +253,22 @@ a{color:inherit}
 /* ---------- work / case study ---------- */
 .case{
   position:relative;z-index:1;overflow:hidden;background:#0C0C10;
-  border-radius:var(--slab-r) var(--slab-r) 0 0;
   padding:clamp(84px,12vh,140px) var(--gut) clamp(64px,9vh,100px);
   box-shadow:0 -14px 34px rgba(0,0,0,.48);
 }
+.case-cover{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:var(--cover-img,none);
+  background-size:cover;background-position:var(--cover-pos,center);
+  opacity:var(--cover-op,.55);
+}
+.case-cover::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(12,12,16,.86) 0%, rgba(12,12,16,.55) 42%, rgba(12,12,16,.92) 100%);
+}
+.case:not([style*="--cover-img"]) .case-cover{display:none}
+
 .case-glow{
   position:absolute;left:64%;top:18%;width:min(110vw,860px);aspect-ratio:1;
   transform:translate(-50%,-50%);pointer-events:none;
@@ -327,6 +337,11 @@ a{color:inherit}
   padding:15px 0;border-bottom:1px solid var(--dark-rule);
 }
 .index li:last-child{border-bottom:0}
+.light .index li{border-bottom-color:var(--rule)}
+.light .index .p{color:var(--ink)}
+.light .index .c{color:var(--stone)}
+.light .index .st{border-color:var(--rule);color:var(--stone)}
+.light .index .st.live{color:var(--marrow);border-color:rgba(187,74,46,.45)}
 .index li{transition:padding-left .3s ease}
 .index li:hover{padding-left:10px}
 .index a{
@@ -380,18 +395,17 @@ h3.grp:first-of-type{margin-top:0}
   padding:14px 0;border-bottom:1px solid var(--rule);
 }
 .row:last-of-type{border-bottom:0}
-.row .nm{font-size:16px;font-weight:500;color:#6E6A61;transition:color .45s ease;letter-spacing:-.005em}
-.row.on .nm{color:var(--ink)}
+.row{--f:0}
+.row .nm{font-size:16px;font-weight:500;color:var(--ink);letter-spacing:-.005em;
+  opacity:clamp(.55, var(--f), 1)}
 .row .nm small{display:block;font-weight:400;font-size:13px;line-height:1.5;color:var(--stone);margin-top:3px;max-width:62ch}
 .row .amt{
   font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:500;
-  color:#6E6A61;transition:color .45s ease;white-space:nowrap;text-align:right;
+  color:var(--ink);white-space:nowrap;text-align:right;opacity:clamp(.55, var(--f), 1);
 }
-.row.on .amt{color:var(--ink)}
 .row .amt i{font-style:normal;font-size:11px;color:var(--stone);margin-left:4px}
 .row .amt.req{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--marrow)}
-.row.on .amt.req{color:var(--marrow)}
-@media (prefers-reduced-motion:reduce){.row .nm,.row .amt{transition:none}}
+@media (prefers-reduced-motion:reduce){.row .nm,.row .amt{opacity:1}}
 
 .ladder{background:var(--soft);border:1px solid var(--rule);padding:clamp(16px,2.4vw,22px);margin:20px 0 0}
 .lg{display:grid;grid-template-columns:96px minmax(0,1fr) 64px;gap:12px;align-items:center;margin-bottom:9px}
@@ -439,12 +453,11 @@ h3.grp:first-of-type{margin-top:0}
    active, the pointer can make active too. ---------- */
 @media (hover:hover){
   /* Capability lines: hovering promotes a line the same way scrolling does. */
-  .focus li:hover .nm{color:var(--ink)}
-  .focus li:hover .sp{color:var(--marrow)}
+  .focus li:hover .nm,.focus li:hover .sp{opacity:1}
   .focus li{cursor:default}
 
   /* Price rows: same promotion, plus the row edges pick up the accent. */
-  .row:hover .nm,.row:hover .amt{color:var(--ink)}
+  .row:hover .nm,.row:hover .amt{opacity:1}
   .row:hover .amt.req{color:var(--ember)}
 
   /* Sector words trade weight with their neighbours. */
@@ -578,157 +591,6 @@ h3.grp:first-of-type{margin-top:0}
   </div>
 </section>
 
-<!-- ================= WORK — one full-bleed panel per project, as in the
-     reference. Each panel borrows only its ambient glow from the project's
-     own palette; the type and chrome stay Latent's. ================= -->
-
-<section class="case rise" id="work" style="--tone-1:rgba(212,99,63,.30);--tone-2:rgba(140,52,32,.12)">
-  <div class="case-glow" aria-hidden="true"></div>
-  <div class="inner">
-    <span class="case-tag">Selected work — 01</span>
-    <h3>Élixir<em>two</em></h3>
-    <div class="case-meta">
-      <span>Brand — <b>Atelier Rebul</b></span>
-      <span>Sector — <b>Perfume</b></span>
-      <span>Scope — <b>Nine plates + film</b></span>
-      <span>Format — <b>4:5 · 3712×4608 / 9:16 · 15.6s</b></span>
-      <span>Status — <b>Concept, not commissioned</b></span>
-      <span>Year — <b>MMXXVI</b></span>
-    </div>
-    <div class="case-body">
-      <div>
-        <p>Élixir 2 opens on ripe plum, carries musk through its heart, and settles into vanilla and amber. Five notes. We made all five, plus the flower amber is actually harvested from, and the flacon that holds them.</p>
-        <p>No camera, no set, no crew. Nine 4:5 studies with type baked into the frame, and a fifteen-second vertical film cut to 165&nbsp;BPM — eighteen cuts, the shortest holding 0.20s, the music dropping to −29&nbsp;dB under the hero hold and stopping dead rather than fading.</p>
-        <div class="beats" aria-label="Film beat map">
-          <div class="beat"><b>0.00</b>cold open</div>
-          <div class="beat hit"><b>2.50</b>hero hold</div>
-          <div class="beat"><b>5.00</b>re-entry</div>
-          <div class="beat"><b>5.43</b>stab cluster</div>
-          <div class="beat hit"><b>8.00</b>the hook</div>
-          <div class="beat"><b>9.60</b>orbit</div>
-          <div class="beat"><b>14.07</b>the turn</div>
-          <div class="beat hit"><b>15.45</b>dead stop</div>
-        </div>
-      </div>
-      <ul class="plates" aria-label="The nine plates">
-        <li><span class="n">01</span><span class="t">Ambrette</span><span class="d">Musk · heart</span></li>
-        <li><span class="n">02</span><span class="t">Plum wedge</span><span class="d">Plum · top</span></li>
-        <li><span class="n">03</span><span class="t">Vanilla spiral</span><span class="d">Vanilla · base</span></li>
-        <li><span class="n">04</span><span class="t">Burning labdanum</span><span class="d">Amber · base</span></li>
-        <li><span class="n">05</span><span class="t">Raw resin</span><span class="d">Amber · base</span></li>
-        <li><span class="n">06</span><span class="t">Rockrose</span><span class="d">Cistus ladanifer</span></li>
-        <li><span class="n">07</span><span class="t">Plum section</span><span class="d">Plum · top</span></li>
-        <li><span class="n">08</span><span class="t">Stacked slices</span><span class="d">Plum · top</span></li>
-        <li><span class="n">09</span><span class="t">The flacon</span><span class="d">All five notes</span></li>
-      </ul>
-    </div>
-    <a class="case-link" href="https://claude.ai/code/artifact/4dc00fb6-df82-4792-979f-e50028a97307">View the case study <span class="arrow" aria-hidden="true">↗</span></a>
-  </div>
-</section>
-
-<section class="case rise" id="cube-care" style="--tone-1:rgba(110,155,178,.26);--tone-2:rgba(52,86,102,.12)">
-  <div class="case-glow" aria-hidden="true"></div>
-  <div class="inner">
-    <span class="case-tag">Selected work — 02</span>
-    <h3>Cube<em>care center</em></h3>
-    <div class="case-meta">
-      <span>Brand — <b>Cube Care Center</b></span>
-      <span>Sector — <b>Care</b></span>
-      <span>Scope — <b>Identity + campaign</b></span>
-      <span>Status — <b>Commissioned</b></span>
-      <span>Year — <b>2026</b></span>
-    </div>
-    <div class="case-body">
-      <div>
-        <p>Two pieces of work that had to agree with each other: the identity first — logo, palette, typography and the guidelines that hold them — then the campaign content built on top of it.</p>
-        <p>Because the frames are generated rather than shot, the identity isn't a document the photography drifts away from. The palette and type in the guidelines are the same ones directed into every carousel and every reel, so the system reads the same on the logo sheet and in the last frame of the feed.</p>
-      </div>
-      <ul class="plates" aria-label="Delivered">
-        <li><span class="n">01</span><span class="t">Logo</span><span class="d">Primary + marks</span></li>
-        <li><span class="n">02</span><span class="t">Palette</span><span class="d">Core + support</span></li>
-        <li><span class="n">03</span><span class="t">Typography</span><span class="d">Display + text</span></li>
-        <li><span class="n">04</span><span class="t">Guidelines</span><span class="d">Usage + spacing</span></li>
-        <li><span class="n">05</span><span class="t">Identity mockups</span><span class="d">Applied</span></li>
-        <li><span class="n">06</span><span class="t">Campaign stills</span><span class="d">Carousel sets</span></li>
-        <li><span class="n">07</span><span class="t">Reels</span><span class="d">1080p · feed-sized</span></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="case rise" id="cube-coffee" style="--tone-1:rgba(168,102,52,.28);--tone-2:rgba(96,56,28,.12)">
-  <div class="case-glow" aria-hidden="true"></div>
-  <div class="inner">
-    <span class="case-tag">Selected work — 03</span>
-    <h3>Cube<em>coffee house</em></h3>
-    <div class="case-meta">
-      <span>Brand — <b>Cube Coffee House</b></span>
-      <span>Sector — <b>Coffee</b></span>
-      <span>Scope — <b>Identity + campaign</b></span>
-      <span>Status — <b>Commissioned</b></span>
-      <span>Year — <b>2026</b></span>
-    </div>
-    <div class="case-body">
-      <div>
-        <p>The same two-part build — identity, then the campaign frames that run on it — for a category where the product is almost entirely surface.</p>
-        <p>Coffee is one of the hardest things to direct without a camera: crema breaks in a particular way, steam has to read as hot rather than smoky, and roast colour shifts under every light you put on it. Those are the frames that get the most direction, and the ones that get cut when they don't hold.</p>
-      </div>
-      <ul class="plates" aria-label="Delivered">
-        <li><span class="n">01</span><span class="t">Logo</span><span class="d">Primary + marks</span></li>
-        <li><span class="n">02</span><span class="t">Palette</span><span class="d">Core + support</span></li>
-        <li><span class="n">03</span><span class="t">Typography</span><span class="d">Display + text</span></li>
-        <li><span class="n">04</span><span class="t">Guidelines</span><span class="d">Usage + spacing</span></li>
-        <li><span class="n">05</span><span class="t">Identity mockups</span><span class="d">Applied</span></li>
-        <li><span class="n">06</span><span class="t">Campaign stills</span><span class="d">Carousel sets</span></li>
-        <li><span class="n">07</span><span class="t">Reels</span><span class="d">1080p · feed-sized</span></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="case rise" id="rawabina" style="--tone-1:rgba(88,160,60,.26);--tone-2:rgba(40,88,32,.12)">
-  <div class="case-glow" aria-hidden="true"></div>
-  <div class="inner">
-    <span class="case-tag">Selected work — 04</span>
-    <h3>Rawabina<em>al-khadhraa</em></h3>
-    <div class="case-meta">
-      <span>Brand — <b>Rawabina Al-Khadhraa · روابينا الخضراء</b></span>
-      <span>Sector — <b>Landscaping &amp; irrigation</b></span>
-      <span>Scope — <b>Editorial website</b></span>
-      <span>Region — <b>Saudi Arabia, est. 1997</b></span>
-      <span>Status — <b>Live</b></span>
-    </div>
-    <div class="case-body">
-      <div>
-        <p><em>Touch of Green.</em> A landscaping and irrigation contractor working on the Kingdom's landmark projects since 1997 — design, implementation and maintenance of premium landscapes.</p>
-        <p>An editorial build rather than a static one: the page is animated end to end, bilingual English and Arabic, set in Manrope and Tajawal, on a palette that runs from planting green through to irrigation blue. The argument the site makes is that landscape is a science — so the structure walks a visitor through listening, designing, building and maintaining, in that order.</p>
-      </div>
-      <ul class="plates" aria-label="Page sections">
-        <li><span class="n">01</span><span class="t">A touch of green across the Kingdom</span><span class="d">Opening</span></li>
-        <li><span class="n">02</span><span class="t">A specialist in living landscapes</span><span class="d">Positioning</span></li>
-        <li><span class="n">03</span><span class="t">We start by listening</span><span class="d">Process</span></li>
-        <li><span class="n">04</span><span class="t">Then we design with science</span><span class="d">Process</span></li>
-        <li><span class="n">05</span><span class="t">Built in four scientific parts</span><span class="d">Method</span></li>
-        <li><span class="n">06</span><span class="t">Landmark works</span><span class="d">Projects</span></li>
-        <li><span class="n">07</span><span class="t">Let's grow something green</span><span class="d">Contact</span></li>
-      </ul>
-    </div>
-    <a class="case-link" href="https://rawabinaalkhadhraa.com/">Visit the live site <span class="arrow" aria-hidden="true">↗</span></a>
-  </div>
-</section>
-
-<section class="rise slab dark" id="work-index">
-  <div class="inner">
-    <p class="eyebrow"><b>( Index )</b> Every project on this page</p>
-    <ul class="index">
-      <li><a href="https://claude.ai/code/artifact/4dc00fb6-df82-4792-979f-e50028a97307"><span class="p">Élixir 2 — nine notes, one light</span><span class="c">Perfume · Stills + film</span><span class="st live">Case study</span></a></li>
-      <li><a href="#cube-care"><span class="p">Cube Care Center</span><span class="c">Care · Identity + campaign</span><span class="st">Commissioned</span></a></li>
-      <li><a href="#cube-coffee"><span class="p">Cube Coffee House</span><span class="c">Coffee · Identity + campaign</span><span class="st">Commissioned</span></a></li>
-      <li><a href="https://rawabinaalkhadhraa.com/"><span class="p">Rawabina Al-Khadhraa — Touch of Green</span><span class="c">Landscaping · Editorial website</span><span class="st live">Live site</span></a></li>
-    </ul>
-  </div>
-</section>
-
 <!-- ================= PROCESS ================= -->
 <section class="rise slab light" id="process">
   <div class="inner">
@@ -833,6 +695,161 @@ h3.grp:first-of-type{margin-top:0}
   </div>
 </section>
 
+<section class="rise slab light" id="work-index">
+  <div class="inner">
+    <p class="eyebrow"><b>( Index )</b> Every project on this page</p>
+    <ul class="index">
+      <li><a href="https://claude.ai/code/artifact/4dc00fb6-df82-4792-979f-e50028a97307"><span class="p">Élixir 2 — nine notes, one light</span><span class="c">Perfume · Stills + film</span><span class="st live">Case study</span></a></li>
+      <li><a href="#cube-care"><span class="p">Cube Care Center</span><span class="c">Care · Identity + campaign</span><span class="st">Commissioned</span></a></li>
+      <li><a href="#cube-coffee"><span class="p">Cube Coffee House</span><span class="c">Coffee · Identity + campaign</span><span class="st">Commissioned</span></a></li>
+      <li><a href="https://rawabinaalkhadhraa.com/"><span class="p">Rawabina Al-Khadhraa — Touch of Green</span><span class="c">Landscaping · Editorial website</span><span class="st live">Live site</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= WORK — one full-bleed panel per project, as in the
+     reference. Each panel borrows only its ambient glow from the project's
+     own palette; the type and chrome stay Latent's. ================= -->
+
+<section class="case rise" id="work" style="--tone-1:rgba(212,99,63,.30);--tone-2:rgba(140,52,32,.12)">
+  <div class="case-cover" aria-hidden="true"></div>
+    <div class="case-glow" aria-hidden="true"></div>
+  <div class="inner">
+    <span class="case-tag">Selected work — 01</span>
+    <h3>Élixir<em>two</em></h3>
+    <div class="case-meta">
+      <span>Brand — <b>Atelier Rebul</b></span>
+      <span>Sector — <b>Perfume</b></span>
+      <span>Scope — <b>Nine plates + film</b></span>
+      <span>Format — <b>4:5 · 3712×4608 / 9:16 · 15.6s</b></span>
+      <span>Status — <b>Concept, not commissioned</b></span>
+      <span>Year — <b>MMXXVI</b></span>
+    </div>
+    <div class="case-body">
+      <div>
+        <p>Élixir 2 opens on ripe plum, carries musk through its heart, and settles into vanilla and amber. Five notes. We made all five, plus the flower amber is actually harvested from, and the flacon that holds them.</p>
+        <p>No camera, no set, no crew. Nine 4:5 studies with type baked into the frame, and a fifteen-second vertical film cut to 165&nbsp;BPM — eighteen cuts, the shortest holding 0.20s, the music dropping to −29&nbsp;dB under the hero hold and stopping dead rather than fading.</p>
+        <div class="beats" aria-label="Film beat map">
+          <div class="beat"><b>0.00</b>cold open</div>
+          <div class="beat hit"><b>2.50</b>hero hold</div>
+          <div class="beat"><b>5.00</b>re-entry</div>
+          <div class="beat"><b>5.43</b>stab cluster</div>
+          <div class="beat hit"><b>8.00</b>the hook</div>
+          <div class="beat"><b>9.60</b>orbit</div>
+          <div class="beat"><b>14.07</b>the turn</div>
+          <div class="beat hit"><b>15.45</b>dead stop</div>
+        </div>
+      </div>
+      <ul class="plates" aria-label="The nine plates">
+        <li><span class="n">01</span><span class="t">Ambrette</span><span class="d">Musk · heart</span></li>
+        <li><span class="n">02</span><span class="t">Plum wedge</span><span class="d">Plum · top</span></li>
+        <li><span class="n">03</span><span class="t">Vanilla spiral</span><span class="d">Vanilla · base</span></li>
+        <li><span class="n">04</span><span class="t">Burning labdanum</span><span class="d">Amber · base</span></li>
+        <li><span class="n">05</span><span class="t">Raw resin</span><span class="d">Amber · base</span></li>
+        <li><span class="n">06</span><span class="t">Rockrose</span><span class="d">Cistus ladanifer</span></li>
+        <li><span class="n">07</span><span class="t">Plum section</span><span class="d">Plum · top</span></li>
+        <li><span class="n">08</span><span class="t">Stacked slices</span><span class="d">Plum · top</span></li>
+        <li><span class="n">09</span><span class="t">The flacon</span><span class="d">All five notes</span></li>
+      </ul>
+    </div>
+    <a class="case-link" href="https://claude.ai/code/artifact/4dc00fb6-df82-4792-979f-e50028a97307">View the case study <span class="arrow" aria-hidden="true">↗</span></a>
+  </div>
+</section>
+
+<section class="case rise" id="cube-care" style="--tone-1:rgba(110,155,178,.26);--tone-2:rgba(52,86,102,.12)">
+  <div class="case-cover" aria-hidden="true"></div>
+    <div class="case-glow" aria-hidden="true"></div>
+  <div class="inner">
+    <span class="case-tag">Selected work — 02</span>
+    <h3>Cube<em>care center</em></h3>
+    <div class="case-meta">
+      <span>Brand — <b>Cube Care Center</b></span>
+      <span>Sector — <b>Care</b></span>
+      <span>Scope — <b>Identity + campaign</b></span>
+      <span>Status — <b>Commissioned</b></span>
+      <span>Year — <b>2026</b></span>
+    </div>
+    <div class="case-body">
+      <div>
+        <p>Two pieces of work that had to agree with each other: the identity first — logo, palette, typography and the guidelines that hold them — then the campaign content built on top of it.</p>
+        <p>Because the frames are generated rather than shot, the identity isn't a document the photography drifts away from. The palette and type in the guidelines are the same ones directed into every carousel and every reel, so the system reads the same on the logo sheet and in the last frame of the feed.</p>
+      </div>
+      <ul class="plates" aria-label="Delivered">
+        <li><span class="n">01</span><span class="t">Logo</span><span class="d">Primary + marks</span></li>
+        <li><span class="n">02</span><span class="t">Palette</span><span class="d">Core + support</span></li>
+        <li><span class="n">03</span><span class="t">Typography</span><span class="d">Display + text</span></li>
+        <li><span class="n">04</span><span class="t">Guidelines</span><span class="d">Usage + spacing</span></li>
+        <li><span class="n">05</span><span class="t">Identity mockups</span><span class="d">Applied</span></li>
+        <li><span class="n">06</span><span class="t">Campaign stills</span><span class="d">Carousel sets</span></li>
+        <li><span class="n">07</span><span class="t">Reels</span><span class="d">1080p · feed-sized</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="case rise" id="cube-coffee" style="--tone-1:rgba(168,102,52,.28);--tone-2:rgba(96,56,28,.12)">
+  <div class="case-cover" aria-hidden="true"></div>
+    <div class="case-glow" aria-hidden="true"></div>
+  <div class="inner">
+    <span class="case-tag">Selected work — 03</span>
+    <h3>Cube<em>coffee house</em></h3>
+    <div class="case-meta">
+      <span>Brand — <b>Cube Coffee House</b></span>
+      <span>Sector — <b>Coffee</b></span>
+      <span>Scope — <b>Identity + campaign</b></span>
+      <span>Status — <b>Commissioned</b></span>
+      <span>Year — <b>2026</b></span>
+    </div>
+    <div class="case-body">
+      <div>
+        <p>The same two-part build — identity, then the campaign frames that run on it — for a category where the product is almost entirely surface.</p>
+        <p>Coffee is one of the hardest things to direct without a camera: crema breaks in a particular way, steam has to read as hot rather than smoky, and roast colour shifts under every light you put on it. Those are the frames that get the most direction, and the ones that get cut when they don't hold.</p>
+      </div>
+      <ul class="plates" aria-label="Delivered">
+        <li><span class="n">01</span><span class="t">Logo</span><span class="d">Primary + marks</span></li>
+        <li><span class="n">02</span><span class="t">Palette</span><span class="d">Core + support</span></li>
+        <li><span class="n">03</span><span class="t">Typography</span><span class="d">Display + text</span></li>
+        <li><span class="n">04</span><span class="t">Guidelines</span><span class="d">Usage + spacing</span></li>
+        <li><span class="n">05</span><span class="t">Identity mockups</span><span class="d">Applied</span></li>
+        <li><span class="n">06</span><span class="t">Campaign stills</span><span class="d">Carousel sets</span></li>
+        <li><span class="n">07</span><span class="t">Reels</span><span class="d">1080p · feed-sized</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="case rise" id="rawabina" style="--tone-1:rgba(88,160,60,.26);--tone-2:rgba(40,88,32,.12)">
+  <div class="case-cover" aria-hidden="true"></div>
+    <div class="case-glow" aria-hidden="true"></div>
+  <div class="inner">
+    <span class="case-tag">Selected work — 04</span>
+    <h3>Rawabina<em>al-khadhraa</em></h3>
+    <div class="case-meta">
+      <span>Brand — <b>Rawabina Al-Khadhraa · روابينا الخضراء</b></span>
+      <span>Sector — <b>Landscaping &amp; irrigation</b></span>
+      <span>Scope — <b>Editorial website</b></span>
+      <span>Region — <b>Saudi Arabia, est. 1997</b></span>
+      <span>Status — <b>Live</b></span>
+    </div>
+    <div class="case-body">
+      <div>
+        <p><em>Touch of Green.</em> A landscaping and irrigation contractor working on the Kingdom's landmark projects since 1997 — design, implementation and maintenance of premium landscapes.</p>
+        <p>An editorial build rather than a static one: the page is animated end to end, bilingual English and Arabic, set in Manrope and Tajawal, on a palette that runs from planting green through to irrigation blue. The argument the site makes is that landscape is a science — so the structure walks a visitor through listening, designing, building and maintaining, in that order.</p>
+      </div>
+      <ul class="plates" aria-label="Page sections">
+        <li><span class="n">01</span><span class="t">A touch of green across the Kingdom</span><span class="d">Opening</span></li>
+        <li><span class="n">02</span><span class="t">A specialist in living landscapes</span><span class="d">Positioning</span></li>
+        <li><span class="n">03</span><span class="t">We start by listening</span><span class="d">Process</span></li>
+        <li><span class="n">04</span><span class="t">Then we design with science</span><span class="d">Process</span></li>
+        <li><span class="n">05</span><span class="t">Built in four scientific parts</span><span class="d">Method</span></li>
+        <li><span class="n">06</span><span class="t">Landmark works</span><span class="d">Projects</span></li>
+        <li><span class="n">07</span><span class="t">Let's grow something green</span><span class="d">Contact</span></li>
+      </ul>
+    </div>
+    <a class="case-link" href="https://rawabinaalkhadhraa.com/">Visit the live site <span class="arrow" aria-hidden="true">↗</span></a>
+  </div>
+</section>
+
 <!-- ================= CONTACT ================= -->
 <section class="rise slab contact" id="contact">
   <div class="inner">
@@ -861,43 +878,34 @@ h3.grp:first-of-type{margin-top:0}
   Array.prototype.forEach.call(statements, function(el){
     var words = el.textContent.split(/(\s+)/);
     el.textContent = "";
+    var n = 0;
     words.forEach(function(t){
       if(/^\s+$/.test(t)){ el.appendChild(document.createTextNode(t)); return; }
       var s = document.createElement("span");
       s.className = "w";
+      s.style.setProperty("--i", String(n++));
       s.textContent = t;
       el.appendChild(s);
     });
+    el.dataset.words = String(n);
   });
 
   if(reduce){
-    Array.prototype.forEach.call(document.querySelectorAll(".w"), function(w){ w.classList.add("on"); });
-    Array.prototype.forEach.call(document.querySelectorAll(".js-focus li, .js-row"), function(n){ n.classList.add("on"); });
-    Array.prototype.forEach.call(document.querySelectorAll(".fill"), function(f){ f.style.transform = "scaleX(" + f.dataset.w + ")"; });
+    Array.prototype.forEach.call(document.querySelectorAll(".fill"), function(f){
+      f.style.transform = "scaleX(" + f.dataset.w + ")";
+    });
     return;
   }
 
-  /* ---- word reveal, staggered left to right ---- */
-  var wordObs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(!e.isIntersecting) return;
-      var ws = e.target.querySelectorAll(".w");
-      Array.prototype.forEach.call(ws, function(w, i){
-        setTimeout(function(){ w.classList.add("on"); }, i * 42);
-      });
-      wordObs.unobserve(e.target);
-    });
-  }, { threshold: 0.35 });
-  Array.prototype.forEach.call(statements, function(el){ wordObs.observe(el); });
+  function clamp01(n){ return n < 0 ? 0 : (n > 1 ? 1 : n); }
 
-  /* ---- price ladder fills ---- */
+  /* ---- price ladder: still a one-shot, it is a chart not a reveal ---- */
   var ladder = document.querySelector(".js-ladder");
   if(ladder){
     var ladderObs = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if(!e.isIntersecting) return;
-        var fills = e.target.querySelectorAll(".fill");
-        Array.prototype.forEach.call(fills, function(f, i){
+        Array.prototype.forEach.call(e.target.querySelectorAll(".fill"), function(f, i){
           setTimeout(function(){ f.style.transform = "scaleX(" + f.dataset.w + ")"; }, i * 110);
         });
         ladderObs.unobserve(e.target);
@@ -906,51 +914,65 @@ h3.grp:first-of-type{margin-top:0}
     ladderObs.observe(ladder);
   }
 
-  /* ---- scroll focus: the line nearest the middle of the screen is the live one ---- */
-  var groups = [
-    [].slice.call(document.querySelectorAll(".js-focus li")),
-    [].slice.call(document.querySelectorAll(".js-row"))
-  ].filter(function(g){ return g.length; });
-  var ticking = false;
-
   var pins  = [].slice.call(document.querySelectorAll(".pin, .hero"));
   var rises = [].slice.call(document.querySelectorAll(".rise"));
+  var stmts = [].slice.call(document.querySelectorAll(".js-words"));
+  var lists = [
+    { items: [].slice.call(document.querySelectorAll(".js-focus li")), reach: 1.0 },
+    { items: [].slice.call(document.querySelectorAll(".js-row")),      reach: 2.4 }
+  ].filter(function(g){ return g.items.length; });
 
-  function clamp01(n){ return n < 0 ? 0 : (n > 1 ? 1 : n); }
+  var ticking = false;
 
   function stack(){
     var vh = window.innerHeight;
-
-    // A pinned panel shrinks in step with how far the next one has covered it.
     pins.forEach(function(el){
       var next = el.nextElementSibling;
       if(!next){ el.style.setProperty("--cover", "0"); return; }
-      var p = clamp01((vh - next.getBoundingClientRect().top) / vh);
-      el.style.setProperty("--cover", p.toFixed(3));
+      // 0 until the incoming panel is past halfway up, 1 as it lands.
+      var W = vh * 0.55;
+      el.style.setProperty("--cover",
+        clamp01((W - next.getBoundingClientRect().top) / W).toFixed(3));
     });
-
-    // A rising panel is small when its top edge is at the bottom of the
-    // screen and full size by the time that edge reaches the top.
     rises.forEach(function(el){
-      var top = el.getBoundingClientRect().top;
-      el.style.setProperty("--enter", clamp01(top / vh).toFixed(3));
+      el.style.setProperty("--enter",
+        clamp01(el.getBoundingClientRect().top / (vh * 0.55)).toFixed(3));
+    });
+  }
+
+  /* The leading edge of the reveal tracks scroll, so it runs backwards too. */
+  function words(){
+    var vh = window.innerHeight;
+    stmts.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      var total = +el.dataset.words || 1;
+      var p = clamp01((vh * 0.86 - r.top) / (vh * 0.52 + r.height));
+      el.style.setProperty("--lead", (p * (total + 5)).toFixed(2));
+    });
+  }
+
+  /* Nearest line to the middle reads solid; the rest fall off with distance. */
+  function falloff(){
+    var mid = window.innerHeight * 0.5;
+    lists.forEach(function(g){
+      var best = Infinity;
+      var ds = g.items.map(function(el){
+        var r = el.getBoundingClientRect();
+        var d = Math.abs(r.top + r.height / 2 - mid) / (window.innerHeight * 0.5);
+        if(d < best) best = d;
+        return d;
+      });
+      g.items.forEach(function(el, i){
+        el.style.setProperty("--f", (1 - clamp01((ds[i] - best) / g.reach)).toFixed(3));
+      });
     });
   }
 
   function paint(){
     ticking = false;
     stack();
-    var mid = window.innerHeight * 0.5;
-    groups.forEach(function(group){
-      var best = null, bestD = Infinity;
-      group.forEach(function(el){
-        var r = el.getBoundingClientRect();
-        if(r.bottom < 0 || r.top > window.innerHeight) return;
-        var d = Math.abs(r.top + r.height / 2 - mid);
-        if(d < bestD){ bestD = d; best = el; }
-      });
-      group.forEach(function(el){ el.classList.toggle("on", el === best); });
-    });
+    words();
+    falloff();
   }
 
   function onScroll(){

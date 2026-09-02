@@ -27,6 +27,9 @@
   --dark-rule:#2B2A32;
   --slab-r:26px;
   --gut:clamp(22px,5vw,68px);
+  --card-gut:clamp(10px,3vw,40px);
+  --card-gap:clamp(10px,2.4vw,32px);
+  --card-r:clamp(16px,1.8vw,26px);
 }
 
 *{box-sizing:border-box}
@@ -253,19 +256,23 @@ a{color:inherit}
 /* ---------- work / case study ---------- */
 .case{
   position:relative;z-index:1;overflow:hidden;background:#0C0C10;
-  padding:clamp(84px,12vh,140px) var(--gut) clamp(64px,9vh,100px);
-  box-shadow:0 -14px 34px rgba(0,0,0,.48);
+  width:calc(100% - 2 * var(--card-gut));
+  margin:var(--card-gap) auto;
+  border-radius:var(--card-r);
+  min-height:86svh;display:flex;align-items:center;
+  padding:clamp(38px,6vh,72px) clamp(26px,4.5vw,72px);
+  box-shadow:0 24px 70px rgba(0,0,0,.55);
 }
 .case-cover{
   position:absolute;inset:0;z-index:0;pointer-events:none;
   background-image:var(--cover-img,none);
   background-size:cover;background-position:var(--cover-pos,center);
-  opacity:var(--cover-op,.55);
+  opacity:var(--cover-op,1);
 }
 .case-cover::after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,
-    rgba(12,12,16,.86) 0%, rgba(12,12,16,.55) 42%, rgba(12,12,16,.92) 100%);
+  background:linear-gradient(100deg,
+    rgba(10,10,14,.94) 0%, rgba(10,10,14,.72) 46%, rgba(10,10,14,.34) 100%);
 }
 .case:not([style*="--cover-img"]) .case-cover{display:none}
 
@@ -274,7 +281,7 @@ a{color:inherit}
   transform:translate(-50%,-50%);pointer-events:none;
   background:radial-gradient(circle,var(--tone-1,rgba(212,99,63,.30)) 0%,var(--tone-2,rgba(140,52,32,.12)) 40%,rgba(12,12,16,0) 70%);
 }
-.case .inner{position:relative;z-index:2}
+.case .inner{position:relative;z-index:2;max-width:760px;margin:0}
 .case-tag{
   display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
   letter-spacing:.2em;text-transform:uppercase;color:var(--ember);
@@ -293,12 +300,8 @@ a{color:inherit}
   text-transform:uppercase;color:var(--dark-dim);
 }
 .case-meta b{color:var(--ivory);font-weight:400}
-.case-body{
-  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
-  gap:clamp(26px,5vw,64px);margin-top:clamp(28px,4vh,46px);align-items:start;
-}
-@media(max-width:820px){.case-body{grid-template-columns:1fr}}
-.case-body p{margin:0 0 14px;font-size:15.5px;line-height:1.66;color:rgba(237,234,225,.78);max-width:60ch}
+.case-body{margin-top:clamp(20px,3vh,32px)}
+.case-body p{margin:0 0 12px;font-size:15px;line-height:1.62;color:rgba(237,234,225,.80);max-width:56ch}
 .case-body p:last-child{margin-bottom:0}
 
 .case-link{
@@ -713,7 +716,7 @@ h3.grp:first-of-type{margin-top:0}
 
 <section class="case rise" id="work" style="--tone-1:rgba(212,99,63,.30);--tone-2:rgba(140,52,32,.12)">
   <div class="case-cover" aria-hidden="true"></div>
-    <div class="case-glow" aria-hidden="true"></div>
+  <div class="case-glow" aria-hidden="true"></div>
   <div class="inner">
     <span class="case-tag">Selected work — 01</span>
     <h3>Élixir<em>two</em></h3>
@@ -726,31 +729,7 @@ h3.grp:first-of-type{margin-top:0}
       <span>Year — <b>MMXXVI</b></span>
     </div>
     <div class="case-body">
-      <div>
-        <p>Élixir 2 opens on ripe plum, carries musk through its heart, and settles into vanilla and amber. Five notes. We made all five, plus the flower amber is actually harvested from, and the flacon that holds them.</p>
-        <p>No camera, no set, no crew. Nine 4:5 studies with type baked into the frame, and a fifteen-second vertical film cut to 165&nbsp;BPM — eighteen cuts, the shortest holding 0.20s, the music dropping to −29&nbsp;dB under the hero hold and stopping dead rather than fading.</p>
-        <div class="beats" aria-label="Film beat map">
-          <div class="beat"><b>0.00</b>cold open</div>
-          <div class="beat hit"><b>2.50</b>hero hold</div>
-          <div class="beat"><b>5.00</b>re-entry</div>
-          <div class="beat"><b>5.43</b>stab cluster</div>
-          <div class="beat hit"><b>8.00</b>the hook</div>
-          <div class="beat"><b>9.60</b>orbit</div>
-          <div class="beat"><b>14.07</b>the turn</div>
-          <div class="beat hit"><b>15.45</b>dead stop</div>
-        </div>
-      </div>
-      <ul class="plates" aria-label="The nine plates">
-        <li><span class="n">01</span><span class="t">Ambrette</span><span class="d">Musk · heart</span></li>
-        <li><span class="n">02</span><span class="t">Plum wedge</span><span class="d">Plum · top</span></li>
-        <li><span class="n">03</span><span class="t">Vanilla spiral</span><span class="d">Vanilla · base</span></li>
-        <li><span class="n">04</span><span class="t">Burning labdanum</span><span class="d">Amber · base</span></li>
-        <li><span class="n">05</span><span class="t">Raw resin</span><span class="d">Amber · base</span></li>
-        <li><span class="n">06</span><span class="t">Rockrose</span><span class="d">Cistus ladanifer</span></li>
-        <li><span class="n">07</span><span class="t">Plum section</span><span class="d">Plum · top</span></li>
-        <li><span class="n">08</span><span class="t">Stacked slices</span><span class="d">Plum · top</span></li>
-        <li><span class="n">09</span><span class="t">The flacon</span><span class="d">All five notes</span></li>
-      </ul>
+      <p>Ripe plum on top, musk through the heart, vanilla and amber in the base. We made all five notes, the flower amber is harvested from, and the flacon that holds them — nine 4:5 studies and a fifteen-second film cut to 165&nbsp;BPM. No camera, no set, no crew.</p>
     </div>
     <a class="case-link" href="https://claude.ai/code/artifact/4dc00fb6-df82-4792-979f-e50028a97307">View the case study <span class="arrow" aria-hidden="true">↗</span></a>
   </div>
@@ -758,7 +737,7 @@ h3.grp:first-of-type{margin-top:0}
 
 <section class="case rise" id="cube-care" style="--tone-1:rgba(110,155,178,.26);--tone-2:rgba(52,86,102,.12)">
   <div class="case-cover" aria-hidden="true"></div>
-    <div class="case-glow" aria-hidden="true"></div>
+  <div class="case-glow" aria-hidden="true"></div>
   <div class="inner">
     <span class="case-tag">Selected work — 02</span>
     <h3>Cube<em>care center</em></h3>
@@ -766,30 +745,19 @@ h3.grp:first-of-type{margin-top:0}
       <span>Brand — <b>Cube Care Center</b></span>
       <span>Sector — <b>Care</b></span>
       <span>Scope — <b>Identity + campaign</b></span>
+      <span>Delivered — <b>Logo, palette, type, guidelines, mockups · carousels · reels</b></span>
       <span>Status — <b>Commissioned</b></span>
       <span>Year — <b>2026</b></span>
     </div>
     <div class="case-body">
-      <div>
-        <p>Two pieces of work that had to agree with each other: the identity first — logo, palette, typography and the guidelines that hold them — then the campaign content built on top of it.</p>
-        <p>Because the frames are generated rather than shot, the identity isn't a document the photography drifts away from. The palette and type in the guidelines are the same ones directed into every carousel and every reel, so the system reads the same on the logo sheet and in the last frame of the feed.</p>
-      </div>
-      <ul class="plates" aria-label="Delivered">
-        <li><span class="n">01</span><span class="t">Logo</span><span class="d">Primary + marks</span></li>
-        <li><span class="n">02</span><span class="t">Palette</span><span class="d">Core + support</span></li>
-        <li><span class="n">03</span><span class="t">Typography</span><span class="d">Display + text</span></li>
-        <li><span class="n">04</span><span class="t">Guidelines</span><span class="d">Usage + spacing</span></li>
-        <li><span class="n">05</span><span class="t">Identity mockups</span><span class="d">Applied</span></li>
-        <li><span class="n">06</span><span class="t">Campaign stills</span><span class="d">Carousel sets</span></li>
-        <li><span class="n">07</span><span class="t">Reels</span><span class="d">1080p · feed-sized</span></li>
-      </ul>
+      <p>The identity first, then the campaign content built on top of it. Because the frames are generated rather than shot, the guidelines aren't a document the photography drifts away from — the same palette and type are directed into every carousel and every reel.</p>
     </div>
   </div>
 </section>
 
 <section class="case rise" id="cube-coffee" style="--tone-1:rgba(168,102,52,.28);--tone-2:rgba(96,56,28,.12)">
   <div class="case-cover" aria-hidden="true"></div>
-    <div class="case-glow" aria-hidden="true"></div>
+  <div class="case-glow" aria-hidden="true"></div>
   <div class="inner">
     <span class="case-tag">Selected work — 03</span>
     <h3>Cube<em>coffee house</em></h3>
@@ -797,30 +765,19 @@ h3.grp:first-of-type{margin-top:0}
       <span>Brand — <b>Cube Coffee House</b></span>
       <span>Sector — <b>Coffee</b></span>
       <span>Scope — <b>Identity + campaign</b></span>
+      <span>Delivered — <b>Logo, palette, type, guidelines, mockups · carousels · reels</b></span>
       <span>Status — <b>Commissioned</b></span>
       <span>Year — <b>2026</b></span>
     </div>
     <div class="case-body">
-      <div>
-        <p>The same two-part build — identity, then the campaign frames that run on it — for a category where the product is almost entirely surface.</p>
-        <p>Coffee is one of the hardest things to direct without a camera: crema breaks in a particular way, steam has to read as hot rather than smoky, and roast colour shifts under every light you put on it. Those are the frames that get the most direction, and the ones that get cut when they don't hold.</p>
-      </div>
-      <ul class="plates" aria-label="Delivered">
-        <li><span class="n">01</span><span class="t">Logo</span><span class="d">Primary + marks</span></li>
-        <li><span class="n">02</span><span class="t">Palette</span><span class="d">Core + support</span></li>
-        <li><span class="n">03</span><span class="t">Typography</span><span class="d">Display + text</span></li>
-        <li><span class="n">04</span><span class="t">Guidelines</span><span class="d">Usage + spacing</span></li>
-        <li><span class="n">05</span><span class="t">Identity mockups</span><span class="d">Applied</span></li>
-        <li><span class="n">06</span><span class="t">Campaign stills</span><span class="d">Carousel sets</span></li>
-        <li><span class="n">07</span><span class="t">Reels</span><span class="d">1080p · feed-sized</span></li>
-      </ul>
+      <p>The same two-part build for a category that is almost entirely surface. Coffee is among the hardest things to direct without a camera — crema breaks a particular way, steam has to read hot rather than smoky, roast colour shifts under every light. Those frames get the most direction.</p>
     </div>
   </div>
 </section>
 
 <section class="case rise" id="rawabina" style="--tone-1:rgba(88,160,60,.26);--tone-2:rgba(40,88,32,.12)">
   <div class="case-cover" aria-hidden="true"></div>
-    <div class="case-glow" aria-hidden="true"></div>
+  <div class="case-glow" aria-hidden="true"></div>
   <div class="inner">
     <span class="case-tag">Selected work — 04</span>
     <h3>Rawabina<em>al-khadhraa</em></h3>
@@ -832,19 +789,7 @@ h3.grp:first-of-type{margin-top:0}
       <span>Status — <b>Live</b></span>
     </div>
     <div class="case-body">
-      <div>
-        <p><em>Touch of Green.</em> A landscaping and irrigation contractor working on the Kingdom's landmark projects since 1997 — design, implementation and maintenance of premium landscapes.</p>
-        <p>An editorial build rather than a static one: the page is animated end to end, bilingual English and Arabic, set in Manrope and Tajawal, on a palette that runs from planting green through to irrigation blue. The argument the site makes is that landscape is a science — so the structure walks a visitor through listening, designing, building and maintaining, in that order.</p>
-      </div>
-      <ul class="plates" aria-label="Page sections">
-        <li><span class="n">01</span><span class="t">A touch of green across the Kingdom</span><span class="d">Opening</span></li>
-        <li><span class="n">02</span><span class="t">A specialist in living landscapes</span><span class="d">Positioning</span></li>
-        <li><span class="n">03</span><span class="t">We start by listening</span><span class="d">Process</span></li>
-        <li><span class="n">04</span><span class="t">Then we design with science</span><span class="d">Process</span></li>
-        <li><span class="n">05</span><span class="t">Built in four scientific parts</span><span class="d">Method</span></li>
-        <li><span class="n">06</span><span class="t">Landmark works</span><span class="d">Projects</span></li>
-        <li><span class="n">07</span><span class="t">Let's grow something green</span><span class="d">Contact</span></li>
-      </ul>
+      <p><em>Touch of Green.</em> A landscaping and irrigation contractor on the Kingdom's landmark projects since 1997. An editorial build, animated end to end, bilingual English and Arabic, on a palette running from planting green to irrigation blue.</p>
     </div>
     <a class="case-link" href="https://rawabinaalkhadhraa.com/">Visit the live site <span class="arrow" aria-hidden="true">↗</span></a>
   </div>

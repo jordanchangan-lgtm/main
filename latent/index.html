@@ -200,6 +200,7 @@ a{color:inherit}
 
 /* ---------- statement (word reveal) ---------- */
 .js-words{--lead:0}
+.st-lead{height:100svh}
 .st-stage{
   min-height:100svh;display:flex;align-items:center;justify-content:center;
   padding:0 var(--gut);
@@ -229,6 +230,25 @@ a{color:inherit}
 }
 .statement-note b{color:var(--ink);font-weight:500}
 
+
+/* ---------- tracking-in ----------
+   Ported from the 21st Remotion component: letter-spacing .5em → -.03em,
+   blur 12px → 0, opacity over the first half-second. Remotion drives this
+   from a video frame counter, so the values are re-expressed as CSS with a
+   bezier standing in for its spring. ---------- */
+.track{
+  letter-spacing:.5em;
+  filter:blur(12px);
+  opacity:0;
+  transition:letter-spacing 1.25s cubic-bezier(.22,1.14,.36,1),
+             filter .95s cubic-bezier(.22,1,.36,1),
+             opacity .5s linear;
+}
+.track.in{letter-spacing:-.016em;filter:none;opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .track{letter-spacing:-.016em;filter:none;opacity:1;transition:none}
+}
+
 /* ---------- focus list ----------
    No rules, no second column — the reference sets these centred and lets
    the scroll decide which one is lit. ---------- */
@@ -243,8 +263,9 @@ a{color:inherit}
   position:absolute;left:100%;top:.15em;margin-left:.5em;
   font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:400;
   letter-spacing:.1em;text-transform:uppercase;color:var(--marrow);white-space:nowrap;
-  opacity:clamp(0, calc(var(--f) * 6 - 5), 1);
+  opacity:0;transition:opacity .3s ease;
 }
+.focus li:hover .sp{opacity:1}
 
 @media(max-width:640px){.focus .sp{display:none}}
 
@@ -277,6 +298,20 @@ a{color:inherit}
   .grow{height:100svh}
   .grow-card{transform:none;border-radius:0}
   .grow-cap{opacity:1}
+}
+
+
+.focus li{overflow:hidden}
+.focus .nm{
+  display:inline-block;
+  transform:translateY(108%);
+  opacity:0;
+  transition:transform .85s cubic-bezier(.22,1,.36,1) calc(var(--n) * .1s),
+             opacity .5s ease-out calc(var(--n) * .1s);
+}
+.focus.in .nm{transform:translateY(0);opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .focus .nm{transform:none;opacity:1;transition:none}
 }
 
 /* ---------- the graphic break ---------- */
@@ -559,6 +594,30 @@ a{color:inherit}
   background-size:cover;background-position:center;
 }
 
+
+/* ---------- text roll ----------
+   Ported from the 21st TextRoll: on hover each character rolls up and a
+   duplicate rolls in from below, staggered 0.035s per character from the
+   centre out. Motion's variants become two stacked layers in CSS. ---------- */
+.roll{
+  position:relative;display:inline-block;overflow:hidden;
+  vertical-align:bottom;line-height:1.05;white-space:pre;
+}
+.roll .lay{display:block}
+.roll .bot{position:absolute;left:0;top:0;right:0}
+.roll i{
+  display:inline-block;font-style:normal;
+  transition:transform .42s ease-in-out;
+  transition-delay:calc(var(--i) * .035s);
+}
+.roll .bot i{transform:translateY(102%)}
+.pl-row:hover .roll .top i{transform:translateY(-102%)}
+.pl-row:hover .roll .bot i{transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){
+  .roll i{transition:none}
+  .roll .bot{display:none}
+}
+
 /* ---------- process ---------- */
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
 .step{background:var(--soft);padding:clamp(20px,3vw,30px)}
@@ -745,17 +804,18 @@ h3.grp:first-of-type{margin-top:0}
      In the reference the intro paragraph and the client list live in a
      single tall panel, not two — the text just keeps scrolling inside it. -->
 <section class="rise slab light" id="studio">
+  <div class="st-lead" aria-hidden="true"></div>
   <div class="st-stage">
-    <p class="statement"><span class="mk">( Studio )</span><span>Latent Studio makes campaign imagery and product film for cosmetics, coffee, clothing, jewellery and perfume brands — you name it, we make it.</span></p>
+    <p class="statement track js-track"><span class="mk">( Studio )</span><span>Latent Studio makes campaign imagery and product film for cosmetics, coffee, clothing, jewellery and perfume brands — you name it, we make it.</span></p>
   </div>
 
   <div class="inner">
-    <ul class="focus">
-      <li><span class="nm">Campaign stills<sup class="sp">4:5 · 1:1 · 9:16</sup></span></li>
-      <li><span class="nm">Product film<sup class="sp">10–30s · scripted</sup></span></li>
-      <li><span class="nm">Carousels<sup class="sp">feed-ready sets</sup></span></li>
-      <li><span class="nm">Brand identity<sup class="sp">logo · palette · type</sup></span></li>
-      <li><span class="nm">Editorial web<sup class="sp">built &amp; animated</sup></span></li>
+    <ul class="focus js-reveal">
+      <li style="--n:0"><span class="nm">Campaign stills<sup class="sp">4:5 · 1:1 · 9:16</sup></span></li>
+      <li style="--n:1"><span class="nm">Product film<sup class="sp">10–30s · scripted</sup></span></li>
+      <li style="--n:2"><span class="nm">Carousels<sup class="sp">feed-ready sets</sup></span></li>
+      <li style="--n:3"><span class="nm">Brand identity<sup class="sp">logo · palette · type</sup></span></li>
+      <li style="--n:4"><span class="nm">Editorial web<sup class="sp">built &amp; animated</sup></span></li>
     </ul>
   </div>
 </section>
@@ -990,6 +1050,40 @@ h3.grp:first-of-type{margin-top:0}
   }
 
 
+
+  /* ---- tracking-in on the statement, once it is in view ---- */
+  var track = [].slice.call(document.querySelectorAll(".js-track"));
+  if(track.length){
+    if(reduce){ track.forEach(function(el){ el.classList.add("in"); }); }
+    else {
+      var tObs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(!e.isIntersecting) return;
+          e.target.classList.add("in");
+          tObs.unobserve(e.target);
+        });
+      }, { threshold:.4 });
+      track.forEach(function(el){ tObs.observe(el); });
+    }
+  }
+
+
+  /* ---- masked slide reveal (21st #11988) on the block below ---- */
+  var reveal = [].slice.call(document.querySelectorAll(".js-reveal"));
+  if(reveal.length){
+    if(reduce){ reveal.forEach(function(el){ el.classList.add("in"); }); }
+    else {
+      var rObs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(!e.isIntersecting) return;
+          e.target.classList.add("in");
+          rObs.unobserve(e.target);
+        });
+      }, { threshold:.25 });
+      reveal.forEach(function(el){ rObs.observe(el); });
+    }
+  }
+
   /* ---- project list: hover swaps the background, cells scramble, the list
      runs an idle wave when nothing is hovered. Vanilla — the GSAP scramble
      plugin is paid, so the scrambler below is hand-rolled. ---- */
@@ -997,31 +1091,25 @@ h3.grp:first-of-type{margin-top:0}
   if(pl){
     var plRows = [].slice.call(pl.querySelectorAll(".pl-row"));
     var plBgs  = [].slice.call(document.querySelectorAll(".pl-bg"));
-    var CHARS  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·—";
     var idleT = null, waveT = null, active = -1;
 
-    function scramble(el, done){
-      var target = el.dataset.text || (el.dataset.text = el.textContent);
-      if(reduce){ el.textContent = target; return; }
-      var frame = 0, total = 14;
-      clearInterval(el._sc);
-      el._sc = setInterval(function(){
-        frame++;
-        var shown = Math.floor(target.length * (frame / total));
-        var out = target.slice(0, shown);
-        for(var i = shown; i < target.length; i++){
-          out += target[i] === " " ? " " : CHARS[(Math.random() * CHARS.length) | 0];
-        }
-        el.textContent = out;
-        if(frame >= total){ clearInterval(el._sc); el.textContent = target; }
-      }, 26);
-    }
-    function resetText(row){
-      [].forEach.call(row.children, function(c){
-        clearInterval(c._sc);
-        if(c.dataset.text) c.textContent = c.dataset.text;
+    // Build each cell as two stacked character layers.
+    plRows.forEach(function(row){
+      [].forEach.call(row.children, function(cell){
+        var txt = cell.textContent, n = txt.length;
+        var mk = function(cls){
+          var lay = '<span class="lay ' + cls + '">';
+          for(var i = 0; i < n; i++){
+            var d = Math.abs(i - (n - 1) / 2);          // centre-out, as in the component
+            lay += '<i style="--i:' + d.toFixed(2) + '">' +
+                   (txt[i] === " " ? "&nbsp;" : txt[i].replace(/&/g,"&amp;").replace(/</g,"&lt;")) +
+                   "</i>";
+          }
+          return lay + "</span>";
+        };
+        cell.innerHTML = '<span class="roll">' + mk("top") + mk("bot") + "</span>";
       });
-    }
+    });
 
     function stopIdle(){
       clearTimeout(idleT); clearInterval(waveT); waveT = null;
@@ -1049,12 +1137,11 @@ h3.grp:first-of-type{margin-top:0}
         active = i;
         plRows.forEach(function(r){ r.classList.toggle("on", r === row); });
         plBgs.forEach(function(b){ b.classList.toggle("on", +b.dataset.i === i); });
-        [].forEach.call(row.children, function(c){ scramble(c); });
       });
     });
     document.getElementById("work").addEventListener("mouseleave", function(){
       active = -1;
-      plRows.forEach(function(r){ r.classList.remove("on"); resetText(r); });
+      plRows.forEach(function(r){ r.classList.remove("on"); });
       plBgs.forEach(function(b){ b.classList.remove("on"); });
       startIdle();
     });

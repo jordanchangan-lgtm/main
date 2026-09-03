@@ -248,8 +248,8 @@ a{color:inherit}
   .st-hold{height:100svh}
   .st-stage{position:static}
 }
-#studio{padding-top:0;padding-bottom:clamp(110px,20vh,240px)}
-#studio .inner{padding-top:clamp(140px,26vh,300px)}
+#studio{padding-top:0;padding-bottom:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 .statement{
   font-size:clamp(25px,3.5vw,50px);line-height:1.34;letter-spacing:-.016em;
@@ -342,37 +342,46 @@ a{color:inherit}
 
 
 /* ---------- the slider ----------
-   No rules, no second column — the reference sets these centred and lets
-   the scroll decide which one is lit. ---------- */
-.focus{list-style:none;margin:0;padding:0;text-align:center}
-.focus li{padding:clamp(10px,2.2vh,24px) 0;overflow:hidden;cursor:default}
-.focus .nm{
-  position:relative;font-family:"Newsreader",Georgia,serif;font-weight:300;
-  font-size:clamp(30px,5vw,58px);line-height:1.18;letter-spacing:-.012em;
-  color:var(--ink);
+   Ported from the 21st LayeredText: a stack of rows, each clipped to one
+   line and holding two words, the row above's and its own. Rows alternate
+   skew(60deg,-30deg) scaleY(.667) and skew(0,-30deg) scaleY(1.333) so the
+   stack reads as isometric steps, and each is pushed sideways from the
+   middle row. GSAP's timeline (y -60, .8s power2.out, stagger .08) is the
+   transition below; reversing it runs the stagger from the far end, as
+   timeline.reverse() does. ---------- */
+.sl-stage{
+  min-height:100svh;display:flex;align-items:center;justify-content:center;
+  padding:0 var(--gut);overflow:hidden;
 }
-.focus .sp{
-  position:absolute;left:100%;top:.15em;margin-left:.5em;
-  font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:400;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--marrow);white-space:nowrap;
-  opacity:0;transition:opacity .3s ease;
+.lt{
+  --lh:60px;--dx:35px;--mid:3;
+  list-style:none;margin:0;padding:clamp(48px,10vh,96px) 0;
+  display:flex;flex-direction:column;align-items:center;
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:700;
+  font-size:72px;letter-spacing:-2px;text-transform:uppercase;line-height:1;
+  color:var(--ink);cursor:pointer;-webkit-font-smoothing:antialiased;
 }
-.focus li:hover .sp{opacity:1}
-@media(max-width:640px){.focus .sp{display:none}}
-
-/* Masked slide reveal (21st #11988): each line is clipped by its own row
-   and rises into it, a tenth of a second behind the one above. */
-.focus .nm{
-  display:inline-block;
-  transform:translateY(108%);
-  opacity:0;
-  transition:transform .85s cubic-bezier(.22,1,.36,1) calc(var(--n) * .1s),
-             opacity .5s ease-out calc(var(--n) * .1s);
+.lt li{
+  position:relative;overflow:hidden;height:var(--lh);
+  transform:translateX(calc((var(--i) - var(--mid)) * var(--dx)))
+            skew(0deg,-30deg) scaleY(1.33333);
 }
-.focus.in .nm{transform:translateY(0);opacity:1}
-@media (prefers-reduced-motion:reduce){
-  .focus .nm{transform:none;opacity:1;transition:none}
+.lt li:nth-child(odd){
+  transform:translateX(calc((var(--i) - var(--mid)) * var(--dx)))
+            skew(60deg,-30deg) scaleY(.66667);
 }
+.lt p{
+  margin:0;padding:0 15px;height:var(--lh);line-height:calc(var(--lh) - 5px);
+  white-space:nowrap;vertical-align:top;
+  transition:transform .8s cubic-bezier(.215,.61,.355,1) calc((11 - var(--k)) * .08s);
+}
+.lt.up p{transform:translateY(calc(-1 * var(--lh)));transition-delay:calc(var(--k) * .08s)}
+@media(max-width:767px){
+  /* The lean of the stack pushes its left edge out on a phone; a smaller
+     size and a nudge right keep every first letter inside the panel. */
+  .lt{--lh:32px;--dx:16px;font-size:32px;letter-spacing:-1.2px;transform:translateX(5vw)}
+}
+@media (prefers-reduced-motion:reduce){.lt p{transition:none}}
 
 
 /* ---------- the graphic break ---------- */
@@ -674,9 +683,6 @@ a{color:inherit}
 .roll .bot i{transform:translateY(102%)}
 .pl-row:hover .roll .top i{transform:translateY(-102%)}
 .pl-row:hover .roll .bot i{transform:translateY(0)}
-.focus li:hover .roll .top i{transform:translateY(-102%)}
-.focus li:hover .roll .bot i{transform:translateY(0)}
-.focus .roll{line-height:1.24;padding-bottom:.04em}
 @media (prefers-reduced-motion:reduce){
   .roll i{transition:none}
   .roll .bot{display:none}
@@ -773,12 +779,6 @@ h3.grp:first-of-type{margin-top:0}
    follow its logic rather than copying it: whatever the scroll makes
    active, the pointer can make active too. ---------- */
 @media (hover:hover){
-  /* Slider lines: hovering promotes a line the same way scrolling does. */
-  .focus li:hover .nm{color:var(--marrow)}
-  .focus.in .nm{transition:transform .85s cubic-bezier(.22,1,.36,1),
-                           opacity .5s ease-out,
-                           color .3s ease}
-
   /* Price rows: same promotion, plus the row edges pick up the accent. */
   .row:hover .nm,.row:hover .amt{opacity:1}
   .row:hover .amt.req{color:var(--ember)}
@@ -879,13 +879,19 @@ h3.grp:first-of-type{margin-top:0}
     </div>
   </div>
 
-  <div class="inner">
-    <ul class="focus js-reveal">
-      <li style="--n:0"><span class="nm">Campaign stills<sup class="sp">4:5 · 1:1 · 9:16</sup></span></li>
-      <li style="--n:1"><span class="nm">Product film<sup class="sp">10–30s · scripted</sup></span></li>
-      <li style="--n:2"><span class="nm">Carousels<sup class="sp">feed-ready sets</sup></span></li>
-      <li style="--n:3"><span class="nm">Brand identity<sup class="sp">logo · palette · type</sup></span></li>
-      <li style="--n:4"><span class="nm">Editorial web<sup class="sp">built &amp; animated</sup></span></li>
+  <!-- The slider. Each row shows the word above it until the stack climbs
+       one line and every row shows its own — the screen holds for two
+       seconds while that happens. Rows alternate two skews so the stack
+       reads as steps, and step sideways from the middle row. -->
+  <div class="sl-stage js-slider">
+    <p class="sr">Campaign stills, product film, carousels, brand identity, editorial web.</p>
+    <ul class="lt js-lt" aria-hidden="true">
+      <li style="--i:0"><p>&nbsp;</p><p>Campaign stills</p></li>
+      <li style="--i:1"><p>Campaign stills</p><p>Product film</p></li>
+      <li style="--i:2"><p>Product film</p><p>Carousels</p></li>
+      <li style="--i:3"><p>Carousels</p><p>Brand identity</p></li>
+      <li style="--i:4"><p>Brand identity</p><p>Editorial web</p></li>
+      <li style="--i:5"><p>Editorial web</p><p>&nbsp;</p></li>
     </ul>
   </div>
 </section>
@@ -1261,41 +1267,44 @@ h3.grp:first-of-type{margin-top:0}
     locks = [];
   }
 
-  /* ---- the same roll on the slider ---- */
-  [].forEach.call(document.querySelectorAll(".focus .nm"), function(nm){
-    var sup = nm.querySelector(".sp");
-    var txt = (sup ? nm.firstChild.textContent : nm.textContent).trim();
-    var n = txt.length;
-    var mk = function(cls){
-      var out = '<span class="lay ' + cls + '">';
-      for(var i = 0; i < n; i++){
-        var d = Math.abs(i - (n - 1) / 2);
-        out += '<i style="--i:' + d.toFixed(2) + '">' +
-               (txt[i] === " " ? "&nbsp;" : txt[i].replace(/&/g,"&amp;").replace(/</g,"&lt;")) + "</i>";
-      }
-      return out + "</span>";
-    };
-    nm.innerHTML = '<span class="roll">' + mk("top") + mk("bot") + "</span>" + (sup ? sup.outerHTML : "");
-  });
-
-  /* ---- masked slide reveal (21st #11988) on the slider ---- */
-  var reveal = [].slice.call(document.querySelectorAll(".js-reveal"));
-  if(reveal.length){
-    if(reduce){ reveal.forEach(function(el){ el.classList.add("in"); }); }
-    else {
-      var rObs = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if(!e.isIntersecting) return;
-          e.target.classList.add("in");
-          rObs.unobserve(e.target);
-        });
-      }, { threshold:.25 });
-      reveal.forEach(function(el){ rObs.observe(el); });
-    }
+  /* ---- the slider: LayeredText, held for two seconds ----
+     Every row's two lines get one running index, so the stagger walks
+     the stack top to bottom like the GSAP timeline did. The stack climbs
+     once, when its stage first fills the screen; from then on hovering
+     brings it back down and leaving lets it climb again — the same one-row
+     shift the component runs on hover, from the other resting state. ---- */
+  var slider = document.querySelector(".js-slider");
+  var lt = slider && slider.querySelector(".js-lt");
+  var ltDone = false;
+  if(lt){
+    [].forEach.call(lt.querySelectorAll("p"), function(pp, k){ pp.style.setProperty("--k", k); });
+    lt.addEventListener("mouseenter", function(){ if(ltDone) lt.classList.remove("up"); });
+    lt.addEventListener("mouseleave", function(){ if(ltDone) lt.classList.add("up"); });
   }
-
-
-
+  function ltLock(){
+    if(!lt || ltDone) return;
+    var r = slider.getBoundingClientRect(), vh = window.innerHeight;
+    if(r.top > 1 || r.bottom < vh * .6) return;
+    ltDone = true;
+    if(reduce){ lt.classList.add("up"); return; }
+    // Square the stage to the screen, then hold it there while the stack
+    // climbs: wheel, touch and keyboard scrolling are swallowed for 2s.
+    window.scrollTo({ top: window.scrollY + r.top, left:0, behavior:"instant" });
+    var swallow = function(e){ e.preventDefault(); };
+    var keys = function(e){
+      if(e.key === " " || /^(Arrow(Up|Down)|Page(Up|Down)|Home|End)$/.test(e.key)) e.preventDefault();
+    };
+    var opts = { passive:false };
+    window.addEventListener("wheel", swallow, opts);
+    window.addEventListener("touchmove", swallow, opts);
+    window.addEventListener("keydown", keys, opts);
+    requestAnimationFrame(function(){ lt.classList.add("up"); });
+    setTimeout(function(){
+      window.removeEventListener("wheel", swallow, opts);
+      window.removeEventListener("touchmove", swallow, opts);
+      window.removeEventListener("keydown", keys, opts);
+    }, 2000);
+  }
 
   /* ---- project list: hover swaps the background, cells scramble, the list
      runs an idle wave when nothing is hovered. Vanilla — the GSAP scramble
@@ -1501,6 +1510,7 @@ h3.grp:first-of-type{margin-top:0}
     ticking = false;
     stack();
     if(locks.length) locked();
+    ltLock();
     if(plates.length){
       var vh2 = window.innerHeight;
       plates.forEach(function(el){

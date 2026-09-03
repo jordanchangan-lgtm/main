@@ -169,12 +169,12 @@ a{color:inherit}
   color:rgba(242,239,231,.82);margin:0;white-space:nowrap;
 }
 .hs-name{
-  left:23%;top:50%;display:flex;align-items:center;gap:.9em;
-  color:#FFF;
+  left:23%;top:50%;transform:translateY(-50%);
+  display:flex;align-items:center;gap:.9em;color:#FFF;
 }
 .hs-name .logo{width:1.7em;height:1.7em;color:#FFF;flex:0 0 auto}
 .hs-role{
-  transform:translateY(-.1em);
+  transform:translateY(-50%);
   right:23%;top:50%;font-family:"Newsreader",Georgia,serif;
   letter-spacing:.22em;color:rgba(242,239,231,.62);font-size:11.5px;
 }
@@ -1083,12 +1083,13 @@ h3.grp:first-of-type{margin-top:0}
   /* ---- symmetry: the right line's last word ends as far from the right
      edge as the left line's FIRST WORD starts from the left. The left inset
      is set on the mark, and the word begins after it plus its gap. ---- */
-  var hsWord = document.querySelector(".hs-word");
+  var hsWord = document.querySelector(".hs-word");   // measured via its line box
   var hsRole = document.querySelector(".hs-role");
   if(hsWord && hsRole){
     var balance = function(){
       if(getComputedStyle(hsRole).position !== "absolute"){ hsRole.style.right = ""; return; }
-      hsRole.style.right = Math.round(hsWord.getBoundingClientRect().left) + "px";
+      var name = hsWord.parentNode.getBoundingClientRect();
+      hsRole.style.right = Math.round(name.left) + "px";
     };
     window.__hsBalance = balance;
     balance();

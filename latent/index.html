@@ -832,7 +832,7 @@ h3.grp:first-of-type{margin-top:0}
     <div class="bg-glow"></div>
   </div>
   <div class="stage">
-    <p class="hs hs-name"><span class="logo" role="img" aria-label="Latent Studio"></span>Latent Studio</p>
+    <p class="hs hs-name"><span class="logo" role="img" aria-label="Latent Studio"></span><span class="hs-word">Latent Studio</span></p>
     <p class="hs hs-role">Your brand deserves better <span class="cyc" id="cyc"></span></p>
     <p class="hs hs-foot">Campaign imagery and product film for cosmetics, coffee, clothing,<br>jewellery and perfume brands — you name it, we make it.</p>
     <p class="hs hs-meta">©2026 &nbsp; Amman, Jordan &nbsp; <span id="clock">—</span></p>
@@ -1079,6 +1079,23 @@ h3.grp:first-of-type{margin-top:0}
 
 
 
+
+  /* ---- symmetry: the right line's last word ends as far from the right
+     edge as the left line's FIRST WORD starts from the left. The left inset
+     is set on the mark, and the word begins after it plus its gap. ---- */
+  var hsWord = document.querySelector(".hs-word");
+  var hsRole = document.querySelector(".hs-role");
+  if(hsWord && hsRole){
+    var balance = function(){
+      if(getComputedStyle(hsRole).position !== "absolute"){ hsRole.style.right = ""; return; }
+      hsRole.style.right = Math.round(hsWord.getBoundingClientRect().left) + "px";
+    };
+    window.__hsBalance = balance;
+    balance();
+    window.addEventListener("resize", balance, { passive:true });
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(balance);
+  }
+
   /* ---- hero word cycle (21st AnimatedTextCycle) ---- */
   var cyc = document.getElementById("cyc");
   if(cyc){
@@ -1108,6 +1125,7 @@ h3.grp:first-of-type{margin-top:0}
     var swap = function(){
       ci = (ci + 1) % WORDS.length;
       cyc.style.width = widths[ci] + "px";
+      if(window.__hsBalance) window.__hsBalance();
       if(reduce){ live.textContent = WORDS[ci]; return; }
       live.classList.add("out");                       // AnimatePresence exit
       setTimeout(function(){

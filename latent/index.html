@@ -103,15 +103,66 @@ a{color:inherit}
 .eyebrow::after{content:"";flex:1;height:1px;background:currentColor;opacity:.28}
 
 /* ---------- hero ----------
-   Matches the reference opener: near-black, a slow ambient field, and small
-   type placed around the frame rather than one large headline. ---------- */
+   Ported from the 21st elegant-dark-pattern: a masked corner gradient with
+   five skewed streaks, noise and a dot grid. Cyan swapped for marrow, the
+   CDN noise PNG swapped for inline turbulence (the CSP blocks external
+   images), and the streaks drift rather than sitting still. ---------- */
 .hero{
-  min-height:100svh;position:sticky;top:0;overflow:hidden;background:#0C0B0E;
+  min-height:100svh;position:sticky;top:0;overflow:hidden;background:#08080B;
   transform-origin:50% 0%;
   transform:scale(calc(1 - var(--cover,0) * .085));
 }
 @media (prefers-reduced-motion:reduce){.hero{transform:none}}
-#field{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+.bgfield{position:absolute;inset:0;z-index:0;pointer-events:none}
+.bg-base{
+  position:absolute;inset:0;
+  background:radial-gradient(100% 100% at 0% 0%, #35271F 0%, #08080B 100%);
+  -webkit-mask:radial-gradient(125% 100% at 0% 0%, #000 0%, rgba(0,0,0,.224) 88.3%, rgba(0,0,0,0) 100%);
+          mask:radial-gradient(125% 100% at 0% 0%, #000 0%, rgba(0,0,0,.224) 88.3%, rgba(0,0,0,0) 100%);
+}
+.streak{
+  position:absolute;inset:-10% -30%;display:block;opacity:.20;
+  background:linear-gradient(var(--marrow) 0%, rgba(187,74,46,0) 100%);
+  transform:skewX(45deg);
+  animation:drift var(--dur) ease-in-out infinite alternate;
+  animation-delay:var(--del);
+}
+.s1{--dur:19s;--del:0s;
+  -webkit-mask:linear-gradient(90deg,rgba(0,0,0,0) 0%,#000 20%,rgba(0,0,0,0) 36%,#000 55%,rgba(0,0,0,.13) 67%,#000 78%,rgba(0,0,0,0) 97%);
+          mask:linear-gradient(90deg,rgba(0,0,0,0) 0%,#000 20%,rgba(0,0,0,0) 36%,#000 55%,rgba(0,0,0,.13) 67%,#000 78%,rgba(0,0,0,0) 97%)}
+.s2{--dur:24s;--del:-4s;
+  -webkit-mask:linear-gradient(90deg,rgba(0,0,0,0) 11%,#000 25%,rgba(0,0,0,.55) 41%,rgba(0,0,0,.13) 67%,#000 78%,rgba(0,0,0,0) 97%);
+          mask:linear-gradient(90deg,rgba(0,0,0,0) 11%,#000 25%,rgba(0,0,0,.55) 41%,rgba(0,0,0,.13) 67%,#000 78%,rgba(0,0,0,0) 97%)}
+.s3{--dur:31s;--del:-9s;
+  -webkit-mask:linear-gradient(90deg,rgba(0,0,0,0) 9%,#000 20%,rgba(0,0,0,.55) 28%,rgba(0,0,0,.424) 40%,#000 48%,rgba(0,0,0,.267) 54%,rgba(0,0,0,.13) 78%,#000 88%,rgba(0,0,0,0) 97%);
+          mask:linear-gradient(90deg,rgba(0,0,0,0) 9%,#000 20%,rgba(0,0,0,.55) 28%,rgba(0,0,0,.424) 40%,#000 48%,rgba(0,0,0,.267) 54%,rgba(0,0,0,.13) 78%,#000 88%,rgba(0,0,0,0) 97%)}
+.s4{--dur:27s;--del:-14s;
+  -webkit-mask:linear-gradient(90deg,rgba(0,0,0,0) 0%,#000 17%,rgba(0,0,0,.55) 26%,#000 35%,rgba(0,0,0,0) 47%,rgba(0,0,0,.13) 69%,#000 79%,rgba(0,0,0,0) 97%);
+          mask:linear-gradient(90deg,rgba(0,0,0,0) 0%,#000 17%,rgba(0,0,0,.55) 26%,#000 35%,rgba(0,0,0,0) 47%,rgba(0,0,0,.13) 69%,#000 79%,rgba(0,0,0,0) 97%)}
+.s5{--dur:35s;--del:-6s;
+  -webkit-mask:linear-gradient(90deg,rgba(0,0,0,0) 0%,#000 20%,rgba(0,0,0,.55) 27%,#000 42%,rgba(0,0,0,0) 48%,rgba(0,0,0,.13) 67%,#000 74%,#000 82%,rgba(0,0,0,.47) 88%,rgba(0,0,0,0) 97%)}
+@keyframes drift{
+  from{transform:skewX(45deg) translateX(-3.5%);opacity:.13}
+  to  {transform:skewX(45deg) translateX(3.5%); opacity:.24}
+}
+@media (prefers-reduced-motion:reduce){.streak{animation:none;transform:skewX(45deg)}}
+
+.bg-noise{
+  position:absolute;inset:0;opacity:.05;background-repeat:repeat;background-size:150px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.bg-dots{
+  position:absolute;inset:0;opacity:.10;
+  background-image:radial-gradient(circle at 1px 1px, rgba(242,239,231,.5) 1px, transparent 0);
+  background-size:20px 20px;
+}
+.bg-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(60% 55% at 32% 50%, rgba(212,99,63,.13) 0%, rgba(212,99,63,0) 70%);
+}
+
+
 .hero .stage{position:absolute;inset:0;z-index:2}
 .hs{
   position:absolute;font-size:11px;letter-spacing:.34em;text-transform:uppercase;
@@ -149,9 +200,18 @@ a{color:inherit}
 
 /* ---------- statement (word reveal) ---------- */
 .js-words{--lead:0}
+.st-stage{
+  position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center;
+  padding:0 var(--gut);
+}
+#studio{padding-top:0;padding-bottom:clamp(90px,16vh,180px)}
+#studio .inner{
+  position:relative;z-index:1;background:var(--ivory);
+  padding-top:clamp(70px,13vh,150px);
+}
 .statement{
-  font-size:clamp(20px,2.5vw,34px);line-height:1.34;letter-spacing:-.016em;
-  font-weight:400;margin:0 auto;max-width:30ch;text-align:center;text-wrap:balance;
+  font-size:clamp(25px,3.5vw,50px);line-height:1.34;letter-spacing:-.016em;
+  font-weight:400;margin:0 auto;max-width:23ch;text-align:center;text-wrap:balance;line-height:1.26;
 }
 .statement .mk{
   font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.2em;
@@ -174,7 +234,7 @@ a{color:inherit}
 /* ---------- focus list ----------
    No rules, no second column — the reference sets these centred and lets
    the scroll decide which one is lit. ---------- */
-.focus{list-style:none;margin:clamp(90px,16vh,190px) 0 0;padding:0;text-align:center}
+.focus{list-style:none;margin:0;padding:0;text-align:center}
 .focus li{--f:0;padding:clamp(6px,1.4vh,14px) 0}
 .focus .nm{
   position:relative;font-family:"Newsreader",Georgia,serif;font-weight:300;
@@ -660,7 +720,15 @@ h3.grp:first-of-type{margin-top:0}
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="top">
-  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="bgfield" aria-hidden="true">
+    <div class="bg-base">
+      <i class="streak s1"></i><i class="streak s2"></i><i class="streak s3"></i>
+      <i class="streak s4"></i><i class="streak s5"></i>
+    </div>
+    <div class="bg-noise"></div>
+    <div class="bg-dots"></div>
+    <div class="bg-glow"></div>
+  </div>
   <div class="stage">
     <p class="hs hs-name"><span class="logo" role="img" aria-label="Latent Studio"></span>Latent Studio</p>
     <p class="hs hs-role">AI visual production <b>·</b> Amman</p>
@@ -673,9 +741,11 @@ h3.grp:first-of-type{margin-top:0}
      In the reference the intro paragraph and the client list live in a
      single tall panel, not two — the text just keeps scrolling inside it. -->
 <section class="rise slab light" id="studio">
-  <div class="inner">
+  <div class="st-stage">
     <p class="statement"><span class="mk">( Studio )</span><span class="js-words">Latent Studio makes campaign imagery and product film for cosmetics, coffee, clothing, jewellery and perfume brands — directed, generated and corrected, never shot.</span></p>
+  </div>
 
+  <div class="inner">
     <ul class="focus js-focus">
       <li><span class="nm">Campaign stills<sup class="sp">4:5 · 1:1 · 9:16</sup></span></li>
       <li><span class="nm">Product film<sup class="sp">10–30s · scripted</sup></span></li>
@@ -904,56 +974,6 @@ h3.grp:first-of-type{margin-top:0}
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 
-  /* ---- hero: a slow ambient field, the reference's haze in our marrow ---- */
-  var cv = document.getElementById("field");
-  if(cv){
-    var cx = cv.getContext("2d"), W = 0, H = 0, dpr = Math.min(devicePixelRatio || 1, 2);
-    // Sampled off the reference: its haze DESATURATES as it brightens
-    // (18% saturation at the top percentile) — light behaving like light.
-    // Piling on more of one hue is what turns a glow into a stain.
-    var blobs = [
-      { x:.34, y:.48, r:.86, a:.52, sx:.00007, sy:.00005 },
-      { x:.64, y:.54, r:.70, a:.36, sx:-.00005, sy:.00008 },
-      { x:.50, y:.32, r:1.02, a:.40, sx:.00004, sy:-.00006 }
-    ];
-    var stops = function(g, a){
-      g.addColorStop(0,   "rgba(206,199,193," + (a * .30).toFixed(3) + ")");
-      g.addColorStop(.10, "rgba(180,150,132," + (a * .30).toFixed(3) + ")");
-      g.addColorStop(.22, "rgba(158,106, 84," + (a * .34).toFixed(3) + ")");
-      g.addColorStop(.38, "rgba(112, 54, 40," + (a * .30).toFixed(3) + ")");
-      g.addColorStop(.72, "rgba( 74, 36, 28," + (a * .10).toFixed(3) + ")");
-      g.addColorStop(1,   "rgba( 60, 30, 24,0)");
-    };
-    var size = function(){
-      W = cv.clientWidth; H = cv.clientHeight;
-      cv.width = W * dpr; cv.height = H * dpr;
-      cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-    var draw = function(t){
-      cx.globalCompositeOperation = "source-over";
-      cx.fillStyle = "#0C0B0E"; cx.fillRect(0, 0, W, H);
-      cx.globalCompositeOperation = "lighter";
-      var m = Math.max(W, H);
-      blobs.forEach(function(b, i){
-        var px = (b.x + Math.sin(t * b.sx + i) * .10) * W;
-        var py = (b.y + Math.cos(t * b.sy + i * 1.7) * .09) * H;
-        var r  = b.r * m;
-        var g  = cx.createRadialGradient(px, py, 0, px, py, r);
-        stops(g, b.a);
-        cx.fillStyle = g;
-        cx.beginPath(); cx.arc(px, py, r, 0, 6.2832); cx.fill();
-      });
-    };
-    size(); window.addEventListener("resize", size);
-    if(reduce){ draw(0); }
-    else {
-      var vis = true;
-      new IntersectionObserver(function(e){ vis = e[0].isIntersecting; })
-        .observe(cv.parentNode);
-      (function loop(t){ if(vis) draw(t); requestAnimationFrame(loop); })(0);
-    }
-  }
-
   /* ---- the reference stamps a local time in its hero; so does this ---- */
   var clock = document.getElementById("clock");
   if(clock){
@@ -1130,9 +1150,23 @@ h3.grp:first-of-type{margin-top:0}
   function words(){
     var vh = window.innerHeight;
     stmts.forEach(function(el){
-      var r = el.getBoundingClientRect();
+      // Nothing reveals until the panel carrying it covers the screen.
+      var panel = el.closest(".rise");
+      if(panel && parseFloat(panel.style.getPropertyValue("--enter") || 0) > 0.02){
+        el.style.setProperty("--lead", "0");
+        return;
+      }
+      var stage = el.closest(".st-stage");
       var total = +el.dataset.words || 1;
-      var p = clamp01((vh * 0.86 - r.top) / (vh * 0.52 + r.height));
+      var p;
+      if(stage){
+        // read across the first screen the panel holds, then it is done
+        var sr = stage.getBoundingClientRect();
+        p = clamp01(-sr.top / (vh * 0.72));
+      } else {
+        var r = el.getBoundingClientRect();
+        p = clamp01((vh * 0.86 - r.top) / (vh * 0.52 + r.height));
+      }
       el.style.setProperty("--lead", (p * (total + 5)).toFixed(2));
     });
   }

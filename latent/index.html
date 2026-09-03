@@ -266,43 +266,48 @@ a{color:inherit}
 .statement-note b{color:var(--ink);font-weight:500}
 
 
-/* ---------- tracking-in ----------
-   Ported from the 21st Remotion component: letter-spacing .5em → -.03em,
-   blur 12px → 0, opacity over the first half-second. Remotion drives this
-   from a video frame counter, so the values are re-expressed as CSS with a
-   bezier standing in for its spring. ---------- */
-.trackin{
-  letter-spacing:.5em;
-  filter:blur(12px);
-  opacity:0;
-  transition:letter-spacing 1.25s cubic-bezier(.22,1.14,.36,1),
-             filter .95s cubic-bezier(.22,1,.36,1),
-             opacity .5s linear;
+/* ---------- splitting text ----------
+   Ported from the 21st SplittingText: splitBy "words", preset "slide-up"
+   (opacity 0 / y 20 to opacity 1 / y 0), staggered per segment. Motion's
+   spring(damping 20, stiffness 200) becomes a bezier with the same small
+   overshoot. Whitespace is kept as its own segment so words never collide
+   and none of them break mid-word. ---------- */
+.sw{
+  display:inline-block;white-space:pre;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .42s ease-out calc(var(--i) * var(--step, .06s)),
+             transform .58s cubic-bezier(.22,1.2,.36,1) calc(var(--i) * var(--step, .06s));
 }
-.trackin.in{letter-spacing:-.016em;filter:none;opacity:1}
+.js-split.in .sw{opacity:1;transform:translateY(0)}
 @media (prefers-reduced-motion:reduce){
-  .trackin{letter-spacing:-.016em;filter:none;opacity:1;transition:none}
+  .sw{opacity:1;transform:none;transition:none}
 }
 
-/* ---------- focus list ----------
-   No rules, no second column — the reference sets these centred and lets
-   the scroll decide which one is lit. ---------- */
-.focus{list-style:none;margin:0;padding:0;text-align:center}
-.focus li{padding:clamp(10px,2.2vh,24px) 0}
-.focus .nm{
-  position:relative;font-family:"Newsreader",Georgia,serif;font-weight:300;
-  font-size:clamp(30px,5vw,58px);line-height:1.18;letter-spacing:-.012em;
-  color:var(--ink);opacity:clamp(.15, var(--f), 1);
+/* ---------- the two tenets ----------
+   The white panel carries only the two things the work is built on: one
+   set left, one set right. No rules, no chips, no numbering — the words
+   and the space between them are the whole layout. ---------- */
+.tenets{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(34px,7vw,120px);max-width:1080px;margin:0 auto;
 }
-.focus .sp{
-  position:absolute;left:100%;top:.15em;margin-left:.5em;
-  font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:400;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--marrow);white-space:nowrap;
-  opacity:0;transition:opacity .3s ease;
+.tenet{--step:.022s}   /* a longer line needs a tighter step than the statement */
+.tenet h3{
+  font-family:"Newsreader",Georgia,serif;font-weight:300;
+  font-size:clamp(34px,5vw,62px);line-height:1.1;letter-spacing:-.015em;
+  color:var(--ink);margin:0 0 clamp(16px,2.6vh,28px);
 }
-.focus li:hover .sp{opacity:1}
-
-@media(max-width:640px){.focus .sp{display:none}}
+.tenet p{
+  margin:0;max-width:34ch;font-size:clamp(14px,1.05vw,16px);line-height:1.72;
+  color:var(--stone);
+}
+.tenet-r{text-align:right}
+.tenet-r p{margin-left:auto}
+@media(max-width:760px){
+  .tenets{grid-template-columns:1fr;gap:clamp(40px,8vh,76px)}
+  .tenet-r{text-align:left}
+  .tenet-r p{margin-left:0}
+}
 
 
 /* ---------- the reveal ----------
@@ -336,18 +341,6 @@ a{color:inherit}
 }
 
 
-.focus li{overflow:hidden}
-.focus .nm{
-  display:inline-block;
-  transform:translateY(108%);
-  opacity:0;
-  transition:transform .85s cubic-bezier(.22,1,.36,1) calc(var(--n) * .1s),
-             opacity .5s ease-out calc(var(--n) * .1s);
-}
-.focus.in .nm{transform:translateY(0);opacity:1}
-@media (prefers-reduced-motion:reduce){
-  .focus .nm{transform:none;opacity:1;transition:none}
-}
 
 /* ---------- the graphic break ---------- */
 .break{
@@ -648,10 +641,6 @@ a{color:inherit}
 .roll .bot i{transform:translateY(102%)}
 .pl-row:hover .roll .top i{transform:translateY(-102%)}
 .pl-row:hover .roll .bot i{transform:translateY(0)}
-.focus li:hover .roll .top i{transform:translateY(-102%)}
-.focus li:hover .roll .bot i{transform:translateY(0)}
-.focus .roll{line-height:1.24;padding-bottom:.04em}
-.focus li{cursor:default}
 @media (prefers-reduced-motion:reduce){
   .roll i{transition:none}
   .roll .bot{display:none}
@@ -748,11 +737,6 @@ h3.grp:first-of-type{margin-top:0}
    follow its logic rather than copying it: whatever the scroll makes
    active, the pointer can make active too. ---------- */
 @media (hover:hover){
-  /* Capability lines: hovering promotes a line the same way scrolling does. */
-  .focus li:hover .nm{color:var(--marrow)}
-  .focus .nm{transition:color .3s ease}
-  .focus li{cursor:default}
-
   /* Price rows: same promotion, plus the row edges pick up the accent. */
   .row:hover .nm,.row:hover .amt{opacity:1}
   .row:hover .amt.req{color:var(--ember)}
@@ -845,17 +829,20 @@ h3.grp:first-of-type{margin-top:0}
 <section class="rise slab light" id="studio">
   <div class="st-lead" aria-hidden="true"></div>
   <div class="st-stage">
-    <p class="statement trackin js-track"><span class="mk">( Studio )</span><span>Latent Studio makes campaign imagery and product film for cosmetics, coffee, clothing, jewellery and perfume brands — you name it, we make it.</span></p>
+    <p class="statement js-split"><span class="mk">( Studio )</span><span>Latent Studio makes campaign imagery and product film for cosmetics, coffee, clothing, jewellery and perfume brands — you name it, we make it.</span></p>
   </div>
 
   <div class="inner">
-    <ul class="focus js-reveal">
-      <li style="--n:0"><span class="nm">Campaign stills<sup class="sp">4:5 · 1:1 · 9:16</sup></span></li>
-      <li style="--n:1"><span class="nm">Product film<sup class="sp">10–30s · scripted</sup></span></li>
-      <li style="--n:2"><span class="nm">Carousels<sup class="sp">feed-ready sets</sup></span></li>
-      <li style="--n:3"><span class="nm">Brand identity<sup class="sp">logo · palette · type</sup></span></li>
-      <li style="--n:4"><span class="nm">Editorial web<sup class="sp">built &amp; animated</sup></span></li>
-    </ul>
+    <div class="tenets">
+      <div class="tenet js-split">
+        <h3><span class="js-seg">Minimalism</span></h3>
+        <p><span class="js-seg">Nothing in the frame that is not earning its place. One product, one light, one idea, held long enough to be read. What we leave out is what makes the thing you are selling the only thing you see.</span></p>
+      </div>
+      <div class="tenet tenet-r js-split">
+        <h3><span class="js-seg">Simplicity</span></h3>
+        <p><span class="js-seg">A short brief, one agreed direction, one set of final files. No crew call, no set build, no reshoot day, no version thirty. It is why the work moves in days and why the numbers further down look the way they do.</span></p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1160,8 +1147,37 @@ h3.grp:first-of-type{margin-top:0}
 
 
 
-  /* ---- tracking-in on the statement, once it is in view ---- */
-  var track = [].slice.call(document.querySelectorAll(".js-track"));
+  /* ---- SplittingText: segment the statement, then reveal on view ---- */
+  var track = [].slice.call(document.querySelectorAll(".js-split"));
+  track.forEach(function(el){
+    /* One block can carry several pieces of copy (a heading and the line
+       under it): the index runs straight through them, so the heading
+       lands first and the explanation follows it word by word. */
+    var parts = [].slice.call(el.querySelectorAll(".js-seg"));
+    if(!parts.length){
+      var only = el.querySelector("span:not(.mk)");
+      if(only) parts = [only];
+    }
+    if(!parts.length) return;
+    var mk = el.querySelector(".mk");
+    var n = 0;
+    if(mk){ mk.classList.add("sw"); mk.style.setProperty("--i", n++); }
+    parts.forEach(function(body){
+      var segs = body.textContent.split(/(\s+)/).filter(function(x){ return x.length; });
+      body.innerHTML = "";
+      segs.forEach(function(seg){
+        /* Only the words become animated segments. The gaps stay ordinary
+           text nodes so the browser can still collapse one at the end of a
+           line — a `white-space:pre` span there would indent the next line. */
+        if(/^\s+$/.test(seg)){ body.appendChild(document.createTextNode(seg)); return; }
+        var sp = document.createElement("span");
+        sp.className = "sw";
+        sp.style.setProperty("--i", n++);
+        sp.textContent = seg;
+        body.appendChild(sp);
+      });
+    });
+  });
   if(track.length){
     if(reduce){ track.forEach(function(el){ el.classList.add("in"); }); }
     else {
@@ -1178,38 +1194,6 @@ h3.grp:first-of-type{margin-top:0}
 
 
 
-  /* ---- the same roll on the capability list ---- */
-  [].forEach.call(document.querySelectorAll(".focus .nm"), function(nm){
-    var sup = nm.querySelector(".sp");
-    var txt = (sup ? nm.firstChild.textContent : nm.textContent).trim();
-    var n = txt.length;
-    var mk = function(cls){
-      var out = '<span class="lay ' + cls + '">';
-      for(var i = 0; i < n; i++){
-        var d = Math.abs(i - (n - 1) / 2);
-        out += '<i style="--i:' + d.toFixed(2) + '">' +
-               (txt[i] === " " ? "&nbsp;" : txt[i].replace(/&/g,"&amp;").replace(/</g,"&lt;")) + "</i>";
-      }
-      return out + "</span>";
-    };
-    nm.innerHTML = '<span class="roll">' + mk("top") + mk("bot") + "</span>" + (sup ? sup.outerHTML : "");
-  });
-
-  /* ---- masked slide reveal (21st #11988) on the block below ---- */
-  var reveal = [].slice.call(document.querySelectorAll(".js-reveal"));
-  if(reveal.length){
-    if(reduce){ reveal.forEach(function(el){ el.classList.add("in"); }); }
-    else {
-      var rObs = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if(!e.isIntersecting) return;
-          e.target.classList.add("in");
-          rObs.unobserve(e.target);
-        });
-      }, { threshold:.25 });
-      reveal.forEach(function(el){ rObs.observe(el); });
-    }
-  }
 
   /* ---- project list: hover swaps the background, cells scramble, the list
      runs an idle wave when nothing is hovered. Vanilla — the GSAP scramble
@@ -1333,7 +1317,6 @@ h3.grp:first-of-type{margin-top:0}
   var plates = [];
   var grows  = [].slice.call(document.querySelectorAll(".grow"));
   var lists = [
-    { items: [].slice.call(document.querySelectorAll(".js-focus li")), reach: 1.0 },
     { items: [].slice.call(document.querySelectorAll(".js-row")),      reach: 2.4 }
   ].filter(function(g){ return g.items.length; });
 

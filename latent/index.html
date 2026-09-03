@@ -635,8 +635,9 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){.pl-bg,.pl-row{transition:none}}
 @media(max-width:760px){
   .pl-head{display:none}
-  .pl-row{grid-template-columns:1fr auto;gap:4px 14px;font-size:10.5px}
+  .pl-row{grid-template-columns:1fr auto auto;gap:4px 14px;font-size:10.5px}
   .pl-row .sect,.pl-row .scope{display:none}
+  .pl-corners .cn.tr{display:none}   /* the bar carries these links on a phone */
 }
 
 /* corner furniture, as in the pattern */

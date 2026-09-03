@@ -201,14 +201,12 @@ a{color:inherit}
 /* ---------- statement (word reveal) ---------- */
 .js-words{--lead:0}
 .st-stage{
-  position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center;
+  min-height:100svh;display:flex;align-items:center;justify-content:center;
   padding:0 var(--gut);
 }
-#studio{padding-top:0;padding-bottom:clamp(90px,16vh,180px)}
-#studio .inner{
-  position:relative;z-index:1;background:var(--ivory);
-  padding-top:clamp(70px,13vh,150px);
-}
+#studio{padding-top:0;padding-bottom:clamp(110px,20vh,240px)}
+#studio .inner{padding-top:0}
+
 .statement{
   font-size:clamp(25px,3.5vw,50px);line-height:1.34;letter-spacing:-.016em;
   font-weight:400;margin:0 auto;max-width:23ch;text-align:center;text-wrap:balance;line-height:1.26;
@@ -235,7 +233,7 @@ a{color:inherit}
    No rules, no second column — the reference sets these centred and lets
    the scroll decide which one is lit. ---------- */
 .focus{list-style:none;margin:0;padding:0;text-align:center}
-.focus li{--f:0;padding:clamp(6px,1.4vh,14px) 0}
+.focus li{padding:clamp(10px,2.2vh,24px) 0}
 .focus .nm{
   position:relative;font-family:"Newsreader",Georgia,serif;font-weight:300;
   font-size:clamp(30px,5vw,58px);line-height:1.18;letter-spacing:-.012em;
@@ -247,7 +245,7 @@ a{color:inherit}
   letter-spacing:.1em;text-transform:uppercase;color:var(--marrow);white-space:nowrap;
   opacity:clamp(0, calc(var(--f) * 6 - 5), 1);
 }
-@media (prefers-reduced-motion:reduce){.focus .nm,.focus .sp{opacity:1}}
+
 @media(max-width:640px){.focus .sp{display:none}}
 
 
@@ -322,6 +320,11 @@ a{color:inherit}
   font-size:clamp(19px,2.6vw,32px);color:var(--ink);letter-spacing:-.01em;
 }
 .sectors span:nth-child(even){font-style:italic;color:var(--marrow)}
+.sectors .anyname{
+  flex-basis:100%;font-style:italic;color:var(--marrow);
+  font-size:clamp(17px,2.2vw,27px);margin-top:.15em;
+}
+.sectors .anyname:nth-child(even){color:var(--marrow)}
 
 
 /* ---------- floating plates ----------
@@ -648,7 +651,8 @@ h3.grp:first-of-type{margin-top:0}
    active, the pointer can make active too. ---------- */
 @media (hover:hover){
   /* Capability lines: hovering promotes a line the same way scrolling does. */
-  .focus li:hover .nm,.focus li:hover .sp{opacity:1}
+  .focus li:hover .nm{color:var(--marrow)}
+  .focus .nm{transition:color .3s ease}
   .focus li{cursor:default}
 
   /* Price rows: same promotion, plus the row edges pick up the accent. */
@@ -732,7 +736,7 @@ h3.grp:first-of-type{margin-top:0}
   <div class="stage">
     <p class="hs hs-name"><span class="logo" role="img" aria-label="Latent Studio"></span>Latent Studio</p>
     <p class="hs hs-role">AI visual production <b>·</b> Amman</p>
-    <p class="hs hs-foot">Campaign imagery and product film for cosmetics, coffee, clothing,<br>jewellery and perfume brands — directed and generated, never shot.</p>
+    <p class="hs hs-foot">Campaign imagery and product film for cosmetics, coffee, clothing,<br>jewellery and perfume brands — you name it, we make it.</p>
     <p class="hs hs-meta">©2026 &nbsp; Amman, Jordan &nbsp; <span id="clock">—</span></p>
   </div>
 </section>
@@ -742,11 +746,11 @@ h3.grp:first-of-type{margin-top:0}
      single tall panel, not two — the text just keeps scrolling inside it. -->
 <section class="rise slab light" id="studio">
   <div class="st-stage">
-    <p class="statement"><span class="mk">( Studio )</span><span class="js-words">Latent Studio makes campaign imagery and product film for cosmetics, coffee, clothing, jewellery and perfume brands — directed, generated and corrected, never shot.</span></p>
+    <p class="statement"><span class="mk">( Studio )</span><span>Latent Studio makes campaign imagery and product film for cosmetics, coffee, clothing, jewellery and perfume brands — you name it, we make it.</span></p>
   </div>
 
   <div class="inner">
-    <ul class="focus js-focus">
+    <ul class="focus">
       <li><span class="nm">Campaign stills<sup class="sp">4:5 · 1:1 · 9:16</sup></span></li>
       <li><span class="nm">Product film<sup class="sp">10–30s · scripted</sup></span></li>
       <li><span class="nm">Carousels<sup class="sp">feed-ready sets</sup></span></li>
@@ -786,8 +790,9 @@ h3.grp:first-of-type{margin-top:0}
     <p class="eyebrow"><b>( Sectors )</b> Where the work lands</p>
     <div class="sectors">
       <span>Cosmetics</span><span>Coffee</span><span>Clothing</span><span>Jewellery</span><span>Perfume</span>
+      <span class="anyname">You name it, we make it.</span>
     </div>
-    <p class="statement-note">Categories where the product is small, the surface is everything, and a conventional shoot costs more than the launch it supports. Skin, glass, resin, fabric and metal are the five hardest things to fake — so they are the five we spend the most direction on.</p>
+    <p class="statement-note">Categories where the product is small, the surface is everything, and a conventional shoot costs more than the launch it supports. Skin, glass, resin, fabric and metal are the hardest things to fake — so they get the most direction.</p>
   </div>
 </section>
 

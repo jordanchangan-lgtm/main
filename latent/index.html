@@ -189,6 +189,11 @@ a{color:inherit}
   font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.18em;
   color:rgba(242,239,231,.4);
 }
+@media(max-width:1280px) and (min-width:821px){
+  .hs{letter-spacing:.18em;font-size:10.5px}
+  .hs-name{left:7%}
+  .hs-role{right:7%;letter-spacing:.14em}
+}
 @media(max-width:820px){
   .hs{position:static;transform:none;white-space:normal}
   .hero .stage{
@@ -196,6 +201,36 @@ a{color:inherit}
     gap:16px;padding:110px var(--gut) 76px;text-align:center;
   }
   .hs-foot{max-width:100%}
+}
+
+
+/* ---------- word cycle ----------
+   Ported from the 21st AnimatedTextCycle (Framer Motion): the word enters
+   from y:-20 out of an 8px blur and leaves downward into one, while the
+   container springs between measured widths. AnimatePresence's mode:"wait"
+   becomes an exit timeout before the swap. ---------- */
+.hs-line{display:inline-block}
+.cyc{
+  position:relative;display:inline-block;vertical-align:baseline;
+  white-space:nowrap;color:var(--ember);
+  transition:width .55s cubic-bezier(.22,1,.3,1);
+}
+.cyc-w{
+  display:inline-block;white-space:nowrap;
+  transition:transform .4s ease-out, opacity .4s ease-out, filter .4s ease-out;
+}
+.cyc-w.pre{transform:translateY(-20px);opacity:0;filter:blur(8px);transition:none}
+.cyc-w.out{
+  transform:translateY(20px);opacity:0;filter:blur(8px);
+  transition-duration:.3s;transition-timing-function:ease-in;
+}
+.cyc-measure{
+  position:absolute;visibility:hidden;pointer-events:none;white-space:nowrap;
+  left:0;top:0;
+}
+@media (prefers-reduced-motion:reduce){
+  .cyc,.cyc-w{transition:none}
+  .cyc-w.pre,.cyc-w.out{transform:none;opacity:1;filter:none}
 }
 
 /* ---------- statement (word reveal) ---------- */
@@ -797,7 +832,7 @@ h3.grp:first-of-type{margin-top:0}
     <div class="bg-glow"></div>
   </div>
   <div class="stage">
-    <p class="hs hs-name"><span class="logo" role="img" aria-label="Latent Studio"></span>Latent Studio</p>
+    <p class="hs hs-name"><span class="logo" role="img" aria-label="Latent Studio"></span><span class="hs-line">Latent Studio makes <span class="cyc" id="cyc"></span></span></p>
     <p class="hs hs-role">AI visual production <b>·</b> Amman</p>
     <p class="hs hs-foot">Campaign imagery and product film for cosmetics, coffee, clothing,<br>jewellery and perfume brands — you name it, we make it.</p>
     <p class="hs hs-meta">©2026 &nbsp; Amman, Jordan &nbsp; <span id="clock">—</span></p>
@@ -1042,6 +1077,57 @@ h3.grp:first-of-type{margin-top:0}
   "use strict";
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+
+
+  /* ---- hero word cycle (21st AnimatedTextCycle) ---- */
+  var cyc = document.getElementById("cyc");
+  if(cyc){
+    var WORDS = ["visual identity","reels","posts","campaigns","websites","branding"];
+    var ci = 0;
+
+    // measure every word once so the container can spring between widths
+    var meas = document.createElement("span");
+    meas.className = "cyc-measure";
+    meas.setAttribute("aria-hidden","true");
+    WORDS.forEach(function(w){
+      var m = document.createElement("span");
+      m.textContent = w; m.style.display = "block";
+      meas.appendChild(m);
+    });
+    cyc.appendChild(meas);
+    var widths = [].map.call(meas.children, function(m){
+      return m.getBoundingClientRect().width;
+    });
+
+    var live = document.createElement("span");
+    live.className = "cyc-w";
+    live.textContent = WORDS[0];
+    cyc.appendChild(live);
+    cyc.style.width = widths[0] + "px";
+
+    var swap = function(){
+      ci = (ci + 1) % WORDS.length;
+      cyc.style.width = widths[ci] + "px";
+      if(reduce){ live.textContent = WORDS[ci]; return; }
+      live.classList.add("out");                       // AnimatePresence exit
+      setTimeout(function(){
+        live.textContent = WORDS[ci];
+        live.classList.remove("out");
+        live.classList.add("pre");                     // enter from above
+        requestAnimationFrame(function(){
+          requestAnimationFrame(function(){ live.classList.remove("pre"); });
+        });
+      }, 300);
+    };
+    // keeps running while the page scrolls on
+    setInterval(swap, 2400);
+    window.addEventListener("resize", function(){
+      widths = [].map.call(meas.children, function(m){
+        return m.getBoundingClientRect().width;
+      });
+      cyc.style.width = widths[ci] + "px";
+    }, { passive:true });
+  }
 
   /* ---- the reference stamps a local time in its hero; so does this ---- */
   var clock = document.getElementById("clock");

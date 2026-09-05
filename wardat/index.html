@@ -1,0 +1,1326 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Wardat Al-Zuhoor Co. — Cars Trading, Transport &amp; General Trading · Mosul</title>
+<meta name="description" content="Wardat Al-Zuhoor Co. Ltd — vehicle trading, general transport and general trading. Mosul branch, Nineveh, Iraq." />
+<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Wardat Al-Zuhoor Co. — Cars Trading, Transport &amp; General Trading" />
+<meta property="og:description" content="Vehicle trading, general transport and general trading. Mosul branch, Nineveh, Iraq." />
+<meta property="og:locale" content="en" />
+<meta property="og:locale:alternate" content="ar_IQ" />
+<meta name="theme-color" content="#060B24" />
+<!-- canonical, og:url and og:image go in once the domain and a share image exist -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- async: a render-blocking font sheet also blocks every script after it -->
+<link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
+ href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" /></noscript>
+
+<style>
+/* ============================================================
+   WARDAT AL-ZUHOOR — design tokens
+   Components read tokens, never a literal colour, so each one
+   re-skins itself from whichever tone section holds it.
+   ============================================================ */
+:root{
+  --blue:#0A42DE;          /* measured off the logo master */
+  --blue-lift:#3E6BFF;
+  --blue-deep:#06249B;
+  --navy:#060B24;
+  --navy-2:#0B1436;
+  --bone:#EEF0F5;
+  --bone-2:#DFE4EE;
+
+  --maxw:1280px;
+  --pad:clamp(20px,4.2vw,64px);
+
+  --f-display:"Jost",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,sans-serif;
+  --f-mono:"Space Mono",ui-monospace,monospace;
+  --f-ar:"Tajawal","Inter",system-ui,sans-serif;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+}
+.tone-dark{
+  --bg:var(--navy); --bg-2:var(--navy-2);
+  --t1:#F2F5FC; --t2:#A9B4D4; --t3:#5F6C97;
+  --line:rgba(160,180,255,.16);
+  --line-2:rgba(160,180,255,.30);
+  --glass:rgba(140,165,255,.06);
+  --accent:var(--blue-lift);
+  color-scheme:dark;
+}
+.tone-light{
+  --bg:var(--bone); --bg-2:var(--bone-2);
+  --t1:#080D22; --t2:#454F6E; --t3:#8290AE;
+  --line:rgba(10,20,60,.14);
+  --line-2:rgba(10,20,60,.26);
+  --glass:rgba(255,255,255,.55);
+  --accent:var(--blue);
+  color-scheme:light;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--navy);color:#F2F5FC;
+  font-family:var(--f-body);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:clip;
+}
+img,svg,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--blue-lift);outline-offset:3px;border-radius:4px}
+::selection{background:var(--blue);color:#fff}
+
+/* ---------- section shell ---------- */
+.sec{position:relative;background:var(--bg);color:var(--t1);isolation:isolate}
+.sec + .sec{margin-top:-1px}
+section[id],header[id]{scroll-margin-top:88px}          /* kills the hairline seam between tones */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad);position:relative;z-index:2}
+.pad{padding-block:clamp(88px,12vw,168px)}
+
+/* vertical index rail, anchored to the CONTENT column, not the viewport */
+.rail{
+  position:absolute;top:0;bottom:0;
+  left:calc(max(0px,(100% - var(--maxw))/2) + var(--pad) - 28px);
+  width:1px;background:var(--line);z-index:1;pointer-events:none;
+}
+.rail::after{
+  content:attr(data-i);position:absolute;top:clamp(88px,12vw,168px);left:0;
+  transform:translate(-50%,-50%);
+  font:700 11px/1 var(--f-mono);letter-spacing:.14em;color:var(--t3);
+  background:var(--bg);padding:8px 0;
+}
+@media (max-width:1180px){.rail{display:none}}
+
+/* ---------- type ---------- */
+.eyebrow{
+  font:400 11px/1 var(--f-mono);letter-spacing:.26em;text-transform:uppercase;
+  color:var(--t3);display:flex;align-items:center;gap:12px;margin:0 0 22px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--accent);flex:none}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-size:clamp(30px,4.6vw,60px);line-height:1.02}
+h3{font-size:clamp(19px,1.5vw,23px);line-height:1.15}
+.lede{font-size:clamp(16px,1.35vw,19px);line-height:1.62;color:var(--t2);max-width:60ch}
+.ar{font-family:var(--f-ar);direction:rtl;unicode-bidi:isolate;line-height:1.9}
+.mono{font:400 11px/1.4 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3)}
+
+/* ---------- liquid glass ---------- */
+.glass{
+  position:relative;background:var(--glass);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
+  border-radius:18px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.28),
+    inset 0 0 0 1px var(--line),
+    inset 0 -18px 34px -22px rgba(255,255,255,.16),
+    0 22px 60px -28px rgba(0,0,0,.55);
+}
+/* cursor-tracked specular — 21st.dev "glowing effect", done in CSS */
+.glow::after{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(240px circle at var(--gx,50%) var(--gy,-20%),
+    color-mix(in srgb,var(--accent) 30%,transparent), transparent 64%);
+  opacity:0;transition:opacity .5s var(--ease);
+}
+.tone-dark .glow::after{mix-blend-mode:screen}
+.tone-light .glow::after{mix-blend-mode:multiply}
+.glow:hover::after,.glow:focus-within::after{opacity:1}
+</style>
+<style>
+/* ============================================================
+   NAV — floating pill with a sliding indicator
+   (21st.dev "tubelight navbar" pattern, vanilla)
+   ============================================================ */
+.nav{position:fixed;inset:14px auto auto 50%;transform:translateX(-50%);z-index:80;width:min(1180px,calc(100vw - 28px))}
+.navin{
+  display:flex;align-items:center;gap:14px;padding:9px 9px 9px 16px;border-radius:999px;
+  background:rgba(9,15,42,.52);
+  -webkit-backdrop-filter:blur(26px) saturate(190%);backdrop-filter:blur(26px) saturate(190%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.20),inset 0 0 0 1px rgba(160,180,255,.18),
+             0 18px 44px -22px rgba(0,0,0,.8);
+  transition:background .5s var(--ease),box-shadow .5s var(--ease);
+}
+body.at-light .navin{
+  background:rgba(255,255,255,.62);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(10,20,60,.14),
+             0 18px 44px -26px rgba(10,20,60,.45);
+}
+.brand{display:flex;align-items:center;gap:11px;flex:none;min-width:0}
+.brand svg,.brand img{width:30px;height:auto;flex:none}
+.brand b{font:600 12.5px/1.05 var(--f-display);letter-spacing:.11em;text-transform:uppercase;color:#F2F5FC;white-space:nowrap}
+.brand span{display:block;font:400 8.5px/1.4 var(--f-mono);letter-spacing:.2em;color:#7E8CB8}
+body.at-light .brand b{color:#080D22}
+body.at-light .brand span{color:#6B78A0}
+
+.navlinks{position:relative;display:flex;gap:2px;margin-left:auto}
+.navlinks a{
+  position:relative;z-index:2;padding:9px 15px;border-radius:999px;
+  font:500 12.5px/1 var(--f-body);letter-spacing:.03em;color:#A9B4D4;
+  transition:color .35s var(--ease);white-space:nowrap;
+}
+.navlinks a:hover,.navlinks a.on{color:#fff}
+body.at-light .navlinks a{color:#454F6E}
+body.at-light .navlinks a:hover,body.at-light .navlinks a.on{color:#fff}
+/* the tube: one element that slides between links */
+.tube{
+  position:absolute;z-index:1;top:0;height:100%;border-radius:999px;
+  background:var(--blue);opacity:0;
+  transition:transform .5s var(--ease),width .5s var(--ease),opacity .35s var(--ease);
+  will-change:transform,width;
+}
+.tube::before{
+  content:"";position:absolute;left:50%;top:-7px;width:44%;height:5px;transform:translateX(-50%);
+  border-radius:999px;background:var(--blue-lift);
+  box-shadow:0 0 14px 3px rgba(62,107,255,.7),0 0 30px 8px rgba(62,107,255,.35);
+}
+.navcta{
+  flex:none;padding:10px 17px;border-radius:999px;background:var(--blue);color:#fff;
+  font:600 12.5px/1 var(--f-body);letter-spacing:.03em;white-space:nowrap;
+  transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .35s var(--ease);
+  box-shadow:0 8px 22px -10px rgba(10,66,222,.9);
+}
+.navcta:hover{background:var(--blue-lift);transform:translateY(-1px);box-shadow:0 12px 30px -10px rgba(62,107,255,.95)}
+.burger{display:none;flex:none;width:40px;height:40px;border-radius:999px;border:0;padding:0;cursor:pointer;
+  background:rgba(140,165,255,.10);box-shadow:inset 0 0 0 1px rgba(160,180,255,.20);
+  align-items:center;justify-content:center;margin-left:auto}
+body.at-light .burger{background:rgba(10,20,60,.06);box-shadow:inset 0 0 0 1px rgba(10,20,60,.14)}
+.burger i{display:block;width:16px;height:1.5px;background:#F2F5FC;border-radius:2px;position:relative;transition:transform .4s var(--ease),background .4s var(--ease)}
+body.at-light .burger i{background:#080D22}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;width:16px;height:1.5px;background:inherit;border-radius:2px;transition:transform .4s var(--ease),opacity .3s var(--ease)}
+.burger i::before{top:-5px}.burger i::after{top:5px}
+body.menu .burger i{background:transparent}
+body.menu .burger i::before{transform:translateY(5px) rotate(45deg);background:#F2F5FC}
+body.menu .burger i::after{transform:translateY(-5px) rotate(-45deg);background:#F2F5FC}
+
+.sheet{position:fixed;inset:0;z-index:70;display:grid;align-content:center;gap:6px;padding:0 8vw;
+  background:rgba(6,11,36,.82);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s var(--ease),visibility 0s linear .45s}
+body.menu .sheet{opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s,0s}
+.sheet a{font-family:var(--f-display);font-weight:500;font-size:clamp(30px,9vw,44px);line-height:1.25;color:#F2F5FC;
+  letter-spacing:-.02em;opacity:0;transform:translateY(18px)}
+body.menu .sheet a{opacity:1;transform:none;transition:opacity .6s var(--ease) calc(.08s + var(--i) * .06s),transform .6s var(--ease) calc(.08s + var(--i) * .06s)}
+.sheet a i{font-style:normal;font:400 11px/1 var(--f-mono);color:#5F6C97;margin-right:14px;vertical-align:middle}
+.sheet .shmeta{margin-top:26px;font:400 10px/1.8 var(--f-mono);letter-spacing:.2em;color:#5F6C97;text-transform:uppercase}
+
+@media (max-width:940px){
+  .navlinks,.tube{display:none}
+  .burger{display:flex}
+  .navin{padding:8px 8px 8px 14px;gap:10px}
+  .navcta{order:3}
+}
+@media (min-width:941px){.sheet{display:none}}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{position:relative;min-height:100lvh;display:flex;align-items:flex-end;overflow:hidden;background:var(--navy)}
+.hero .bg{position:absolute;inset:0;z-index:0}
+.hero .bg video,.hero .bg img{width:100%;height:100%;object-fit:cover}
+/* graceful degrade: film -> poster -> generated placeholder. Never gate a
+   video's visibility on a load event — Safari will not fetch a display:none
+   video, so the load event never fires and the panel stays empty. */
+.fb-media{position:absolute;inset:0}
+.fb-media video{display:block;width:100%;height:100%;object-fit:cover}
+.fb-media img{display:none;width:100%;height:100%;object-fit:cover}
+.fb-media.no-video video{display:none}
+.fb-media.no-video img{display:block}
+.fb-media.empty video,.fb-media.empty img{display:none}
+.fb-media.empty{background:
+  radial-gradient(130% 90% at 24% 8%,rgba(10,66,222,.34),transparent 62%),
+  radial-gradient(100% 80% at 88% 96%,rgba(62,107,255,.20),transparent 60%),
+  linear-gradient(160deg,#070D2A,#04081C 60%)}
+.hero .veil{
+  position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(to top,rgba(6,11,36,.97) 0%,rgba(6,11,36,.72) 34%,rgba(6,11,36,.30) 66%,rgba(6,11,36,.62) 100%),
+    radial-gradient(120% 78% at 78% 8%,rgba(10,66,222,.30),transparent 60%);
+}
+/* animated dot field — 21st.dev "dot pattern" with a radial mask */
+.dots{
+  position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(currentColor 1px,transparent 1px);
+  background-size:26px 26px;color:rgba(160,190,255,.30);
+  -webkit-mask-image:radial-gradient(90% 60% at 50% 42%,#000 0%,transparent 78%);
+  mask-image:radial-gradient(90% 60% at 50% 42%,#000 0%,transparent 78%);
+  animation:driftdots 26s linear infinite;
+}
+@keyframes driftdots{to{background-position:26px 26px}}
+/* sweeping beam across the hero */
+.beam{
+  position:absolute;inset:-30% -10%;z-index:1;pointer-events:none;
+  background:conic-gradient(from 210deg at 62% 12%,transparent 0deg,rgba(62,107,255,.22) 22deg,transparent 46deg);
+  filter:blur(28px);animation:sweep 14s var(--ease-io) infinite;
+}
+@keyframes sweep{0%,100%{transform:rotate(-7deg) translateY(0)}50%{transform:rotate(6deg) translateY(-3%)}}
+
+.heroin{position:relative;z-index:3;width:100%;padding-bottom:clamp(38px,6vw,76px);padding-top:132px}
+.hgrid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(28px,5vw,72px);align-items:end}
+@media (max-width:1000px){.hgrid{grid-template-columns:1fr;gap:38px}}
+
+.hplace{font:400 11px/1 var(--f-mono);letter-spacing:.3em;text-transform:uppercase;color:#8FA0D0;margin:0 0 26px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.hplace i{width:5px;height:5px;border-radius:50%;background:var(--blue-lift);box-shadow:0 0 12px 3px rgba(62,107,255,.8);font-style:normal;animation:pulse 2.6s var(--ease-io) infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+
+h1.big{
+  font-family:var(--f-display);font-weight:600;
+  font-size:clamp(40px,8.4vw,116px);line-height:.9;letter-spacing:-.045em;
+  text-transform:uppercase;margin:0 0 26px;color:#fff;
+}
+h1.big .ln{display:block;overflow:hidden}
+/* per-word blur-fade rise (21st.dev "blur fade" / "text reveal") */
+h1.big .wd{display:inline-block;transform:translateY(112%) rotate(4deg);filter:blur(14px);opacity:0}
+body.lit h1.big .wd{
+  transform:none;filter:blur(0);opacity:1;
+  transition:transform 1.05s var(--ease),filter .8s var(--ease),opacity .8s var(--ease);
+  transition-delay:calc(var(--i) * 130ms);
+}
+h1.big .wd.thin{font-weight:300;color:#8FA0D0}
+h1.big em{font-style:normal;color:var(--blue-lift)}
+
+.harab{font-family:var(--f-ar);direction:rtl;font-weight:500;font-size:clamp(15px,1.9vw,23px);color:#C3CDE9;margin:0 0 22px;opacity:0;transform:translateY(14px)}
+body.lit .harab{opacity:1;transform:none;transition:all .9s var(--ease) .62s}
+.hlede{max-width:52ch;color:#A9B4D4;font-size:clamp(15px,1.25vw,17.5px);opacity:0;transform:translateY(14px)}
+body.lit .hlede{opacity:1;transform:none;transition:all .9s var(--ease) .74s}
+
+/* stat column — no frames, hairline separators only */
+.stats{display:grid;gap:20px;min-width:216px}
+@media (max-width:1000px){.stats{grid-template-columns:repeat(2,1fr);min-width:0;gap:18px 26px}}
+.stat{padding-top:14px;border-top:1px solid rgba(160,180,255,.2);opacity:0;transform:translateY(16px)}
+body.lit .stat{opacity:1;transform:none;transition:all .9s var(--ease);transition-delay:calc(.8s + var(--i) * .1s)}
+.stat b{display:block;font:500 clamp(28px,3vw,42px)/1 var(--f-display);letter-spacing:-.03em;color:#fff;font-variant-numeric:tabular-nums}
+.stat b sup{font-size:.42em;vertical-align:super;color:var(--blue-lift);letter-spacing:0;margin-left:.15em}
+.stat span{display:block;margin-top:7px;font:400 10px/1.4 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:#7E8CB8}
+
+.cue{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;display:grid;justify-items:center;gap:8px;opacity:0}
+body.lit .cue{opacity:1;transition:opacity 1s var(--ease) 1.5s}
+.cue i{display:block;width:1px;height:42px;background:linear-gradient(to bottom,transparent,rgba(160,180,255,.7));overflow:hidden;position:relative}
+.cue i::after{content:"";position:absolute;inset:0;background:var(--blue-lift);animation:drop 2.2s var(--ease-io) infinite}
+@keyframes drop{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
+.cue span{font:400 9px/1 var(--f-mono);letter-spacing:.28em;color:#7E8CB8}
+@media (max-width:1000px){.cue{display:none}}
+</style>
+<style>
+/* ============================================================
+   ABOUT — scroll-driven word reveal (21st.dev "text reveal")
+   ============================================================ */
+.reveal{font-family:var(--f-display);font-weight:400;font-size:clamp(24px,3.5vw,46px);line-height:1.24;letter-spacing:-.02em;max-width:22ch}
+.reveal w{display:inline-block;color:color-mix(in srgb,var(--t1) 14%,transparent);transition:color .3s linear}
+.reveal w.on{color:var(--t1)}
+.reveal w.hl.on{color:var(--accent)}
+.abgrid{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(32px,6vw,88px);align-items:start}
+@media (max-width:900px){.abgrid{grid-template-columns:1fr;gap:40px}}
+.facts{display:grid;gap:0}
+.fact{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.fact:last-child{border-bottom:1px solid var(--line)}
+.fact dt{font:400 10px/1.6 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
+.fact dd{margin:0;font-size:14.5px;color:var(--t2)}
+.fact dd b{color:var(--t1);font-weight:600}
+
+/* ============================================================
+   SERVICES — bento grid with a cursor-tracked glow border
+   ============================================================ */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:clamp(38px,5vw,64px)}
+.cell{
+  position:relative;grid-column:span 2;min-height:240px;padding:26px;border-radius:18px;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-between;
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px var(--line),0 20px 50px -30px rgba(0,0,0,.6);
+  transition:transform .6s var(--ease),box-shadow .6s var(--ease);
+  opacity:0;transform:translateY(26px);
+}
+.cell.in{opacity:1;transform:none;transition:opacity .9s var(--ease) var(--d,0s),transform .9s var(--ease) var(--d,0s),box-shadow .6s var(--ease)}
+.cell:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 0 1px var(--line-2),0 30px 70px -30px rgba(0,0,0,.7)}
+.cell.wide{grid-column:span 3}
+.cell.tall{grid-column:span 3;min-height:320px}
+@media (max-width:900px){
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .cell,.cell.wide,.cell.tall{grid-column:span 2;min-height:200px}
+}
+.cell .num{font:700 10px/1 var(--f-mono);letter-spacing:.2em;color:var(--accent)}
+.cell h3{margin:0 0 10px}
+.cell p{margin:0;font-size:14.5px;line-height:1.6;color:var(--t2);max-width:44ch}
+.cell .top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.cell .ico{width:34px;height:34px;flex:none;opacity:.85}
+.cell .ico svg{width:100%;height:100%;stroke:var(--accent);fill:none;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}
+
+/* ============================================================
+   FLEET — scroll-driven 3D tilt frame
+   (21st.dev "container scroll animation")
+   ============================================================ */
+.tiltwrap{height:260vh;position:relative}
+.tiltpin{position:sticky;top:0;height:100dvh;display:grid;place-items:center;perspective:1400px;overflow:hidden}
+.tilthead{position:absolute;top:clamp(76px,11vh,120px);left:0;right:0;text-align:center;padding:0 var(--pad);z-index:3;transition:opacity .4s linear}
+.tiltcard{
+  width:min(1120px,92vw);aspect-ratio:16/9;border-radius:22px;overflow:hidden;position:relative;
+  transform-style:preserve-3d;will-change:transform;
+  box-shadow:0 40px 120px -40px rgba(0,0,0,.75),inset 0 0 0 1px var(--line);
+  background:var(--bg-2);
+}
+.tiltcard .strip{position:absolute;inset:0;display:flex;will-change:transform}
+.tiltcard .shot{flex:0 0 34%;height:100%;position:relative;border-right:1px solid rgba(255,255,255,.07);overflow:hidden}
+.tiltcard .shot img{width:100%;height:100%;object-fit:cover}
+.tiltcard .shot .ph{
+  position:absolute;inset:0;display:grid;place-items:center;gap:8px;align-content:center;
+  background:linear-gradient(150deg,var(--bg-2),color-mix(in srgb,var(--blue) 16%,var(--bg-2)));
+}
+.tiltcard .shot .ph span{font:400 10px/1.6 var(--f-mono);letter-spacing:.2em;color:var(--t3);text-align:center;padding:0 14px}
+.tiltglare{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.14) 50%,transparent 62%)}
+
+/* ============================================================
+   REACH — dotted world map with animated arcs
+   (21st.dev "world map")
+   ============================================================ */
+.mapbox{position:relative;margin-top:clamp(34px,5vw,56px);border-radius:20px;overflow:hidden;padding:clamp(14px,2.4vw,30px);
+  background:var(--glass);box-shadow:inset 0 0 0 1px var(--line)}
+.mapinner{position:relative;min-width:0}
+.mapinner canvas{position:absolute;inset:0;width:100%;height:100%}
+.mapsvg{position:relative;width:100%;height:auto;display:block;min-width:0;overflow:visible}
+.mapsvg .land{fill:var(--t3);opacity:.34}
+.mapsvg .arc{fill:none;stroke:var(--accent);stroke-width:1.35;stroke-linecap:round;opacity:.9;
+  filter:drop-shadow(0 0 5px color-mix(in srgb,var(--accent) 70%,transparent))}
+.mapsvg .node circle.h{fill:var(--accent)}
+.mapsvg .node circle.ring{fill:none;stroke:var(--accent);stroke-width:1;opacity:0}
+.mapsvg .node.on circle.ring{animation:ping 2.6s var(--ease-io) infinite}
+@keyframes ping{0%{r:3;opacity:.85}100%{r:15;opacity:0}}
+.mapsvg .node text{font:700 8px/1 var(--f-mono);letter-spacing:.1em;fill:var(--t1);opacity:0;transition:opacity .5s var(--ease)}
+.mapsvg .node.on text{opacity:1}
+.mapsvg .node .dot{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(0);transition:opacity .4s var(--ease),transform .5s var(--ease)}
+.mapsvg .node.on .dot{opacity:1;transform:scale(1)}
+.mapsvg .node.hub circle.h{fill:#fff}
+.radial{display:none}
+.radial svg{width:100%;height:auto;overflow:visible}
+.radial .spoke{stroke:var(--accent);stroke-width:1.2;fill:none;opacity:.75;stroke-linecap:round}
+.radial .rng{fill:none;stroke:var(--line);stroke-width:1}
+.radial .pt{fill:var(--accent)}
+.radial .hub{fill:#fff}
+.radial text{font:700 8.5px/1 var(--f-mono);letter-spacing:.08em;fill:var(--t1)}
+.radial text.km{font-weight:400;fill:var(--t3);letter-spacing:.06em}
+.radial g.o{opacity:0;transform:scale(.86);transform-origin:center;transition:opacity .5s var(--ease),transform .6s var(--ease)}
+.radial g.o.on{opacity:1;transform:scale(1)}
+@media (max-width:760px){
+  .mapinner{display:none}
+  .mapbox{padding:clamp(10px,3vw,18px)}
+  .radial{display:block}
+  .tiltcard{aspect-ratio:4/5}
+  .tiltcard .shot{flex:0 0 62%}
+}
+.corr{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0 26px;margin-top:34px;min-width:0}
+.corr li{list-style:none;display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid var(--line);
+  font-size:14px;color:var(--t2);cursor:default;transition:color .3s var(--ease)}
+.corr li:hover,.corr li.hot{color:var(--t1)}
+.corr li i{font-style:normal;font:400 10px/1.6 var(--f-mono);letter-spacing:.14em;color:var(--t3)}
+
+/* ============================================================
+   PROCESS — tracing beam timeline
+   ============================================================ */
+.pgrid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(30px,5vw,80px);align-items:start}
+@media (max-width:900px){.pgrid{grid-template-columns:1fr;gap:34px}}
+.pstick{position:sticky;top:clamp(96px,14vh,140px)}
+.tl{position:relative;padding-left:clamp(30px,4vw,52px)}
+.tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--line);border-radius:2px}
+.tl .beamline{position:absolute;left:6px;top:8px;width:2px;height:0;border-radius:2px;
+  background:linear-gradient(to bottom,var(--accent),color-mix(in srgb,var(--accent) 20%,transparent));
+  box-shadow:0 0 14px 1px color-mix(in srgb,var(--accent) 60%,transparent)}
+.step{position:relative;padding:0 0 clamp(34px,5vw,58px);opacity:0;transform:translateY(20px)}
+.step.in{opacity:1;transform:none;transition:all .8s var(--ease)}
+.step:last-child{padding-bottom:0}
+.step::before{content:"";position:absolute;left:calc(-1 * clamp(30px,5vw,64px) + 1px);top:7px;width:12px;height:12px;border-radius:50%;
+  background:var(--bg);box-shadow:inset 0 0 0 2px var(--line-2);transition:box-shadow .5s var(--ease),background .5s var(--ease)}
+.step.in::before{background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent)}
+.step .k{font:400 10px/1 var(--f-mono);letter-spacing:.2em;color:var(--t3);margin-bottom:10px;display:block}
+.step h3{margin:0 0 8px}
+.step p{margin:0;color:var(--t2);font-size:15px;max-width:56ch}
+
+/* ============================================================
+   MARQUEE — speed and direction driven by scroll velocity
+   ============================================================ */
+.velo{overflow:hidden;padding:clamp(22px,3vw,38px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.velo + .velo{border-top:0}
+.velotrack{display:flex;width:max-content;will-change:transform}
+.velotrack span{
+  font-family:var(--f-display);font-weight:500;text-transform:uppercase;letter-spacing:-.02em;
+  font-size:clamp(30px,5.4vw,72px);line-height:1;padding-right:.45em;color:var(--t1);white-space:nowrap;
+}
+.velotrack span.o{color:transparent;-webkit-text-stroke:1px var(--line-2)}
+.velotrack i{align-self:center;flex:none;width:9px;height:9px;border-radius:50%;background:var(--accent);margin-right:.45em}
+
+/* ============================================================
+   FILM PANEL
+   ============================================================ */
+.film{height:280vh;position:relative}
+.filmpin{position:sticky;top:0;height:100dvh;overflow:hidden;display:grid;place-items:center}
+.filmpin .bg{position:absolute;inset:0}
+.filmpin .bg video,.filmpin .bg img{width:100%;height:100%;object-fit:cover}
+.filmveil{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,11,36,.92),rgba(6,11,36,.28) 55%,rgba(6,11,36,.75))}
+.filmcopy{position:relative;z-index:2;text-align:center;padding:0 var(--pad);max-width:900px}
+.filmcopy h2{color:#fff;margin-bottom:18px}
+.filmcopy p{color:#C3CDE9;margin:0 auto;max-width:52ch}
+.filmcopy .ln{display:block;overflow:hidden}
+.filmcopy .ln b{display:inline-block;font-weight:inherit;transform:translateY(105%);transition:transform 1s var(--ease)}
+.filmpin.on .filmcopy .ln b{transform:none}
+.filmpin.on .filmcopy .ln:nth-child(2) b{transition-delay:.12s}
+.filmcopy p{opacity:0;transform:translateY(14px)}
+.filmpin.on .filmcopy p{opacity:1;transform:none;transition:all .9s var(--ease) .3s}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.cgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,72px);align-items:start}
+@media (max-width:900px){.cgrid{grid-template-columns:1fr;gap:36px}}
+.card{position:relative;padding:clamp(24px,3.4vw,40px);border-radius:20px;overflow:hidden}
+/* border beam — 21st.dev "border beam" */
+.beamborder::before{
+  content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;z-index:0;
+  background:conic-gradient(from var(--a,0deg),transparent 0deg,var(--accent) 26deg,transparent 60deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:spin 6s linear infinite;
+}
+@keyframes spin{to{--a:360deg}}
+@property --a{syntax:"<angle>";inherits:false;initial-value:0deg}
+.card > *{position:relative;z-index:1}
+.crow{display:grid;grid-template-columns:auto 1fr;gap:14px 20px;padding:15px 0;border-top:1px solid var(--line);align-items:baseline}
+.crow:first-of-type{border-top:0;padding-top:0}
+.crow dt{font:400 10px/1.6 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
+.crow dd{margin:0;font-size:15px;color:var(--t1)}
+.crow dd small{display:block;font-size:12.5px;color:var(--t3);margin-top:3px}
+.tbc{display:inline-block;font:400 9px/1 var(--f-mono);letter-spacing:.14em;color:var(--t3);
+  border:1px solid var(--line-2);border-radius:4px;padding:4px 6px;vertical-align:middle}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:999px;
+  background:var(--blue);color:#fff;font:600 13.5px/1 var(--f-body);letter-spacing:.02em;
+  box-shadow:0 14px 34px -14px rgba(10,66,222,.95);
+  transition:transform .4s var(--ease),background .4s var(--ease),box-shadow .4s var(--ease);
+}
+.btn:hover{background:var(--blue-lift);transform:translateY(-2px);box-shadow:0 20px 44px -14px rgba(62,107,255,1)}
+.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8}
+
+footer{border-top:1px solid var(--line);padding:34px 0}
+.fgrid{display:flex;flex-wrap:wrap;gap:22px 40px;justify-content:space-between;align-items:center}
+.fgrid p{margin:0;font-size:12.5px;color:var(--t3)}
+.legal{font-size:12px;color:var(--t3);max-width:62ch;line-height:1.7;margin:20px 0 0}
+
+/* reveal-on-scroll utility */
+.up{opacity:0;transform:translateY(24px)}
+.up.in{opacity:1;transform:none;transition:opacity .9s var(--ease) var(--d,0s),transform .9s var(--ease) var(--d,0s)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .up,.cell,.step,.stat,.harab,.hlede,.cue{opacity:1!important;transform:none!important}
+  h1.big .wd{opacity:1!important;transform:none!important;filter:none!important}
+  .reveal w{color:var(--t1)}
+  .tiltwrap,.film{height:auto}
+  .tiltpin,.filmpin{position:relative;height:auto;min-height:70vh}
+}
+</style>
+</head>
+<body class="lit-pending">
+
+<!-- ══ NAV ═══════════════════════════════════════════════════ -->
+<nav class="nav" aria-label="Primary">
+  <div class="navin">
+    <a class="brand" href="#top" aria-label="Wardat Al-Zuhoor, home">
+      <img src="assets/logo-mark.svg" alt="" width="30" height="15" />
+      <span style="display:block">
+        <b>Wardat Al-Zuhoor</b>
+        <span>MOSUL · IRAQ</span>
+      </span>
+    </a>
+    <div class="navlinks" id="navlinks">
+      <span class="tube" id="tube" aria-hidden="true"></span>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#fleet">Fleet</a>
+      <a href="#reach">Reach</a>
+      <a href="#process">Process</a>
+    </div>
+    <a class="navcta" href="#contact">Contact</a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><i></i></button>
+  </div>
+</nav>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Sections">
+  <a href="#about"    style="--i:0"><i>01</i>About</a>
+  <a href="#services" style="--i:1"><i>02</i>Services</a>
+  <a href="#fleet"    style="--i:2"><i>03</i>Fleet</a>
+  <a href="#reach"    style="--i:3"><i>04</i>Reach</a>
+  <a href="#process"  style="--i:4"><i>05</i>Process</a>
+  <a href="#contact"  style="--i:5"><i>06</i>Contact</a>
+  <p class="shmeta" style="--i:6">Wardat Al-Zuhoor Co. Ltd · Mosul · Iraq</p>
+</div>
+
+<!-- ══ HERO ══════════════════════════════════════════════════ -->
+<header class="hero tone-dark" id="top">
+  <div class="bg">
+    <!-- film → poster → generated placeholder. Drop assets/hero.webm +
+         hero.mp4 + hero.jpg in and this fills itself with no code change. -->
+    <div class="fb-media" id="heroMedia">
+      <video id="heroVideo" muted playsinline autoplay loop preload="metadata" poster="assets/hero.jpg" aria-hidden="true">
+        <source src="assets/hero.webm" type="video/webm" />
+        <source src="assets/hero.mp4" type="video/mp4" />
+      </video>
+      <img src="assets/hero.jpg" alt="" />
+    </div>
+  </div>
+  <div class="dots" aria-hidden="true"></div>
+  <div class="beam" aria-hidden="true"></div>
+  <div class="veil" aria-hidden="true"></div>
+
+  <div class="heroin wrap">
+    <div class="hgrid">
+      <div>
+        <p class="hplace"><i></i> Mosul <span>·</span> Nineveh <span>·</span> Iraq</p>
+        <h1 class="big">
+          <span class="ln"><span class="wd" style="--i:0">Trade</span></span>
+          <span class="ln"><span class="wd" style="--i:1"><em>Transport</em></span></span>
+          <span class="ln"><span class="wd thin" style="--i:2">Deliver</span></span>
+        </h1>
+        <p class="harab ar">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة — فرع الموصل</p>
+        <p class="hlede">Vehicle trading, general transport and general trading, run out of Mosul.
+          We buy, move and hand over — one vehicle or a full consignment.</p>
+      </div>
+
+      <!-- Numbers are deliberately unframed. Two are structural facts; two wait
+           on the client's real figures and show a TBC tag rather than a guess. -->
+      <div class="stats">
+        <div class="stat" style="--i:0"><b data-count="3" data-pad="2">0</b><span>Licensed activities</span></div>
+        <div class="stat" style="--i:1"><b data-count="1" data-pad="2">0</b><span>Mosul branch</span></div>
+        <div class="stat" style="--i:2"><b>—</b><span>Units / year <em class="tbc" style="font-style:normal">TBC</em></span></div>
+        <div class="stat" style="--i:3"><b>—</b><span>Markets served <em class="tbc" style="font-style:normal">TBC</em></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cue" aria-hidden="true"><i></i><span>Scroll</span></div>
+</header>
+
+<!-- ══ ABOUT ═════════════════════════════════════════════════ -->
+<section class="sec tone-light" id="about">
+  <div class="rail" data-i="01"></div>
+  <div class="wrap pad">
+    <p class="eyebrow">01 — The company</p>
+    <div class="abgrid">
+      <p class="reveal" data-reveal>A limited liability company trading vehicles, running general transport and
+        handling general trade from its <span class="hl">Mosul</span> branch.</p>
+      <div>
+        <dl class="facts">
+          <div class="fact"><dt>Registered</dt><dd><b>Wardat Al-Zuhoor Co.</b> for Cars Trading, Transport and General Trading — Limited Liability</dd></div>
+          <div class="fact"><dt>Arabic</dt><dd class="ar">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة / محدودة المسؤولية</dd></div>
+          <div class="fact"><dt>Branch</dt><dd><b>Mosul</b> — Nineveh Governorate, Iraq <span class="ar">/ فرع الموصل</span></dd></div>
+          <div class="fact"><dt>Activities</dt><dd>Vehicle trading · General transport · General trading</dd></div>
+        </dl>
+        <p class="legal">Company details are taken from the official letterhead and signage supplied by the client.
+          Registration number, address and contact details are still to be confirmed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══════════════════════════════════════════════ -->
+<section class="sec tone-dark" id="services">
+  <div class="rail" data-i="02"></div>
+  <div class="wrap pad">
+    <p class="eyebrow">02 — What we do</p>
+    <h2>Three licences,<br />one chain of custody.</h2>
+
+    <div class="bento">
+      <article class="cell tall glow" style="--d:0s">
+        <div class="top">
+          <span class="num">S/01</span>
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M3 13l2-5.5A2 2 0 0 1 6.9 6h10.2a2 2 0 0 1 1.9 1.5L21 13v5a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1H7v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><circle cx="7" cy="15" r="1"/><circle cx="17" cy="15" r="1"/></svg></span>
+        </div>
+        <div><h3>Vehicle trading</h3>
+          <p>Buying and selling passenger cars and light commercials — single units through to bulk consignments,
+             sourced against a specification rather than whatever happens to be on the lot.</p></div>
+      </article>
+
+      <article class="cell tall glow" style="--d:.06s">
+        <div class="top">
+          <span class="num">S/02</span>
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M2 16V8a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v8"/><path d="M14 10h3.6a2 2 0 0 1 1.7 1l2.2 3.4a2 2 0 0 1 .5 1.3V16"/><circle cx="7" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg></span>
+        </div>
+        <div><h3>General transport</h3>
+          <p>Road freight under our own licence. Vehicles moved on transporters or under their own power,
+             with the paperwork travelling with the load.</p></div>
+      </article>
+
+      <article class="cell glow" style="--d:.12s">
+        <div class="top"><span class="num">S/03</span>
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg></span></div>
+        <div><h3>General trading</h3><p>Goods outside the vehicle lines, handled under the same licence and the same documentation discipline.</p></div>
+      </article>
+
+      <article class="cell glow" style="--d:.18s">
+        <div class="top"><span class="num">S/04</span>
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg></span></div>
+        <div><h3>Documentation</h3><p>Titles, invoices, clearance files and handover records — assembled before the vehicle moves, not after.</p></div>
+      </article>
+
+      <article class="cell glow" style="--d:.24s">
+        <div class="top"><span class="num">S/05</span>
+          <span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div>
+        <div><h3>Fleet supply</h3><p>Repeat, scheduled supply for buyers who need the same specification again next month, not a one-off.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FLEET ═════════════════════════════════════════════════ -->
+<section class="sec tone-light" id="fleet">
+  <div class="tiltwrap" id="tiltwrap">
+    <div class="tiltpin">
+      <div class="tilthead" id="tilthead">
+        <p class="eyebrow" style="justify-content:center">03 — The fleet</p>
+        <h2>What passes through.</h2>
+      </div>
+      <div class="tiltcard" id="tiltcard">
+        <div class="strip" id="strip">
+          <div class="shot"><div class="ph"><span>Photograph slot 01<br />Yard / arrivals</span></div></div>
+          <div class="shot"><div class="ph"><span>Photograph slot 02<br />Transporter loaded</span></div></div>
+          <div class="shot"><div class="ph"><span>Photograph slot 03<br />Unit detail</span></div></div>
+          <div class="shot"><div class="ph"><span>Photograph slot 04<br />Handover</span></div></div>
+          <div class="shot"><div class="ph"><span>Photograph slot 05<br />Mosul branch</span></div></div>
+        </div>
+        <div class="tiltglare" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ REACH ═════════════════════════════════════════════════ -->
+<section class="sec tone-dark" id="reach">
+  <div class="rail" data-i="04"></div>
+  <div class="wrap pad">
+    <p class="eyebrow">04 — Reach</p>
+    <h2>Mosul is the hub.<br />The corridors run outward.</h2>
+    <p class="lede" style="margin-top:20px">Vehicles reach Iraq through a handful of ports and land crossings.
+      We work the leg from there to Mosul, and onward to wherever the buyer is.</p>
+
+    <div class="mapbox up">
+      <div class="mapinner">
+        <canvas id="mapdots" aria-hidden="true"></canvas>
+        <svg class="mapsvg" id="mapsvg" viewBox="0 0 1008 444" role="img"
+             aria-label="World map showing trade corridors converging on Mosul, Iraq"></svg>
+      </div>
+      <div class="radial" id="radial" role="img"
+           aria-label="Corridor diagram: origins placed on their true bearing from Mosul"></div>
+    </div>
+
+    <ul class="corr" id="corr">
+      <li data-city="Jebel Ali"><span>Jebel Ali, UAE</span><i>Inbound</i></li>
+      <li data-city="Mersin"><span>Mersin, Türkiye</span><i>Inbound</i></li>
+      <li data-city="Poti"><span>Poti, Georgia</span><i>Inbound</i></li>
+      <li data-city="Shanghai"><span>Shanghai, China</span><i>Inbound</i></li>
+      <li data-city="Yokohama"><span>Yokohama, Japan</span><i>Inbound</i></li>
+      <li data-city="Aqaba"><span>Aqaba, Jordan</span><i>Inbound</i></li>
+      <li data-city="Rotterdam"><span>Rotterdam, Netherlands</span><i>Inbound</i></li>
+      <li data-city="Erbil"><span>Erbil</span><i>Onward</i></li>
+      <li data-city="Baghdad"><span>Baghdad</span><i>Onward</i></li>
+      <li data-city="Basra"><span>Basra</span><i>Onward</i></li>
+    </ul>
+    <p class="legal">Corridor list is a proposal based on the routes that serve Iraq — confirm which of these
+      Wardat Al-Zuhoor actually works and we will cut the rest.</p>
+  </div>
+</section>
+
+<!-- ══ PROCESS ═══════════════════════════════════════════════ -->
+<section class="sec tone-light" id="process">
+  <div class="rail" data-i="05"></div>
+  <div class="wrap pad">
+    <div class="pgrid">
+      <div class="pstick">
+        <p class="eyebrow">05 — How it runs</p>
+        <h2>Five steps,<br />one file.</h2>
+        <p class="lede" style="margin-top:20px">One document set follows the vehicle from the specification
+          sheet to the handover signature. Nothing is reconstructed after the fact.</p>
+      </div>
+    <div class="tl" id="tl">
+      <span class="beamline" id="beamline" aria-hidden="true"></span>
+      <div class="step"><span class="k">STEP 01</span><h3>Specification</h3>
+        <p>The buyer sets make, model, year, trim and condition. Everything after this is measured against that sheet.</p></div>
+      <div class="step"><span class="k">STEP 02</span><h3>Sourcing</h3>
+        <p>Units located against the specification and priced landed — not ex-yard — so the number quoted is the number paid.</p></div>
+      <div class="step"><span class="k">STEP 03</span><h3>Transport</h3>
+        <p>Moved under our own transport licence, on transporters or under their own power, with the file travelling alongside.</p></div>
+      <div class="step"><span class="k">STEP 04</span><h3>Clearance</h3>
+        <p>Titles, invoices and clearance documents assembled and checked before the vehicle reaches the crossing.</p></div>
+      <div class="step"><span class="k">STEP 05</span><h3>Handover</h3>
+        <p>Delivered in Mosul or onward to the buyer, signed off against the same specification sheet it started on.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CAPABILITY MARQUEE — speed follows scroll velocity ═════ -->
+<section class="sec tone-dark" aria-hidden="true">
+  <div class="velo"><div class="velotrack" data-dir="1" id="velo1"></div></div>
+  <div class="velo"><div class="velotrack" data-dir="-1" id="velo2"></div></div>
+</section>
+
+<!-- ══ FILM ══════════════════════════════════════════════════ -->
+<section class="sec tone-dark" id="film">
+  <div class="film">
+    <div class="filmpin" id="filmpin">
+      <div class="bg">
+        <div class="fb-media" id="filmMedia">
+          <video id="filmVideo" muted playsinline loop preload="metadata" poster="assets/road.jpg" aria-hidden="true">
+            <source src="assets/road.webm" type="video/webm" />
+            <source src="assets/road.mp4" type="video/mp4" />
+          </video>
+          <img src="assets/road.jpg" alt="" />
+        </div>
+      </div>
+      <div class="filmveil" aria-hidden="true"></div>
+      <div class="filmcopy">
+        <h2><span class="ln"><b>The distance is the</b></span><span class="ln"><b>whole business.</b></span></h2>
+        <p>Buying a vehicle is the easy half. Getting it to Mosul — intact, documented and on the day it was promised — is the half that has to be run properly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ═══════════════════════════════════════════════ -->
+<section class="sec tone-dark" id="contact">
+  <div class="rail" data-i="06"></div>
+  <div class="wrap pad">
+    <p class="eyebrow">06 — Contact</p>
+    <div class="cgrid">
+      <div>
+        <h2>Tell us the specification.</h2>
+        <p class="lede" style="margin-top:20px">Make, model, year, quantity and where it has to land.
+          We will come back with a landed price and a date.</p>
+        <p style="margin-top:32px"><a class="btn" href="#contact" id="enquire">
+          Send an enquiry
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+        <p class="legal">The enquiry button is not wired up yet — it needs the company's real email address
+          or WhatsApp number first.</p>
+      </div>
+
+      <div class="card glass beamborder">
+        <dl style="margin:0">
+          <div class="crow"><dt>Company</dt><dd>Wardat Al-Zuhoor Co. Ltd
+            <small class="ar">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة</small></dd></div>
+          <div class="crow"><dt>Branch</dt><dd>Mosul, Nineveh Governorate, Iraq<small class="ar">فرع الموصل</small></dd></div>
+          <div class="crow"><dt>Address</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
+          <div class="crow"><dt>Phone</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
+          <div class="crow"><dt>Email</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
+          <div class="crow"><dt>Hours</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <footer>
+      <div class="fgrid">
+        <a class="brand" href="#top" style="gap:12px">
+          <img src="assets/logo-mark.svg" alt="" width="34" height="17" />
+          <span style="display:block"><b>Wardat Al-Zuhoor</b><span>EST. MOSUL</span></span>
+        </a>
+        <p>© <span id="yr">2026</span> Wardat Al-Zuhoor Co. Ltd. All rights reserved.</p>
+      </div>
+      <p class="legal">Registered as <em>Wardat AL-Zuhoor Co. For Cars Trading and Transportation and General
+        Trading LTD.</em> The company letterhead prints “Transportion”; the spelling has been corrected here —
+        say the word if the registered English name must appear exactly as printed.</p>
+    </footer>
+  </div>
+</section>
+<script>
+/* ============================================================
+   WARDAT AL-ZUHOOR — behaviour
+   No framework, no build step. Vanilla ports of the 21st.dev
+   component patterns named in each block.
+   ============================================================ */
+var LAND_RLE = ".z#1.4#3.1#5.3#n.e#5.y#4.z.t#2.d#4.4#o.g#1.z.5#1.z.t#6.2#1.1#1.1#6.a#i.z#3.d#b.b#5.z.6#4.4#1.2#4.2#1.1#3.a#g.z#2.b#h.3#1.6#2.z.8#9.2#3.2#7.9#g.y#2.6#s.4#6.m#a.4#3.4#8.1#3.3#1.3#4.6#f.k#5.e#1.2#z#9.4#3.4#z#z#j.c#2.1#1.b#1.z.e#1.4#z#z#f.a#3.z.z.4#y.1#2.4#4.6#5.9#3.c#5.1#z#z#2.8#y.7#2.2#1.8#3.n#5.2#z#v.1#5.9#8.1#o.8#4.b#1.m#6.2#2.1#z#o.4#4.f#1.8#l.7#4.1#2.r#1.4#1.1#3.3#z#k.8#2.i#1.b#l.5#7.q#2.5#1.1#2.2#z#k.8#3.f#1.f#n.1#a.n#1.1#1.5#1.4#z#j.a#3.w#m.1#b.m#1.1#2.2#z#u.6#1.y#y.o#z#y.z.7#r.5#2.o#z#v.1#1.z.8#s.t#z#v.1#1.z.8#u.r#f.1#1.1#5.3#z#4.z.b#p.2#1.q#1.2#4.2#1.1#6.6#3.2#z#4.3#2.z.7#p.t#5.5#2.1#4.2#2.2#4.2#z#1.4#1.z.9#n.v#4.4#1.2#4.1#b.2#v.1#3.5#1.z.a#l.w#4.6#2.2#1.1#b.2#u.3#2.5#1.z.a#m.w#1.2#5.a#1.1#z#4.3#1.3#3.z.b#k.x#8.c#z#4.5#3.z.e#h.y#b.3#1.5#z#6.z.n#f.x#z#r.z.o#7.6#1.x#s.1#x.z.n#1.1#6.7#2.u#m.1#6.2#1.1#t.z.q#5.9#1.t#n.1#7.7#p.z.r#4.z.3#p.1#a.4#m.2#1.z.r#4.3#1.4#1.s#p.1#a.5#8.2#7.1#1.z.8#1.n#4.3#1.7#1.p#p.2#8.7#6.4#5.2#1.z.y#6.x#q.2#6.8#5.5#6.6#1.z.w#5.v#q.2#4.a#3.9#5.5#1.z.y#3.v#u.d#2.9#5.5#2.z.z#1.5#1.p#s.f#2.9#1.1#3.7#1.z.y#1.4#1.1#4.m#v.c#1.c#1.5#1.1#1.z.z.3#9.m#t.e#1.8#1.a#2.z.z.3#9.m#s.e#1.9#1.6#1.3#1.z.z.3#c.k#1.6#j.n#1.1#1.5#2.z.z.6#d.t#h.o#2.4#3.z.z.6#e.r#g.q#2.3#4.1#2.1#1.z.z#g.q#g.r#2.2#4.6#2.z.x#i.o#e.s#2.3#2.1#2.3#1.1#4.z.t#l.m#d.u#1.f#4.z.s#l.m#c.v#2.e#4.z.r#l.m#c.z#1.1#2.9#1.1#1.z.s#j.n#d.z.l#1.z.l#i.o#d.z.7#3.2#1.z.u#i.o#d.3#1.z.1#4.3#1.z.v#h.n#e.2#2.z#6.2#2.z.w#f.n#c.4#2.y#b.z.w#e.p#a.5#2.x#d.z.v#e.p#a.4#2.w#g.7#1.z.m#c.s#a.3#2.v#h.z.u#b.t#8.z.3#i.z.t#a.u#8.z.3#i.z.t#a.v#7.z.4#i.z.s#9.w#6.z.5#h.z.t#8.x#5.z.6#4.5#8.z.s#7.1#1.z.z.9#1.8#1.1#5.z.t#8.z.z.l#5.b#1.z.h#7.z.z.n#1.1#1.d#1.z.g#5.z.z.z.z.m#5.z.z.s#1.b#1.z.i#4.z.z.z.4#1.z.i#4.z.z.z.4#2.z.i#4.z.z.z.z.o#3.z.t#1.z.z.u#3.4#1.z.z.z.z.k#3.z.z.z.z.r#2.z.z.z.z.z.z.z.z.3";
+var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
+</script>
+<script>
+(function () {
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $  = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  var lerp  = function (a, b, t) { return a + (b - a) * t; };
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  /* ---------- hero entrance -------------------------------- */
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () { document.body.classList.add("lit"); });
+  });
+
+  /* ---------- video: film -> poster -> placeholder ----------
+     Never gate a video's visibility on a load event. Safari and iOS do not
+     fetch media for a display:none element, so the event never fires and the
+     panel stays blank. Show the film from first paint; fall back only on a
+     real error. */
+  function film(video, wrap, watch) {
+    if (!video) return;
+    video.muted = true;                       // property, not just the attribute
+    video.setAttribute("webkit-playsinline", "");
+    video.addEventListener("error", function () { wrap.classList.add("no-video"); }, true);
+    $$("source", video).forEach(function (s) {
+      s.addEventListener("error", function () {
+        if (!video.currentSrc) wrap.classList.add("no-video");
+      });
+    });
+    var img = $("img", wrap);
+    if (img) img.addEventListener("error", function () { wrap.classList.add("empty"); });
+    var started = false;
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) {
+          if (!started) { started = true; try { video.load(); } catch (err) {} }
+          if (!reduce) video.play().catch(function () {});
+        } else if (!video.paused) { video.pause(); }
+      });
+    }, { threshold: 0.05 }).observe(watch || video);
+  }
+  film($("#heroVideo"), $("#heroMedia"), $(".hero"));
+  film($("#filmVideo"), $("#filmMedia"), $("#filmpin"));
+
+  /* ---------- generic reveal-on-scroll --------------------- */
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+  $$(".up, .cell, .step").forEach(function (el) { io.observe(el); });
+
+  /* ---------- counters ------------------------------------- */
+  $$("[data-count]").forEach(function (el) {
+    var ob = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        ob.disconnect();
+        var to = +el.dataset.count, pad = +(el.dataset.pad || 0), t0 = 0;
+        if (reduce) { el.textContent = String(to).padStart(pad, "0"); return; }
+        requestAnimationFrame(function step(t) {
+          if (!t0) t0 = t;
+          var k = clamp((t - t0) / 1100, 0, 1);
+          el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 3)))).padStart(pad, "0");
+          if (k < 1) requestAnimationFrame(step);
+        });
+      });
+    }, { threshold: 0.6 });
+    ob.observe(el);
+  });
+
+  /* ---------- cursor-tracked glow (21st.dev glowing-effect) -- */
+  document.addEventListener("pointermove", function (ev) {
+    var el = ev.target.closest ? ev.target.closest(".glow, .glass") : null;
+    if (!el) return;
+    var r = el.getBoundingClientRect();
+    el.style.setProperty("--gx", ((ev.clientX - r.left) / r.width * 100) + "%");
+    el.style.setProperty("--gy", ((ev.clientY - r.top) / r.height * 100) + "%");
+  }, { passive: true });
+
+  /* ---------- nav: sliding tube + scroll spy + tone swap ---- */
+  var links = $$("#navlinks a"), tube = $("#tube"), navBox = $("#navlinks");
+  function moveTube(a, show) {
+    if (!tube || !navBox) return;
+    if (!a) { tube.style.opacity = "0"; return; }   // no matching link: retract
+    var r = a.getBoundingClientRect(), p = navBox.getBoundingClientRect();
+    tube.style.width = r.width + "px";
+    tube.style.transform = "translateX(" + (r.left - p.left) + "px)";
+    tube.style.opacity = show ? "1" : "0";
+  }
+  var current = null;
+  links.forEach(function (a) {
+    a.addEventListener("pointerenter", function () { moveTube(a, true); });
+  });
+  navBox && navBox.addEventListener("pointerleave", function () { moveTube(current, !!current); });
+
+  var panels = $$(".sec, .hero");
+  var lastTone = null, lastId = null, spyQueued = false;
+  function spy() {
+    spyQueued = false;
+    var navY = 52, cx = innerWidth / 2, hit = null;
+    document.elementsFromPoint(cx, navY).some(function (el) {
+      var p = el.closest && el.closest(".sec, .hero");
+      if (p) { hit = p; return true; }
+      return false;
+    });
+    if (!hit) {                                  // nav sits over a gap: nearest panel
+      var best = Infinity;
+      panels.forEach(function (p) {
+        var r = p.getBoundingClientRect(), d = Math.abs(r.top + r.height / 2 - navY);
+        if (d < best) { best = d; hit = p; }
+      });
+    }
+    if (!hit) return;
+    var light = hit.classList.contains("tone-light");
+    if (light !== lastTone) { lastTone = light; document.body.classList.toggle("at-light", light); }
+    // the active link follows the section holding the middle of the viewport
+    var mid = innerHeight / 2, id = null;
+    panels.forEach(function (p) {
+      var r = p.getBoundingClientRect();
+      if (p.id && r.top <= mid && r.bottom >= mid) id = p.id;
+    });
+    if (id !== lastId) {
+      lastId = id;
+      links.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + id); });
+      current = links.filter(function (a) { return a.classList.contains("on"); })[0] || null;
+    }
+    moveTube(current, !!current);
+  }
+  function queueSpy() { if (!spyQueued) { spyQueued = true; requestAnimationFrame(spy); } }
+  addEventListener("scroll", queueSpy, { passive: true });
+  addEventListener("resize", queueSpy, { passive: true });
+  spy();
+
+  /* ---------- about: word-by-word reveal (21st.dev TextReveal) */
+  var rv = $("[data-reveal]");
+  if (rv) {
+    var frag = document.createDocumentFragment();
+    (function walk(node, hl) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 3) {
+          n.textContent.split(/(\s+)/).forEach(function (tok) {
+            if (!tok) return;
+            if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(" ")); return; }
+            var w = document.createElement("w");
+            w.textContent = tok; if (hl) w.className = "hl";
+            frag.appendChild(w);
+          });
+        } else if (n.nodeType === 1) { walk(n, hl || n.classList.contains("hl")); }
+      });
+    })(rv, false);
+    rv.textContent = ""; rv.appendChild(frag);
+    var words = $$("w", rv);
+    var tick = function () {
+      var r = rv.getBoundingClientRect(), vh = innerHeight;
+      var p = clamp((vh * 0.86 - r.top) / (r.height + vh * 0.32), 0, 1);
+      var n = Math.round(p * words.length);
+      words.forEach(function (w, i) { w.classList.toggle("on", i < n); });
+    };
+    addEventListener("scroll", tick, { passive: true });
+    addEventListener("resize", tick, { passive: true });
+    tick();
+  }
+
+  /* ---------- fleet: scroll-driven 3D tilt frame -------------
+     21st.dev "container scroll animation": the card starts tilted back and
+     flattens as the section scrolls, while the strip inside pans sideways. */
+  var tw = $("#tiltwrap"), tc = $("#tiltcard"), strip = $("#strip"), thead = $("#tilthead");
+  if (tw && tc && strip) {
+    var tState = 0;
+    var tTick = function () {
+      var r = tw.getBoundingClientRect();
+      var p = clamp(-r.top / (r.height - innerHeight), 0, 1);
+      tState = reduce ? p : lerp(tState, p, 0.14);
+      var open = clamp(tState / 0.42, 0, 1);              // tilt -> flat
+      var pan  = clamp((tState - 0.34) / 0.66, 0, 1);     // then pan the strip
+      tc.style.transform =
+        "rotateX(" + (26 * (1 - open)).toFixed(2) + "deg) " +
+        "scale(" + (0.82 + 0.18 * open).toFixed(3) + ") " +
+        "translateY(" + (34 * (1 - open)).toFixed(1) + "px)";
+      var over = Math.max(0, strip.scrollWidth - tc.clientWidth);
+      strip.style.transform = "translate3d(" + (-over * pan).toFixed(1) + "px,0,0)";
+      if (thead) thead.style.opacity = String(clamp(1 - tState * 2.4, 0, 1));
+      if (!reduce) requestAnimationFrame(tTick);
+    };
+    if (reduce) { addEventListener("scroll", tTick, { passive: true }); tTick(); }
+    else requestAnimationFrame(tTick);
+  }
+
+  /* ---------- reach: dotted world map + arcs (21st.dev world-map) */
+  (function () {
+    var svg = $("#mapsvg"), cv = $("#mapdots");
+    if (!svg || !cv) return;
+    var W = 1008, H = 444, NS = "http://www.w3.org/2000/svg";
+
+    function project(lon, lat) {
+      return [ (lon + 180) / 360 * W,
+               (LAND_LAT0 - lat) / (LAND_LAT0 - LAND_LAT1) * H ];
+    }
+
+    /* decode the run-length landmask into grid cells */
+    var cells = [], i, k, n, on, D = "0123456789abcdefghijklmnopqrstuvwxyz";
+    for (i = 0, k = 0; i < LAND_RLE.length; i += 2) {
+      on = LAND_RLE[i] === "#"; n = D.indexOf(LAND_RLE[i + 1]);
+      for (var j = 0; j < n; j++, k++) if (on) cells.push(k);
+    }
+    var ctx = cv.getContext("2d");
+    function paint() {
+      var box = svg.getBoundingClientRect();
+      if (!box.width) return;
+      var dpr = Math.min(devicePixelRatio || 1, 2);
+      cv.width = Math.round(box.width * dpr); cv.height = Math.round(box.height * dpr);
+      var sx = cv.width / W, sy = cv.height / H;
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.fillStyle = getComputedStyle(svg).getPropertyValue("--t3").trim() || "#5F6C97";
+      ctx.globalAlpha = 0.42;
+      var r = Math.max(0.7, 1.35 * Math.min(sx, sy) * (W / LAND_COLS) / 6);
+      cells.forEach(function (c) {
+        var col = c % LAND_COLS, row = (c / LAND_COLS) | 0;
+        var x = (col + 0.5) / LAND_COLS * W * sx, y = (row + 0.5) / LAND_ROWS * H * sy;
+        ctx.beginPath(); ctx.arc(x, y, r, 0, 6.284); ctx.fill();
+      });
+    }
+
+    var HUB = { name: "Mosul", lon: 43.13, lat: 36.34, hub: true };
+    var NODES = [
+      { name: "Rotterdam", lon: 4.48,  lat: 51.92, dx: 0,  dy: -12 },
+      { name: "Poti",      lon: 41.67, lat: 42.15, dx: -6, dy: -12 },
+      { name: "Mersin",    lon: 34.64, lat: 36.80, dx: -8, dy: -12 },
+      { name: "Aqaba",     lon: 35.00, lat: 29.53, dx: -4, dy: 16 },
+      { name: "Jebel Ali", lon: 55.03, lat: 24.98, dx: 8,  dy: 14 },
+      { name: "Shanghai",  lon: 121.47, lat: 31.23, dx: 8, dy: -12 },
+      { name: "Yokohama",  lon: 139.64, lat: 35.44, dx: 8, dy: 14 },
+      { name: "Erbil",     lon: 44.01, lat: 36.19, small: true },
+      { name: "Baghdad",   lon: 44.36, lat: 33.31, small: true },
+      { name: "Basra",     lon: 47.78, lat: 30.51, small: true }
+    ];
+
+    function arcPath(a, b) {
+      var p = project(a.lon, a.lat), q = project(b.lon, b.lat);
+      var mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2;
+      var d = Math.hypot(q[0] - p[0], q[1] - p[1]);
+      return { d: "M" + p[0].toFixed(1) + " " + p[1].toFixed(1) +
+                  " Q" + mx.toFixed(1) + " " + (my - d * 0.28).toFixed(1) +
+                  " " + q[0].toFixed(1) + " " + q[1].toFixed(1) };
+    }
+
+    var arcs = [], nodeEls = {};
+    NODES.forEach(function (nd, idx) {
+      if (!nd.small) {
+        var pa = document.createElementNS(NS, "path");
+        pa.setAttribute("class", "arc"); pa.setAttribute("d", arcPath(nd, HUB).d);
+        svg.appendChild(pa); arcs.push(pa);
+      }
+    });
+    [HUB].concat(NODES).forEach(function (nd) {
+      var pt = project(nd.lon, nd.lat);
+      var g = document.createElementNS(NS, "g");
+      g.setAttribute("class", "node" + (nd.hub ? " hub" : ""));
+      g.setAttribute("transform", "translate(" + pt[0].toFixed(1) + "," + pt[1].toFixed(1) + ")");
+      var ring = document.createElementNS(NS, "circle");
+      ring.setAttribute("class", "ring"); ring.setAttribute("r", "3");
+      var dot = document.createElementNS(NS, "circle");
+      dot.setAttribute("class", "h dot"); dot.setAttribute("r", nd.hub ? "4" : nd.small ? "2" : "3");
+      g.appendChild(ring); g.appendChild(dot);
+      if (!nd.small) {
+        var t = document.createElementNS(NS, "text");
+        t.setAttribute("x", String(nd.hub ? 9 : (nd.dx || 8)));
+        t.setAttribute("y", String(nd.hub ? 4 : (nd.dy || 4)));
+        if ((nd.dx || 0) < 0) t.setAttribute("text-anchor", "end");
+        t.textContent = nd.name.toUpperCase();
+        g.appendChild(t);
+      }
+      svg.appendChild(g);
+      nodeEls[nd.name] = g;
+    });
+
+    arcs.forEach(function (a) {
+      var L = 0;
+      try { L = a.getTotalLength(); } catch (e) { L = 0; }   // throws when not rendered
+      if (L) { a.style.strokeDasharray = L; a.style.strokeDashoffset = L; }
+    });
+
+    var played = false;
+    function play() {
+      if (played) return; played = true;
+      if (reduce) {
+        arcs.forEach(function (a) { a.style.strokeDashoffset = 0; });
+        Object.keys(nodeEls).forEach(function (k) { nodeEls[k].classList.add("on"); });
+        return;
+      }
+      nodeEls[HUB.name].classList.add("on");
+      NODES.forEach(function (nd, i) {
+        setTimeout(function () { nodeEls[nd.name].classList.add("on"); }, 90 + i * 70);
+      });
+      arcs.forEach(function (a, i) {
+        setTimeout(function () {
+          var L = 0; try { L = a.getTotalLength(); } catch (e) {}
+          if (!L) { a.style.strokeDasharray = "none"; a.style.strokeDashoffset = "0"; return; }
+          a.style.strokeDasharray = L; a.style.strokeDashoffset = L;
+          a.style.transition = "stroke-dashoffset .5s cubic-bezier(.22,1,.36,1)";
+          requestAnimationFrame(function () { a.style.strokeDashoffset = "0"; });
+        }, 180 + i * 80);
+      });
+    }
+    new IntersectionObserver(function (es, o) {
+      es.forEach(function (e) { if (e.isIntersecting) { paint(); play(); o.disconnect(); } });
+    }, { threshold: 0.25 }).observe(svg);
+
+    var rt; addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(paint, 160); }, { passive: true });
+    paint();
+
+    $$("#corr li").forEach(function (li) {
+      var g = nodeEls[li.dataset.city];
+      if (!g) return;
+      var hi = function (on) { li.classList.toggle("hot", on); g.classList.toggle("on", on || played); };
+      li.addEventListener("pointerenter", function () { hi(true); });
+      li.addEventListener("pointerleave", function () { hi(false); });
+    });
+  })();
+
+  /* ---------- process: tracing beam ------------------------ */
+  (function () {
+    var tl = $("#tl"), beam = $("#beamline");
+    if (!tl || !beam) return;
+    var tick = function () {
+      var r = tl.getBoundingClientRect();
+      var p = clamp((innerHeight * 0.72 - r.top) / r.height, 0, 1);
+      beam.style.height = (p * (r.height - 16)) + "px";
+    };
+    addEventListener("scroll", tick, { passive: true });
+    addEventListener("resize", tick, { passive: true });
+    tick();
+  })();
+
+  /* ---------- marquee: speed follows scroll velocity -------- */
+  (function () {
+    var WORDS = ["Vehicle trading", "General transport", "General trading",
+                 "Documentation", "Clearance", "Fleet supply", "Mosul"];
+    [["#velo1", 1], ["#velo2", -1]].forEach(function (pair) {
+      var track = $(pair[0]); if (!track) return;
+      var dir = pair[1], html = "";
+      for (var r = 0; r < 3; r++) {
+        WORDS.forEach(function (w, i) {
+          html += '<span class="' + ((i + r) % 2 ? "o" : "") + '">' + w + "</span><i></i>";
+        });
+      }
+      track.innerHTML = html;
+      var x = 0, half = 0, vel = 0, last = scrollY, base = 0.55;
+      var measure = function () { half = track.scrollWidth / 3; };
+      measure(); addEventListener("resize", measure, { passive: true });
+      addEventListener("scroll", function () {
+        vel += (scrollY - last) * 0.16; last = scrollY;
+      }, { passive: true });
+      if (reduce) return;
+      (function loop() {
+        vel *= 0.9;
+        x -= dir * (base + vel * dir * 0.6);
+        if (half) { if (x <= -half) x += half; if (x > 0) x -= half; }
+        track.style.transform = "translate3d(" + x.toFixed(2) + "px,0,0)";
+        requestAnimationFrame(loop);
+      })();
+    });
+  })();
+
+  /* ---------- film panel copy ------------------------------ */
+  (function () {
+    var pin = $("#filmpin"); if (!pin) return;
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { pin.classList.toggle("on", e.intersectionRatio > 0.45); });
+    }, { threshold: [0, 0.45, 0.8] }).observe(pin);
+  })();
+
+  /* ---------- mobile menu ---------------------------------- */
+  (function () {
+    var b = $("#burger"), sh = $("#sheet");
+    if (!b || !sh) return;
+    var open = function (v) {
+      document.body.classList.toggle("menu", v);
+      b.setAttribute("aria-expanded", v ? "true" : "false");
+      document.documentElement.style.overflow = v ? "hidden" : "";
+    };
+    b.addEventListener("click", function () { open(!document.body.classList.contains("menu")); });
+    $$("a", sh).forEach(function (a) { a.addEventListener("click", function () { open(false); }); });
+    addEventListener("keydown", function (e) { if (e.key === "Escape") open(false); });
+    matchMedia("(min-width:941px)").addEventListener("change", function (m) { if (m.matches) open(false); });
+  })();
+
+  /* ---------- reach, phone version -------------------------
+     A world map at 350px is unreadable, so phones get a radial
+     diagram instead: each origin sits on its true initial bearing
+     from Mosul, at a log-scaled distance. */
+  (function () {
+    var host = $("#radial"); if (!host) return;
+    var HUB = { lon: 43.13, lat: 36.34 };
+    var PTS = [
+      { n: "ROTTERDAM", lon: 4.48,   lat: 51.92 },
+      { n: "POTI",      lon: 41.67,  lat: 42.15 },
+      { n: "MERSIN",    lon: 34.64,  lat: 36.80 },
+      { n: "AQABA",     lon: 35.00,  lat: 29.53 },
+      { n: "JEBEL ALI", lon: 55.03,  lat: 24.98 },
+      { n: "SHANGHAI",  lon: 121.47, lat: 31.23 },
+      { n: "YOKOHAMA",  lon: 139.64, lat: 35.44 }
+    ];
+    var rad = Math.PI / 180, R = 6371;
+    function geo(a, b) {
+      var p1 = a.lat * rad, p2 = b.lat * rad, dl = (b.lon - a.lon) * rad;
+      var y = Math.sin(dl) * Math.cos(p2);
+      var x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
+      var brg = (Math.atan2(y, x) / rad + 360) % 360;
+      var dp = (b.lat - a.lat) * rad;
+      var h = Math.sin(dp / 2) * Math.sin(dp / 2) +
+              Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) * Math.sin(dl / 2);
+      return { brg: brg, km: Math.round(2 * R * Math.asin(Math.min(1, Math.sqrt(h)))) };
+    }
+    PTS.forEach(function (p) { var g = geo(HUB, p); p.brg = g.brg; p.km = g.km; });
+    var kms = PTS.map(function (p) { return Math.log(p.km); });
+    var lo = Math.min.apply(null, kms), hi = Math.max.apply(null, kms);
+
+    var S = 340, C = S / 2, R0 = 40, R1 = C - 46;
+    var NS = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", "0 0 " + S + " " + S);
+    [0.42, 0.72, 1].forEach(function (k) {
+      var c = document.createElementNS(NS, "circle");
+      c.setAttribute("class", "rng"); c.setAttribute("cx", C); c.setAttribute("cy", C);
+      c.setAttribute("r", (R0 + (R1 - R0) * k).toFixed(1));
+      svg.appendChild(c);
+    });
+    var groups = [];
+    PTS.forEach(function (p) {
+      var t = (Math.log(p.km) - lo) / (hi - lo || 1);
+      var r = R0 + (R1 - R0) * (0.12 + 0.88 * t);
+      var a = (p.brg - 90) * rad;
+      var x = C + Math.cos(a) * r, y = C + Math.sin(a) * r;
+      var g = document.createElementNS(NS, "g"); g.setAttribute("class", "o");
+      var ln = document.createElementNS(NS, "path");
+      ln.setAttribute("class", "spoke");
+      ln.setAttribute("d", "M" + (C + Math.cos(a) * R0).toFixed(1) + " " + (C + Math.sin(a) * R0).toFixed(1) +
+                           "L" + x.toFixed(1) + " " + y.toFixed(1));
+      var dot = document.createElementNS(NS, "circle");
+      dot.setAttribute("class", "pt"); dot.setAttribute("cx", x.toFixed(1)); dot.setAttribute("cy", y.toFixed(1)); dot.setAttribute("r", "3");
+      var right = Math.cos(a) >= -0.15;
+      var tx = document.createElementNS(NS, "text");
+      tx.setAttribute("x", (x + (right ? 8 : -8)).toFixed(1)); tx.setAttribute("y", (y - 1).toFixed(1));
+      if (!right) tx.setAttribute("text-anchor", "end");
+      tx.textContent = p.n;
+      var km = document.createElementNS(NS, "text");
+      km.setAttribute("class", "km");
+      km.setAttribute("x", (x + (right ? 8 : -8)).toFixed(1)); km.setAttribute("y", (y + 10).toFixed(1));
+      if (!right) km.setAttribute("text-anchor", "end");
+      km.textContent = p.km.toLocaleString() + " KM";
+      g.appendChild(ln); g.appendChild(dot); g.appendChild(tx); g.appendChild(km);
+      svg.appendChild(g); groups.push(g);
+    });
+    var hub = document.createElementNS(NS, "circle");
+    hub.setAttribute("class", "hub"); hub.setAttribute("cx", C); hub.setAttribute("cy", C); hub.setAttribute("r", "5");
+    var hl = document.createElementNS(NS, "text");
+    hl.setAttribute("x", C); hl.setAttribute("y", C + 20); hl.setAttribute("text-anchor", "middle");
+    hl.textContent = "MOSUL";
+    svg.appendChild(hub); svg.appendChild(hl);
+    host.appendChild(svg);
+
+    new IntersectionObserver(function (es, o) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        o.disconnect();
+        groups.forEach(function (g, i) {
+          setTimeout(function () { g.classList.add("on"); }, reduce ? 0 : 80 + i * 70);
+        });
+      });
+    }, { threshold: 0.2 }).observe(host);
+  })();
+
+  /* ---------- enquiry button: honest until it is wired up --- */
+  var enq = $("#enquire");
+  if (enq) enq.addEventListener("click", function (e) {
+    e.preventDefault();
+    enq.firstChild.nodeValue = " Awaiting contact details ";
+  });
+})();
+</script>
+</body>
+</html>

@@ -120,7 +120,7 @@ a{color:inherit}
    curtain of the old colour that peels down as it is scrolled to. Pure
    CSS after one class, so a phone and a desktop see the same thing. ---------- */
 .wipe::before{
-  content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  content:"";position:absolute;top:0;left:0;right:0;bottom:0;z-index:6;pointer-events:none;
   background:var(--prev,var(--ivory));
   transform-origin:50% 100%;
   transition:transform 1.05s cubic-bezier(.76,0,.24,1);
@@ -164,9 +164,9 @@ a{color:inherit}
    images), and the streaks drift rather than sitting still. ---------- */
 .hero{min-height:100vh;min-height:100svh;position:relative;overflow:hidden;background:#08080B}
 
-.bgfield{position:absolute;inset:0;z-index:0;pointer-events:none}
+.bgfield{position:absolute;top:0;left:0;right:0;bottom:0;z-index:0;pointer-events:none}
 .bg-base{
-  position:absolute;inset:0;
+  position:absolute;top:0;left:0;right:0;bottom:0;
   background:radial-gradient(100% 100% at 0% 0%, #35271F 0%, #08080B 100%);
   -webkit-mask:radial-gradient(125% 100% at 0% 0%, #000 0%, rgba(0,0,0,.224) 88.3%, rgba(0,0,0,0) 100%);
           mask:radial-gradient(125% 100% at 0% 0%, #000 0%, rgba(0,0,0,.224) 88.3%, rgba(0,0,0,0) 100%);
@@ -199,21 +199,21 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){.streak{animation:none;transform:skewX(45deg)}}
 
 .bg-noise{
-  position:absolute;inset:0;opacity:.05;background-repeat:repeat;background-size:150px;
+  position:absolute;top:0;left:0;right:0;bottom:0;opacity:.05;background-repeat:repeat;background-size:150px;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .bg-dots{
-  position:absolute;inset:0;opacity:.10;
+  position:absolute;top:0;left:0;right:0;bottom:0;opacity:.10;
   background-image:radial-gradient(circle at 1px 1px, rgba(242,239,231,.5) 1px, transparent 0);
   background-size:20px 20px;
 }
 .bg-glow{
-  position:absolute;inset:0;
+  position:absolute;top:0;left:0;right:0;bottom:0;
   background:radial-gradient(60% 55% at 32% 50%, rgba(212,99,63,.13) 0%, rgba(212,99,63,0) 70%);
 }
 
 
-.hero .stage{position:absolute;inset:0;z-index:2}
+.hero .stage{position:absolute;top:0;left:0;right:0;bottom:0;z-index:2}
 .hs{
   position:absolute;font-size:11px;letter-spacing:.34em;text-transform:uppercase;
   color:rgba(242,239,231,.82);margin:0;white-space:nowrap;
@@ -296,8 +296,14 @@ a{color:inherit}
 .st-copy{display:flex;align-items:center;justify-content:flex-start}
 .st-stack{display:flex;align-items:center;justify-content:center}
 @media(max-width:899px){
-  .st-stage{grid-template-columns:1fr;align-content:center;gap:clamp(28px,5vh,48px)}
+  /* Stacked, the stage leaves the sticky lock behind: it sits in normal
+     flow, at least a screen tall, and the leaning stack gets the vertical
+     room its skew paints into (about a third of its width above and below). */
+  .st-hold{height:auto}
+  .st-stage{position:relative;height:auto;min-height:100vh;min-height:100svh;overflow:visible;
+    grid-template-columns:1fr;align-content:center;gap:clamp(24px,5vh,48px);padding-top:14vh;padding-bottom:10vh}
   .st-copy{justify-content:center}
+  .st-stack{padding:26vw 0 22vw}
 }
 @media (prefers-reduced-motion:reduce){
   .st-hold{height:100svh}
@@ -369,12 +375,12 @@ a{color:inherit}
 
 /* background: one radial per side, crossfaded */
 .sp-bg{
-  position:absolute;inset:0;pointer-events:none;
+  position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;
   /* the glows dissolve at both ends, so the block joins the panel above with no edge */
   -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 28%, #000 72%, transparent 100%);
   mask-image:linear-gradient(180deg, transparent 0%, #000 28%, #000 72%, transparent 100%);
 }
-.sp-bg i{position:absolute;inset:0;transition:opacity 1.2s cubic-bezier(.16,1,.3,1)}
+.sp-bg i{position:absolute;top:0;left:0;right:0;bottom:0;transition:opacity 1.2s cubic-bezier(.16,1,.3,1)}
 .sp-bg-l{background:radial-gradient(circle at 0% 50%, rgba(187,74,46,.20), transparent 50%)}
 .sp-bg-r{background:radial-gradient(circle at 100% 50%, rgba(120,132,152,.26), transparent 50%);opacity:0}
 .sp[data-side="right"] .sp-bg-l{opacity:0}
@@ -408,16 +414,16 @@ a{color:inherit}
 }
 
 /* ---- the disc ---- */
-.sp-visual{position:relative;flex:0 0 auto}
+.sp-visual{position:relative;flex:0 0 auto;width:300px;max-width:100%}
 .sp-ring{
-  position:absolute;inset:-9%;border-radius:calc(var(--card-r) + 24px);
+  position:absolute;top:-9%;left:-9%;right:-9%;bottom:-9%;border-radius:calc(var(--card-r) + 24px);
   border:1px dashed rgba(20,20,26,.16);
   animation:sp-breathe 6s ease-in-out infinite;
 }
 .sp[data-side="left"]  .sp-ring{border-left-color:rgba(var(--acc-rgb),.5)}
 .sp[data-side="right"] .sp-ring{border-right-color:rgba(var(--acc-rgb),.5)}
 .sp-glow{
-  position:absolute;inset:0;border-radius:var(--card-r);opacity:.4;
+  position:absolute;top:0;left:0;right:0;bottom:0;border-radius:var(--card-r);opacity:.4;
   background:linear-gradient(135deg, var(--acc), var(--acc-2));
   filter:blur(40px);animation:sp-pulse 4s ease-in-out infinite;
   transition:background 1.2s ease;
@@ -425,14 +431,18 @@ a{color:inherit}
 /* The pictures were sent at 4:5 on white; the frame keeps both — nothing
    cropped, nothing cut out, the white ground they came with. */
 .sp-disc{
-  position:relative;width:min(300px, 100%);aspect-ratio:1611/2000;border-radius:var(--card-r);
+  position:relative;width:100%;aspect-ratio:1611/2000;border-radius:var(--card-r);
   border:1px solid rgba(20,20,26,.08);overflow:hidden;background:#FFFFFF;
   box-shadow:0 25px 50px -12px rgba(20,20,26,.28);
 }
-@media(min-width:768px){.sp-disc{width:400px}}
-.sp-float{position:absolute;inset:0;animation:sp-float 6s ease-in-out infinite}
+@media(min-width:768px){.sp-visual{width:400px}}
+@supports not (aspect-ratio:1/1){
+  .sp-disc::before{content:"";display:block;padding-top:124.15%}
+  .pl-bg.grid .gw::before{content:"";display:block;padding-top:124.35%}
+}
+.sp-float{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;animation:sp-float 6s ease-in-out infinite}
 .sp-pic{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
+  position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;object-fit:contain;display:block;
   filter:blur(15px);
   opacity:0;transform:translateX(var(--x)) rotate(var(--rot)) scale(1.5);
   transition:opacity .35s ease-out,
@@ -499,7 +509,7 @@ a{color:inherit}
 }
 /* the sheen: a soft top light and a slow specular sweep across the glass */
 .sp-pill::before{
-  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  content:"";position:absolute;top:0;left:0;right:0;bottom:0;border-radius:inherit;pointer-events:none;
   background:linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 48%, rgba(255,255,255,.18) 100%);
 }
 .sp-pill::after{
@@ -593,9 +603,9 @@ a{color:inherit}
    the whole graphic. ---------- */
 .method{min-height:100vh;min-height:100svh;display:flex;align-items:center;overflow:hidden}
 .method .inner{position:relative;z-index:2}
-.method-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;background:var(--ink)}
+.method-v{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;object-fit:cover;z-index:0;background:var(--ink)}
 .method-scrim{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
+  position:absolute;top:0;left:0;right:0;bottom:0;z-index:1;pointer-events:none;
   background:linear-gradient(100deg, rgba(20,20,26,.88) 0%, rgba(20,20,26,.62) 48%, rgba(20,20,26,.30) 100%),
              linear-gradient(0deg, rgba(20,20,26,.55) 0%, rgba(20,20,26,0) 30%);
 }
@@ -632,7 +642,7 @@ a{color:inherit}
   display:flex;align-items:center;
   padding:clamp(78px,12vh,130px) clamp(24px,5vw,72px);
 }
-.pl-bgs{position:absolute;inset:0;z-index:0}
+.pl-bgs{position:absolute;top:0;left:0;right:0;bottom:0;z-index:0}
 .pl-bg{
   position:absolute;top:50%;left:50%;width:104%;height:104%;
   transform:translate(-50%,-50%) scale(1.18);
@@ -640,7 +650,7 @@ a{color:inherit}
   transition:opacity .6s ease, transform .9s cubic-bezier(.25,.46,.45,.94);
 }
 .pl-bg.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.pl-scrim{position:absolute;inset:0;z-index:1;background:rgba(8,8,11,.62);pointer-events:none}
+.pl-scrim{position:absolute;top:0;left:0;right:0;bottom:0;z-index:1;background:rgba(8,8,11,.62);pointer-events:none}
 .pl-inner{position:relative;z-index:2;width:100%;max-width:1180px;margin:0 auto}
 
 .pl-head{
@@ -674,7 +684,7 @@ a{color:inherit}
 }
 
 /* corner furniture, as in the pattern */
-.pl-corners{position:absolute;inset:0;z-index:3;pointer-events:none}
+.pl-corners{position:absolute;top:0;left:0;right:0;bottom:0;z-index:3;pointer-events:none}
 .pl-corners .cn{
   position:absolute;font-family:"IBM Plex Mono",monospace;font-size:9.5px;
   letter-spacing:.18em;text-transform:uppercase;color:rgba(242,239,231,.42);
@@ -752,9 +762,9 @@ h3.grp b{color:var(--marrow);font-weight:500}
 .xg.hov .xg-p{flex:.5}
 .xg.hov .xg-p.on{flex:2}
 .xg-p.pop{background:var(--marrow)}
-.xg-p::after{content:"";position:absolute;inset:0;background:#000;opacity:.3;transition:opacity .3s;pointer-events:none}
+.xg-p::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:#000;opacity:.3;transition:opacity .3s;pointer-events:none}
 .xg-p.on::after{opacity:0}
-.xg-in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(18px,2vw,28px)}
+.xg-in{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(18px,2vw,28px)}
 .xg-n{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.2em;color:rgba(242,239,231,.55)}
 .xg-name{margin:8px 0 0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:-.03em;font-size:clamp(22px,2.2vw,34px);line-height:.95}
 .xg-desc{margin:10px 0 0;font-size:13.5px;line-height:1.5;color:rgba(242,239,231,.7);max-width:30ch;opacity:0;transform:translateY(8px);transition:opacity .35s ease .15s,transform .45s cubic-bezier(.2,.8,.2,1) .15s}
@@ -782,7 +792,7 @@ h3.grp b{color:var(--marrow);font-weight:500}
 
 /* the expanded view: a full-screen sheet on ivory at .95, prev / next
    and a counter, as in the component; the sheet scales in from .8 */
-.xg-modal{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(242,239,231,.95);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
+.xg-modal{position:fixed;top:0;left:0;right:0;bottom:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(242,239,231,.95);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
 .xg-modal.on{opacity:1}
 .xg-modal[hidden]{display:none}
 .xg-x{position:absolute;top:16px;right:16px;z-index:2;width:44px;height:44px;border:0;background:none;color:var(--ink);cursor:pointer;opacity:.7;transition:opacity .2s}
@@ -1684,8 +1694,14 @@ h3.grp b{color:var(--marrow);font-weight:500}
   function locked(){
     var vh = window.innerHeight;
     locks.forEach(function(g){
-      var run = Math.max(1, g.hold.offsetHeight - vh);
-      var lead = clamp01(-g.hold.getBoundingClientRect().top / run) * (g.words.length + 2);
+      var run = g.hold.offsetHeight - vh, p;
+      var stuck = getComputedStyle(g.hold.firstElementChild).position === "sticky";
+      if(stuck && run > 40){ p = clamp01(-g.hold.getBoundingClientRect().top / run); }
+      else {
+        var r = g.words[0].parentNode.getBoundingClientRect();
+        p = clamp01((vh * .88 - r.top) / (vh * .5));
+      }
+      var lead = p * (g.words.length + 2);
       g.words.forEach(function(w, i){
         if(i < lead) w.classList.add("on"); else w.classList.remove("on");
       });

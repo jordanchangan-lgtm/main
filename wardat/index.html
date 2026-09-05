@@ -6,13 +6,37 @@
 <title>Wardat Al-Zuhoor Co. — Cars Trading, Transport &amp; General Trading · Mosul</title>
 <meta name="description" content="Wardat Al-Zuhoor Co. Ltd — vehicle trading, general transport and general trading. Mosul branch, Nineveh, Iraq." />
 <link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutoDealer",
+  "name": "Wardat Al-Zuhoor Co. Ltd",
+  "alternateName": "شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة",
+  "url": "https://wardat-alzohour.com/",
+  "telephone": ["+9647703030030", "+9647702021222"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Al-Qadisiyah, M 602, St 11, Bldg 3/148",
+    "addressLocality": "Baghdad",
+    "addressCountry": "IQ"
+  },
+  "branch": {
+    "@type": "AutoDealer",
+    "name": "Wardat Al-Zuhoor — Mosul branch",
+    "address": { "@type": "PostalAddress", "addressLocality": "Mosul", "addressRegion": "Nineveh", "addressCountry": "IQ" }
+  },
+  "knowsLanguage": ["ar", "en"]
+}
+</script>
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Wardat Al-Zuhoor Co. — Cars Trading, Transport &amp; General Trading" />
 <meta property="og:description" content="Vehicle trading, general transport and general trading. Mosul branch, Nineveh, Iraq." />
 <meta property="og:locale" content="en" />
 <meta property="og:locale:alternate" content="ar_IQ" />
 <meta name="theme-color" content="#060B24" />
-<!-- canonical, og:url and og:image go in once the domain and a share image exist -->
+<link rel="canonical" href="https://wardat-alzohour.com/" />
+<meta property="og:url" content="https://wardat-alzohour.com/" />
+<!-- og:image goes in once there is a share card -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <!-- async: a render-blocking font sheet also blocks every script after it -->
@@ -140,6 +164,25 @@ h3{font-size:clamp(19px,1.5vw,23px);line-height:1.15}
    (21st.dev "tubelight navbar" pattern, vanilla)
    ============================================================ */
 .nav{position:fixed;inset:14px auto auto 50%;transform:translateX(-50%);z-index:80;width:min(1180px,calc(100vw - 28px))}
+/* the pill shrinks rightward onto the logo, so the mark never moves */
+.navin{width:100%;transition:width .75s var(--ease),background .5s var(--ease),box-shadow .5s var(--ease)}
+body.navmin .navin{width:max-content}
+.navgrp{display:flex;align-items:center;gap:14px;margin-left:auto;overflow:hidden;
+  max-width:820px;opacity:1;
+  transition:max-width .75s var(--ease),opacity .4s var(--ease) .12s}
+body.navmin .navgrp{max-width:0;opacity:0;transition:max-width .75s var(--ease),opacity .3s var(--ease)}
+/* three dots appear only when collapsed, so the bar reads as retrievable */
+.navdots{display:flex;gap:3px;margin-left:12px;opacity:0;width:0;overflow:hidden;
+  transition:opacity .4s var(--ease) .3s,width .5s var(--ease),margin .5s var(--ease)}
+body.navmin .navdots{opacity:1;width:20px}
+.navdots i{width:3px;height:3px;border-radius:50%;background:#7E8CB8}
+body.at-light .navdots i{background:#6B78A0}
+@media (max-width:940px){
+  .navgrp{max-width:none;opacity:1}
+  body.navmin .navgrp{max-width:none;opacity:1}
+  body.navmin .navin{width:100%}
+  .navdots{display:none}
+}
 .navin{
   display:flex;align-items:center;gap:14px;padding:9px 9px 9px 16px;border-radius:999px;
   background:rgba(9,15,42,.52);
@@ -175,11 +218,6 @@ body.at-light .navlinks a:hover,body.at-light .navlinks a.on{color:#fff}
   background:var(--blue);opacity:0;
   transition:transform .5s var(--ease),width .5s var(--ease),opacity .35s var(--ease);
   will-change:transform,width;
-}
-.tube::before{
-  content:"";position:absolute;left:50%;top:-7px;width:44%;height:5px;transform:translateX(-50%);
-  border-radius:999px;background:var(--blue-lift);
-  box-shadow:0 0 14px 3px rgba(62,107,255,.7),0 0 30px 8px rgba(62,107,255,.35);
 }
 .navcta{
   flex:none;padding:10px 17px;border-radius:999px;background:var(--blue);color:#fff;
@@ -280,28 +318,28 @@ h1.big .ln{display:block;overflow:hidden}
 h1.big .wd{display:inline-block;transform:translateY(112%) rotate(4deg);filter:blur(14px);opacity:0}
 body.lit h1.big .wd{
   transform:none;filter:blur(0);opacity:1;
-  transition:transform .82s var(--ease),filter .6s var(--ease),opacity .6s var(--ease);
-  transition-delay:calc(var(--i) * 110ms);
+  transition:transform .78s var(--ease),filter .6s var(--ease),opacity .58s var(--ease);
+  transition-delay:calc(var(--i) * 95ms);
 }
 h1.big .wd.thin{font-weight:300;color:#8FA0D0}
 h1.big em{font-style:normal;color:var(--blue-lift)}
 
 .harab{font-family:var(--f-ar);direction:rtl;font-weight:500;font-size:clamp(15px,1.9vw,23px);color:#C3CDE9;margin:0 0 22px;opacity:0;transform:translateY(14px)}
-body.lit .harab{opacity:1;transform:none;transition:all .7s var(--ease) .42s}
+body.lit2 .harab{opacity:1;transform:none;transition:all .8s var(--ease)}
 .hlede{max-width:52ch;color:#A9B4D4;font-size:clamp(15px,1.25vw,17.5px);opacity:0;transform:translateY(14px)}
-body.lit .hlede{opacity:1;transform:none;transition:all .7s var(--ease) .5s}
+body.lit2 .hlede{opacity:1;transform:none;transition:all .8s var(--ease) .09s}
 
 /* stat column — no frames, hairline separators only */
 .stats{display:grid;gap:20px;min-width:216px}
 @media (max-width:1000px){.stats{grid-template-columns:repeat(2,1fr);min-width:0;gap:18px 26px}}
 .stat{padding-top:14px;border-top:1px solid rgba(160,180,255,.2);opacity:0;transform:translateY(16px)}
-body.lit .stat{opacity:1;transform:none;transition:all .7s var(--ease);transition-delay:calc(.58s + var(--i) * .07s)}
+body.lit2 .stat{opacity:1;transform:none;transition:all .8s var(--ease);transition-delay:calc(.17s + var(--i) * .07s)}
 .stat b{display:block;font:500 clamp(28px,3vw,42px)/1 var(--f-display);letter-spacing:-.03em;color:#fff;font-variant-numeric:tabular-nums}
 .stat b sup{font-size:.42em;vertical-align:super;color:var(--blue-lift);letter-spacing:0;margin-left:.15em}
 .stat span{display:block;margin-top:7px;font:400 10px/1.4 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:#7E8CB8}
 
 .cue{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;display:grid;justify-items:center;gap:8px;opacity:0}
-body.lit .cue{opacity:1;transition:opacity .8s var(--ease) 1.2s}
+body.lit2 .cue{opacity:1;transition:opacity .8s var(--ease) .5s}
 .cue i{display:block;width:1px;height:42px;background:linear-gradient(to bottom,transparent,rgba(160,180,255,.7));overflow:hidden;position:relative}
 .cue i::after{content:"";position:absolute;inset:0;background:var(--blue-lift);animation:drop 2.2s var(--ease-io) infinite}
 @keyframes drop{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
@@ -516,6 +554,30 @@ footer{border-top:1px solid var(--line);padding:34px 0}
 .fgrid p{margin:0;font-size:12.5px;color:var(--t3)}
 .legal{font-size:12px;color:var(--t3);max-width:62ch;line-height:1.7;margin:20px 0 0}
 
+/* animated ground on the dark panels — two drifting fields plus one that
+   follows the pointer. Buraq's idea, in this palette. */
+.amb{overflow:hidden}
+.amb::before,.amb::after{content:"";position:absolute;inset:-8%;z-index:0;pointer-events:none}
+.amb::before{
+  background:
+    radial-gradient(48% 42% at 16% 10%,rgba(10,66,222,.26),transparent 68%),
+    radial-gradient(42% 36% at 86% 84%,rgba(62,107,255,.18),transparent 70%),
+    radial-gradient(34% 30% at 62% 40%,rgba(10,66,222,.13),transparent 72%);
+  animation:drift 22s var(--ease-io) infinite alternate;
+  will-change:transform;
+}
+@keyframes drift{
+  from{transform:translate3d(-2%,-1.5%,0) scale(1)}
+  to{transform:translate3d(2.5%,2%,0) scale(1.08)}
+}
+.amb::after{
+  background:radial-gradient(560px circle at var(--mx,50%) var(--my,-30%),
+    rgba(62,107,255,.20),transparent 62%);
+  opacity:0;transition:opacity .7s var(--ease);
+}
+.amb.near::after{opacity:1}
+@media (prefers-reduced-motion:reduce){.amb::before{animation:none}.amb::after{display:none}}
+
 /* panel lock — the page holds while a panel plays its entrance */
 .lockbar{position:fixed;top:0;left:0;z-index:95;height:3px;width:0;pointer-events:none;opacity:0;
   background:linear-gradient(90deg,var(--blue),var(--blue-lift));
@@ -534,6 +596,7 @@ body.locked .lockbar{opacity:1}
   .tiltcard{transform:none!important}
   .lockbar{display:none}
   h1.big .wd{opacity:1!important;transform:none!important;filter:none!important}
+  .navgrp{max-width:none!important;opacity:1!important}
   .reveal w{color:var(--t1)}
   .tiltwrap,.film{height:auto}
   .tiltpin,.filmpin{position:relative;height:auto;min-height:70vh}
@@ -552,16 +615,19 @@ body.locked .lockbar{opacity:1}
         <span>MOSUL · IRAQ</span>
       </span>
     </a>
-    <div class="navlinks" id="navlinks">
-      <span class="tube" id="tube" aria-hidden="true"></span>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#fleet">Fleet</a>
-      <a href="#reach">Reach</a>
-      <a href="#process">Process</a>
+    <span class="navdots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <div class="navgrp" id="navgrp">
+      <div class="navlinks" id="navlinks">
+        <span class="tube" id="tube" aria-hidden="true"></span>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#fleet">Fleet</a>
+        <a href="#reach">Reach</a>
+        <a href="#process">Process</a>
+      </div>
+      <a class="navcta" href="#contact">Contact</a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><i></i></button>
     </div>
-    <a class="navcta" href="#contact">Contact</a>
-    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><i></i></button>
   </div>
 </nav>
 <div class="lockbar" id="lockbar" aria-hidden="true"></div>
@@ -635,15 +701,14 @@ body.locked .lockbar{opacity:1}
           <div class="fact"><dt>Branch</dt><dd><b>Mosul</b> — Nineveh Governorate, Iraq <span class="ar">/ فرع الموصل</span></dd></div>
           <div class="fact"><dt>Activities</dt><dd>Vehicle trading · General transport · General trading</dd></div>
         </dl>
-        <p class="legal">Company details are taken from the official letterhead and signage supplied by the client.
-          Registration number, address and contact details are still to be confirmed.</p>
+        <p class="legal">Company details are taken from the official letterhead and signage supplied by the client. The registered office is in Baghdad; this site is for the Mosul branch, whose own street address is still to be confirmed.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ══ SERVICES ══════════════════════════════════════════════ -->
-<section class="sec tone-dark" id="services">
+<section class="sec tone-dark amb" id="services">
   <div class="rail" data-i="02"></div>
   <div class="wrap pad">
     <p class="eyebrow">02 — What we do</p>
@@ -716,7 +781,7 @@ body.locked .lockbar{opacity:1}
 </section>
 
 <!-- ══ REACH ═════════════════════════════════════════════════ -->
-<section class="sec tone-dark" id="reach">
+<section class="sec tone-dark amb" id="reach">
   <div class="rail" data-i="04"></div>
   <div class="wrap pad">
     <p class="eyebrow">04 — Reach</p>
@@ -780,7 +845,7 @@ body.locked .lockbar{opacity:1}
 </section>
 
 <!-- ══ CAPABILITY MARQUEE — speed follows scroll velocity ═════ -->
-<section class="sec tone-dark" aria-hidden="true">
+<section class="sec tone-dark amb" aria-hidden="true">
   <div class="velo"><div class="velotrack" data-dir="1" id="velo1"></div></div>
   <div class="velo"><div class="velotrack" data-dir="-1" id="velo2"></div></div>
 </section>
@@ -808,7 +873,7 @@ body.locked .lockbar{opacity:1}
 </section>
 
 <!-- ══ CONTACT ═══════════════════════════════════════════════ -->
-<section class="sec tone-dark" id="contact">
+<section class="sec tone-dark amb" id="contact">
   <div class="rail" data-i="06"></div>
   <div class="wrap pad">
     <p class="eyebrow creveal">06 — Contact</p>
@@ -817,20 +882,27 @@ body.locked .lockbar{opacity:1}
         <h2>Tell us the specification.</h2>
         <p class="lede" style="margin-top:20px">Make, model, year, quantity and where it has to land.
           We will come back with a landed price and a date.</p>
-        <p style="margin-top:32px"><a class="btn" href="#contact" id="enquire">
-          Send an enquiry
+        <p style="margin-top:32px"><a class="btn" href="tel:+9647703030030">
+          Call the office
           <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
-        <p class="legal">The enquiry button is not wired up yet — it needs the company's real email address
-          or WhatsApp number first.</p>
+        <p class="legal">Dials 0770 303 0030, the number printed twice on the company letterhead. Send an email address, or confirm a WhatsApp number, and a written enquiry route goes in beside it.</p>
       </div>
 
       <div class="card glass beamborder creveal" style="--d:.12s">
         <dl style="margin:0">
           <div class="crow"><dt>Company</dt><dd>Wardat Al-Zuhoor Co. Ltd
-            <small class="ar">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة</small></dd></div>
-          <div class="crow"><dt>Branch</dt><dd>Mosul, Nineveh Governorate, Iraq<small class="ar">فرع الموصل</small></dd></div>
-          <div class="crow"><dt>Address</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
-          <div class="crow"><dt>Phone</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
+            <small class="ar">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة / محدودة المسؤولية</small></dd></div>
+          <div class="crow"><dt>Registered</dt><dd>Baghdad — Al-Qadisiyah, M 602, St 11, Bldg 3/148
+            <small class="ar">بغداد — حي القادسية، م/602، س/11، ع/3/148</small></dd></div>
+          <div class="crow"><dt>Branch</dt><dd>Mosul, Nineveh Governorate<small class="ar">فرع الموصل</small>
+            <small>Street address <span class="tbc">TO BE CONFIRMED</span></small></dd></div>
+          <div class="crow"><dt>Phone</dt><dd>
+            <a href="tel:+9647703030030">0770 303 0030</a><br />
+            <a href="tel:+9647702021222">0770 202 1222</a>
+            <small>A third number is printed twice on the letterhead with two different digits —
+              0750 316 5555 and 0750 361 5555. Confirm which is right and it goes in.</small></dd></div>
+          <div class="crow"><dt>Web</dt><dd><a href="https://wardat-alzohour.com">wardat-alzohour.com</a></dd></div>
+          <div class="crow"><dt>Director</dt><dd>Saber Rasheed Abdullah<small class="ar">المدير المفوض — صابر رشيد عبد الله</small></dd></div>
           <div class="crow"><dt>Email</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
           <div class="crow"><dt>Hours</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
         </dl>
@@ -845,9 +917,7 @@ body.locked .lockbar{opacity:1}
         </a>
         <p>© <span id="yr">2026</span> Wardat Al-Zuhoor Co. Ltd. All rights reserved.</p>
       </div>
-      <p class="legal">Registered as <em>Wardat AL-Zuhoor Co. For Cars Trading and Transportation and General
-        Trading LTD.</em> The company letterhead prints “Transportion”; the spelling has been corrected here —
-        say the word if the registered English name must appear exactly as printed.</p>
+      <p class="legal">Registered as <em>Wardat AL-Zuhoor Co. For Cars Trading and Transportation and General Trading LTD.</em> Two company documents spell the English differently &mdash; &ldquo;Transportion&rdquo; on one, &ldquo;Trans portion&rdquo; on the other &mdash; so it is written correctly here. Say the word if it must match the certificate exactly.</p>
     </footer>
   </div>
 </section>
@@ -931,7 +1001,12 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     });
   }
 
-  PLAY.top = function () { document.body.classList.add("lit"); counters(); };
+  // Beat one: the three words. Beat two, after a held second: everything else.
+  PLAY.top = function () {
+    document.body.classList.add("lit");
+    var rest = function () { document.body.classList.add("lit2"); counters(); };
+    if (reduce) rest(); else setTimeout(rest, 1050);
+  };
 
   PLAY.services = function () {
     $$("#services .cell").forEach(function (c, i) {
@@ -1357,7 +1432,7 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   (function () {
     var BAR = $("#lockbar");
     var SEQ = [
-      { id: "top",      ms: 1250 },
+      { id: "top",      ms: 2050 },
       { id: "about",    ms: 1050 },
       { id: "services", ms:  980 },
       { id: "fleet",    ms:  900 },
@@ -1372,20 +1447,39 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
 
     if (reduce) { SEQ.forEach(fire); return; }
 
-    var heldY = null, timer = null, lastY = scrollY, quietUntil = 0, queued = false;
+    var heldY = null, timer = null, lastY = scrollY, quietUntil = 0, queued = false, easing = false;
     var KEYS = { ArrowDown: 1, ArrowUp: 1, PageDown: 1, PageUp: 1, Home: 1, End: 1, " ": 1, Spacebar: 1 };
     function stop(e) { e.preventDefault(); }
     function stopKey(e) { if (KEYS[e.key]) e.preventDefault(); else if (e.key === "Escape") release(); }
-    function pin() { if (heldY !== null && Math.abs(scrollY - heldY) > 1) scrollTo(0, heldY); }
+    function pin() { if (!easing && heldY !== null && Math.abs(scrollY - heldY) > 1) scrollTo(0, heldY); }
 
-    function engage(y, ms) {
-      heldY = y;
+    // A hard scrollTo at the moment of engaging reads as a jolt. Block the
+    // input first, then glide the last few pixels into place.
+    function glide(to, ms, done) {
+      var from = scrollY, d = to - from, t0 = 0;
+      if (Math.abs(d) < 3 || ms <= 0) { scrollTo(0, to); done(); return; }
+      easing = true;
+      requestAnimationFrame(function step(t) {
+        if (!t0) t0 = t;
+        var k = clamp((t - t0) / ms, 0, 1);
+        var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+        scrollTo(0, Math.round(from + d * e));
+        if (k < 1) requestAnimationFrame(step);
+        else { easing = false; done(); }
+      });
+    }
+
+    function block() {
       document.body.classList.add("locked");
       document.documentElement.style.scrollBehavior = "auto";
       addEventListener("wheel", stop, { passive: false });
       addEventListener("touchmove", stop, { passive: false });
       addEventListener("keydown", stopKey, { passive: false });
       addEventListener("scroll", pin, { passive: true });
+    }
+
+    function engage(y, ms) {
+      heldY = y;
       if (BAR) {
         BAR.style.transition = "none"; BAR.style.width = "0";
         void BAR.offsetWidth;                       // force the reset to land
@@ -1396,13 +1490,13 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     }
 
     function release() {
-      if (heldY === null) return;
+      if (heldY === null && !document.body.classList.contains("locked")) return;
       clearTimeout(timer); timer = null;
       removeEventListener("wheel", stop);
       removeEventListener("touchmove", stop);
       removeEventListener("keydown", stopKey);
       removeEventListener("scroll", pin);
-      heldY = null;
+      heldY = null; easing = false;
       document.body.classList.remove("locked");
       document.documentElement.style.scrollBehavior = "";
       if (BAR) { BAR.style.transition = "width .3s linear, opacity .3s linear"; BAR.style.width = "0"; }
@@ -1413,10 +1507,14 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     function hold(p) {
       var max = document.documentElement.scrollHeight - innerHeight;
       var top = clamp(Math.round(scrollY + p.el.getBoundingClientRect().top), 0, Math.max(0, max));
-      document.documentElement.style.scrollBehavior = "auto";
-      scrollTo(0, top);
-      fire(p);
-      engage(top, p.ms);
+      p.done = true;                       // claim it before the glide starts
+      block();
+      var dist = Math.abs(top - scrollY);
+      glide(top, dist > 3 ? clamp(dist * 1.7, 170, 340) : 0, function () {
+        if (!document.body.classList.contains("locked")) return;   // released mid-glide
+        engage(top, p.ms);
+        if (PLAY[p.id]) PLAY[p.id]();      // the entrance starts once it has settled
+      });
     }
 
     function check() {
@@ -1428,8 +1526,8 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
         var p = SEQ[i];
         if (p.done) continue;
         var t = p.el.getBoundingClientRect().top;
-        if (t < -240) { fire(p); continue; }         // already gone by: just play it
-        if (down) { if (t <= 130) { hold(p); return; } }
+        if (t < -300) { fire(p); continue; }         // already gone by: just play it
+        if (down) { if (t <= 90) { hold(p); return; } }
         else if (t <= innerHeight * 0.9) { fire(p); continue; }
         break;                                       // panels are in document order
       }
@@ -1462,12 +1560,45 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     } else { check(); }
   })();
 
-  /* ---------- enquiry button: honest until it is wired up --- */
-  var enq = $("#enquire");
-  if (enq) enq.addEventListener("click", function (e) {
-    e.preventDefault();
-    enq.firstChild.nodeValue = " Awaiting contact details ";
-  });
+  /* ---------- nav retracts behind the logo ------------------
+     The bar shows itself, then tucks back onto the mark. Hovering the pill
+     (or tabbing into it) brings it out again. */
+  (function () {
+    var pill = $(".navin");
+    if (!pill) return;
+    var t = null, WIDE = 941;
+    function collapse() { if (innerWidth >= WIDE && !document.body.classList.contains("menu")) document.body.classList.add("navmin"); }
+    function expand() { document.body.classList.remove("navmin"); }
+    function arm(ms) { clearTimeout(t); t = setTimeout(collapse, ms); }
+    pill.addEventListener("pointerenter", function () { clearTimeout(t); expand(); });
+    pill.addEventListener("pointerleave", function () { arm(1100); });
+    pill.addEventListener("focusin", function () { clearTimeout(t); expand(); });
+    pill.addEventListener("focusout", function () { arm(1100); });
+    addEventListener("resize", function () { if (innerWidth < WIDE) { clearTimeout(t); expand(); } }, { passive: true });
+    if (!reduce) arm(2400);              // two seconds after the hero settles
+  })();
+
+  /* ---------- the dark panels react to the pointer ---------- */
+  (function () {
+    var secs = $$(".amb");
+    if (!secs.length || reduce) return;
+    var x = 0, y = 0, queued = false;
+    function paint() {
+      queued = false;
+      secs.forEach(function (sec) {
+        var r = sec.getBoundingClientRect();
+        var near = y > r.top - 180 && y < r.bottom + 180;
+        sec.classList.toggle("near", near);
+        if (!near) return;
+        sec.style.setProperty("--mx", ((x - r.left) / r.width * 100).toFixed(1) + "%");
+        sec.style.setProperty("--my", ((y - r.top) / r.height * 100).toFixed(1) + "%");
+      });
+    }
+    addEventListener("pointermove", function (e) {
+      x = e.clientX; y = e.clientY;
+      if (!queued) { queued = true; requestAnimationFrame(paint); }
+    }, { passive: true });
+  })();
 })();
 </script>
 </body>

@@ -69,6 +69,37 @@ Nothing is imported; there is no React in this build.
 | Marquee | scroll-velocity marquee, two opposing rows | `#velo1`, `#velo2` |
 | Contact | border beam | `.beamborder` |
 | *All panels* | **scroll lock until the entrance completes** | `SEQ` / `PLAY` |
+| Nav | retracts onto the logo after 2s, returns on hover | `body.navmin` |
+| Dark panels | drifting blue fields + a pointer-tracked glow | `.amb` |
+
+### The hero runs in two beats
+
+`PLAY.top` adds `lit` — the three words rise one at a time — then holds for a
+second before adding `lit2`, which brings in the Arabic line, the lede and the
+four numbers. The hold is what makes the words land as a statement rather than
+as the top of a paragraph. Both classes are on `<body>`; nothing else needs to
+know.
+
+### The nav retracts
+
+The bar shows itself, then 2.4 s later the links and the Contact button fold
+away and the pill shrinks onto the logo, leaving three dots as the affordance.
+Hovering the pill — or tabbing into it — brings it back; it re-arms 1.1 s after
+the pointer leaves. It only ever collapses at 941 px and up, because below that
+the burger *is* the menu and hiding it would strand the visitor.
+
+The pill shrinks **rightward**, so the mark itself never moves. That is the
+whole trick: `.navin` goes from `width:100%` to `width:max-content` while the
+fixed container stays put.
+
+### The animated ground
+
+`.amb` on a dark section paints two layers behind the content: `::before` is
+three large blue fields on a 22 s drift, `::after` is a single field that
+follows the pointer and fades in only while the pointer is near that section.
+Both are clipped by `overflow:hidden` on `.amb` — without it the drift's
+`scale(1.08)` pushes past the section edge and gives the whole page a
+horizontal scrollbar.
 
 ### The panel lock
 
@@ -139,12 +170,15 @@ the coordinates, so adding a city needs no hand-placement.
 
 ## Still needed from the client
 
-- [ ] **Phone, email, address and opening hours.** All four render a visible
-      `TO BE CONFIRMED` tag rather than a plausible-looking guess, and the
-      enquiry button is deliberately inert until there is a real address.
-- [ ] **A domain.** `robots.txt` and `sitemap.xml` carry
-      `REPLACE-WITH-DOMAIN.example`; the canonical and `og:url` tags are held
-      back until it exists.
+- [ ] **An email address.** Still the one thing missing — the contact row shows
+      `TO BE CONFIRMED`. The primary button dials 0770 303 0030 instead.
+- [ ] **The Mosul branch street address.** The letterhead gives the *registered*
+      office, which is in Baghdad (Al-Qadisiyah, M 602, St 11, Bldg 3/148).
+      This site is for the Mosul branch and its own address is still blank.
+- [ ] **One phone number resolved.** The letterhead prints a third number twice
+      with two different digits — 0750 316 5555 and 0750 361 5555. Neither is
+      published; the note on the page says so.
+- [ ] **Opening hours.**
 - [ ] **Higher-resolution photographs.** The seven in `assets/fleet/` came
       through WhatsApp at 1280 px and are soft at full-bleed sizes. Originals
       off the phone would be noticeably sharper.

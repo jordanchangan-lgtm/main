@@ -279,28 +279,28 @@ h1.big .ln{display:block;overflow:hidden}
 h1.big .wd{display:inline-block;transform:translateY(112%) rotate(4deg);filter:blur(14px);opacity:0}
 body.lit h1.big .wd{
   transform:none;filter:blur(0);opacity:1;
-  transition:transform 1.05s var(--ease),filter .8s var(--ease),opacity .8s var(--ease);
-  transition-delay:calc(var(--i) * 130ms);
+  transition:transform .82s var(--ease),filter .6s var(--ease),opacity .6s var(--ease);
+  transition-delay:calc(var(--i) * 110ms);
 }
 h1.big .wd.thin{font-weight:300;color:#8FA0D0}
 h1.big em{font-style:normal;color:var(--blue-lift)}
 
 .harab{font-family:var(--f-ar);direction:rtl;font-weight:500;font-size:clamp(15px,1.9vw,23px);color:#C3CDE9;margin:0 0 22px;opacity:0;transform:translateY(14px)}
-body.lit .harab{opacity:1;transform:none;transition:all .9s var(--ease) .62s}
+body.lit .harab{opacity:1;transform:none;transition:all .7s var(--ease) .42s}
 .hlede{max-width:52ch;color:#A9B4D4;font-size:clamp(15px,1.25vw,17.5px);opacity:0;transform:translateY(14px)}
-body.lit .hlede{opacity:1;transform:none;transition:all .9s var(--ease) .74s}
+body.lit .hlede{opacity:1;transform:none;transition:all .7s var(--ease) .5s}
 
 /* stat column — no frames, hairline separators only */
 .stats{display:grid;gap:20px;min-width:216px}
 @media (max-width:1000px){.stats{grid-template-columns:repeat(2,1fr);min-width:0;gap:18px 26px}}
 .stat{padding-top:14px;border-top:1px solid rgba(160,180,255,.2);opacity:0;transform:translateY(16px)}
-body.lit .stat{opacity:1;transform:none;transition:all .9s var(--ease);transition-delay:calc(.8s + var(--i) * .1s)}
+body.lit .stat{opacity:1;transform:none;transition:all .7s var(--ease);transition-delay:calc(.58s + var(--i) * .07s)}
 .stat b{display:block;font:500 clamp(28px,3vw,42px)/1 var(--f-display);letter-spacing:-.03em;color:#fff;font-variant-numeric:tabular-nums}
 .stat b sup{font-size:.42em;vertical-align:super;color:var(--blue-lift);letter-spacing:0;margin-left:.15em}
 .stat span{display:block;margin-top:7px;font:400 10px/1.4 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:#7E8CB8}
 
 .cue{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;display:grid;justify-items:center;gap:8px;opacity:0}
-body.lit .cue{opacity:1;transition:opacity 1s var(--ease) 1.5s}
+body.lit .cue{opacity:1;transition:opacity .8s var(--ease) 1.2s}
 .cue i{display:block;width:1px;height:42px;background:linear-gradient(to bottom,transparent,rgba(160,180,255,.7));overflow:hidden;position:relative}
 .cue i::after{content:"";position:absolute;inset:0;background:var(--blue-lift);animation:drop 2.2s var(--ease-io) infinite}
 @keyframes drop{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
@@ -318,7 +318,9 @@ body.lit .cue{opacity:1;transition:opacity 1s var(--ease) 1.5s}
 .abgrid{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(32px,6vw,88px);align-items:start}
 @media (max-width:900px){.abgrid{grid-template-columns:1fr;gap:40px}}
 .facts{display:grid;gap:0}
-.fact{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.fact{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line);
+  opacity:0;transform:translateY(16px)}
+.fact.in{opacity:1;transform:none;transition:opacity .6s var(--ease) var(--d,0s),transform .6s var(--ease) var(--d,0s)}
 .fact:last-child{border-bottom:1px solid var(--line)}
 .fact dt{font:400 10px/1.6 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
 .fact dd{margin:0;font-size:14.5px;color:var(--t2)}
@@ -337,7 +339,7 @@ body.lit .cue{opacity:1;transition:opacity 1s var(--ease) 1.5s}
   transition:transform .6s var(--ease),box-shadow .6s var(--ease);
   opacity:0;transform:translateY(26px);
 }
-.cell.in{opacity:1;transform:none;transition:opacity .9s var(--ease) var(--d,0s),transform .9s var(--ease) var(--d,0s),box-shadow .6s var(--ease)}
+.cell.in{opacity:1;transform:none;transition:opacity .7s var(--ease) var(--d,0s),transform .7s var(--ease) var(--d,0s),box-shadow .6s var(--ease)}
 .cell:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 0 1px var(--line-2),0 30px 70px -30px rgba(0,0,0,.7)}
 .cell.wide{grid-column:span 3}
 .cell.tall{grid-column:span 3;min-height:320px}
@@ -361,6 +363,7 @@ body.lit .cue{opacity:1;transition:opacity 1s var(--ease) 1.5s}
 .tilthead{position:absolute;top:clamp(76px,11vh,120px);left:0;right:0;text-align:center;padding:0 var(--pad);z-index:3;transition:opacity .4s linear}
 .tiltcard{
   width:min(1120px,92vw);aspect-ratio:16/9;border-radius:22px;overflow:hidden;position:relative;
+  transform:rotateX(26deg) scale(.84) translateY(34px);
   transform-style:preserve-3d;will-change:transform;
   box-shadow:0 40px 120px -40px rgba(0,0,0,.75),inset 0 0 0 1px var(--line);
   background:var(--bg-2);
@@ -431,7 +434,7 @@ body.lit .cue{opacity:1;transition:opacity 1s var(--ease) 1.5s}
   background:linear-gradient(to bottom,var(--accent),color-mix(in srgb,var(--accent) 20%,transparent));
   box-shadow:0 0 14px 1px color-mix(in srgb,var(--accent) 60%,transparent)}
 .step{position:relative;padding:0 0 clamp(34px,5vw,58px);opacity:0;transform:translateY(20px)}
-.step.in{opacity:1;transform:none;transition:all .8s var(--ease)}
+.step.in{opacity:1;transform:none;transition:all .7s var(--ease) var(--d,0s)}
 .step:last-child{padding-bottom:0}
 .step::before{content:"";position:absolute;left:calc(-1 * clamp(30px,5vw,64px) + 1px);top:7px;width:12px;height:12px;border-radius:50%;
   background:var(--bg);box-shadow:inset 0 0 0 2px var(--line-2);transition:box-shadow .5s var(--ease),background .5s var(--ease)}
@@ -509,13 +512,23 @@ footer{border-top:1px solid var(--line);padding:34px 0}
 .fgrid p{margin:0;font-size:12.5px;color:var(--t3)}
 .legal{font-size:12px;color:var(--t3);max-width:62ch;line-height:1.7;margin:20px 0 0}
 
+/* panel lock — the page holds while a panel plays its entrance */
+.lockbar{position:fixed;top:0;left:0;z-index:95;height:3px;width:0;pointer-events:none;opacity:0;
+  background:linear-gradient(90deg,var(--blue),var(--blue-lift));
+  box-shadow:0 0 12px 2px rgba(62,107,255,.55);transition:opacity .2s linear}
+body.locked .lockbar{opacity:1}
+
 /* reveal-on-scroll utility */
 .up{opacity:0;transform:translateY(24px)}
+.creveal{opacity:0;transform:translateY(22px)}
+.creveal.in{opacity:1;transform:none;transition:opacity .7s var(--ease) var(--d,0s),transform .7s var(--ease) var(--d,0s)}
 .up.in{opacity:1;transform:none;transition:opacity .9s var(--ease) var(--d,0s),transform .9s var(--ease) var(--d,0s)}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-  .up,.cell,.step,.stat,.harab,.hlede,.cue{opacity:1!important;transform:none!important}
+  .up,.cell,.step,.stat,.harab,.hlede,.cue,.creveal,.fact{opacity:1!important;transform:none!important}
+  .tiltcard{transform:none!important}
+  .lockbar{display:none}
   h1.big .wd{opacity:1!important;transform:none!important;filter:none!important}
   .reveal w{color:var(--t1)}
   .tiltwrap,.film{height:auto}
@@ -547,6 +560,7 @@ footer{border-top:1px solid var(--line);padding:34px 0}
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><i></i></button>
   </div>
 </nav>
+<div class="lockbar" id="lockbar" aria-hidden="true"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Sections">
   <a href="#about"    style="--i:0"><i>01</i>About</a>
   <a href="#services" style="--i:1"><i>02</i>Services</a>
@@ -791,9 +805,9 @@ footer{border-top:1px solid var(--line);padding:34px 0}
 <section class="sec tone-dark" id="contact">
   <div class="rail" data-i="06"></div>
   <div class="wrap pad">
-    <p class="eyebrow">06 — Contact</p>
+    <p class="eyebrow creveal">06 — Contact</p>
     <div class="cgrid">
-      <div>
+      <div class="creveal" style="--d:0s">
         <h2>Tell us the specification.</h2>
         <p class="lede" style="margin-top:20px">Make, model, year, quantity and where it has to land.
           We will come back with a landed price and a date.</p>
@@ -804,7 +818,7 @@ footer{border-top:1px solid var(--line);padding:34px 0}
           or WhatsApp number first.</p>
       </div>
 
-      <div class="card glass beamborder">
+      <div class="card glass beamborder creveal" style="--d:.12s">
         <dl style="margin:0">
           <div class="crow"><dt>Company</dt><dd>Wardat Al-Zuhoor Co. Ltd
             <small class="ar">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة</small></dd></div>
@@ -851,11 +865,6 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
 
   document.getElementById("yr").textContent = new Date().getFullYear();
 
-  /* ---------- hero entrance -------------------------------- */
-  requestAnimationFrame(function () {
-    requestAnimationFrame(function () { document.body.classList.add("lit"); });
-  });
-
   /* ---------- video: film -> poster -> placeholder ----------
      Never gate a video's visibility on a load event. Safari and iOS do not
      fetch media for a display:none element, so the event never fires and the
@@ -886,30 +895,48 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   film($("#heroVideo"), $("#heroMedia"), $(".hero"));
   film($("#filmVideo"), $("#filmMedia"), $("#filmpin"));
 
-  /* ---------- generic reveal-on-scroll --------------------- */
-  var io = new IntersectionObserver(function (es) {
-    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-  }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
-  $$(".up, .cell, .step").forEach(function (el) { io.observe(el); });
+  /* ---------- panel entrances ------------------------------
+     Every panel registers its entrance here. The lock controller at the
+     bottom of this file holds the page while one runs. */
+  var PLAY = {};
 
-  /* ---------- counters ------------------------------------- */
-  $$("[data-count]").forEach(function (el) {
-    var ob = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        ob.disconnect();
-        var to = +el.dataset.count, pad = +(el.dataset.pad || 0), t0 = 0;
-        if (reduce) { el.textContent = String(to).padStart(pad, "0"); return; }
-        requestAnimationFrame(function step(t) {
-          if (!t0) t0 = t;
-          var k = clamp((t - t0) / 1100, 0, 1);
-          el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 3)))).padStart(pad, "0");
-          if (k < 1) requestAnimationFrame(step);
-        });
+  function counters() {
+    $$("[data-count]").forEach(function (el) {
+      var to = +el.dataset.count, pad = +(el.dataset.pad || 0), t0 = 0;
+      if (reduce) { el.textContent = String(to).padStart(pad, "0"); return; }
+      requestAnimationFrame(function step(t) {
+        if (!t0) t0 = t;
+        var k = clamp((t - t0) / 900, 0, 1);
+        el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 3)))).padStart(pad, "0");
+        if (k < 1) requestAnimationFrame(step);
       });
-    }, { threshold: 0.6 });
-    ob.observe(el);
-  });
+    });
+  }
+
+  /* a shared 0 -> 1 ramp so every timed entrance eases the same way */
+  function ramp(ms, onStep, onDone) {
+    if (reduce) { onStep(1); if (onDone) onDone(); return; }
+    var t0 = 0;
+    requestAnimationFrame(function step(t) {
+      if (!t0) t0 = t;
+      var k = clamp((t - t0) / ms, 0, 1);
+      onStep(1 - Math.pow(1 - k, 3));
+      if (k < 1) requestAnimationFrame(step); else if (onDone) onDone();
+    });
+  }
+
+  PLAY.top = function () { document.body.classList.add("lit"); counters(); };
+
+  PLAY.services = function () {
+    $$("#services .cell").forEach(function (c, i) {
+      c.style.setProperty("--d", (i * 0.055) + "s");
+      c.classList.add("in");
+    });
+  };
+
+  PLAY.contact = function () {
+    $$("#contact .creveal").forEach(function (c) { c.classList.add("in"); });
+  };
 
   /* ---------- cursor-tracked glow (21st.dev glowing-effect) -- */
   document.addEventListener("pointermove", function (ev) {
@@ -993,15 +1020,16 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     })(rv, false);
     rv.textContent = ""; rv.appendChild(frag);
     var words = $$("w", rv);
-    var tick = function () {
-      var r = rv.getBoundingClientRect(), vh = innerHeight;
-      var p = clamp((vh * 0.86 - r.top) / (r.height + vh * 0.32), 0, 1);
-      var n = Math.round(p * words.length);
-      words.forEach(function (w, i) { w.classList.toggle("on", i < n); });
+    PLAY.about = function () {
+      ramp(880, function (k) {
+        var n = Math.round(k * words.length);
+        words.forEach(function (w, i) { w.classList.toggle("on", i < n); });
+      });
+      $$("#about .fact").forEach(function (f, i) {
+        f.style.setProperty("--d", (0.18 + i * 0.07) + "s");
+        f.classList.add("in");
+      });
     };
-    addEventListener("scroll", tick, { passive: true });
-    addEventListener("resize", tick, { passive: true });
-    tick();
   }
 
   /* ---------- fleet: scroll-driven 3D tilt frame -------------
@@ -1009,23 +1037,23 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
      flattens as the section scrolls, while the strip inside pans sideways. */
   var tw = $("#tiltwrap"), tc = $("#tiltcard"), strip = $("#strip"), thead = $("#tilthead");
   if (tw && tc && strip) {
-    var tState = 0;
+    var tState = 0, flat = 0;
+    PLAY.fleet = function () { ramp(820, function (k) { flat = k; }); };
     var tTick = function () {
       var r = tw.getBoundingClientRect();
       var p = clamp(-r.top / (r.height - innerHeight), 0, 1);
       tState = reduce ? p : lerp(tState, p, 0.14);
-      var open = clamp(tState / 0.42, 0, 1);              // tilt -> flat
-      var pan  = clamp((tState - 0.34) / 0.66, 0, 1);     // then pan the strip
+      var pan = clamp(tState / 0.9, 0, 1);                // the strip pans on scroll
       tc.style.transform =
-        "rotateX(" + (26 * (1 - open)).toFixed(2) + "deg) " +
-        "scale(" + (0.82 + 0.18 * open).toFixed(3) + ") " +
-        "translateY(" + (34 * (1 - open)).toFixed(1) + "px)";
+        "rotateX(" + (26 * (1 - flat)).toFixed(2) + "deg) " +
+        "scale(" + (0.84 + 0.16 * flat).toFixed(3) + ") " +
+        "translateY(" + (34 * (1 - flat)).toFixed(1) + "px)";
       var over = Math.max(0, strip.scrollWidth - tc.clientWidth);
       strip.style.transform = "translate3d(" + (-over * pan).toFixed(1) + "px,0,0)";
-      if (thead) thead.style.opacity = String(clamp(1 - tState * 2.4, 0, 1));
+      if (thead) thead.style.opacity = String(clamp(1 - tState * 3.2, 0, 1));
       if (!reduce) requestAnimationFrame(tTick);
     };
-    if (reduce) { addEventListener("scroll", tTick, { passive: true }); tTick(); }
+    if (reduce) { flat = 1; addEventListener("scroll", tTick, { passive: true }); tTick(); }
     else requestAnimationFrame(tTick);
   }
 
@@ -1126,6 +1154,7 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     var played = false;
     function play() {
       if (played) return; played = true;
+      var box = $(".mapbox"); if (box) box.classList.add("in");
       if (reduce) {
         arcs.forEach(function (a) { a.style.strokeDashoffset = 0; });
         Object.keys(nodeEls).forEach(function (k) { nodeEls[k].classList.add("on"); });
@@ -1145,9 +1174,7 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
         }, 180 + i * 80);
       });
     }
-    new IntersectionObserver(function (es, o) {
-      es.forEach(function (e) { if (e.isIntersecting) { paint(); play(); o.disconnect(); } });
-    }, { threshold: 0.25 }).observe(svg);
+    PLAY.reach = function () { paint(); play(); };
 
     var rt; addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(paint, 160); }, { passive: true });
     paint();
@@ -1165,14 +1192,18 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   (function () {
     var tl = $("#tl"), beam = $("#beamline");
     if (!tl || !beam) return;
-    var tick = function () {
-      var r = tl.getBoundingClientRect();
-      var p = clamp((innerHeight * 0.72 - r.top) / r.height, 0, 1);
-      beam.style.height = (p * (r.height - 16)) + "px";
+    var done = false;
+    PLAY.process = function () {
+      var h = tl.getBoundingClientRect().height - 16;
+      ramp(900, function (k) { beam.style.height = (k * h) + "px"; }, function () { done = true; });
+      $$(".step", tl).forEach(function (st, i) {
+        st.style.setProperty("--d", (i * 0.09) + "s");
+        st.classList.add("in");
+      });
     };
-    addEventListener("scroll", tick, { passive: true });
-    addEventListener("resize", tick, { passive: true });
-    tick();
+    addEventListener("resize", function () {
+      if (done) beam.style.height = (tl.getBoundingClientRect().height - 16) + "px";
+    }, { passive: true });
   })();
 
   /* ---------- marquee: speed follows scroll velocity -------- */
@@ -1208,9 +1239,7 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   /* ---------- film panel copy ------------------------------ */
   (function () {
     var pin = $("#filmpin"); if (!pin) return;
-    new IntersectionObserver(function (es) {
-      es.forEach(function (e) { pin.classList.toggle("on", e.intersectionRatio > 0.45); });
-    }, { threshold: [0, 0.45, 0.8] }).observe(pin);
+    PLAY.film = function () { pin.classList.add("on"); };
   })();
 
   /* ---------- mobile menu ---------------------------------- */
@@ -1303,15 +1332,128 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     svg.appendChild(hub); svg.appendChild(hl);
     host.appendChild(svg);
 
-    new IntersectionObserver(function (es, o) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        o.disconnect();
-        groups.forEach(function (g, i) {
-          setTimeout(function () { g.classList.add("on"); }, reduce ? 0 : 80 + i * 70);
-        });
+    var reachMap = PLAY.reach;
+    PLAY.reach = function () {
+      if (reachMap) reachMap();
+      groups.forEach(function (g, i) {
+        setTimeout(function () { g.classList.add("on"); }, reduce ? 0 : 60 + i * 60);
       });
-    }, { threshold: 0.2 }).observe(host);
+    };
+  })();
+
+  /* ---------- panel lock -----------------------------------
+     Each panel holds the page while its entrance plays, then releases.
+     Rules that keep it from feeling like a broken page:
+       · a panel locks once, on the way down, and never again
+       · scrolling past one fast plays it without yanking you back
+       · a hairline bar shows the hold is deliberate and how long is left
+       · Escape releases immediately, and reduced-motion skips it entirely */
+  (function () {
+    var BAR = $("#lockbar");
+    var SEQ = [
+      { id: "top",      ms: 1250 },
+      { id: "about",    ms: 1050 },
+      { id: "services", ms:  980 },
+      { id: "fleet",    ms:  900 },
+      { id: "reach",    ms: 1150 },
+      { id: "process",  ms: 1080 },
+      { id: "film",     ms:  920 },
+      { id: "contact",  ms:  880 }
+    ].map(function (p) { p.el = document.getElementById(p.id); return p; })
+     .filter(function (p) { return p.el; });
+
+    function fire(p) { if (p.done) return; p.done = true; if (PLAY[p.id]) PLAY[p.id](); }
+
+    if (reduce) { SEQ.forEach(fire); return; }
+
+    var heldY = null, timer = null, lastY = scrollY, quietUntil = 0, queued = false;
+    var KEYS = { ArrowDown: 1, ArrowUp: 1, PageDown: 1, PageUp: 1, Home: 1, End: 1, " ": 1, Spacebar: 1 };
+    function stop(e) { e.preventDefault(); }
+    function stopKey(e) { if (KEYS[e.key]) e.preventDefault(); else if (e.key === "Escape") release(); }
+    function pin() { if (heldY !== null && Math.abs(scrollY - heldY) > 1) scrollTo(0, heldY); }
+
+    function engage(y, ms) {
+      heldY = y;
+      document.body.classList.add("locked");
+      document.documentElement.style.scrollBehavior = "auto";
+      addEventListener("wheel", stop, { passive: false });
+      addEventListener("touchmove", stop, { passive: false });
+      addEventListener("keydown", stopKey, { passive: false });
+      addEventListener("scroll", pin, { passive: true });
+      if (BAR) {
+        BAR.style.transition = "none"; BAR.style.width = "0";
+        void BAR.offsetWidth;                       // force the reset to land
+        BAR.style.transition = "width " + ms + "ms linear, opacity .2s linear";
+        BAR.style.width = "100%";
+      }
+      timer = setTimeout(release, ms);
+    }
+
+    function release() {
+      if (heldY === null) return;
+      clearTimeout(timer); timer = null;
+      removeEventListener("wheel", stop);
+      removeEventListener("touchmove", stop);
+      removeEventListener("keydown", stopKey);
+      removeEventListener("scroll", pin);
+      heldY = null;
+      document.body.classList.remove("locked");
+      document.documentElement.style.scrollBehavior = "";
+      if (BAR) { BAR.style.transition = "width .3s linear, opacity .3s linear"; BAR.style.width = "0"; }
+      lastY = scrollY;
+      quietUntil = performance.now() + 400;         // never chain two holds together
+    }
+
+    function hold(p) {
+      var max = document.documentElement.scrollHeight - innerHeight;
+      var top = clamp(Math.round(scrollY + p.el.getBoundingClientRect().top), 0, Math.max(0, max));
+      document.documentElement.style.scrollBehavior = "auto";
+      scrollTo(0, top);
+      fire(p);
+      engage(top, p.ms);
+    }
+
+    function check() {
+      queued = false;
+      var y = scrollY, down = y >= lastY;
+      lastY = y;
+      if (heldY !== null || performance.now() < quietUntil) return;
+      for (var i = 0; i < SEQ.length; i++) {
+        var p = SEQ[i];
+        if (p.done) continue;
+        var t = p.el.getBoundingClientRect().top;
+        if (t < -240) { fire(p); continue; }         // already gone by: just play it
+        if (down) { if (t <= 130) { hold(p); return; } }
+        else if (t <= innerHeight * 0.9) { fire(p); continue; }
+        break;                                       // panels are in document order
+      }
+    }
+
+    addEventListener("scroll", function () {
+      if (!queued) { queued = true; requestAnimationFrame(check); }
+    }, { passive: true });
+    // Deliberately no resize handler here: mobile browsers fire resize when the
+    // address bar retracts, and releasing on that would cut a hold short. The
+    // setTimeout is what guarantees release, and a hold is under 1.3s anyway.
+
+    // an anchor jump plays everything up to its target, and holds none of it
+    $$('a[href^="#"]').forEach(function (a) {
+      a.addEventListener("click", function () {
+        var id = a.getAttribute("href").slice(1), idx = -1;
+        SEQ.forEach(function (p, i) { if (p.id === id) idx = i; });
+        quietUntil = performance.now() + 1600;
+        release();
+        if (idx < 0) return;
+        for (var i = 0; i <= idx; i++) fire(SEQ[i]);
+      });
+    });
+
+    if (scrollY < 40) {                              // the hero holds from first paint
+      scrollTo(0, 0);
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { hold(SEQ[0]); });
+      });
+    } else { check(); }
   })();
 
   /* ---------- enquiry button: honest until it is wired up --- */

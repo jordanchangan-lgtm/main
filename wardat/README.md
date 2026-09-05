@@ -68,9 +68,33 @@ Nothing is imported; there is no React in this build.
 | Process | tracing beam timeline | `#beamline` |
 | Marquee | scroll-velocity marquee, two opposing rows | `#velo1`, `#velo2` |
 | Contact | border beam | `.beamborder` |
+| *All panels* | **scroll lock until the entrance completes** | `SEQ` / `PLAY` |
+
+### The panel lock
+
+Every panel **holds the page while its entrance plays**, then releases — the
+hero from first paint, then one hold per section on the way down. The rules
+that keep a hold from reading as a frozen page:
+
+- A panel snaps to the top of the viewport, holds, and **never locks again**.
+- Holds are 0.9–1.25 s. Nothing longer.
+- Scrolling **up** never locks; blowing **past** a panel plays its entrance
+  without yanking you backwards.
+- A hairline bar across the top fills over the hold, so the pause is legible.
+- **Escape** releases immediately, and `prefers-reduced-motion` skips the whole
+  mechanism — nothing locks, everything is revealed at rest.
+- No `resize` handler releases a hold: phones fire resize when the address bar
+  retracts, and that was cutting the hero hold short.
+
+Wheel, touch and keyboard scrolling are all cancelled during a hold, and a
+`scroll` listener re-pins if momentum gets through. Panel entrances are
+registered on a `PLAY` map — `PLAY.reach`, `PLAY.process`, and so on — and the
+controller at the bottom of the script calls them. Adding a panel means adding
+a `PLAY` entry and one row in `SEQ`.
 
 `prefers-reduced-motion` is honoured throughout: it flattens the pinned
-sections, stops the marquees, and reveals everything statically.
+sections, stops the marquees, skips every lock, and reveals everything
+statically.
 
 ### The map
 

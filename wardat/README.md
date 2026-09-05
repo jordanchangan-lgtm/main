@@ -96,6 +96,24 @@ a `PLAY` entry and one row in `SEQ`.
 sections, stops the marquees, skips every lock, and reveals everything
 statically.
 
+### The two films
+
+Both were generated on Krea from the client's own photographs — Seedance 2.5,
+image-to-video, one continuous 10-second take each, no cuts. `VIDEO-DIRECTION.md`
+carries the full direction, the prompts and the settings.
+
+Two things that will bite whoever regenerates them:
+
+- **Krea returns HEVC 10-bit with an audio track**, whatever `generate_audio`
+  says. Chrome and Firefox will not decode HEVC at all. Always transcode to
+  H.264 8-bit `yuv420p` and strip audio with `-an`.
+- **Seedance reads "slow" and "gentle" as slow-motion.** The direction called
+  for a slow track; the prompt had to say *steadily*, *controlled*,
+  *natural realtime* instead. Krea's own prompting guide lists the banned words.
+
+The cool steel grade is applied at export, not asked of the model — it drifted
+warm both times. The exact filter chain is in `VIDEO-DIRECTION.md`.
+
 ### The map
 
 Desktop draws a real dotted world map. The landmass is a **168 × 74 grid
@@ -127,10 +145,12 @@ the coordinates, so adding a city needs no hand-placement.
 - [ ] **A domain.** `robots.txt` and `sitemap.xml` carry
       `REPLACE-WITH-DOMAIN.example`; the canonical and `og:url` tags are held
       back until it exists.
-- [ ] **Photographs** for the five fleet slots.
-- [ ] **Two films** — hero (`assets/hero.webm` + `.mp4` + `hero.jpg`) and the
-      mid-page panel (`assets/road.*`). Drop them in and they fill themselves;
-      no code change. Ship **both** WebM and H.264 MP4.
+- [ ] **Higher-resolution photographs.** The seven in `assets/fleet/` came
+      through WhatsApp at 1280 px and are soft at full-bleed sizes. Originals
+      off the phone would be noticeably sharper.
+- [ ] **A decision on the number plate.** `assets/fleet/06.jpg` and the hero
+      film both show a legible temporary trade plate on the company's own
+      stock. Normal for a dealer, but say the word and it gets blurred.
 - [ ] **Two hero numbers** — "units / year" and "markets served" show `—` and a
       TBC tag until real figures arrive.
 - [ ] **Confirm the corridor list.** It is a proposal based on the routes that

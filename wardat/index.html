@@ -240,12 +240,13 @@ body.menu .sheet a{opacity:1;transform:none;transition:opacity .6s var(--ease) c
 .hero .veil{
   position:absolute;inset:0;z-index:1;
   background:
-    linear-gradient(to top,rgba(6,11,36,.97) 0%,rgba(6,11,36,.72) 34%,rgba(6,11,36,.30) 66%,rgba(6,11,36,.62) 100%),
-    radial-gradient(120% 78% at 78% 8%,rgba(10,66,222,.30),transparent 60%);
+    linear-gradient(to top,rgba(6,11,36,.94) 0%,rgba(6,11,36,.58) 30%,rgba(6,11,36,.14) 62%,rgba(6,11,36,.46) 100%),
+    linear-gradient(to right,rgba(6,11,36,.70) 0%,rgba(6,11,36,.18) 46%,transparent 72%),
+    radial-gradient(120% 78% at 80% 6%,rgba(10,66,222,.24),transparent 62%);
 }
 /* animated dot field — 21st.dev "dot pattern" with a radial mask */
 .dots{
-  position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+  position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.22;
   background-image:radial-gradient(currentColor 1px,transparent 1px);
   background-size:26px 26px;color:rgba(160,190,255,.30);
   -webkit-mask-image:radial-gradient(90% 60% at 50% 42%,#000 0%,transparent 78%);
@@ -369,13 +370,16 @@ body.lit .cue{opacity:1;transition:opacity .8s var(--ease) 1.2s}
   background:var(--bg-2);
 }
 .tiltcard .strip{position:absolute;inset:0;display:flex;will-change:transform}
-.tiltcard .shot{flex:0 0 34%;height:100%;position:relative;border-right:1px solid rgba(255,255,255,.07);overflow:hidden}
+.tiltcard .shot{flex:0 0 auto;height:100%;aspect-ratio:16/10;position:relative;margin:0;overflow:hidden;
+  border-right:1px solid rgba(255,255,255,.10);background:var(--bg-2)}
 .tiltcard .shot img{width:100%;height:100%;object-fit:cover}
-.tiltcard .shot .ph{
-  position:absolute;inset:0;display:grid;place-items:center;gap:8px;align-content:center;
-  background:linear-gradient(150deg,var(--bg-2),color-mix(in srgb,var(--blue) 16%,var(--bg-2)));
+.tiltcard .shot figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:34px 16px 14px;
+  display:grid;gap:3px;
+  background:linear-gradient(to top,rgba(4,8,24,.86),transparent);
 }
-.tiltcard .shot .ph span{font:400 10px/1.6 var(--f-mono);letter-spacing:.2em;color:var(--t3);text-align:center;padding:0 14px}
+.tiltcard .shot figcaption b{font:500 13px/1.2 var(--f-display);letter-spacing:-.01em;color:#F2F5FC}
+.tiltcard .shot figcaption span{font:400 9.5px/1.4 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:#A9B4D4}
 .tiltglare{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.14) 50%,transparent 62%)}
 
 /* ============================================================
@@ -414,7 +418,7 @@ body.lit .cue{opacity:1;transition:opacity .8s var(--ease) 1.2s}
   .mapbox{padding:clamp(10px,3vw,18px)}
   .radial{display:block}
   .tiltcard{aspect-ratio:4/5}
-  .tiltcard .shot{flex:0 0 62%}
+  .tiltcard .shot{aspect-ratio:4/5}
 }
 .corr{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0 26px;margin-top:34px;min-width:0}
 .corr li{list-style:none;display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid var(--line);
@@ -463,7 +467,7 @@ body.lit .cue{opacity:1;transition:opacity .8s var(--ease) 1.2s}
 .filmpin{position:sticky;top:0;height:100dvh;overflow:hidden;display:grid;place-items:center}
 .filmpin .bg{position:absolute;inset:0}
 .filmpin .bg video,.filmpin .bg img{width:100%;height:100%;object-fit:cover}
-.filmveil{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,11,36,.92),rgba(6,11,36,.28) 55%,rgba(6,11,36,.75))}
+.filmveil{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,11,36,.86),rgba(6,11,36,.20) 52%,rgba(6,11,36,.66))}
 .filmcopy{position:relative;z-index:2;text-align:center;padding:0 var(--pad);max-width:900px}
 .filmcopy h2{color:#fff;margin-bottom:18px}
 .filmcopy p{color:#C3CDE9;margin:0 auto;max-width:52ch}
@@ -697,11 +701,13 @@ body.locked .lockbar{opacity:1}
       </div>
       <div class="tiltcard" id="tiltcard">
         <div class="strip" id="strip">
-          <div class="shot"><div class="ph"><span>Photograph slot 01<br />Yard / arrivals</span></div></div>
-          <div class="shot"><div class="ph"><span>Photograph slot 02<br />Transporter loaded</span></div></div>
-          <div class="shot"><div class="ph"><span>Photograph slot 03<br />Unit detail</span></div></div>
-          <div class="shot"><div class="ph"><span>Photograph slot 04<br />Handover</span></div></div>
-          <div class="shot"><div class="ph"><span>Photograph slot 05<br />Mosul branch</span></div></div>
+          <figure class="shot"><img src="assets/fleet/01.jpg" alt="Showroom hall, Mosul" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Showroom hall</b><span>Mosul</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/02.jpg" alt="Arrivals, front line" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Arrivals</b><span>front line</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/03.jpg" alt="Saloons, ready for handover" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Saloons</b><span>ready for handover</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/04.jpg" alt="Loaded transporter, roadside" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Loaded transporter</b><span>roadside</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/05.jpg" alt="Under escort, highway" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Under escort</b><span>highway</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/06.jpg" alt="Plated, and released" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Plated</b><span>and released</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/07.jpg" alt="Glass frontage, the yard" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Glass frontage</b><span>the yard</span></figcaption></figure>
         </div>
         <div class="tiltglare" aria-hidden="true"></div>
       </div>

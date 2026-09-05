@@ -162,7 +162,61 @@ Aim under 6 MB each.
 
 ---
 
-## Before I generate, I need
+---
+
+## What was actually generated — 5 Sep
+
+Both films are in `assets/`, made on Krea from the client's own photographs.
+
+| | Hero | Road |
+|---|---|---|
+| Start frame | the showroom hall, receding row of white Corollas | the loaded double-deck transporter, roadside |
+| Model | `bytedance/seedance-2-5` | same |
+| Take | one continuous 10s, no cuts | one continuous 10s, no cuts |
+| Seed | `110624` | `110625` |
+| Output | 1920 wide, 3.0 MB mp4 / 2.4 MB webm | 1600 wide, 1.9 MB mp4 / 1.8 MB webm |
+
+**The direction changed once the photographs arrived.** The hero was written for
+an outdoor compound at low sun with dust — the company does not have one. What
+they have is a **glazed showroom hall with a polished granite floor**, and the
+film was rebuilt around that: a low continuous track along the row, with the
+cars doubled in the floor. Inventing a yard they do not own would have been the
+worse film *and* a lie.
+
+### Three things that will bite whoever regenerates these
+
+**Krea returns HEVC 10-bit with an audio track** regardless of
+`generate_audio: false`. Chrome and Firefox decode no HEVC at all. Always
+transcode to H.264 8-bit `yuv420p` and strip audio with `-an`.
+
+**Seedance turns "slow" and "gentle" into slow-motion.** The direction above
+asks for a slow rise and a slow track; the prompts had to say *steadily*,
+*controlled*, *natural realtime*. Krea's own prompting guide lists the banned
+vocabulary — read it before writing a prompt.
+
+**Ask for one continuous take explicitly, and say what the camera is NOT doing.**
+Seedance commits to about three beats per generation on its own and will invent
+cuts. Both prompts carry `no cuts, no zoom, no orbit, never reversing direction`.
+
+### The grade is applied at export, not asked of the model
+
+It drifted warm both times. This is the chain that puts it back in the site's
+palette:
+
+```bash
+GRADE="eq=saturation=0.58:contrast=1.10:gamma=0.95:brightness=-0.015,\
+colorbalance=rs=-0.05:gs=-0.01:bs=0.09:rm=-0.03:bm=0.05:rh=-0.02:bh=0.03"
+
+ffmpeg -ss 0.35 -i take.mp4 -an -t 9.5 \
+  -vf "$GRADE,scale=1920:-2,format=yuv420p" \
+  -c:v libx264 -preset slow -crf 26 -movflags +faststart  hero.mp4
+```
+
+`-ss 0.35` trims the opening frames, which is where the warp lives.
+
+---
+
+## Before I generate more, I need
 
 1. **The photographs.** Which are the yard/lot, and which are the transporters on the road.
 2. **Is the lot in the pictures actually Mosul?** On the last project the footage was a

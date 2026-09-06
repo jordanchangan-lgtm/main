@@ -111,9 +111,15 @@ Three things that bite in RTL and are already handled:
   as blank — in Arabic only. `.strip` is pinned to `direction: ltr`; it is a
   filmstrip, not prose. The captions inside it are set back to RTL.
 
-Arabic descenders (the tail of ق) were being clipped by the headline's reveal
-mask, which has `overflow: hidden`. Arabic gets its own `line-height` and a
-slightly smaller size so the descender sits inside the line box.
+**Arabic descenders were clipped by both masked headlines.** The hero words and
+the film panel's heading each reveal from behind `overflow: hidden`, and the
+tails of ق, ي, ل and ه drop below the line box. Raising `line-height` alone was
+not enough — glyph *ink* extends past the box, so a box-based measurement
+reported no overflow while the page visibly cut the letters. The masks are
+padded downward with `padding-bottom: .24em` and the space pulled back with a
+matching negative margin, and the hidden state is pushed to `translateY(150%)`
+so no sliver shows through the padding. If you ever add another masked reveal,
+it needs the same two lines.
 
 Arabic type is **Almarai**, with Tajawal as the fallback. The mono labels have
 no Arabic equivalent, so in Arabic they switch to Almarai at a heavier weight

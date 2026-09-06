@@ -70,6 +70,7 @@ Nothing is imported; there is no React in this build.
 | Contact | border beam | `.beamborder` |
 | *All panels* | **scroll lock until the entrance completes** | `SEQ` / `PLAY` |
 | Nav | retracts onto the logo after 2s, returns on hover | `body.navmin` |
+| Gate | language choice on a first visit, then it lifts | `#gate` |
 | Dark panels | drifting blue fields + a pointer-tracked glow | `.amb` |
 
 ### The hero runs in two beats
@@ -79,6 +80,40 @@ second before adding `lit2`, which brings in the Arabic line, the lede and the
 four numbers. The hold is what makes the words land as a statement rather than
 as the top of a paragraph. Both classes are on `<body>`; nothing else needs to
 know.
+
+### Arabic
+
+The whole site runs in two languages. Every translatable string carries a
+`data-t` key; the **English lives in the HTML** (so the page reads correctly
+with no JavaScript, and search engines index real content) and the Arabic
+lives in one `AR` dictionary near the bottom of the script. Values may contain
+HTML, because several strings need `<b>`, `<em>` or a `<span class="hl">`.
+
+Switching language sets `lang` and `dir` on `<html>`. Everything directional
+uses logical properties (`inset-inline-start`, `padding-inline-start`,
+`margin-inline-end`), so the layout mirrors on its own; only a handful of
+things needed an override. Three deliberate exceptions stay left-to-right:
+the world map, the phone corridor diagram, and the two marquees — geography
+and a scrolling band both read wrong mirrored. **Port names on the map stay in
+Latin**; the corridor list underneath is translated. Say the word and the map
+labels can be Arabic too.
+
+Two things that bite in RTL and are already handled:
+
+- **A phone number reorders.** `0770 303 0030` is three Latin-digit runs, and
+  the bidi algorithm reverses their order in an RTL paragraph — it rendered as
+  `0030 303 0770`. Each number is wrapped in `dir="ltr"` with
+  `unicode-bidi:isolate`.
+- **The hero veil darkens the side the type sits on**, which flips. It reads
+  `--veil-side`, set to `left` under `html[lang="ar"]`.
+
+Arabic type is **Almarai**, with Tajawal as the fallback. The mono labels have
+no Arabic equivalent, so in Arabic they switch to Almarai at a heavier weight
+rather than staying in a Latin mono face.
+
+The gate shows once. The choice is kept in `localStorage` under `wz-lang`, and
+returning visitors go straight in. The hero hold waits for the gate: the lock
+controller exposes `window.__startHero`, and the gate calls it as it lifts.
 
 ### The nav retracts
 

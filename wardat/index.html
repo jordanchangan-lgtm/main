@@ -41,8 +41,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <!-- async: a render-blocking font sheet also blocks every script after it -->
 <link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
- href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" />
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" /></noscript>
+ href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Almarai:wght@300;400;700;800&family=Tajawal:wght@400;700&display=swap" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Almarai:wght@300;400;700;800&family=Tajawal:wght@400;700&display=swap" /></noscript>
 
 <style>
 /* ============================================================
@@ -65,7 +65,7 @@
   --f-display:"Jost",system-ui,sans-serif;
   --f-body:"Inter",system-ui,sans-serif;
   --f-mono:"Space Mono",ui-monospace,monospace;
-  --f-ar:"Tajawal","Inter",system-ui,sans-serif;
+  --f-ar:"Almarai","Tajawal","Inter",system-ui,sans-serif;
 
   --ease:cubic-bezier(.22,1,.36,1);
   --ease-io:cubic-bezier(.65,0,.35,1);
@@ -112,11 +112,11 @@ section[id],header[id]{scroll-margin-top:88px}          /* kills the hairline se
 /* vertical index rail, anchored to the CONTENT column, not the viewport */
 .rail{
   position:absolute;top:0;bottom:0;
-  left:calc(max(0px,(100% - var(--maxw))/2) + var(--pad) - 28px);
+  inset-inline-start:calc(max(0px,(100% - var(--maxw))/2) + var(--pad) - 28px);
   width:1px;background:var(--line);z-index:1;pointer-events:none;
 }
 .rail::after{
-  content:attr(data-i);position:absolute;top:clamp(88px,12vw,168px);left:0;
+  content:attr(data-i);position:absolute;top:clamp(88px,12vw,168px);inset-inline-start:0;
   transform:translate(-50%,-50%);
   font:700 11px/1 var(--f-mono);letter-spacing:.14em;color:var(--t3);
   background:color-mix(in srgb,var(--bg) 78%,transparent);padding:8px 3px;
@@ -136,6 +136,32 @@ h3{font-size:clamp(19px,1.5vw,23px);line-height:1.15}
 .lede{font-size:clamp(16px,1.35vw,19px);line-height:1.62;color:var(--t2);max-width:60ch}
 .ar{font-family:var(--f-ar);direction:rtl;unicode-bidi:isolate;line-height:1.9}
 .mono{font:400 11px/1.4 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3)}
+
+/* ============================================================
+   ARABIC MODE
+   One attribute on <html> swaps the type stack and mirrors the
+   layout. Everything directional below uses logical properties so
+   most of the page mirrors without an override.
+   ============================================================ */
+html[lang="ar"] body{font-family:var(--f-ar)}
+html[lang="ar"]{--veil-side:left}
+html[lang="ar"] h1,html[lang="ar"] h2,html[lang="ar"] h3,
+html[lang="ar"] .reveal,html[lang="ar"] .stat b,html[lang="ar"] .velotrack span,
+html[lang="ar"] .sheet a,html[lang="ar"] .brand b{font-family:var(--f-ar);letter-spacing:0}
+html[lang="ar"] h1.big{text-transform:none;letter-spacing:-.01em;line-height:1.06;font-weight:800}
+html[lang="ar"] .velotrack span{text-transform:none}
+html[lang="ar"] .mono,html[lang="ar"] .eyebrow,html[lang="ar"] .stat span,
+html[lang="ar"] .crow dt,html[lang="ar"] .fact dt,html[lang="ar"] .step .k,
+html[lang="ar"] .cell .num,html[lang="ar"] .corr li i,html[lang="ar"] .tbc,
+html[lang="ar"] .hplace,html[lang="ar"] .cue span,html[lang="ar"] .brand span span,
+html[lang="ar"] .shot figcaption span{
+  font-family:var(--f-ar);letter-spacing:.02em;font-weight:700;font-size:11px;
+}
+html[lang="ar"] .lede,html[lang="ar"] .hlede,html[lang="ar"] p{line-height:1.9}
+/* the map, its labels and the two marquees stay left-to-right */
+html[lang="ar"] .mapinner,html[lang="ar"] .radial,html[lang="ar"] .velo{direction:ltr}
+html[lang="ar"] .eyebrow::before{order:-1}
+html[lang="ar"] .corr li i{font-size:10px}
 
 /* ---------- liquid glass ---------- */
 .glass{
@@ -161,6 +187,66 @@ h3{font-size:clamp(19px,1.5vw,23px);line-height:1.15}
 </style>
 <style>
 /* ============================================================
+   LANGUAGE GATE — the first thing on a first visit
+   ============================================================ */
+.gate{
+  position:fixed;inset:0;z-index:200;display:grid;place-content:center;justify-items:center;
+  gap:clamp(30px,5vh,56px);padding:0 24px;background:var(--navy);
+  transition:opacity .8s var(--ease),transform 1s var(--ease),visibility 0s linear .9s;
+}
+.gate::before{
+  content:"";position:absolute;inset:-10%;pointer-events:none;
+  background:
+    radial-gradient(46% 40% at 18% 12%,rgba(10,66,222,.50),transparent 66%),
+    radial-gradient(40% 34% at 84% 84%,rgba(62,107,255,.36),transparent 68%);
+  animation:drift 19s var(--ease-io) infinite alternate;
+}
+.gate > *{position:relative;z-index:1}
+.gatemark{width:clamp(84px,14vw,124px);height:auto;opacity:0;transform:translateY(14px)}
+.gatelabel{font:400 10px/1 var(--f-mono);letter-spacing:.34em;text-transform:uppercase;color:#5F6C97;
+  opacity:0;transform:translateY(14px)}
+.gatepick{display:grid;gap:0;width:min(460px,86vw)}
+.gatepick button{
+  appearance:none;background:none;border:0;cursor:pointer;width:100%;
+  display:flex;align-items:baseline;justify-content:space-between;gap:18px;
+  padding:22px 4px;border-top:1px solid rgba(160,180,255,.18);color:#F2F5FC;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .7s var(--ease),transform .7s var(--ease),color .35s var(--ease),padding .45s var(--ease);
+}
+.gatepick button:last-child{border-bottom:1px solid rgba(160,180,255,.18)}
+.gatepick button b{font:500 clamp(28px,5.4vw,40px)/1 var(--f-display);letter-spacing:-.02em}
+.gatepick button[data-lang="ar"] b{font-family:var(--f-ar);font-weight:800;letter-spacing:0}
+.gatepick button i{font:400 10px/1 var(--f-mono);letter-spacing:.24em;color:#7E8CB8;font-style:normal;
+  transition:color .35s var(--ease),transform .45s var(--ease)}
+.gatepick button:hover{color:var(--blue-lift);padding-inline-start:14px}
+.gatepick button:hover i{color:var(--blue-lift);transform:translateX(4px)}
+html[dir="rtl"] .gatepick button:hover i{transform:translateX(-4px)}
+body.gate-in .gatemark,body.gate-in .gatelabel,body.gate-in .gatepick button{
+  opacity:1;transform:none;
+  transition:opacity .8s var(--ease),transform .8s var(--ease),color .35s var(--ease),padding .45s var(--ease);
+}
+body.gate-in .gatemark{transition-delay:.05s}
+body.gate-in .gatelabel{transition-delay:.18s}
+body.gate-in .gatepick button:nth-child(1){transition-delay:.30s}
+body.gate-in .gatepick button:nth-child(2){transition-delay:.40s}
+/* the unchosen row leaves first, then the whole gate lifts */
+.gate.going .gatepick button:not(.chosen),.gate.going .gatelabel{opacity:0;transform:translateY(-10px);transition-duration:.4s}
+.gate.going .gatepick button.chosen{color:var(--blue-lift)}
+.gate.gone{opacity:0;transform:scale(1.04);visibility:hidden;pointer-events:none}
+body.gated{overflow:hidden}
+
+/* the EN / AR switch that lives in the bar afterwards */
+.langsw{display:flex;flex:none;align-items:center;gap:1px;padding:3px;border-radius:999px;
+  background:rgba(140,165,255,.10);box-shadow:inset 0 0 0 1px rgba(160,180,255,.16)}
+body.at-light .langsw{background:rgba(10,20,60,.06);box-shadow:inset 0 0 0 1px rgba(10,20,60,.12)}
+.langsw button{appearance:none;border:0;cursor:pointer;background:none;border-radius:999px;
+  padding:6px 10px;font:600 10.5px/1 var(--f-mono);letter-spacing:.1em;color:#A9B4D4;
+  transition:background .35s var(--ease),color .35s var(--ease)}
+body.at-light .langsw button{color:#454F6E}
+.langsw button[aria-pressed="true"]{background:var(--blue);color:#fff}
+.langsw button:last-child{font-family:var(--f-ar);font-weight:800;font-size:12px;letter-spacing:0}
+
+/* ============================================================
    NAV — floating pill with a sliding indicator
    (21st.dev "tubelight navbar" pattern, vanilla)
    ============================================================ */
@@ -168,12 +254,12 @@ h3{font-size:clamp(19px,1.5vw,23px);line-height:1.15}
 /* the pill shrinks rightward onto the logo, so the mark never moves */
 .navin{width:100%;transition:width .75s var(--ease),background .5s var(--ease),box-shadow .5s var(--ease)}
 body.navmin .navin{width:max-content}
-.navgrp{display:flex;align-items:center;gap:14px;margin-left:auto;overflow:hidden;
+.navgrp{display:flex;align-items:center;gap:14px;margin-inline-start:auto;overflow:hidden;
   max-width:820px;opacity:1;
   transition:max-width .75s var(--ease),opacity .4s var(--ease) .12s}
 body.navmin .navgrp{max-width:0;opacity:0;transition:max-width .75s var(--ease),opacity .3s var(--ease)}
 /* three dots appear only when collapsed, so the bar reads as retrievable */
-.navdots{display:flex;gap:3px;margin-left:12px;opacity:0;width:0;overflow:hidden;
+.navdots{display:flex;gap:3px;margin-inline-start:12px;opacity:0;width:0;overflow:hidden;
   transition:opacity .4s var(--ease) .3s,width .5s var(--ease),margin .5s var(--ease)}
 body.navmin .navdots{opacity:1;width:20px}
 .navdots i{width:3px;height:3px;border-radius:50%;background:#7E8CB8}
@@ -201,11 +287,11 @@ body.at-light .navin{
 .brand > span{min-width:0}
 .brand svg,.brand img{width:30px;height:auto;flex:none}
 .brand b{display:block;font:600 12.5px/1.05 var(--f-display);letter-spacing:.11em;text-transform:uppercase;color:#F2F5FC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand span{display:block;font:400 8.5px/1.4 var(--f-mono);letter-spacing:.2em;color:#7E8CB8}
+.brand span{display:block;font:400 8.5px/1.4 var(--f-mono);letter-spacing:.2em;color:#7E8CB8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 body.at-light .brand b{color:#080D22}
 body.at-light .brand span{color:#6B78A0}
 
-.navlinks{position:relative;display:flex;gap:2px;margin-left:auto}
+.navlinks{position:relative;display:flex;gap:2px;margin-inline-start:auto}
 .navlinks a{
   position:relative;z-index:2;padding:9px 15px;border-radius:999px;
   font:500 12.5px/1 var(--f-body);letter-spacing:.03em;color:#A9B4D4;
@@ -216,7 +302,7 @@ body.at-light .navlinks a{color:#454F6E}
 body.at-light .navlinks a:hover,body.at-light .navlinks a.on{color:#fff}
 /* the tube: one element that slides between links */
 .tube{
-  position:absolute;z-index:1;top:0;height:100%;border-radius:999px;
+  position:absolute;z-index:1;top:0;inset-inline-start:0;height:100%;border-radius:999px;
   background:var(--blue);opacity:0;
   transition:transform .5s var(--ease),width .5s var(--ease),opacity .35s var(--ease);
   will-change:transform,width;
@@ -247,7 +333,7 @@ body.menu .sheet{opacity:1;visibility:visible;pointer-events:auto;transition-del
 .sheet a{font-family:var(--f-display);font-weight:500;font-size:clamp(30px,9vw,44px);line-height:1.25;color:#F2F5FC;
   letter-spacing:-.02em;opacity:0;transform:translateY(18px)}
 body.menu .sheet a{opacity:1;transform:none;transition:opacity .6s var(--ease) calc(.08s + var(--i) * .06s),transform .6s var(--ease) calc(.08s + var(--i) * .06s)}
-.sheet a i{font-style:normal;font:400 11px/1 var(--f-mono);color:#5F6C97;margin-right:14px;vertical-align:middle}
+.sheet a i{font-style:normal;font:400 11px/1 var(--f-mono);color:#5F6C97;margin-inline-end:14px;vertical-align:middle}
 .sheet .shmeta{margin-top:26px;font:400 10px/1.8 var(--f-mono);letter-spacing:.2em;color:#5F6C97;text-transform:uppercase}
 
 @media (max-width:940px){
@@ -291,7 +377,7 @@ body.menu .sheet a{opacity:1;transform:none;transition:opacity .6s var(--ease) c
   position:absolute;inset:0;z-index:1;
   background:
     linear-gradient(to top,rgba(6,11,36,.94) 0%,rgba(6,11,36,.58) 30%,rgba(6,11,36,.14) 62%,rgba(6,11,36,.46) 100%),
-    linear-gradient(to right,rgba(6,11,36,.70) 0%,rgba(6,11,36,.18) 46%,transparent 72%),
+    linear-gradient(to var(--veil-side,right),rgba(6,11,36,.70) 0%,rgba(6,11,36,.18) 46%,transparent 72%),
     radial-gradient(120% 78% at 80% 6%,rgba(10,66,222,.24),transparent 62%);
 }
 /* animated dot field — 21st.dev "dot pattern" with a radial mask */
@@ -482,15 +568,15 @@ body.lit2 .cue{opacity:1;transition:opacity .6s var(--ease) .4s}
 .pgrid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(30px,5vw,80px);align-items:start}
 @media (max-width:900px){.pgrid{grid-template-columns:1fr;gap:34px}}
 .pstick{position:sticky;top:clamp(96px,14vh,140px)}
-.tl{position:relative;padding-left:clamp(30px,4vw,52px)}
-.tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--line);border-radius:2px}
-.tl .beamline{position:absolute;left:6px;top:8px;width:2px;height:0;border-radius:2px;
+.tl{position:relative;padding-inline-start:clamp(30px,4vw,52px)}
+.tl::before{content:"";position:absolute;inset-inline-start:6px;top:8px;bottom:8px;width:2px;background:var(--line);border-radius:2px}
+.tl .beamline{position:absolute;inset-inline-start:6px;top:8px;width:2px;height:0;border-radius:2px;
   background:linear-gradient(to bottom,var(--accent),color-mix(in srgb,var(--accent) 20%,transparent));
   box-shadow:0 0 14px 1px color-mix(in srgb,var(--accent) 60%,transparent)}
 .step{position:relative;padding:0 0 clamp(34px,5vw,58px);opacity:0;transform:translateY(20px)}
 .step.in{opacity:1;transform:none;transition:all .48s var(--ease) var(--d,0s)}
 .step:last-child{padding-bottom:0}
-.step::before{content:"";position:absolute;left:calc(-1 * clamp(30px,5vw,64px) + 1px);top:7px;width:12px;height:12px;border-radius:50%;
+.step::before{content:"";position:absolute;inset-inline-start:calc(-1 * clamp(30px,4vw,52px) + 1px);top:7px;width:12px;height:12px;border-radius:50%;
   background:var(--bg);box-shadow:inset 0 0 0 2px var(--line-2);transition:box-shadow .5s var(--ease),background .5s var(--ease)}
 .step.in::before{background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent)}
 .step .k{font:400 10px/1 var(--f-mono);letter-spacing:.2em;color:var(--t3);margin-bottom:10px;display:block}
@@ -505,10 +591,10 @@ body.lit2 .cue{opacity:1;transition:opacity .6s var(--ease) .4s}
 .velotrack{display:flex;width:max-content;will-change:transform}
 .velotrack span{
   font-family:var(--f-display);font-weight:500;text-transform:uppercase;letter-spacing:-.02em;
-  font-size:clamp(30px,5.4vw,72px);line-height:1;padding-right:.45em;color:var(--t1);white-space:nowrap;
+  font-size:clamp(30px,5.4vw,72px);line-height:1;padding-inline-end:.45em;color:var(--t1);white-space:nowrap;
 }
 .velotrack span.o{color:transparent;-webkit-text-stroke:1px var(--line-2)}
-.velotrack i{align-self:center;flex:none;width:9px;height:9px;border-radius:50%;background:var(--accent);margin-right:.45em}
+.velotrack i{align-self:center;flex:none;width:9px;height:9px;border-radius:50%;background:var(--accent);margin-inline-end:.45em}
 
 /* ============================================================
    FILM PANEL
@@ -549,6 +635,7 @@ body.lit2 .cue{opacity:1;transition:opacity .6s var(--ease) .4s}
 .crow:first-of-type{border-top:0;padding-top:0}
 .crow dt{font:400 10px/1.6 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
 .crow dd{margin:0;font-size:15px;color:var(--t1)}
+.crow dd a[dir="ltr"]{unicode-bidi:isolate;display:inline-block}
 .crow dd small{display:block;font-size:12.5px;color:var(--t3);margin-top:3px}
 .tbc{display:inline-block;font:400 9px/1 var(--f-mono);letter-spacing:.14em;color:var(--t3);
   border:1px solid var(--line-2);border-radius:4px;padding:4px 6px;vertical-align:middle}
@@ -631,7 +718,17 @@ footer{border-top:1px solid var(--line);padding:34px 0}
 }
 </style>
 </head>
-<body class="lit-pending">
+<body class="lit-pending gated">
+
+<!-- ══ LANGUAGE GATE ═════════════════════════════════════════ -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="Choose a language / اختر اللغة">
+  <img class="gatemark" src="assets/logo-mark.svg" alt="Wardat Al-Zuhoor" width="124" height="62" />
+  <p class="gatelabel">Choose a language <span aria-hidden="true">·</span> اختر اللغة</p>
+  <div class="gatepick">
+    <button type="button" data-lang="en" lang="en"><b>English</b><i>EN</i></button>
+    <button type="button" data-lang="ar" lang="ar"><b>العربية</b><i>AR</i></button>
+  </div>
+</div>
 
 <!-- ══ NAV ═══════════════════════════════════════════════════ -->
 <nav class="nav" aria-label="Primary">
@@ -639,33 +736,37 @@ footer{border-top:1px solid var(--line);padding:34px 0}
     <a class="brand" href="#top" aria-label="Wardat Al-Zuhoor, home">
       <img src="assets/logo-mark.svg" alt="" width="30" height="15" />
       <span style="display:block">
-        <b>Wardat Al-Zuhoor</b>
-        <span>MOSUL · IRAQ</span>
+        <b data-t="brand.name">Wardat Al-Zuhoor</b>
+        <span data-t="brand.place">MOSUL · IRAQ</span>
       </span>
     </a>
     <span class="navdots" aria-hidden="true"><i></i><i></i><i></i></span>
     <div class="navgrp" id="navgrp">
+      <div class="langsw" id="langsw" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="ar" aria-pressed="false">ع</button>
+      </div>
       <div class="navlinks" id="navlinks">
         <span class="tube" id="tube" aria-hidden="true"></span>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#fleet">Fleet</a>
-        <a href="#reach">Reach</a>
-        <a href="#process">Process</a>
+        <a href="#about" data-t="nav.about">About</a>
+        <a href="#services" data-t="nav.services">Services</a>
+        <a href="#fleet" data-t="nav.fleet">Fleet</a>
+        <a href="#reach" data-t="nav.reach">Reach</a>
+        <a href="#process" data-t="nav.process">Process</a>
       </div>
-      <a class="navcta" href="#contact">Contact</a>
+      <a class="navcta" href="#contact" data-t="nav.contact">Contact</a>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><i></i></button>
     </div>
   </div>
 </nav>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Sections">
-  <a href="#about"    style="--i:0"><i>01</i>About</a>
-  <a href="#services" style="--i:1"><i>02</i>Services</a>
-  <a href="#fleet"    style="--i:2"><i>03</i>Fleet</a>
-  <a href="#reach"    style="--i:3"><i>04</i>Reach</a>
-  <a href="#process"  style="--i:4"><i>05</i>Process</a>
-  <a href="#contact"  style="--i:5"><i>06</i>Contact</a>
-  <p class="shmeta" style="--i:6">Wardat Al-Zuhoor Co. Ltd · Mosul · Iraq</p>
+  <a href="#about"    style="--i:0"><i>01</i><span data-t="nav.about">About</span></a>
+  <a href="#services" style="--i:1"><i>02</i><span data-t="nav.services">Services</span></a>
+  <a href="#fleet"    style="--i:2"><i>03</i><span data-t="nav.fleet">Fleet</span></a>
+  <a href="#reach"    style="--i:3"><i>04</i><span data-t="nav.reach">Reach</span></a>
+  <a href="#process"  style="--i:4"><i>05</i><span data-t="nav.process">Process</span></a>
+  <a href="#contact"  style="--i:5"><i>06</i><span data-t="nav.contact">Contact</span></a>
+  <p class="shmeta" style="--i:6" data-t="sheet.meta">Wardat Al-Zuhoor Co. Ltd · Mosul · Iraq</p>
 </div>
 
 <!-- ══ HERO ══════════════════════════════════════════════════ -->
@@ -688,47 +789,47 @@ footer{border-top:1px solid var(--line);padding:34px 0}
   <div class="heroin wrap">
     <div class="hgrid">
       <div>
-        <p class="hplace"><i></i> Mosul <span>·</span> Nineveh <span>·</span> Iraq</p>
+        <p class="hplace"><i></i> <span data-t="hero.place">Mosul <span>·</span> Nineveh <span>·</span> Iraq</span></p>
         <h1 class="big">
-          <span class="ln"><span class="wd" style="--i:0">Trade</span></span>
-          <span class="ln"><span class="wd" style="--i:1"><em>Transport</em></span></span>
-          <span class="ln"><span class="wd thin" style="--i:2">Deliver</span></span>
+          <span class="ln"><span class="wd" style="--i:0" data-t="hero.w1">Trade</span></span>
+          <span class="ln"><span class="wd" style="--i:1" data-t="hero.w2"><em>Transport</em></span></span>
+          <span class="ln"><span class="wd thin" style="--i:2" data-t="hero.w3">Deliver</span></span>
         </h1>
-        <p class="harab ar">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة — فرع الموصل</p>
-        <p class="hlede">Vehicle trading, general transport and general trading, run out of Mosul.
+        <p class="harab ar" data-t="hero.legal">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة — فرع الموصل</p>
+        <p class="hlede" data-t="hero.lede">Vehicle trading, general transport and general trading, run out of Mosul.
           We buy, move and hand over — one vehicle or a full consignment.</p>
       </div>
 
       <!-- Numbers are deliberately unframed. Two are structural facts; two wait
            on the client's real figures and show a TBC tag rather than a guess. -->
       <div class="stats">
-        <div class="stat" style="--i:0"><b data-count="3" data-pad="2">0</b><span>Licensed activities</span></div>
-        <div class="stat" style="--i:1"><b data-count="1" data-pad="2">0</b><span>Mosul branch</span></div>
-        <div class="stat" style="--i:2"><b>—</b><span>Units / year <em class="tbc" style="font-style:normal">TBC</em></span></div>
-        <div class="stat" style="--i:3"><b>—</b><span>Markets served <em class="tbc" style="font-style:normal">TBC</em></span></div>
+        <div class="stat" style="--i:0"><b data-count="3" data-pad="2">0</b><span data-t="hero.s1">Licensed activities</span></div>
+        <div class="stat" style="--i:1"><b data-count="1" data-pad="2">0</b><span data-t="hero.s2">Mosul branch</span></div>
+        <div class="stat" style="--i:2"><b>—</b><span data-t="hero.s3">Units / year <em class="tbc" style="font-style:normal">TBC</em></span></div>
+        <div class="stat" style="--i:3"><b>—</b><span data-t="hero.s4">Markets served <em class="tbc" style="font-style:normal">TBC</em></span></div>
       </div>
     </div>
   </div>
 
-  <div class="cue" aria-hidden="true"><i></i><span>Scroll</span></div>
+  <div class="cue" aria-hidden="true"><i></i><span data-t="hero.scroll">Scroll</span></div>
 </header>
 
 <!-- ══ ABOUT ═════════════════════════════════════════════════ -->
 <section class="sec tone-light" id="about">
   <div class="rail" data-i="01"></div>
   <div class="wrap pad">
-    <p class="eyebrow">01 — The company</p>
+    <p class="eyebrow" data-t="about.eyebrow">01 — The company</p>
     <div class="abgrid">
-      <p class="reveal" data-reveal>A limited liability company trading vehicles, running general transport and
+      <p class="reveal" data-reveal data-t="about.reveal">A limited liability company trading vehicles, running general transport and
         handling general trade from its <span class="hl">Mosul</span> branch.</p>
       <div>
         <dl class="facts">
-          <div class="fact"><dt>Registered</dt><dd><b>Wardat Al-Zuhoor Co.</b> for Cars Trading, Transport and General Trading — Limited Liability</dd></div>
-          <div class="fact"><dt>Arabic</dt><dd class="ar">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة / محدودة المسؤولية</dd></div>
-          <div class="fact"><dt>Branch</dt><dd><b>Mosul</b> — Nineveh Governorate, Iraq <span class="ar">/ فرع الموصل</span></dd></div>
-          <div class="fact"><dt>Activities</dt><dd>Vehicle trading · General transport · General trading</dd></div>
+          <div class="fact"><dt data-t="about.k1">Registered</dt><dd data-t="about.v1"><b>Wardat Al-Zuhoor Co.</b> for Cars Trading, Transport and General Trading — Limited Liability</dd></div>
+          <div class="fact"><dt data-t="about.k2">Arabic</dt><dd class="ar" data-t="about.v2">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة / محدودة المسؤولية</dd></div>
+          <div class="fact"><dt data-t="about.k3">Branch</dt><dd data-t="about.v3"><b>Mosul</b> — Nineveh Governorate, Iraq <span class="ar">/ فرع الموصل</span></dd></div>
+          <div class="fact"><dt data-t="about.k4">Activities</dt><dd data-t="about.v4">Vehicle trading · General transport · General trading</dd></div>
         </dl>
-        <p class="legal">Company details are taken from the official letterhead and signage supplied by the client. The registered office is in Baghdad; this site is for the Mosul branch, whose own street address is still to be confirmed.</p>
+        <p class="legal" data-t="about.legal">Company details are taken from the official letterhead and signage supplied by the client. The registered office is in Baghdad; this site is for the Mosul branch, whose own street address is still to be confirmed.</p>
       </div>
     </div>
   </div>
@@ -739,8 +840,8 @@ footer{border-top:1px solid var(--line);padding:34px 0}
   <span class="ambfx" aria-hidden="true"></span>
   <div class="rail" data-i="02"></div>
   <div class="wrap pad">
-    <p class="eyebrow">02 — What we do</p>
-    <h2>Three licences,<br />one chain of custody.</h2>
+    <p class="eyebrow" data-t="svc.eyebrow">02 — What we do</p>
+    <h2 data-t="svc.h">Three licences,<br />one chain of custody.</h2>
 
     <div class="bento">
       <article class="cell tall glow" style="--d:0s">
@@ -748,8 +849,8 @@ footer{border-top:1px solid var(--line);padding:34px 0}
           <span class="num">S/01</span>
           <span class="ico"><svg viewBox="0 0 24 24"><path d="M3 13l2-5.5A2 2 0 0 1 6.9 6h10.2a2 2 0 0 1 1.9 1.5L21 13v5a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1H7v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><circle cx="7" cy="15" r="1"/><circle cx="17" cy="15" r="1"/></svg></span>
         </div>
-        <div><h3>Vehicle trading</h3>
-          <p>Buying and selling passenger cars and light commercials — single units through to bulk consignments,
+        <div><h3 data-t="svc.h1">Vehicle trading</h3>
+          <p data-t="svc.b1">Buying and selling passenger cars and light commercials — single units through to bulk consignments,
              sourced against a specification rather than whatever happens to be on the lot.</p></div>
       </article>
 
@@ -758,27 +859,27 @@ footer{border-top:1px solid var(--line);padding:34px 0}
           <span class="num">S/02</span>
           <span class="ico"><svg viewBox="0 0 24 24"><path d="M2 16V8a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v8"/><path d="M14 10h3.6a2 2 0 0 1 1.7 1l2.2 3.4a2 2 0 0 1 .5 1.3V16"/><circle cx="7" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg></span>
         </div>
-        <div><h3>General transport</h3>
-          <p>Road freight under our own licence. Vehicles moved on transporters or under their own power,
+        <div><h3 data-t="svc.h2">General transport</h3>
+          <p data-t="svc.b2">Road freight under our own licence. Vehicles moved on transporters or under their own power,
              with the paperwork travelling with the load.</p></div>
       </article>
 
       <article class="cell glow" style="--d:.12s">
         <div class="top"><span class="num">S/03</span>
           <span class="ico"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg></span></div>
-        <div><h3>General trading</h3><p>Goods outside the vehicle lines, handled under the same licence and the same documentation discipline.</p></div>
+        <div><h3 data-t="svc.h3">General trading</h3><p data-t="svc.b3">Goods outside the vehicle lines, handled under the same licence and the same documentation discipline.</p></div>
       </article>
 
       <article class="cell glow" style="--d:.18s">
         <div class="top"><span class="num">S/04</span>
           <span class="ico"><svg viewBox="0 0 24 24"><path d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg></span></div>
-        <div><h3>Documentation</h3><p>Titles, invoices, clearance files and handover records — assembled before the vehicle moves, not after.</p></div>
+        <div><h3 data-t="svc.h4">Documentation</h3><p data-t="svc.b4">Titles, invoices, clearance files and handover records — assembled before the vehicle moves, not after.</p></div>
       </article>
 
       <article class="cell glow" style="--d:.24s">
         <div class="top"><span class="num">S/05</span>
           <span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div>
-        <div><h3>Fleet supply</h3><p>Repeat, scheduled supply for buyers who need the same specification again next month, not a one-off.</p></div>
+        <div><h3 data-t="svc.h5">Fleet supply</h3><p data-t="svc.b5">Repeat, scheduled supply for buyers who need the same specification again next month, not a one-off.</p></div>
       </article>
     </div>
   </div>
@@ -789,18 +890,18 @@ footer{border-top:1px solid var(--line);padding:34px 0}
   <div class="tiltwrap" id="tiltwrap">
     <div class="tiltpin">
       <div class="tilthead" id="tilthead">
-        <p class="eyebrow" style="justify-content:center">03 — The fleet</p>
-        <h2>What passes through.</h2>
+        <p class="eyebrow" style="justify-content:center" data-t="fleet.eyebrow">03 — The fleet</p>
+        <h2 data-t="fleet.h">What passes through.</h2>
       </div>
       <div class="tiltcard" id="tiltcard">
         <div class="strip" id="strip">
-          <figure class="shot"><img src="assets/fleet/01.jpg" alt="Showroom hall, Mosul" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Showroom hall</b><span>Mosul</span></figcaption></figure>
-          <figure class="shot"><img src="assets/fleet/02.jpg" alt="Arrivals, front line" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Arrivals</b><span>front line</span></figcaption></figure>
-          <figure class="shot"><img src="assets/fleet/03.jpg" alt="Saloons, ready for handover" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Saloons</b><span>ready for handover</span></figcaption></figure>
-          <figure class="shot"><img src="assets/fleet/04.jpg" alt="Loaded transporter, roadside" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Loaded transporter</b><span>roadside</span></figcaption></figure>
-          <figure class="shot"><img src="assets/fleet/05.jpg" alt="Under escort, highway" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Under escort</b><span>highway</span></figcaption></figure>
-          <figure class="shot"><img src="assets/fleet/06.jpg" alt="Plated, and released" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Plated</b><span>and released</span></figcaption></figure>
-          <figure class="shot"><img src="assets/fleet/07.jpg" alt="Glass frontage, the yard" loading="lazy" decoding="async" width="1100" height="619" /><figcaption><b>Glass frontage</b><span>the yard</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/01.jpg" alt="Showroom hall, Mosul" loading="lazy" decoding="async" width="1100" height="619" /><figcaption data-t="fleet.c1"><b>Showroom hall</b><span>Mosul</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/02.jpg" alt="Arrivals, front line" loading="lazy" decoding="async" width="1100" height="619" /><figcaption data-t="fleet.c2"><b>Arrivals</b><span>front line</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/03.jpg" alt="Saloons, ready for handover" loading="lazy" decoding="async" width="1100" height="619" /><figcaption data-t="fleet.c3"><b>Saloons</b><span>ready for handover</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/04.jpg" alt="Loaded transporter, roadside" loading="lazy" decoding="async" width="1100" height="619" /><figcaption data-t="fleet.c4"><b>Loaded transporter</b><span>roadside</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/05.jpg" alt="Under escort, highway" loading="lazy" decoding="async" width="1100" height="619" /><figcaption data-t="fleet.c5"><b>Under escort</b><span>highway</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/06.jpg" alt="Plated, and released" loading="lazy" decoding="async" width="1100" height="619" /><figcaption data-t="fleet.c6"><b>Plated</b><span>and released</span></figcaption></figure>
+          <figure class="shot"><img src="assets/fleet/07.jpg" alt="Glass frontage, the yard" loading="lazy" decoding="async" width="1100" height="619" /><figcaption data-t="fleet.c7"><b>Glass frontage</b><span>the yard</span></figcaption></figure>
         </div>
         <div class="tiltglare" aria-hidden="true"></div>
       </div>
@@ -813,9 +914,9 @@ footer{border-top:1px solid var(--line);padding:34px 0}
   <span class="ambfx" aria-hidden="true"></span>
   <div class="rail" data-i="04"></div>
   <div class="wrap pad">
-    <p class="eyebrow">04 — Reach</p>
-    <h2>Mosul is the hub.<br />The corridors run outward.</h2>
-    <p class="lede" style="margin-top:20px">Vehicles reach Iraq through a handful of ports and land crossings.
+    <p class="eyebrow" data-t="reach.eyebrow">04 — Reach</p>
+    <h2 data-t="reach.h">Mosul is the hub.<br />The corridors run outward.</h2>
+    <p class="lede" style="margin-top:20px" data-t="reach.lede">Vehicles reach Iraq through a handful of ports and land crossings.
       We work the leg from there to Mosul, and onward to wherever the buyer is.</p>
 
     <div class="mapbox up">
@@ -829,18 +930,18 @@ footer{border-top:1px solid var(--line);padding:34px 0}
     </div>
 
     <ul class="corr" id="corr">
-      <li data-city="Jebel Ali"><span>Jebel Ali, UAE</span><i>Inbound</i></li>
-      <li data-city="Mersin"><span>Mersin, Türkiye</span><i>Inbound</i></li>
-      <li data-city="Poti"><span>Poti, Georgia</span><i>Inbound</i></li>
-      <li data-city="Shanghai"><span>Shanghai, China</span><i>Inbound</i></li>
-      <li data-city="Yokohama"><span>Yokohama, Japan</span><i>Inbound</i></li>
-      <li data-city="Aqaba"><span>Aqaba, Jordan</span><i>Inbound</i></li>
-      <li data-city="Rotterdam"><span>Rotterdam, Netherlands</span><i>Inbound</i></li>
-      <li data-city="Erbil"><span>Erbil</span><i>Onward</i></li>
-      <li data-city="Baghdad"><span>Baghdad</span><i>Onward</i></li>
-      <li data-city="Basra"><span>Basra</span><i>Onward</i></li>
+      <li data-city="Jebel Ali"><span data-t="city.jebelali">Jebel Ali, UAE</span><i data-t="dir.inbound">Inbound</i></li>
+      <li data-city="Mersin"><span data-t="city.mersin">Mersin, Türkiye</span><i data-t="dir.inbound">Inbound</i></li>
+      <li data-city="Poti"><span data-t="city.poti">Poti, Georgia</span><i data-t="dir.inbound">Inbound</i></li>
+      <li data-city="Shanghai"><span data-t="city.shanghai">Shanghai, China</span><i data-t="dir.inbound">Inbound</i></li>
+      <li data-city="Yokohama"><span data-t="city.yokohama">Yokohama, Japan</span><i data-t="dir.inbound">Inbound</i></li>
+      <li data-city="Aqaba"><span data-t="city.aqaba">Aqaba, Jordan</span><i data-t="dir.inbound">Inbound</i></li>
+      <li data-city="Rotterdam"><span data-t="city.rotterdam">Rotterdam, Netherlands</span><i data-t="dir.inbound">Inbound</i></li>
+      <li data-city="Erbil"><span data-t="city.erbil">Erbil</span><i data-t="dir.onward">Onward</i></li>
+      <li data-city="Baghdad"><span data-t="city.baghdad">Baghdad</span><i data-t="dir.onward">Onward</i></li>
+      <li data-city="Basra"><span data-t="city.basra">Basra</span><i data-t="dir.onward">Onward</i></li>
     </ul>
-    <p class="legal">Corridor list is a proposal based on the routes that serve Iraq — confirm which of these
+    <p class="legal" data-t="reach.legal">Corridor list is a proposal based on the routes that serve Iraq — confirm which of these
       Wardat Al-Zuhoor actually works and we will cut the rest.</p>
   </div>
 </section>
@@ -851,23 +952,23 @@ footer{border-top:1px solid var(--line);padding:34px 0}
   <div class="wrap pad">
     <div class="pgrid">
       <div class="pstick">
-        <p class="eyebrow">05 — How it runs</p>
-        <h2>Five steps,<br />one file.</h2>
-        <p class="lede" style="margin-top:20px">One document set follows the vehicle from the specification
+        <p class="eyebrow" data-t="proc.eyebrow">05 — How it runs</p>
+        <h2 data-t="proc.h">Five steps,<br />one file.</h2>
+        <p class="lede" style="margin-top:20px" data-t="proc.lede">One document set follows the vehicle from the specification
           sheet to the handover signature. Nothing is reconstructed after the fact.</p>
       </div>
     <div class="tl" id="tl">
       <span class="beamline" id="beamline" aria-hidden="true"></span>
-      <div class="step"><span class="k">STEP 01</span><h3>Specification</h3>
-        <p>The buyer sets make, model, year, trim and condition. Everything after this is measured against that sheet.</p></div>
-      <div class="step"><span class="k">STEP 02</span><h3>Sourcing</h3>
-        <p>Units located against the specification and priced landed — not ex-yard — so the number quoted is the number paid.</p></div>
-      <div class="step"><span class="k">STEP 03</span><h3>Transport</h3>
-        <p>Moved under our own transport licence, on transporters or under their own power, with the file travelling alongside.</p></div>
-      <div class="step"><span class="k">STEP 04</span><h3>Clearance</h3>
-        <p>Titles, invoices and clearance documents assembled and checked before the vehicle reaches the crossing.</p></div>
-      <div class="step"><span class="k">STEP 05</span><h3>Handover</h3>
-        <p>Delivered in Mosul or onward to the buyer, signed off against the same specification sheet it started on.</p></div>
+      <div class="step"><span class="k" data-t="proc.k1">STEP 01</span><h3 data-t="proc.h1">Specification</h3>
+        <p data-t="proc.b1">The buyer sets make, model, year, trim and condition. Everything after this is measured against that sheet.</p></div>
+      <div class="step"><span class="k" data-t="proc.k2">STEP 02</span><h3 data-t="proc.h2">Sourcing</h3>
+        <p data-t="proc.b2">Units located against the specification and priced landed — not ex-yard — so the number quoted is the number paid.</p></div>
+      <div class="step"><span class="k" data-t="proc.k3">STEP 03</span><h3 data-t="proc.h3">Transport</h3>
+        <p data-t="proc.b3">Moved under our own transport licence, on transporters or under their own power, with the file travelling alongside.</p></div>
+      <div class="step"><span class="k" data-t="proc.k4">STEP 04</span><h3 data-t="proc.h4">Clearance</h3>
+        <p data-t="proc.b4">Titles, invoices and clearance documents assembled and checked before the vehicle reaches the crossing.</p></div>
+      <div class="step"><span class="k" data-t="proc.k5">STEP 05</span><h3 data-t="proc.h5">Handover</h3>
+        <p data-t="proc.b5">Delivered in Mosul or onward to the buyer, signed off against the same specification sheet it started on.</p></div>
       </div>
     </div>
   </div>
@@ -895,8 +996,8 @@ footer{border-top:1px solid var(--line);padding:34px 0}
       </div>
       <div class="filmveil" aria-hidden="true"></div>
       <div class="filmcopy">
-        <h2><span class="ln"><b>The distance is the</b></span><span class="ln"><b>whole business.</b></span></h2>
-        <p>Buying a vehicle is the easy half. Getting it to Mosul — intact, documented and on the day it was promised — is the half that has to be run properly.</p>
+        <h2 data-t="film.h"><span class="ln"><b>The distance is the</b></span><span class="ln"><b>whole business.</b></span></h2>
+        <p data-t="film.b">Buying a vehicle is the easy half. Getting it to Mosul — intact, documented and on the day it was promised — is the half that has to be run properly.</p>
       </div>
     </div>
   </div>
@@ -907,35 +1008,35 @@ footer{border-top:1px solid var(--line);padding:34px 0}
   <span class="ambfx" aria-hidden="true"></span>
   <div class="rail" data-i="06"></div>
   <div class="wrap pad">
-    <p class="eyebrow creveal">06 — Contact</p>
+    <p class="eyebrow creveal" data-t="ctc.eyebrow">06 — Contact</p>
     <div class="cgrid">
       <div class="creveal" style="--d:0s">
-        <h2>Tell us the specification.</h2>
-        <p class="lede" style="margin-top:20px">Make, model, year, quantity and where it has to land.
+        <h2 data-t="ctc.h">Tell us the specification.</h2>
+        <p class="lede" style="margin-top:20px" data-t="ctc.lede">Make, model, year, quantity and where it has to land.
           We will come back with a landed price and a date.</p>
-        <p style="margin-top:32px"><a class="btn" href="tel:+9647703030030">
-          Call the office
+        <p style="margin-top:32px"><a class="btn" href="tel:+9647703030030" data-tel>
+          <span data-t="ctc.cta">Call the office</span>
           <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
-        <p class="legal">Dials 0770 303 0030, the number printed twice on the company letterhead. Send an email address, or confirm a WhatsApp number, and a written enquiry route goes in beside it.</p>
+        <p class="legal" data-t="ctc.note">Dials 0770 303 0030, the number printed twice on the company letterhead. Send an email address, or confirm a WhatsApp number, and a written enquiry route goes in beside it.</p>
       </div>
 
       <div class="card glass beamborder creveal" style="--d:.12s">
         <dl style="margin:0">
-          <div class="crow"><dt>Company</dt><dd>Wardat Al-Zuhoor Co. Ltd
+          <div class="crow"><dt data-t="ctc.company">Company</dt><dd>Wardat Al-Zuhoor Co. Ltd
             <small class="ar">شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة / محدودة المسؤولية</small></dd></div>
-          <div class="crow"><dt>Registered</dt><dd>Baghdad — Al-Qadisiyah, M 602, St 11, Bldg 3/148
+          <div class="crow"><dt data-t="ctc.registered">Registered</dt><dd data-t="ctc.addr">Baghdad — Al-Qadisiyah, M 602, St 11, Bldg 3/148
             <small class="ar">بغداد — حي القادسية، م/602، س/11، ع/3/148</small></dd></div>
-          <div class="crow"><dt>Branch</dt><dd>Mosul, Nineveh Governorate<small class="ar">فرع الموصل</small>
-            <small>Street address <span class="tbc">TO BE CONFIRMED</span></small></dd></div>
-          <div class="crow"><dt>Phone</dt><dd>
-            <a href="tel:+9647703030030">0770 303 0030</a><br />
-            <a href="tel:+9647702021222">0770 202 1222</a>
-            <small>A third number is printed twice on the letterhead with two different digits —
+          <div class="crow"><dt data-t="ctc.branch">Branch</dt><dd data-t="ctc.br">Mosul, Nineveh Governorate<small class="ar">فرع الموصل</small>
+            <small><span data-t="ctc.street">Street address</span> <span class="tbc" data-t="tbc">TO BE CONFIRMED</span></small></dd></div>
+          <div class="crow"><dt data-t="ctc.phone">Phone</dt><dd>
+            <a href="tel:+9647703030030" dir="ltr">0770 303 0030</a><br />
+            <a href="tel:+9647702021222" dir="ltr">0770 202 1222</a>
+            <small data-t="ctc.third">A third number is printed twice on the letterhead with two different digits —
               0750 316 5555 and 0750 361 5555. Confirm which is right and it goes in.</small></dd></div>
-          <div class="crow"><dt>Web</dt><dd><a href="https://wardat-alzohour.com">wardat-alzohour.com</a></dd></div>
-          <div class="crow"><dt>Director</dt><dd>Saber Rasheed Abdullah<small class="ar">المدير المفوض — صابر رشيد عبد الله</small></dd></div>
-          <div class="crow"><dt>Email</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
-          <div class="crow"><dt>Hours</dt><dd><span class="tbc">TO BE CONFIRMED</span></dd></div>
+          <div class="crow"><dt data-t="ctc.web">Web</dt><dd><a href="https://wardat-alzohour.com" dir="ltr">wardat-alzohour.com</a></dd></div>
+          <div class="crow"><dt data-t="ctc.director">Director</dt><dd data-t="ctc.dir">Saber Rasheed Abdullah<small class="ar">المدير المفوض — صابر رشيد عبد الله</small></dd></div>
+          <div class="crow"><dt data-t="ctc.email">Email</dt><dd><span class="tbc" data-t="tbc">TO BE CONFIRMED</span></dd></div>
+          <div class="crow"><dt data-t="ctc.hours">Hours</dt><dd><span class="tbc" data-t="tbc">TO BE CONFIRMED</span></dd></div>
         </dl>
       </div>
     </div>
@@ -944,11 +1045,11 @@ footer{border-top:1px solid var(--line);padding:34px 0}
       <div class="fgrid">
         <a class="brand" href="#top" style="gap:12px">
           <img src="assets/logo-mark.svg" alt="" width="34" height="17" />
-          <span style="display:block"><b>Wardat Al-Zuhoor</b><span>EST. MOSUL</span></span>
+          <span style="display:block"><b data-t="brand.name">Wardat Al-Zuhoor</b><span data-t="brand.est">EST. MOSUL</span></span>
         </a>
-        <p>© <span id="yr">2026</span> Wardat Al-Zuhoor Co. Ltd. All rights reserved.</p>
+        <p data-t="foot.rights">© <span id="yr">2026</span> Wardat Al-Zuhoor Co. Ltd. All rights reserved.</p>
       </div>
-      <p class="legal">Registered as <em>Wardat AL-Zuhoor Co. For Cars Trading and Transportation and General Trading LTD.</em> Two company documents spell the English differently &mdash; &ldquo;Transportion&rdquo; on one, &ldquo;Trans portion&rdquo; on the other &mdash; so it is written correctly here. Say the word if it must match the certificate exactly.</p>
+      <p class="legal" data-t="foot.legal">Registered as <em>Wardat AL-Zuhoor Co. For Cars Trading and Transportation and General Trading LTD.</em> Two company documents spell the English differently &mdash; &ldquo;Transportion&rdquo; on one, &ldquo;Trans portion&rdquo; on the other &mdash; so it is written correctly here. Say the word if it must match the certificate exactly.</p>
     </footer>
   </div>
 </section>
@@ -1116,6 +1217,9 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   /* ---------- about: word-by-word reveal (21st.dev TextReveal) */
   var rv = $("[data-reveal]");
   if (rv) {
+    window.__revealSrc = rv.innerHTML;      // pristine, before it is split
+    var words = [], aboutPlayed = false;
+    function build() {
     var frag = document.createDocumentFragment();
     (function walk(node, hl) {
       Array.prototype.slice.call(node.childNodes).forEach(function (n) {
@@ -1131,8 +1235,15 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
       });
     })(rv, false);
     rv.textContent = ""; rv.appendChild(frag);
-    var words = $$("w", rv);
+    words = $$("w", rv);
+    }
+    build();
+    window.__reveal = function () {
+      build();
+      if (aboutPlayed) words.forEach(function (w) { w.classList.add("on"); });
+    };
     PLAY.about = function () {
+      aboutPlayed = true;
       ramp(520, function (k) {
         var n = Math.round(k * words.length);
         words.forEach(function (w, i) { w.classList.toggle("on", i < n); });
@@ -1322,18 +1433,29 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   (function () {
     var WORDS = ["Vehicle trading", "General transport", "General trading",
                  "Documentation", "Clearance", "Fleet supply", "Mosul"];
+    var fills = [];
+    window.__rebuildMarquee = function (list) {
+      WORDS = list || WORDS;
+      fills.forEach(function (f) { f(); });
+    };
     [["#velo1", 1], ["#velo2", -1]].forEach(function (pair) {
       var track = $(pair[0]); if (!track) return;
-      var dir = pair[1], html = "";
-      for (var r = 0; r < 3; r++) {
-        WORDS.forEach(function (w, i) {
-          html += '<span class="' + ((i + r) % 2 ? "o" : "") + '">' + w + "</span><i></i>";
-        });
-      }
-      track.innerHTML = html;
+      var dir = pair[1];
+      var fill = function () {
+        var html = "";
+        for (var r = 0; r < 3; r++) {
+          WORDS.forEach(function (w, i) {
+            html += '<span class="' + ((i + r) % 2 ? "o" : "") + '">' + w + "</span><i></i>";
+          });
+        }
+        track.innerHTML = html;
+        measure();
+      };
+      fills.push(fill);
       var x = 0, half = 0, vel = 0, last = scrollY, base = 0.55;
       var measure = function () { half = track.scrollWidth / 3; };
-      measure(); addEventListener("resize", measure, { passive: true });
+      fill();
+      addEventListener("resize", measure, { passive: true });
       addEventListener("scroll", function () {
         vel += (scrollY - last) * 0.16; last = scrollY;
       }, { passive: true });
@@ -1569,12 +1691,174 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
       });
     });
 
-    if (scrollY < 40) {                              // the hero holds from first paint
-      scrollTo(0, 0);
+    // The hero waits for the language gate; the gate calls this when it lifts.
+    window.__startHero = function () {
+      if (SEQ[0] && SEQ[0].done) return;
+      if (scrollY < 40) {
+        scrollTo(0, 0);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { hold(SEQ[0]); });
+        });
+      } else { check(); }
+    };
+    if (!$("#gate")) window.__startHero();
+  })();
+
+
+  /* ============================================================
+     LANGUAGE — English and Arabic, one dictionary, one attribute
+     ============================================================ */
+  var AR = {
+    "nav.about":"عن الشركة","nav.services":"خدماتنا","nav.fleet":"الأسطول","nav.reach":"نطاق العمل",
+    "nav.process":"آلية العمل","nav.contact":"تواصل معنا",
+    "brand.name":"وردة الزهور","brand.place":"الموصل · العراق","brand.est":"مقرّها الموصل",
+    "sheet.meta":"شركة وردة الزهور المحدودة · الموصل · العراق",
+
+    "hero.place":"الموصل <span>·</span> نينوى <span>·</span> العراق",
+    "hero.w1":"تجارة","hero.w2":"<em>نقل</em>","hero.w3":"تسليم",
+    "hero.legal":"شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة — فرع الموصل",
+    "hero.lede":"تجارة السيارات، والنقل العام، والتجارة العامة — تُدار من الموصل. نشتري، وننقل، ونسلّم: سيارة واحدة أو حمولة كاملة.",
+    "hero.s1":"أنشطة مُرخّصة","hero.s2":"فرع الموصل",
+    "hero.s3":"وحدة سنوياً <em class=\"tbc\" style=\"font-style:normal\">قيد التأكيد</em>",
+    "hero.s4":"أسواق نخدمها <em class=\"tbc\" style=\"font-style:normal\">قيد التأكيد</em>",
+    "hero.scroll":"مرّر",
+
+    "about.eyebrow":"٠١ — الشركة",
+    "about.reveal":"شركة محدودة المسؤولية تعمل في تجارة السيارات والنقل العام والتجارة العامة، من فرعها في <span class=\"hl\">الموصل</span>.",
+    "about.k1":"التسجيل",
+    "about.v1":"<b>شركة وردة الزهور</b> لتجارة السيارات والنقل العام والتجارة العامة — محدودة المسؤولية",
+    "about.k2":"بالإنجليزية",
+    "about.v2":"Wardat Al-Zuhoor Co. for Cars Trading, Transport and General Trading — Limited Liability",
+    "about.k3":"الفرع","about.v3":"<b>الموصل</b> — محافظة نينوى، العراق",
+    "about.k4":"الأنشطة","about.v4":"تجارة السيارات · النقل العام · التجارة العامة",
+    "about.legal":"بيانات الشركة مأخوذة من الترويسة الرسمية واللوحة التي زوّدنا بها العميل. المقرّ المسجّل في بغداد، وهذا الموقع لفرع الموصل، وعنوانه التفصيلي ما يزال قيد التأكيد.",
+
+    "svc.eyebrow":"٠٢ — ما نقوم به",
+    "svc.h":"ثلاث إجازات،<br />وسلسلة عهدة واحدة.",
+    "svc.h1":"تجارة السيارات",
+    "svc.b1":"بيع وشراء سيارات الركاب والمركبات التجارية الخفيفة — من الوحدة الواحدة إلى الشحنات الكبيرة، تُجلب وفق مواصفة محدّدة لا وفق ما تصادف وجوده في الساحة.",
+    "svc.h2":"النقل العام",
+    "svc.b2":"نقل برّي بإجازتنا الخاصة. تُنقل المركبات على القاطرات أو بقوّتها الذاتية، والمعاملة تسافر مع الحمولة.",
+    "svc.h3":"التجارة العامة",
+    "svc.b3":"بضائع خارج خطوط السيارات، تُدار بالإجازة نفسها وبالانضباط نفسه في التوثيق.",
+    "svc.h4":"المعاملات والوثائق",
+    "svc.b4":"سندات الملكية والفواتير ومعاملات التخليص وسجلات التسليم — تُجهَّز قبل أن تتحرّك المركبة، لا بعدها.",
+    "svc.h5":"تجهيز الأساطيل",
+    "svc.b5":"تجهيز متكرّر ومجدول للمشترين الذين يحتاجون المواصفة نفسها في الشهر التالي، لا مرّة واحدة فقط.",
+
+    "fleet.eyebrow":"٠٣ — الأسطول","fleet.h":"ما يمرّ من هنا.",
+    "fleet.c1":"<b>صالة العرض</b><span>الموصل</span>",
+    "fleet.c2":"<b>الواصل حديثاً</b><span>الصف الأمامي</span>",
+    "fleet.c3":"<b>سيارات صالون</b><span>جاهزة للتسليم</span>",
+    "fleet.c4":"<b>قاطرة محمّلة</b><span>على جانب الطريق</span>",
+    "fleet.c5":"<b>في الطريق</b><span>الخط السريع</span>",
+    "fleet.c6":"<b>مرقّمة</b><span>وجاهزة للتسليم</span>",
+    "fleet.c7":"<b>الواجهة الزجاجية</b><span>الساحة</span>",
+
+    "reach.eyebrow":"٠٤ — نطاق العمل",
+    "reach.h":"الموصل هي المركز.<br />والممرّات تمتدّ إلى الخارج.",
+    "reach.lede":"تصل السيارات إلى العراق عبر عدد محدود من الموانئ والمنافذ البرّية. نتولّى المرحلة من هناك إلى الموصل، ثم إلى حيث يكون المشتري.",
+    "city.jebelali":"جبل علي، الإمارات","city.mersin":"مرسين، تركيا","city.poti":"بوتي، جورجيا",
+    "city.shanghai":"شنغهاي، الصين","city.yokohama":"يوكوهاما، اليابان","city.aqaba":"العقبة، الأردن",
+    "city.rotterdam":"روتردام، هولندا","city.erbil":"أربيل","city.baghdad":"بغداد","city.basra":"البصرة",
+    "dir.inbound":"وارد","dir.onward":"توزيع داخلي",
+    "reach.legal":"قائمة الممرّات مقترحة استناداً إلى الطرق التي تخدم العراق — أكّد أيّها تعمل عليه الشركة فعلاً وسنحذف البقية.",
+
+    "proc.eyebrow":"٠٥ — آلية العمل","proc.h":"خمس خطوات،<br />وملف واحد.",
+    "proc.lede":"مجموعة وثائق واحدة ترافق المركبة من ورقة المواصفات حتى توقيع التسليم. لا شيء يُعاد تركيبه بعد وقوعه.",
+    "proc.k1":"الخطوة ٠١","proc.k2":"الخطوة ٠٢","proc.k3":"الخطوة ٠٣","proc.k4":"الخطوة ٠٤","proc.k5":"الخطوة ٠٥",
+    "proc.h1":"المواصفات",
+    "proc.b1":"يحدّد المشتري الماركة والموديل وسنة الصنع والفئة والحالة. وكل ما يأتي بعد ذلك يُقاس على هذه الورقة.",
+    "proc.h2":"التأمين",
+    "proc.b2":"تُحدَّد الوحدات وفق المواصفات ويُحتسب سعرها واصلاً — لا من الساحة — ليكون الرقم المعروض هو الرقم المدفوع.",
+    "proc.h3":"النقل",
+    "proc.b3":"يُنقل بإجازة النقل الخاصة بنا، على القاطرات أو بقوّته الذاتية، والملف يسافر معه.",
+    "proc.h4":"التخليص",
+    "proc.b4":"تُجمَّع سندات الملكية والفواتير ووثائق التخليص وتُدقَّق قبل وصول المركبة إلى المنفذ.",
+    "proc.h5":"التسليم",
+    "proc.b5":"يُسلَّم في الموصل أو إلى المشتري أينما كان، ويُوقَّع عليه وفق ورقة المواصفات نفسها التي بدأ بها.",
+
+    "film.h":"<span class=\"ln\"><b>المسافة هي</b></span><span class=\"ln\"><b>العمل كلّه.</b></span>",
+    "film.b":"شراء السيارة هو النصف السهل. أمّا إيصالها إلى الموصل — سليمة، وموثّقة، وفي اليوم الموعود — فهو النصف الذي يجب أن يُدار كما ينبغي.",
+
+    "ctc.eyebrow":"٠٦ — تواصل معنا","ctc.h":"أخبرنا بالمواصفات.",
+    "ctc.lede":"الماركة والموديل وسنة الصنع والكمية ومكان التسليم. وسنعود إليك بسعر واصل وموعد.",
+    "ctc.cta":"اتصل بالمكتب",
+    "ctc.note":"يتّصل بالرقم ٠٧٧٠ ٣٠٣ ٠٠٣٠، وهو الرقم المطبوع مرّتين على ترويسة الشركة. أرسل بريداً إلكترونياً أو أكّد رقم واتساب، وسنضيف قناة استفسار مكتوبة إلى جانبه.",
+    "ctc.company":"الشركة","ctc.registered":"المقرّ المسجّل","ctc.branch":"الفرع","ctc.phone":"الهاتف",
+    "ctc.web":"الموقع","ctc.director":"المدير المفوّض","ctc.email":"البريد الإلكتروني","ctc.hours":"أوقات العمل",
+    "ctc.street":"العنوان التفصيلي",
+    "ctc.addr":"بغداد — حي القادسية، م/٦٠٢، س/١١، ع/٣/١٤٨",
+    "ctc.br":"الموصل، محافظة نينوى",
+    "ctc.dir":"صابر رشيد عبد الله",
+    "ctc.third":"رقم ثالث مطبوع مرّتين على الترويسة برقمين مختلفين — ٠٧٥٠ ٣١٦ ٥٥٥٥ و ٠٧٥٠ ٣٦١ ٥٥٥٥. أكّد الصحيح منهما وسنضيفه.",
+    "tbc":"قيد التأكيد",
+    "foot.rights":"© <span id=\"yr\"></span> شركة وردة الزهور المحدودة. جميع الحقوق محفوظة.",
+    "foot.legal":"مسجّلة باسم <em>Wardat AL-Zuhoor Co. For Cars Trading and Transportation and General Trading LTD.</em> تختلف كتابة الاسم بالإنجليزية بين وثيقتين للشركة، ولذلك كُتب هنا بصيغته الصحيحة. أخبرنا إن وجب أن يطابق شهادة التسجيل حرفياً."
+  };
+  var MARQUEE = {
+    en: ["Vehicle trading","General transport","General trading","Documentation","Clearance","Fleet supply","Mosul"],
+    ar: ["تجارة السيارات","النقل العام","التجارة العامة","المعاملات","التخليص","تجهيز الأساطيل","الموصل"]
+  };
+
+  var EN = {};                       // the English is whatever the file already says
+  $$("[data-t]").forEach(function (el) {
+    EN[el.dataset.t] = (el.hasAttribute("data-reveal") && window.__revealSrc) ? window.__revealSrc : el.innerHTML;
+  });
+
+  var lang = "en";
+  function setLang(code) {
+    lang = code === "ar" ? "ar" : "en";
+    var dict = lang === "ar" ? AR : EN;
+    $$("[data-t]").forEach(function (el) {
+      var v = dict[el.dataset.t];
+      if (v != null) el.innerHTML = v;
+    });
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    var y = document.getElementById("yr");
+    if (y) y.textContent = new Date().getFullYear();
+    $$("#langsw button").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false");
+    });
+    try { localStorage.setItem("wz-lang", lang); } catch (e) {}
+    if (window.__rebuildMarquee) window.__rebuildMarquee(MARQUEE[lang]);
+    if (window.__reveal) window.__reveal();      // the word-by-word line is rebuilt
+    document.dispatchEvent(new CustomEvent("langchange"));
+  }
+  $$("#langsw button").forEach(function (b) {
+    b.addEventListener("click", function () { setLang(b.dataset.lang); });
+  });
+
+  /* ---------- the gate ------------------------------------- */
+  (function () {
+    var gate = $("#gate");
+    if (!gate) return;
+    var saved = null;
+    try { saved = localStorage.getItem("wz-lang"); } catch (e) {}
+
+    function open() {
       requestAnimationFrame(function () {
-        requestAnimationFrame(function () { hold(SEQ[0]); });
+        requestAnimationFrame(function () { document.body.classList.add("gate-in"); });
       });
-    } else { check(); }
+    }
+    function dismiss(code, instant) {
+      setLang(code);
+      var go = function () {
+        gate.classList.add("gone");
+        document.body.classList.remove("gated");
+        setTimeout(function () { if (window.__startHero) window.__startHero(); }, instant ? 0 : 260);
+      };
+      if (instant) { gate.style.transition = "none"; go(); return; }
+      gate.classList.add("going");
+      setTimeout(go, 420);
+    }
+    $$("button", gate).forEach(function (b) {
+      b.addEventListener("click", function () { b.classList.add("chosen"); dismiss(b.dataset.lang, false); });
+    });
+
+    if (saved === "en" || saved === "ar") dismiss(saved, true);   // already chosen once
+    else open();
   })();
 
   /* ---------- nav retracts behind the logo ------------------

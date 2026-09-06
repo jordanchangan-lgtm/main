@@ -718,7 +718,7 @@ footer{border-top:1px solid var(--line);padding:34px 0}
 }
 </style>
 </head>
-<body class="lit-pending gated">
+<body class="lit-pending">
 
 <!-- ══ LANGUAGE GATE ═════════════════════════════════════════ -->
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="Choose a language / اختر اللغة">
@@ -1836,6 +1836,7 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     if (!gate) return;
     var saved = null;
     try { saved = localStorage.getItem("wz-lang"); } catch (e) {}
+    document.body.classList.add("gated");
 
     function open() {
       requestAnimationFrame(function () {

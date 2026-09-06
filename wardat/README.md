@@ -98,7 +98,7 @@ and a scrolling band both read wrong mirrored. **Port names on the map stay in
 Latin**; the corridor list underneath is translated. Say the word and the map
 labels can be Arabic too.
 
-Two things that bite in RTL and are already handled:
+Three things that bite in RTL and are already handled:
 
 - **A phone number reorders.** `0770 303 0030` is three Latin-digit runs, and
   the bidi algorithm reverses their order in an RTL paragraph — it rendered as
@@ -106,6 +106,14 @@ Two things that bite in RTL and are already handled:
   `unicode-bidi:isolate`.
 - **The hero veil darkens the side the type sits on**, which flips. It reads
   `--veil-side`, set to `left` under `html[lang="ar"]`.
+- **The fleet filmstrip inherited RTL** and reversed its flex row, so the
+  scroll-driven pan translated every photograph off-screen and the card read
+  as blank — in Arabic only. `.strip` is pinned to `direction: ltr`; it is a
+  filmstrip, not prose. The captions inside it are set back to RTL.
+
+Arabic descenders (the tail of ق) were being clipped by the headline's reveal
+mask, which has `overflow: hidden`. Arabic gets its own `line-height` and a
+slightly smaller size so the descender sits inside the line box.
 
 Arabic type is **Almarai**, with Tajawal as the fallback. The mono labels have
 no Arabic equivalent, so in Arabic they switch to Almarai at a heavier weight
@@ -176,8 +184,9 @@ never changes.
 viewport and reflow every `100lvh` panel — seen as the page lurching upward at
 the moment of the hold. `overflow: hidden` sets both and avoids the coercion.
 
-Holds are 520–700 ms, and the hero 1.25 s. Every entrance is tuned to finish
-inside its hold.
+Holds are 380–480 ms, and the hero 1.15 s. Every entrance is tuned to finish
+inside its hold. **The film panel does not hold at all** — its copy reveals on
+an IntersectionObserver as you reach it, and the scroll never stops.
 
 Panel entrances are
 registered on a `PLAY` map — `PLAY.reach`, `PLAY.process`, and so on — and the
@@ -240,6 +249,8 @@ the coordinates, so adding a city needs no hand-placement.
       with two different digits — 0750 316 5555 and 0750 361 5555. Neither is
       published; the note on the page says so.
 - [ ] **Opening hours.**
+- [ ] The authorised director's name was on the letterhead and has been
+      removed from the site at the client's request. Put it back only if asked.
 - [ ] **Higher-resolution photographs.** The seven in `assets/fleet/` came
       through WhatsApp at 1280 px and are soft at full-bleed sizes. Originals
       off the phone would be noticeably sharper.

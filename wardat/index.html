@@ -148,7 +148,8 @@ html[lang="ar"]{--veil-side:left}
 html[lang="ar"] h1,html[lang="ar"] h2,html[lang="ar"] h3,
 html[lang="ar"] .reveal,html[lang="ar"] .stat b,html[lang="ar"] .velotrack span,
 html[lang="ar"] .sheet a,html[lang="ar"] .brand b{font-family:var(--f-ar);letter-spacing:0}
-html[lang="ar"] h1.big{text-transform:none;letter-spacing:-.01em;line-height:1.06;font-weight:800}
+html[lang="ar"] h1.big{text-transform:none;letter-spacing:-.01em;line-height:1.28;font-weight:800;
+  font-size:clamp(38px,7.6vw,104px)}
 html[lang="ar"] .velotrack span{text-transform:none}
 html[lang="ar"] .mono,html[lang="ar"] .eyebrow,html[lang="ar"] .stat span,
 html[lang="ar"] .crow dt,html[lang="ar"] .fact dt,html[lang="ar"] .step .k,
@@ -160,6 +161,7 @@ html[lang="ar"] .shot figcaption span{
 html[lang="ar"] .lede,html[lang="ar"] .hlede,html[lang="ar"] p{line-height:1.9}
 /* the map, its labels and the two marquees stay left-to-right */
 html[lang="ar"] .mapinner,html[lang="ar"] .radial,html[lang="ar"] .velo{direction:ltr}
+html[lang="ar"] .shot figcaption{direction:rtl;text-align:right}
 html[lang="ar"] .eyebrow::before{order:-1}
 html[lang="ar"] .corr li i{font-size:10px}
 
@@ -416,22 +418,22 @@ h1.big .ln{display:block;overflow:hidden}
 h1.big .wd{display:inline-block;transform:translateY(112%) rotate(4deg);filter:blur(14px);opacity:0}
 body.lit h1.big .wd{
   transform:none;filter:blur(0);opacity:1;
-  transition:transform .58s var(--ease),filter .44s var(--ease),opacity .42s var(--ease);
-  transition-delay:calc(var(--i) * 80ms);
+  transition:transform .46s var(--ease),filter .34s var(--ease),opacity .32s var(--ease);
+  transition-delay:calc(var(--i) * 62ms);
 }
 h1.big .wd.thin{font-weight:300;color:#8FA0D0}
 h1.big em{font-style:normal;color:var(--blue-lift)}
 
 .harab{font-family:var(--f-ar);direction:rtl;font-weight:500;font-size:clamp(15px,1.9vw,23px);color:#C3CDE9;margin:0 0 22px;opacity:0;transform:translateY(14px)}
-body.lit2 .harab{opacity:1;transform:none;transition:all .5s var(--ease)}
+body.lit2 .harab{opacity:1;transform:none;transition:all .42s var(--ease)}
 .hlede{max-width:52ch;color:#A9B4D4;font-size:clamp(15px,1.25vw,17.5px);opacity:0;transform:translateY(14px)}
-body.lit2 .hlede{opacity:1;transform:none;transition:all .5s var(--ease) .06s}
+body.lit2 .hlede{opacity:1;transform:none;transition:all .42s var(--ease) .05s}
 
 /* stat column — no frames, hairline separators only */
 .stats{display:grid;gap:20px;min-width:216px}
 @media (max-width:1000px){.stats{grid-template-columns:repeat(2,1fr);min-width:0;gap:18px 26px}}
 .stat{padding-top:14px;border-top:1px solid rgba(160,180,255,.2);opacity:0;transform:translateY(16px)}
-body.lit2 .stat{opacity:1;transform:none;transition:all .5s var(--ease);transition-delay:calc(.12s + var(--i) * .05s)}
+body.lit2 .stat{opacity:1;transform:none;transition:all .42s var(--ease);transition-delay:calc(.1s + var(--i) * .04s)}
 .stat b{display:block;font:500 clamp(28px,3vw,42px)/1 var(--f-display);letter-spacing:-.03em;color:#fff;font-variant-numeric:tabular-nums}
 .stat b sup{font-size:.42em;vertical-align:super;color:var(--blue-lift);letter-spacing:0;margin-left:.15em}
 .stat span{display:block;margin-top:7px;font:400 10px/1.4 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:#7E8CB8}
@@ -457,7 +459,7 @@ body.lit2 .cue{opacity:1;transition:opacity .6s var(--ease) .4s}
 .facts{display:grid;gap:0}
 .fact{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line);
   opacity:0;transform:translateY(16px)}
-.fact.in{opacity:1;transform:none;transition:opacity .44s var(--ease) var(--d,0s),transform .44s var(--ease) var(--d,0s)}
+.fact.in{opacity:1;transform:none;transition:opacity .34s var(--ease) var(--d,0s),transform .34s var(--ease) var(--d,0s)}
 .fact:last-child{border-bottom:1px solid var(--line)}
 .fact dt{font:400 10px/1.6 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
 .fact dd{margin:0;font-size:14.5px;color:var(--t2)}
@@ -476,7 +478,7 @@ body.lit2 .cue{opacity:1;transition:opacity .6s var(--ease) .4s}
   transition:transform .6s var(--ease),box-shadow .6s var(--ease);
   opacity:0;transform:translateY(26px);
 }
-.cell.in{opacity:1;transform:none;transition:opacity .46s var(--ease) var(--d,0s),transform .46s var(--ease) var(--d,0s),box-shadow .6s var(--ease)}
+.cell.in{opacity:1;transform:none;transition:opacity .36s var(--ease) var(--d,0s),transform .36s var(--ease) var(--d,0s),box-shadow .6s var(--ease)}
 .cell:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 0 1px var(--line-2),0 30px 70px -30px rgba(0,0,0,.7)}
 .cell.wide{grid-column:span 3}
 .cell.tall{grid-column:span 3;min-height:320px}
@@ -505,8 +507,8 @@ body.lit2 .cue{opacity:1;transition:opacity .6s var(--ease) .4s}
   box-shadow:0 40px 120px -40px rgba(0,0,0,.75),inset 0 0 0 1px var(--line);
   background:var(--bg-2);
 }
-.tiltcard .strip{position:absolute;inset:0;display:flex;will-change:transform}
-.tiltcard .shot{flex:0 0 auto;height:100%;aspect-ratio:16/10;position:relative;margin:0;overflow:hidden;
+.tiltcard .strip{position:absolute;inset:0;display:flex;will-change:transform;direction:ltr}
+.tiltcard .shot{flex:0 0 88%;height:100%;position:relative;margin:0;overflow:hidden;
   border-right:1px solid rgba(255,255,255,.10);background:var(--bg-2)}
 .tiltcard .shot img{width:100%;height:100%;object-fit:cover}
 .tiltcard .shot figcaption{
@@ -554,7 +556,7 @@ body.lit2 .cue{opacity:1;transition:opacity .6s var(--ease) .4s}
   .mapbox{padding:clamp(10px,3vw,18px)}
   .radial{display:block}
   .tiltcard{aspect-ratio:4/5}
-  .tiltcard .shot{aspect-ratio:4/5}
+  .tiltcard .shot{flex:0 0 92%}
 }
 .corr{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0 26px;margin-top:34px;min-width:0}
 .corr li{list-style:none;display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid var(--line);
@@ -568,13 +570,14 @@ body.lit2 .cue{opacity:1;transition:opacity .6s var(--ease) .4s}
 .pgrid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(30px,5vw,80px);align-items:start}
 @media (max-width:900px){.pgrid{grid-template-columns:1fr;gap:34px}}
 .pstick{position:sticky;top:clamp(96px,14vh,140px)}
+@media (max-width:900px){.pstick{position:static}}
 .tl{position:relative;padding-inline-start:clamp(30px,4vw,52px)}
 .tl::before{content:"";position:absolute;inset-inline-start:6px;top:8px;bottom:8px;width:2px;background:var(--line);border-radius:2px}
 .tl .beamline{position:absolute;inset-inline-start:6px;top:8px;width:2px;height:0;border-radius:2px;
   background:linear-gradient(to bottom,var(--accent),color-mix(in srgb,var(--accent) 20%,transparent));
   box-shadow:0 0 14px 1px color-mix(in srgb,var(--accent) 60%,transparent)}
 .step{position:relative;padding:0 0 clamp(34px,5vw,58px);opacity:0;transform:translateY(20px)}
-.step.in{opacity:1;transform:none;transition:all .48s var(--ease) var(--d,0s)}
+.step.in{opacity:1;transform:none;transition:all .36s var(--ease) var(--d,0s)}
 .step:last-child{padding-bottom:0}
 .step::before{content:"";position:absolute;inset-inline-start:calc(-1 * clamp(30px,4vw,52px) + 1px);top:7px;width:12px;height:12px;border-radius:50%;
   background:var(--bg);box-shadow:inset 0 0 0 2px var(--line-2);transition:box-shadow .5s var(--ease),background .5s var(--ease)}
@@ -703,8 +706,8 @@ footer{border-top:1px solid var(--line);padding:34px 0}
 /* reveal-on-scroll utility */
 .up{opacity:0;transform:translateY(24px)}
 .creveal{opacity:0;transform:translateY(22px)}
-.creveal.in{opacity:1;transform:none;transition:opacity .46s var(--ease) var(--d,0s),transform .46s var(--ease) var(--d,0s)}
-.up.in{opacity:1;transform:none;transition:opacity .5s var(--ease) var(--d,0s),transform .5s var(--ease) var(--d,0s)}
+.creveal.in{opacity:1;transform:none;transition:opacity .36s var(--ease) var(--d,0s),transform .36s var(--ease) var(--d,0s)}
+.up.in{opacity:1;transform:none;transition:opacity .4s var(--ease) var(--d,0s),transform .4s var(--ease) var(--d,0s)}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -1034,7 +1037,6 @@ footer{border-top:1px solid var(--line);padding:34px 0}
             <small data-t="ctc.third">A third number is printed twice on the letterhead with two different digits —
               0750 316 5555 and 0750 361 5555. Confirm which is right and it goes in.</small></dd></div>
           <div class="crow"><dt data-t="ctc.web">Web</dt><dd><a href="https://wardat-alzohour.com" dir="ltr">wardat-alzohour.com</a></dd></div>
-          <div class="crow"><dt data-t="ctc.director">Director</dt><dd data-t="ctc.dir">Saber Rasheed Abdullah<small class="ar">المدير المفوض — صابر رشيد عبد الله</small></dd></div>
           <div class="crow"><dt data-t="ctc.email">Email</dt><dd><span class="tbc" data-t="tbc">TO BE CONFIRMED</span></dd></div>
           <div class="crow"><dt data-t="ctc.hours">Hours</dt><dd><span class="tbc" data-t="tbc">TO BE CONFIRMED</span></dd></div>
         </dl>
@@ -1137,12 +1139,12 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   PLAY.top = function () {
     document.body.classList.add("lit");
     var rest = function () { document.body.classList.add("lit2"); counters(); };
-    if (reduce) rest(); else setTimeout(rest, 640);
+    if (reduce) rest(); else setTimeout(rest, 500);
   };
 
   PLAY.services = function () {
     $$("#services .cell").forEach(function (c, i) {
-      c.style.setProperty("--d", (i * 0.04) + "s");
+      c.style.setProperty("--d", (i * 0.028) + "s");
       c.classList.add("in");
     });
   };
@@ -1244,12 +1246,12 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     };
     PLAY.about = function () {
       aboutPlayed = true;
-      ramp(520, function (k) {
+      ramp(380, function (k) {
         var n = Math.round(k * words.length);
         words.forEach(function (w, i) { w.classList.toggle("on", i < n); });
       });
       $$("#about .fact").forEach(function (f, i) {
-        f.style.setProperty("--d", (0.1 + i * 0.05) + "s");
+        f.style.setProperty("--d", (0.06 + i * 0.035) + "s");
         f.classList.add("in");
       });
     };
@@ -1261,7 +1263,7 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   var tw = $("#tiltwrap"), tc = $("#tiltcard"), strip = $("#strip"), thead = $("#tilthead");
   if (tw && tc && strip) {
     var tState = 0, flat = 0;
-    PLAY.fleet = function () { ramp(540, function (k) { flat = k; }); };
+    PLAY.fleet = function () { ramp(400, function (k) { flat = k; }); };
     var tTick = function () {
       var r = tw.getBoundingClientRect();
       var p = clamp(-r.top / (r.height - innerHeight), 0, 1);
@@ -1385,16 +1387,16 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
       }
       nodeEls[HUB.name].classList.add("on");
       NODES.forEach(function (nd, i) {
-        setTimeout(function () { nodeEls[nd.name].classList.add("on"); }, 50 + i * 42);
+        setTimeout(function () { nodeEls[nd.name].classList.add("on"); }, 30 + i * 26);
       });
       arcs.forEach(function (a, i) {
         setTimeout(function () {
           var L = 0; try { L = a.getTotalLength(); } catch (e) {}
           if (!L) { a.style.strokeDasharray = "none"; a.style.strokeDashoffset = "0"; return; }
           a.style.strokeDasharray = L; a.style.strokeDashoffset = L;
-          a.style.transition = "stroke-dashoffset .38s cubic-bezier(.22,1,.36,1)";
+          a.style.transition = "stroke-dashoffset .3s cubic-bezier(.22,1,.36,1)";
           requestAnimationFrame(function () { a.style.strokeDashoffset = "0"; });
-        }, 110 + i * 55);
+        }, 70 + i * 34);
       });
     }
     PLAY.reach = function () { paint(); play(); };
@@ -1418,9 +1420,9 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     var done = false;
     PLAY.process = function () {
       var h = tl.getBoundingClientRect().height - 16;
-      ramp(560, function (k) { beam.style.height = (k * h) + "px"; }, function () { done = true; });
+      ramp(400, function (k) { beam.style.height = (k * h) + "px"; }, function () { done = true; });
       $$(".step", tl).forEach(function (st, i) {
-        st.style.setProperty("--d", (i * 0.055) + "s");
+        st.style.setProperty("--d", (i * 0.038) + "s");
         st.classList.add("in");
       });
     };
@@ -1473,7 +1475,12 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   /* ---------- film panel copy ------------------------------ */
   (function () {
     var pin = $("#filmpin"); if (!pin) return;
+    // No hold on the film panel — the copy reveals on its own as you reach it.
     PLAY.film = function () { pin.classList.add("on"); };
+    if (reduce) { pin.classList.add("on"); return; }
+    new IntersectionObserver(function (es, o) {
+      es.forEach(function (e) { if (e.intersectionRatio > 0.35) { pin.classList.add("on"); o.disconnect(); } });
+    }, { threshold: [0, 0.35, 0.7] }).observe(pin);
   })();
 
   /* ---------- mobile menu ---------------------------------- */
@@ -1570,7 +1577,7 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     PLAY.reach = function () {
       if (reachMap) reachMap();
       groups.forEach(function (g, i) {
-        setTimeout(function () { g.classList.add("on"); }, reduce ? 0 : 40 + i * 40);
+        setTimeout(function () { g.classList.add("on"); }, reduce ? 0 : 25 + i * 26);
       });
     };
   })();
@@ -1590,14 +1597,13 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
         page back up to 300px, over and over, panel after panel. */
   (function () {
     var SEQ = [
-      { id: "top",      ms: 1250 },
-      { id: "about",    ms:  600 },
-      { id: "services", ms:  560 },
-      { id: "fleet",    ms:  560 },
-      { id: "reach",    ms:  700 },
-      { id: "process",  ms:  620 },
-      { id: "film",     ms:  520 },
-      { id: "contact",  ms:  520 }
+      { id: "top",      ms: 1150 },
+      { id: "about",    ms:  420 },
+      { id: "services", ms:  420 },
+      { id: "fleet",    ms:  400 },
+      { id: "reach",    ms:  480 },
+      { id: "process",  ms:  440 },
+      { id: "contact",  ms:  380 }
     ].map(function (p) { p.el = document.getElementById(p.id); return p; })
      .filter(function (p) { return p.el; });
 
@@ -1786,11 +1792,11 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     "ctc.cta":"اتصل بالمكتب",
     "ctc.note":"يتّصل بالرقم ٠٧٧٠ ٣٠٣ ٠٠٣٠، وهو الرقم المطبوع مرّتين على ترويسة الشركة. أرسل بريداً إلكترونياً أو أكّد رقم واتساب، وسنضيف قناة استفسار مكتوبة إلى جانبه.",
     "ctc.company":"الشركة","ctc.registered":"المقرّ المسجّل","ctc.branch":"الفرع","ctc.phone":"الهاتف",
-    "ctc.web":"الموقع","ctc.director":"المدير المفوّض","ctc.email":"البريد الإلكتروني","ctc.hours":"أوقات العمل",
+    "ctc.web":"الموقع",
+    "ctc.email":"البريد الإلكتروني","ctc.hours":"أوقات العمل",
     "ctc.street":"العنوان التفصيلي",
     "ctc.addr":"بغداد — حي القادسية، م/٦٠٢، س/١١، ع/٣/١٤٨",
     "ctc.br":"الموصل، محافظة نينوى",
-    "ctc.dir":"صابر رشيد عبد الله",
     "ctc.third":"رقم ثالث مطبوع مرّتين على الترويسة برقمين مختلفين — ٠٧٥٠ ٣١٦ ٥٥٥٥ و ٠٧٥٠ ٣٦١ ٥٥٥٥. أكّد الصحيح منهما وسنضيفه.",
     "tbc":"قيد التأكيد",
     "foot.rights":"© <span id=\"yr\"></span> شركة وردة الزهور المحدودة. جميع الحقوق محفوظة.",

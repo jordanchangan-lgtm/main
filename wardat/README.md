@@ -128,12 +128,21 @@ and keyboard are still cancelled directly, because iOS ignores the overflow.
 hiding the overflow reclaims the scrollbar's width and the whole page jumps
 sideways at the start of every hold.
 
-**A hold never scrolls backwards.** The first version nudged the page to the
-panel top from anywhere in a ±300 px window, which meant a fast scroll got
-yanked *back up* — panel after panel, which is what "it keeps going up and
-down" was. The nudge is now clamped with `Math.max(top, scrollY)`: if the
-panel top is already above the viewport top, the page simply freezes where it
-is and the entrance plays there.
+**A hold does not move the page at all.** Not forwards, not backwards, not by
+a pixel. The first version scrolled the page onto the panel top; clamping that
+forward was not enough, because *any* repositioning reads as the page being
+taken away. It now freezes exactly where the reader is and plays the entrance
+there, with a single one-frame correction in case the freeze itself shifted
+the offset. Verified by sampling `scrollY` every frame through every hold: it
+never changes.
+
+**Freeze both axes.** `overflow-y: hidden` alone coerces `overflow-x` from
+`visible` to `auto`, which can introduce a horizontal scrollbar, shorten the
+viewport and reflow every `100lvh` panel — seen as the page lurching upward at
+the moment of the hold. `overflow: hidden` sets both and avoids the coercion.
+
+Holds are 520–700 ms, and the hero 1.25 s. Every entrance is tuned to finish
+inside its hold.
 
 Panel entrances are
 registered on a `PLAY` map — `PLAY.reach`, `PLAY.process`, and so on — and the

@@ -111,14 +111,31 @@ that keep a hold from reading as a frozen page:
 - Holds are 0.9–1.25 s. Nothing longer.
 - Scrolling **up** never locks; blowing **past** a panel plays its entrance
   without yanking you backwards.
-- A hairline bar across the top fills over the hold, so the pause is legible.
 - **Escape** releases immediately, and `prefers-reduced-motion` skips the whole
   mechanism — nothing locks, everything is revealed at rest.
 - No `resize` handler releases a hold: phones fire resize when the address bar
   retracts, and that was cutting the hero hold short.
 
-Wheel, touch and keyboard scrolling are all cancelled during a hold, and a
-`scroll` listener re-pins if momentum gets through. Panel entrances are
+**Two rules stop it feeling laggy, and both were learned the hard way:**
+
+**Freeze the page, do not fight the wheel.** The first version cancelled
+`wheel` events and re-pinned the scroll position on every `scroll` event.
+Cancelling `wheel` does not stop trackpad momentum already in flight, so the
+hold was spent snapping the page back against it — visible judder. It now sets
+`overflow-y: hidden` on `<html>`, which the momentum cannot argue with. Touch
+and keyboard are still cancelled directly, because iOS ignores the overflow.
+`scrollbar-gutter: stable` on `<html>` is load-bearing here: without it,
+hiding the overflow reclaims the scrollbar's width and the whole page jumps
+sideways at the start of every hold.
+
+**A hold never scrolls backwards.** The first version nudged the page to the
+panel top from anywhere in a ±300 px window, which meant a fast scroll got
+yanked *back up* — panel after panel, which is what "it keeps going up and
+down" was. The nudge is now clamped with `Math.max(top, scrollY)`: if the
+panel top is already above the viewport top, the page simply freezes where it
+is and the entrance plays there.
+
+Panel entrances are
 registered on a `PLAY` map — `PLAY.reach`, `PLAY.process`, and so on — and the
 controller at the bottom of the script calls them. Adding a panel means adding
 a `PLAY` entry and one row in `SEQ`.

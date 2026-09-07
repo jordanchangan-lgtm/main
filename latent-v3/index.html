@@ -1500,6 +1500,19 @@ a.stk-l{cursor:pointer}
   .wv-l{will-change:auto}
   .sc{transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
 }
+/* phones: the tenets do not slide; the live one swaps in place under the card */
+@media(max-width:899px){
+  .tn{grid-template-rows:auto auto;align-content:center;gap:22px;padding-top:56px}
+  .tn-col{transform:none!important;position:relative}
+  .tn-item{position:absolute;top:0;left:0;right:0;padding:0;opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+  .tn-item:first-child{position:relative}
+  .tn-item.on{opacity:1;transform:none}
+  .tn-side{align-items:flex-start;gap:8px}
+  .tn-card{width:min(44vw, calc(30vh * 1611 / 2000))}
+  .tn-cap{width:auto;gap:16px;white-space:nowrap}
+  .tn-word{font-size:11.5vw}
+  .tn-p{font-size:12.5px;line-height:1.5;max-width:none}
+}
 
 .js-steps .ixl-prev figcaption{display:none}
 /* the sectors line, stacked like the method's */

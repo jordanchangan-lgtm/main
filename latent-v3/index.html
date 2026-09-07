@@ -1514,6 +1514,23 @@ a.stk-l{cursor:pointer}
   .tn-p{font-size:12.5px;line-height:1.5;max-width:none}
 }
 
+/* phones: the latent-space ground is one flat painting, no blurred layers */
+@media(max-width:899px){
+  .lb,.lb4{display:none}
+  .lat-bg{background:
+    radial-gradient(90% 70% at 18% 12%, #FBFAF6 0%, rgba(251,250,246,0) 62%),
+    radial-gradient(70% 60% at 92% 28%, rgba(212,99,63,.13) 0%, rgba(212,99,63,0) 70%),
+    radial-gradient(70% 60% at 30% 100%, rgba(154,164,182,.16) 0%, rgba(154,164,182,0) 70%),
+    var(--ivory)}
+  .st-stage[data-tn="right"] .lat-bg{background:
+    radial-gradient(90% 70% at 18% 12%, #FBFAF6 0%, rgba(251,250,246,0) 62%),
+    radial-gradient(70% 60% at 92% 28%, rgba(154,164,182,.2) 0%, rgba(154,164,182,0) 70%),
+    var(--ivory)}
+  .lat-grain{display:none}
+  .lat-vig{display:none}
+  .lat-dots{-webkit-mask-image:none;mask-image:none;opacity:.55}
+}
+
 .js-steps .ixl-prev figcaption{display:none}
 /* the sectors line, stacked like the method's */
 .sec-stk{margin:0 auto;width:100%}
@@ -2670,14 +2687,14 @@ a.stk-l{cursor:pointer}
   var grounds = [].slice.call(document.querySelectorAll(".sec, .pl, .hero"));
   var foot = document.querySelector(".js-foot"), contactSec = document.getElementById("contact");
   /* the foot steps aside once the contact stage carries its own small print */
-  function inContact(){ return contactSec && contactSec.getBoundingClientRect().top < window.innerHeight * .5; }
+  function inContact(){ if(!contactSec) return false; var g = geo.grounds.filter(function(x){ return x.el === contactSec; })[0]; return g ? g.top - window.scrollY < window.innerHeight * .5 : false; }
   function barTick(){
     if(!bar || !hero) return;
-    bar.classList.toggle("on", hero.getBoundingClientRect().bottom < 40);
-    var y = 28, ink = false;
-    for(var i = 0; i < grounds.length; i++){
-      var r = grounds[i].getBoundingClientRect();
-      if(r.top <= y && r.bottom > y){ ink = grounds[i].classList.contains("light"); break; }
+    var sy = window.scrollY;
+    bar.classList.toggle("on", geo.heroEnd - sy < 40);
+    var y = sy + 28, ink = false, gg = geo.grounds;
+    for(var i = 0; i < gg.length; i++){
+      if(gg[i].top <= y && gg[i].bottom > y){ ink = gg[i].light; break; }
     }
     bar.classList.toggle("ink", ink);
     if(foot){ foot.classList.toggle("on", bar.classList.contains("on") && !inContact()); foot.classList.toggle("ink", ink); }
@@ -2723,8 +2740,8 @@ a.stk-l{cursor:pointer}
   var SC_NAMES = { a:"01 · Studio", b:"02 · What we make", c:"03 · Minimalism", d:"04 · Simplicity" };
   function scenes(){
     if(!scHold) return;
-    var vh = window.innerHeight, run = Math.max(1, scHold.offsetHeight - vh);
-    var p = clamp01(-scHold.getBoundingClientRect().top / run);
+    var vh = window.innerHeight, run = Math.max(1, geo.scRun);
+    var p = clamp01((window.scrollY - geo.sc) / run);
     var cur = p < .30 ? "a" : p < .58 ? "b" : p < .80 ? "c" : "d";
     if(window.innerWidth >= 900) scStage.style.setProperty("--z", (1 + p * .9).toFixed(3));
     wvP = clamp01((p - .30) / .28);
@@ -2875,8 +2892,8 @@ a.stk-l{cursor:pointer}
   }
   function wkTick(){
     if(!wkHold) return;
-    var vh = window.innerHeight, run = Math.max(1, wkHold.offsetHeight - vh), N = wkSets.length;
-    var p = clamp01(-wkHold.getBoundingClientRect().top / run);
+    var vh = window.innerHeight, run = Math.max(1, geo.wkRun), N = wkSets.length;
+    var p = clamp01((window.scrollY - geo.wk) / run);
     var q = (p - .06) / .94, idx = q < 0 ? -1 : Math.min(N - 1, Math.floor(q * N)), seg = idx < 0 ? 0 : q * N - idx;
     if(wkCue) wkCue.style.setProperty("--p", p.toFixed(3));
     if(wkMedia) wkMedia.style.setProperty("--sy", ((.5 - seg) * 28).toFixed(1));
@@ -2933,11 +2950,29 @@ a.stk-l{cursor:pointer}
         g.items.forEach(function(el){ if(!el.classList.contains("in") && el.getBoundingClientRect().top < vh * .94) el.classList.add("in"); });
         return;
       }
-      var run = Math.max(1, g.hold.offsetHeight - vh), p = clamp01(-g.hold.getBoundingClientRect().top / run), n = g.items.length;
+      var run = Math.max(1, g.run || 1), p = clamp01((window.scrollY - g.top) / run), n = g.items.length;
       g.items.forEach(function(el, k){ el.classList.toggle("in", p >= .05 + .6 * (n > 1 ? k / (n - 1) : 0)); });
     });
   }
   if(lks.length){ lkMeasure(); window.addEventListener("resize", lkMeasure, { passive:true }); if(document.fonts && document.fonts.ready) document.fonts.ready.then(lkMeasure); }
+
+  /* ---- page geometry, measured once: the scroll loop never asks layout
+     for a rectangle, it compares scrollY with these ---- */
+  var geo = { sc:0, scRun:1, wk:0, wkRun:1, heroEnd:0, grounds:[] };
+  function docTop(el){ return el.getBoundingClientRect().top + window.scrollY; }
+  function measureGeo(){
+    var vh = window.innerHeight;
+    if(scHold){ geo.sc = docTop(scHold); geo.scRun = scHold.offsetHeight - vh; }
+    if(wkHold){ geo.wk = docTop(wkHold); geo.wkRun = wkHold.offsetHeight - vh; }
+    lks.forEach(function(g){ g.top = docTop(g.hold); g.run = g.hold.offsetHeight - vh; });
+    if(hero){ var hh = hero.closest(".js-lk") || hero; geo.heroEnd = docTop(hh) + hh.offsetHeight; }
+    geo.grounds = grounds.map(function(el){ var h = el.closest(".js-lk") || el; var t = docTop(h); return { el:el, top:t, bottom:t + h.offsetHeight, light:el.classList.contains("light") }; });
+  }
+  measureGeo();
+  window.addEventListener("resize", function(){ requestAnimationFrame(measureGeo); }, { passive:true });
+  window.addEventListener("load", measureGeo);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ requestAnimationFrame(measureGeo); });
+  setTimeout(measureGeo, 1500); setTimeout(measureGeo, 4000);
 
   function paint(){
     ticking = false;

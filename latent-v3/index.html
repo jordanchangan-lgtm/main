@@ -1481,6 +1481,26 @@ a.stk-l{cursor:pointer}
 .sc-b.gone,.sc-c.gone{transform:none}
 .tn{will-change:transform}
 
+/* ---------- phones: the same picture, a fraction of the paint ----------
+   The latent-space ground is drawn with static, lightly blurred light
+   instead of animated 70px blurs; the dot field no longer scales on
+   scroll; ghosted text fades instead of blurring; the film noise stops
+   blending. ---------- */
+@media(max-width:899px){
+  .lb{filter:blur(28px);animation:none;will-change:auto;opacity:.8}
+  .lb1{width:120vmax;height:120vmax;left:-40vmax;top:-50vmax}
+  .lb2,.lb4{width:90vmax;height:90vmax;right:-40vmax;top:-10vmax}
+  .lb3{width:80vmax;height:80vmax;left:0;bottom:-40vmax}
+  .lat-dots{top:0;left:0;right:0;bottom:0;transform:none!important;-webkit-mask-image:radial-gradient(70% 60% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(70% 60% at 50% 50%,#000 30%,transparent 100%);background-size:24px 24px}
+  .lat-grain{opacity:.045}
+  .tn-item{filter:none}
+  .wk-stk.in .stk-l{filter:none}
+  .sec-stk.in .stk-l,.c-mid.in .stk-l{filter:none}
+  .pv-noise{mix-blend-mode:normal;opacity:.035}
+  .wv-l{will-change:auto}
+  .sc{transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+}
+
 .js-steps .ixl-prev figcaption{display:none}
 /* the sectors line, stacked like the method's */
 .sec-stk{margin:0 auto;width:100%}
@@ -2639,8 +2659,10 @@ a.stk-l{cursor:pointer}
     /* belt and braces for observers that never fire: anything within the
        first screen is shown */
     var vh = window.innerHeight;
-    wipes.forEach(function(el){ if(!el.classList.contains("in") && el.getBoundingClientRect().top < vh * .82) el.classList.add("in"); });
-    rv.forEach(function(el){ if(!el.classList.contains("in") && el.getBoundingClientRect().top < vh * .94) el.classList.add("in"); });
+    if((barTick.n = (barTick.n || 0) + 1) % 3 === 0){
+      wipes = wipes.filter(function(el){ if(el.classList.contains("in")) return false; if(el.getBoundingClientRect().top < vh * .82){ el.classList.add("in"); return false; } return true; });
+      rv = rv.filter(function(el){ if(el.classList.contains("in")) return false; if(el.getBoundingClientRect().top < vh * .94){ el.classList.add("in"); return false; } return true; });
+    }
 
   }
 
@@ -2679,7 +2701,7 @@ a.stk-l{cursor:pointer}
     var vh = window.innerHeight, run = Math.max(1, scHold.offsetHeight - vh);
     var p = clamp01(-scHold.getBoundingClientRect().top / run);
     var cur = p < .30 ? "a" : p < .58 ? "b" : p < .80 ? "c" : "d";
-    scStage.style.setProperty("--z", (1 + p * .9).toFixed(3));
+    if(window.innerWidth >= 900) scStage.style.setProperty("--z", (1 + p * .9).toFixed(3));
     wvP = clamp01((p - .30) / .28);
     /* no cut between the block and the tenets: the lines keep rising with
        the scroll until they leave the top, and the tenets ride in from
@@ -2692,7 +2714,7 @@ a.stk-l{cursor:pointer}
       if(el.dataset.s === "b"){ el.classList.toggle("on", p >= .30 && p < .86); el.classList.remove("gone"); }
       if(el.dataset.s === "c"){ el.classList.toggle("on", p >= .50); el.classList.remove("gone"); }
     });
-    scStage.style.setProperty("--py", Math.round(p * 90));
+    if(window.innerWidth >= 900) scStage.style.setProperty("--py", Math.round(p * 90));
     if(scCueBar) scCueBar.style.setProperty("--p", p.toFixed(3));
     if(cur === scAt) return;
     scAt = cur; scStage.dataset.scene = cur;

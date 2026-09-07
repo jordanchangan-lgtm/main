@@ -281,7 +281,11 @@ page("mock-poster", "photo-full", img("poster-face.jpg", "center", "bleed"), chr
 page("mock-booklet", "photo-full", img("booklet-chair.jpg", "center", "bleed"), chrome=False)
 # 30 card on stone  (ref p32: tray card)
 page("mock-card", "photo-full", img("card-stone.jpg", "center", "bleed"), chrome=False)
-# 31 wordmark over two-panel photo  (ref p33)
+# 31 pylon sign board
+page("mock-pylon", "photo-full", img("pylon-ink.jpg", "center", "bleed"), chrome=False)
+# 32 business cards
+page("mock-cards", "photo-full", img("cards-ink.jpg", "center", "bleed"), chrome=False)
+# 33 wordmark over two-panel photo  (ref p33)
 page("mock-twopanel", "photo-full twopanel", f'''
   <div class="pane">{img("story-face.jpg", "center 20%")}</div>
   <div class="pane">{img("hands-pressed.jpg", "center")}</div>

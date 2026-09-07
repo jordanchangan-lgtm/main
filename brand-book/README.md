@@ -12,7 +12,7 @@ one hard light, an empty studio with no camera, film grain, ivory paper, one rus
 
 | Path | What |
 |---|---|
-| `latent-brand-book.pdf` | 33-page vector PDF, 1920 × 1080 px per page (16:9). Text stays selectable. |
+| `latent-brand-book.pdf` | 35-page vector PDF, 1920 × 1080 px per page (16:9). Text stays selectable. |
 | `pages/NN-name.png` | One PNG per page at 2× (3840 × 2160). |
 | `brand-book-overview.jpg` | Contact sheet of every page. |
 | `logo/` | Vector wordmark and symbol as SVG in the three colours (outlines, no font dependency). |
@@ -53,9 +53,11 @@ one hard light, an empty studio with no camera, film grain, ivory paper, one rus
 | 28 | Poster with wordmark over a face | `28-mock-poster` |
 | 29 | Booklet held in a chair | `29-mock-booklet` |
 | 32 | Card on a tray → card on black stone | `30-mock-card` |
-| 33 | Wordmark over a two-panel photo | `31-mock-twopanel` |
-| 34 | Tape with the repeated wordmark | `32-mock-tape` |
-| 35 | Thank you | `33-thanks` |
+| — | Pylon sign board (added) | `31-mock-pylon` |
+| — | Business cards (added) | `32-mock-cards` |
+| 33 | Wordmark over a two-panel photo | `33-mock-twopanel` |
+| 34 | Tape with the repeated wordmark | `34-mock-tape` |
+| 35 | Thank you | `35-thanks` |
 
 ## Rebuild
 

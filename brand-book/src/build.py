@@ -1,759 +1,531 @@
 #!/usr/bin/env python3
 """Builds the Latent Studio brand book.
 
-Writes ../book.html (all pages, 1920x1080 landscape), then renders:
-  ../pages/NN-name.png   one PNG per page at 2x (3840x2160)
-  ../latent-brand-book.pdf  vector PDF, one page per spread
+Panel system reverse-engineered frame by frame from the three @studio.sevd reels
+(Feelgood Lab, Bastu, Seido): every page carries the brand label top-left, a small
+"( 01 )" numeral above a centred section title, the book label top-right and a
+centred page number. Content pages follow their archetypes (cover, contents,
+chapter opener, split, vision, moodboard, main logo, anatomy, icon, lockups,
+logo-on-photo, palette grids, typeface, type annotations, then the mockup run).
 
-Run: python3 build.py            (build + render)
-     python3 build.py --html     (build only)
+Writes ../book.html, then renders ../pages/NN-name.png (2x) and ../latent-brand-book.pdf.
+Run: python3 build.py          (build + render)
+     python3 build.py --html   (build only)
 """
 import os, subprocess, sys, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, "src")
 PAGES_DIR = os.path.join(ROOT, "pages")
 CHROME = "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell"
 
-INK, IVORY, MARROW = "#14141A", "#F2EFE7", "#BB4A2E"
-
-# --------------------------------------------------------------------------
-# homography helper: maps a flat rectangle onto four image points (CSS matrix3d)
-# --------------------------------------------------------------------------
-def solve(A, b):
-    n = len(A)
-    M = [row[:] + [b[i]] for i, row in enumerate(A)]
-    for c in range(n):
-        p = max(range(c, n), key=lambda r: abs(M[r][c]))
-        M[c], M[p] = M[p], M[c]
-        for r in range(n):
-            if r != c and M[r][c]:
-                f = M[r][c] / M[c][c]
-                M[r] = [x - f * y for x, y in zip(M[r], M[c])]
-    return [M[i][n] / M[i][i] for i in range(n)]
-
-def matrix3d(w, h, dst):
-    src = [(0, 0), (w, 0), (w, h), (0, h)]
-    A, b = [], []
-    for (x, y), (X, Y) in zip(src, dst):
-        A.append([x, y, 1, 0, 0, 0, -X * x, -X * y]); b.append(X)
-        A.append([0, 0, 0, x, y, 1, -Y * x, -Y * y]); b.append(Y)
-    a, b_, c, d, e, f, g, h_ = solve(A, b)
-    # CSS matrix3d is column-major 4x4
-    m = [a, d, 0, g,  b_, e, 0, h_,  0, 0, 1, 0,  c, f, 0, 1]
-    return "matrix3d(" + ",".join(f"{v:.6f}" for v in m) + ")"
-
-# --------------------------------------------------------------------------
-# page primitives
-# --------------------------------------------------------------------------
 pages = []
 
-def page(name, cls, body, section="", number=True, labels=("LATENT STUDIO", "BRAND BOOK · 2026")):
+def page(name, cls, body, title=None, num=None, brand="LATENT STUDIO", book="BRAND BOOK", chrome=True):
+    """title: centred section title. num: small '( 01 )' above it (None = small-caps sub-title)."""
     n = len(pages) + 1
-    lab = ""
-    if labels:
-        lab = f'<div class="lab tl">{labels[0]}</div><div class="lab tr">{labels[1]}</div>'
-    foot = ""
-    if number:
-        foot = f'<div class="foot bl">{H.escape(section)}</div><div class="foot br">— {n:02d}</div>'
-    pages.append((name, f'<section class="page {cls}" id="p{n}">{lab}{body}{foot}<div class="grain"></div></section>'))
+    head = ""
+    if chrome:
+        t = ""
+        if title:
+            if num:
+                t = f'<div class="ttl"><div class="tn">( {num} )</div><div class="tt">{title}</div></div>'
+            else:
+                t = f'<div class="ttl"><div class="ts">{title}</div></div>'
+        head = f'<div class="lab tl">{brand}</div>{t}<div class="lab tr">{book}</div>'
+    pn = f'<div class="pn">{n:02d}</div>'
+    pages.append((name, f'<section class="page {cls}" id="p{n}">{head}{body}{pn}<div class="grain"></div></section>'))
 
-def bleed(src, pos="center", extra=""):
-    return f'<img class="bleed" src="images/{src}" style="object-position:{pos};{extra}">'
+def img(src, pos="center", cls="", style=""):
+    return f'<img class="{cls}" src="images/{src}" style="object-position:{pos};{style}">'
 
-# --------------------------------------------------------------------------
-# CONTENT
-# --------------------------------------------------------------------------
+WM_INK = '<img class="wm" src="logo/latent-wordmark-ink.svg" alt="latənt">'
+WM_IVORY = '<img class="wm" src="logo/latent-wordmark-ivory.svg" alt="latənt">'
+WM_MARROW = '<img class="wm" src="logo/latent-wordmark-marrow.svg" alt="latənt">'
+SY_INK = '<img class="sy" src="logo/latent-symbol-ink.svg" alt="ə">'
+SY_IVORY = '<img class="sy" src="logo/latent-symbol-ivory.svg" alt="ə">'
+SY_MARROW = '<img class="sy" src="logo/latent-symbol-marrow.svg" alt="ə">'
 
-# 01 cover
-page("cover", "ink", f'''
-  <div class="cover-mark">ə</div>
-  <div class="cover-word"><img src="logo/latent-wordmark-ivory.svg" alt="latənt"></div>
-  <div class="cover-sub">brand book<br><span class="dim">identity system · edition one · amman → worldwide</span></div>
-''', number=False, labels=("LATENT STUDIO", "BRAND BOOK · 2026"))
+# ------------------------------------------------------------------ 01 cover
+page("cover", "ink cover", f'''
+  <h1 class="cover-h">brand book</h1>
+  {img("perfume-honey.jpg", "center 45%", "cover-photo")}
+  <p class="cover-p">the latənt brand book defines the foundation of the studio. it ensures every element — from the mark to colour to typography — works together as one cohesive system across every touchpoint.</p>
+''')
 
-# 02 definition
-page("definition", "ivory photo", bleed("ivory-paper.jpg") + '''
-  <div class="center-block">
-    <div class="eyebrow">/ˈleɪ.tənt/ · adjective</div>
-    <h1 class="display xl">latənt</h1>
-    <p class="lede">existing but not yet visible; present as potential.</p>
-    <p class="body center">every brand already contains its best image. it just hasn't been rendered yet.<br>we render it.</p>
+# ------------------------------------------------------------------ 02 contents
+page("contents", "ivory", f'''
+  {img("rooftop.jpg", "center 55%", "strip")}
+  <ol class="toc">
+    <li><span>about</span><i></i><b>03</b></li>
+    <li><span>logo</span><i></i><b>08</b></li>
+    <li><span>colour</span><i></i><b>16</b></li>
+    <li><span>typography</span><i></i><b>21</b></li>
+    <li><span>mockups</span><i></i><b>27</b></li>
+  </ol>
+''', "contents", "01")
+
+# ------------------------------------------------------------------ 03 the studio (opener)
+page("about-open", "ink", img("ink-vessel.jpg", "center 60%", "strip low"), "the studio", "02")
+
+# ------------------------------------------------------------------ 04 about (split)
+page("about", "ink split", f'''
+  <div class="half photo">{img("hands-cup.jpg", "center")}</div>
+  <div class="half text">
+    <p>latent studio is an ai-native visual studio based in amman, working with brands anywhere. we produce campaign-grade brand imagery — the kind that used to require a photographer, a stylist, a location, a retoucher and six weeks — and we produce it in days.</p>
+    <p>we sell ongoing visual production, on retainer. not one-off files: a permanent creative department that sits outside your payroll.</p>
+    <p>we are not a filter, a prompt service or a cheap alternative to a photographer. we are the studio you hire when the image has to carry the brand.</p>
   </div>
-''', "the word")
+''', "about", "03")
 
-# 03 contents
-page("contents", "ivory", '''
-  <div class="split">
-    <div><h1 class="display l">contents</h1></div>
-    <ol class="toc">
-      <li><span class="n">01 —</span> the studio</li>
-      <li><span class="n">02 —</span> the principles</li>
-      <li><span class="n">03 —</span> the mark</li>
-      <li><span class="n">04 —</span> colour</li>
-      <li><span class="n">05 —</span> typography</li>
-      <li><span class="n">06 —</span> the image system</li>
-      <li><span class="n">07 —</span> applications</li>
-      <li><span class="n">08 —</span> voice</li>
-      <li><span class="n">09 —</span> the grid</li>
-    </ol>
+# ------------------------------------------------------------------ 05 vision
+page("vision", "ivory vision", f'''
+  {img("portrait.jpg", "20% 20%", "tiny")}
+  <p class="vision-p">every brand already contains its best image. it just hasn't been rendered yet. we render it.<br><br>ai is the tool. taste is the craft. we say "ai" out loud, we never apologise for it, and we never hide it.</p>
+''', "vision", "04")
+
+# ------------------------------------------------------------------ 06 the mood (4 columns)
+page("mood", "ivory mood", f'''
+  <div class="mood4">
+    <figure><span>( 01 )</span>{img("curtain.jpg", "center")}</figure>
+    <figure><span>( 02 )</span>{img("water.jpg", "center")}</figure>
+    <figure><span>( 03 )</span>{img("arch.jpg", "center")}</figure>
+    <figure><span>( 04 )</span>{img("portrait-m.jpg", "20% center")}</figure>
   </div>
-''', "contents")
+''', "the mood", "05")
 
-# 04 section: the studio
-page("studio-open", "ink", '''
-  <div class="sec-num">01 —</div>
-  <h1 class="display xl bottom">the studio</h1>
-''', "01 — the studio")
-
-# 05 what we are
-page("studio-what", "ivory", '''
-  <div class="split">
-    <div>
-      <h1 class="display m">latent visuals.<br>elevated brands.</h1>
-    </div>
-    <div class="col">
-      <p class="body">latent studio is an ai-native visual studio. we produce campaign-grade brand imagery — the kind that used to require a photographer, a stylist, a location, a retoucher, and six weeks — and we produce it in days.</p>
-      <p class="body">we are based in amman. we work with brands anywhere.</p>
-      <p class="body"><b>what we sell.</b> ongoing visual production, on retainer. not one-off files — a permanent creative department that sits outside your payroll.</p>
-      <p class="body"><b>what we are not.</b> a filter, a prompt service, or a cheap alternative to a photographer. we are not the fastest and we are not the cheapest. we are the studio you hire when the image has to carry the brand.</p>
-    </div>
+# ------------------------------------------------------------------ 07 concept / principles
+page("principles", "ivory concept", f'''
+  <div class="c-left">{img("ivory-paper.jpg", "center")}{img("cards-topdown.jpg", "center 40%")}</div>
+  <div class="c-mid">
+    <p>three principles. no exceptions. every asset that leaves the studio is checked against all three, and any asset that fails one does not ship.</p>
+    <p><b>01 — restraint · الاختزال</b><br>we remove until only the essential remains. one subject per frame, one idea per post, one accent colour per campaign.</p>
+    <p><b>02 — story before product · القصة قبل المنتج</b><br>every frame earns attention before it asks for it. the product is never the first thing the eye lands on.</p>
+    <p><b>03 — craft in every frame · الحرفة بكل لقطة</b><br>generation is the first ten percent. direction, selection, colour, grain, crop and the ruthless discard of the merely good — that is the work.</p>
   </div>
-''', "01 — the studio")
+  <div class="c-right">{img("coffee.jpg", "30% center")}</div>
+''', "the principles", "06")
 
-# 06 the line
-page("studio-line", "ink photo", bleed("perfume-honey.jpg", "center 40%", "opacity:.92") + '''
-  <div class="scrim"></div>
-  <div class="bottom-block">
-    <h1 class="display m">ai is the tool.<br>taste is the craft.</h1>
-    <p class="body wide">we say "ai" out loud. we never apologise for it, and we never hide it. a brand that is embarrassed by its tools has a taste problem, not a tooling problem.</p>
+# ------------------------------------------------------------------ 08 logo suite (opener)
+page("logo-open", "ivory", img("curtain.jpg", "center 40%", "strip low"), "logo suite", "07")
+
+# ------------------------------------------------------------------ 09 main logo
+page("logo-main", "ivory center", f'''
+  <p class="under-title">the primary logo is a typographic wordmark built around the word latent in lowercase. the schwa — ə — replaces the "e": the most common vowel sound in human speech, and the one nobody notices. present everywhere, seen nowhere. this wordmark is the main identifier and should be used most often across the brand.</p>
+  <div class="stage">{WM_INK}</div>
+''', "main logo")
+
+# ------------------------------------------------------------------ 10 anatomy (ink, callouts)
+page("logo-anatomy", "ink anatomy", f'''
+  <div class="stage">{WM_IVORY}</div>
+  <div class="callout c1"><i></i><span>display grotesk, extra-bold,<br>tracked to −4.5%</span></div>
+  <div class="callout c2"><i></i><span>the schwa replaces the "e" —<br>cut from the same optical size,<br>a letter, not an icon</span></div>
+  <div class="callout c3"><i></i><span>always lowercase.<br>never title case, never caps</span></div>
+  <div class="callout c4"><i></i><span>no tagline is ever<br>locked to the wordmark</span></div>
+''', "logo anatomy")
+
+# ------------------------------------------------------------------ 11 icon
+page("logo-icon", "ivory icon", f'''
+  <p class="side-p">the icon is the schwa on its own. it is our symbol, our avatar, our signature and our sign-off — it closes every caption. minimum size 24 px on screen, 8 mm in print.</p>
+  <div class="icon-box"><span class="k">( 01 )</span>{SY_INK}</div>
+  <div class="icon-col">
+    <div class="sq" style="background:#14141A"><span class="k" style="color:#F2EFE7">( 02 )</span>{SY_IVORY}</div>
+    <div class="sq" style="background:#F2EFE7;box-shadow:inset 0 0 0 1px rgba(20,20,26,.15)"><span class="k">( 03 )</span>{SY_MARROW}</div>
+    <div class="sq" style="background:#BB4A2E"><span class="k" style="color:#F2EFE7">( 04 )</span>{SY_INK}</div>
   </div>
-''', "01 — the studio")
+''', "icon")
 
-# 07 section: principles
-page("principles-open", "ivory", '''
-  <div class="sec-num">02 —</div>
-  <h1 class="display xl bottom">the principles</h1>
-  <p class="body corner">three principles. no exceptions. every asset that leaves this studio is checked against all three, and any asset that fails one does not ship.</p>
-''', "02 — the principles")
-
-# 08 three principles
-page("principles-three", "ink", '''
-  <div class="three">
-    <div class="pr">
-      <div class="n">01 —</div>
-      <h2>restraint</h2>
-      <div class="ar">الاختزال</div>
-      <p class="body">we remove until only the essential remains.</p>
-      <p class="body dim">one subject per frame. one idea per post. one accent colour per campaign. the final pass on every asset is a deletion pass, never an addition pass.</p>
-    </div>
-    <div class="pr">
-      <div class="n">02 —</div>
-      <h2>story before product</h2>
-      <div class="ar">القصة قبل المنتج</div>
-      <p class="body">every frame earns attention before it asks for it.</p>
-      <p class="body dim">the product may not be the first thing the eye lands on. establish tension, atmosphere, or a human beat first — then reveal.</p>
-    </div>
-    <div class="pr">
-      <div class="n">03 —</div>
-      <h2>craft in every frame</h2>
-      <div class="ar">الحرفة بكل لقطة</div>
-      <p class="body">ai is the tool. taste is the craft.</p>
-      <p class="body dim">generation is the first ten percent. direction, selection, colour, grain, crop, and the ruthless discard of the ninety percent that is merely good — that is the work.</p>
-    </div>
+# ------------------------------------------------------------------ 12 logo lockups (colour columns)
+page("logo-lockups", "ivory lockups", f'''
+  <p class="under-title">the logo colourways bring the wordmark and the icon into the three-colour system. four colourways, nothing else: ink on ivory, ivory on ink, marrow on ivory, ink on marrow.</p>
+  <div class="cols4">
+    <div style="background:#F2EFE7;box-shadow:inset 0 0 0 1px rgba(20,20,26,.1)"><span class="k">( 01 )</span>{WM_INK}</div>
+    <div style="background:#14141A"><span class="k" style="color:#F2EFE7">( 02 )</span>{WM_IVORY}</div>
+    <div style="background:#F2EFE7;box-shadow:inset 0 0 0 1px rgba(20,20,26,.1)"><span class="k">( 03 )</span>{WM_MARROW}</div>
+    <div style="background:#BB4A2E"><span class="k" style="color:#F2EFE7">( 04 )</span>{WM_INK}</div>
   </div>
-''', "02 — the principles")
+''', "logo lockups")
 
-# 09 principle 01 — restraint (the vessel)
-page("principle-restraint", "ink photo", bleed("ink-vessel.jpg", "center") + '''
-  <div class="scrim soft"></div>
-  <div class="bottom-block">
-    <div class="n">01 —</div>
-    <h1 class="display m">restraint</h1>
-    <p class="body wide">منشيل كل شي زايد، وبيضل الجوهر.<br>if an element can be removed without breaking the image, it must be removed. we ship the one frame, not the forty.</p>
+# ------------------------------------------------------------------ 13 logo on photo
+page("logo-photo", "photo-full", f'''
+  {img("portrait.jpg", "left 30%", "bleed")}
+  <div class="dim-scrim"></div>
+  <div class="stage">{WM_IVORY}</div>
+''', chrome=False)
+
+# ------------------------------------------------------------------ 14 full lockup + tagline
+page("logo-lockup-full", "ivory center", f'''
+  <div class="stage full-lock">{SY_INK}{WM_INK}<span class="tag">no camera. no studio. only direction.</span></div>
+''', "full lockup")
+
+# ------------------------------------------------------------------ 15 clear space + misuse
+page("logo-clearspace", "ivory clearspace", f'''
+  <p class="side-p">clear space on all sides equals the height of the schwa's counter — the enclosed space inside the ə. nothing enters that zone. the wordmark is never stretched, rotated, outlined, given a gradient or a shadow, recoloured outside the system, or placed on a busy photograph without a scrim.</p>
+  <div class="cs"><div class="cs-box"><div class="g"></div>{WM_INK}<span class="x t">x</span><span class="x b">x</span><span class="x l">x</span><span class="x r">x</span></div><span class="k">x = height of the schwa counter</span></div>
+  <div class="minsize">
+    <span class="k">minimum size</span>
+    <div class="ms-row"><img src="logo/latent-symbol-ink.svg" style="height:96px"><img src="logo/latent-symbol-ink.svg" style="height:48px"><img src="logo/latent-symbol-ink.svg" style="height:24px"><span class="k">24 px · 8 mm</span></div>
+    <div class="ms-row"><img src="logo/latent-wordmark-ink.svg" style="height:56px"><img src="logo/latent-wordmark-ink.svg" style="height:28px"><img src="logo/latent-wordmark-ink.svg" style="height:16px"><span class="k">16 px · 6 mm</span></div>
   </div>
-''', "02 — the principles")
-
-# 10 principle 02 — story before product (portrait)
-page("principle-story", "ink photo", bleed("portrait.jpg", "left center") + '''
-  <div class="scrim right"></div>
-  <div class="right-block">
-    <div class="n">02 —</div>
-    <h1 class="display m">story<br>before<br>product</h1>
-    <p class="body">a leopard's paw resting on a branch, and <i>then</i> the emerald. never the emerald alone.</p>
-  </div>
-''', "02 — the principles")
-
-# 11 section: the mark
-page("mark-open", "ivory", '''
-  <div class="sec-num">03 —</div>
-  <h1 class="display xl bottom">the mark</h1>
-''', "03 — the mark")
-
-# 12 the symbol
-page("mark-symbol", "ivory", '''
-  <div class="split">
-    <div class="symbol-stage"><img src="logo/latent-symbol-ink.svg" alt="ə"></div>
-    <div class="col">
-      <div class="eyebrow">the symbol</div>
-      <h1 class="display m">ə</h1>
-      <p class="body">the schwa. in phonetics it is the most common vowel sound in human speech, and the one nobody notices. present everywhere, seen nowhere. latent.</p>
-      <p class="body">it is our symbol, our avatar, our signature, and our sign-off. it closes every caption.</p>
-    </div>
-  </div>
-''', "03 — the mark")
-
-# 13 the wordmark
-page("mark-wordmark", "ink", '''
-  <div class="wm-stage"><img src="logo/latent-wordmark-ivory.svg" alt="latənt"></div>
-  <div class="bottom-row">
-    <div class="col"><div class="eyebrow">the wordmark</div><p class="body">set in lowercase. the schwa replaces the "e". the wordmark is never set in title case, never in all caps, never with a tagline locked to it.</p></div>
-    <div class="col"><div class="eyebrow">construction</div><p class="body">display grotesk, extra-bold, tracked to −4.5%. the schwa is cut from the same optical size as the letters — it is a letter, not an icon dropped in.</p></div>
-  </div>
-''', "03 — the mark")
-
-# 14 construction: clear space + min size
-page("mark-clearspace", "ivory", '''
-  <div class="split">
-    <div class="col">
-      <div class="eyebrow">clear space</div>
-      <h1 class="display s">the counter is the unit.</h1>
-      <p class="body">minimum clear space on all sides equals the height of the schwa's counter — the enclosed space inside the ə. nothing enters that zone. not a tagline, not a second logo, not a photograph's edge.</p>
-      <div class="eyebrow gap">minimum size</div>
-      <p class="body">the symbol never appears below <b>24 px</b> on screen or <b>8 mm</b> in print. below that, the counter closes and it reads as a blob.</p>
-      <div class="minsize">
-        <img src="logo/latent-symbol-ink.svg" style="height:96px">
-        <img src="logo/latent-symbol-ink.svg" style="height:48px">
-        <img src="logo/latent-symbol-ink.svg" style="height:24px">
-        <span class="cap">24 px · floor</span>
-      </div>
-    </div>
-    <div class="cs-stage">
-      <div class="cs-box">
-        <div class="cs-guides"></div>
-        <img src="logo/latent-wordmark-ink.svg" alt="latənt">
-        <span class="cs-x t">x</span><span class="cs-x b">x</span><span class="cs-x l">x</span><span class="cs-x r">x</span>
-      </div>
-      <div class="cap center">x = height of the schwa counter</div>
-    </div>
-  </div>
-''', "03 — the mark")
-
-# 15 colourways
-page("mark-colourways", "ivory tight", '''
-  <div class="quad">
-    <div class="q" style="background:#F2EFE7;color:#14141A"><img src="logo/latent-wordmark-ink.svg"><span class="cap">ink on ivory · primary</span></div>
-    <div class="q" style="background:#14141A;color:#F2EFE7"><img src="logo/latent-wordmark-ivory.svg"><span class="cap">ivory on ink · primary</span></div>
-    <div class="q" style="background:#F2EFE7;color:#14141A"><img src="logo/latent-wordmark-marrow.svg"><span class="cap">marrow on ivory · editorial</span></div>
-    <div class="q" style="background:#BB4A2E;color:#F2EFE7"><img src="logo/latent-wordmark-ink.svg"><span class="cap">ink on marrow · editorial</span></div>
-  </div>
-  <div class="over-note"><div class="eyebrow">colourways</div><p class="body">four. nothing else.</p></div>
-''', "03 — the mark")
-
-# 16 misuse
-page("mark-misuse", "ivory", '''
-  <div class="eyebrow">misuse</div>
-  <h1 class="display s">never.</h1>
   <div class="misuse">
-    <div class="mu"><div class="mu-box"><img src="logo/latent-wordmark-ink.svg" style="transform:scaleX(1.5)"></div><span class="cap">stretch</span></div>
-    <div class="mu"><div class="mu-box"><img src="logo/latent-wordmark-ink.svg" style="transform:rotate(-14deg)"></div><span class="cap">rotate</span></div>
-    <div class="mu"><div class="mu-box"><span class="fake outline">latənt</span></div><span class="cap">outline</span></div>
-    <div class="mu"><div class="mu-box"><span class="fake grad">latənt</span></div><span class="cap">gradient</span></div>
-    <div class="mu"><div class="mu-box"><span class="fake shadow">latənt</span></div><span class="cap">drop shadow</span></div>
-    <div class="mu"><div class="mu-box"><span class="fake" style="color:#2F6FB5">latənt</span></div><span class="cap">recolour</span></div>
-    <div class="mu"><div class="mu-box"><span class="fake" style="font-weight:800;text-transform:uppercase;letter-spacing:.02em">LATƏNT</span></div><span class="cap">all caps</span></div>
-    <div class="mu"><div class="mu-box busy"><img src="logo/latent-wordmark-ivory.svg"></div><span class="cap">busy photo, no scrim</span></div>
+    <div><div class="mu"><img src="logo/latent-wordmark-ink.svg" style="transform:scaleX(1.5)"></div><span class="k">stretch</span></div>
+    <div><div class="mu"><img src="logo/latent-wordmark-ink.svg" style="transform:rotate(-14deg)"></div><span class="k">rotate</span></div>
+    <div><div class="mu"><span class="fake outline">latənt</span></div><span class="k">outline</span></div>
+    <div><div class="mu"><span class="fake grad">latənt</span></div><span class="k">gradient</span></div>
+    <div><div class="mu"><span class="fake" style="color:#2F6FB5">latənt</span></div><span class="k">recolour</span></div>
+    <div><div class="mu"><span class="fake" style="text-transform:uppercase;letter-spacing:.02em">LATƏNT</span></div><span class="k">caps</span></div>
   </div>
-''', "03 — the mark")
+''', "clear space & misuse")
 
-# 17 section: colour
-page("colour-open", "ink", '''
-  <div class="sec-num">04 —</div>
-  <h1 class="display xl bottom">colour</h1>
-  <p class="body corner">the system is three colours. there is no fourth.</p>
-''', "04 — colour")
+# ------------------------------------------------------------------ 16 colour (opener)
+page("colour-open", "ink", img("coffee.jpg", "30% center", "strip low"), "colour", "08")
 
-# 18 palette
-page("colour-palette", "ivory tight", '''
-  <div class="swatches">
-    <div class="sw" style="background:#14141A;color:#F2EFE7">
-      <div class="sw-name">ink</div>
-      <div class="sw-meta"><span>#14141A</span><span>rgb 20 · 20 · 26</span><span>cmyk 78 · 72 · 55 · 78</span></div>
-      <div class="sw-role">primary. wordmark, symbol, body text, dark surfaces.</div>
-      <div class="sw-pct">90</div>
-    </div>
-    <div class="sw" style="background:#F2EFE7;color:#14141A;box-shadow:inset 0 0 0 1px rgba(20,20,26,.12)">
-      <div class="sw-name">ivory</div>
-      <div class="sw-meta"><span>#F2EFE7</span><span>rgb 242 · 239 · 231</span><span>cmyk 4 · 4 · 8 · 0</span></div>
-      <div class="sw-role">surface. paper, packaging, screens, light layouts.</div>
-      <div class="sw-pct">9</div>
-    </div>
-    <div class="sw" style="background:#BB4A2E;color:#F2EFE7">
-      <div class="sw-name">marrow</div>
-      <div class="sw-meta"><span>#BB4A2E</span><span>rgb 187 · 74 · 46</span><span>cmyk 18 · 79 · 88 · 8</span></div>
-      <div class="sw-role">editorial accent only.</div>
-      <div class="sw-pct">1</div>
-    </div>
+# ------------------------------------------------------------------ 17 colour palette (3 columns, photo + block)
+page("colour-palette", "ivory palette3", f'''
+  <div class="p3">
+    <div><figure>{img("water.jpg", "center")}</figure><div class="blk" style="background:#14141A;color:#F2EFE7"><b>ink</b><span>hex #14141A</span><span>cmyk 78 · 72 · 55 · 78</span><span>rgb 20 · 20 · 26</span></div></div>
+    <div><figure>{img("ivory-paper.jpg", "center")}</figure><div class="blk" style="background:#F2EFE7;color:#14141A;box-shadow:inset 0 0 0 1px rgba(20,20,26,.12)"><b>ivory</b><span>hex #F2EFE7</span><span>cmyk 4 · 4 · 8 · 0</span><span>rgb 242 · 239 · 231</span></div></div>
+    <div><figure>{img("arch.jpg", "center")}</figure><div class="blk" style="background:#BB4A2E;color:#F2EFE7"><b>marrow</b><span>hex #BB4A2E</span><span>cmyk 18 · 79 · 88 · 8</span><span>rgb 187 · 74 · 46</span></div></div>
   </div>
-''', "04 — colour", labels=None)
+''', "colour palette")
 
-# 19 the marrow rule
-page("colour-marrow-rule", "ivory", '''
-  <div class="center-block" style="bottom:300px">
-    <h1 class="display xl">a single<br>ch<span class="marrow">a</span>racter</h1>
-    <p class="lede">set in marrow on a page is the entire campaign.</p>
+# ------------------------------------------------------------------ 18 colour ratio / the marrow rule (grid)
+page("colour-ratio", "ivory ratio", f'''
+  <p class="under-title">the system is three colours; there is no fourth. working ratio 90 / 9 / 1: ninety percent ink or ivory, nine percent the other, one percent marrow. marrow is a punctuation mark, not a fill — one element per layout. a single character set in marrow on a page is the entire campaign.</p>
+  <div class="ratio-bar">
+    <div style="flex:90;background:#14141A;color:#F2EFE7"><b>90</b><span>ink · the ground</span></div>
+    <div style="flex:9;background:#F2EFE7;color:#14141A;box-shadow:inset 0 0 0 1px rgba(20,20,26,.15)"><b>9</b><span>ivory</span></div>
+    <div style="flex:2.2;background:#BB4A2E;color:#F2EFE7"><b>1</b></div>
   </div>
-  <div class="bottom-row">
-    <div class="col"><div class="eyebrow">the marrow rule</div><p class="body">marrow is not a brand colour to be used freely. it is a punctuation mark. one element per layout — a single letter, a rule, a number, one block.</p></div>
-    <div class="col"><div class="eyebrow">working ratio · 90 / 9 / 1</div><p class="body">ninety percent ink or ivory. nine percent the other. one percent marrow. the moment marrow appears twice with equal weight in the same frame, it stops being an accent and becomes decoration.</p></div>
+''', "colour ratio")
+
+# ------------------------------------------------------------------ 19 photographic register (photos + chips)
+page("colour-register", "ivory register", f'''
+  <div class="reg">
+    <figure>{img("ivory-paper.jpg", "center")}<span class="k">cream · bone</span><div class="chips"><i style="background:#E9E1D2"></i><i style="background:#EDE6D6"></i><i style="background:#D7C7A9"></i></div></figure>
+    <figure>{img("ink-vessel.jpg", "center 60%")}<span class="k" style="color:#F2EFE7">charcoal · camel</span><div class="chips"><i style="background:#2C2C31"></i><i style="background:#C2A27E"></i><i style="background:#8A6E4E"></i></div></figure>
+    <figure>{img("coffee.jpg", "30% center")}<span class="k" style="color:#F2EFE7">deep green · oat</span><div class="chips"><i style="background:#1F3A2E"></i><i style="background:#D7C7A9"></i><i style="background:#14141A"></i></div></figure>
   </div>
-''', "04 — colour")
+  <p class="foot-p">generated imagery lives in a warm, desaturated register. these are image tones, not brand colours: skin is warm, never orange; blacks are soft, never crushed; highlights roll off, never clip.</p>
+''', "photographic register")
 
-# 20 photographic colour
-page("colour-photographic", "ink photo", bleed("coffee.jpg", "left center") + '''
-  <div class="scrim right"></div>
-  <div class="right-block wide">
-    <div class="eyebrow">photographic colour</div>
-    <h1 class="display s">warm. desaturated.<br>never orange.</h1>
-    <div class="chips">
-      <div class="chip" style="background:#E9E1D2"><span>cream</span></div>
-      <div class="chip" style="background:#C2A27E"><span>camel</span></div>
-      <div class="chip" style="background:#D7C7A9"><span>oat</span></div>
-      <div class="chip" style="background:#EDE6D6"><span>bone</span></div>
-      <div class="chip" style="background:#2C2C31;color:#F2EFE7"><span>charcoal</span></div>
-      <div class="chip" style="background:#1F3A2E;color:#F2EFE7"><span>deep green</span></div>
-    </div>
-    <p class="body">skin is warm, never orange. blacks are soft, never crushed. highlights roll off, never clip. if an image needs a colour outside this range to work, the image is wrong — not the palette.</p>
+# ------------------------------------------------------------------ 20 textures
+page("colour-textures", "ivory textures", f'''
+  <div class="tex">
+    <div style="background:#14141A"><span class="k" style="color:#F2EFE7">( 01 ) ink void</span></div>
+    <div style="background:url(images/ivory-paper.jpg) center/cover"><span class="k">( 02 ) ivory paper grain</span></div>
+    <div style="background:#BB4A2E"><span class="k" style="color:#F2EFE7">( 03 ) marrow</span>{WM_IVORY}</div>
+    <div style="background:url(images/water.jpg) center/cover"><span class="k" style="color:#F2EFE7">( 04 ) film grain</span></div>
   </div>
-''', "04 — colour")
+''', "textures")
 
-# 21 section: typography
-page("type-open", "ivory", '''
-  <div class="sec-num">05 —</div>
-  <h1 class="display xl bottom">typography</h1>
-''', "05 — typography")
+# ------------------------------------------------------------------ 21 typography (opener)
+page("type-open", "ivory", img("cards-topdown.jpg", "center 35%", "strip low"), "typography", "09")
 
-# 22 primary type specimen
-page("type-primary", "ivory", '''
-  <div class="split">
-    <div class="glyph-stage"><span class="glyph">Aa</span><span class="glyph-ar">عə</span></div>
-    <div class="col">
-      <div class="eyebrow">primary stack</div>
-      <h1 class="display s">söhne kräftig<br>gt america bold<br>pp neue machina</h1>
-      <div class="eyebrow gap">open / licensable alternates — used in this book</div>
-      <p class="body"><b>inter display extrabold</b> · manrope extrabold · geist bold</p>
-      <div class="specimen">
-        <div class="sp w800">extrabold — headlines, tracked −5%</div>
-        <div class="sp w600">semibold — labels, tracked +20%, uppercase</div>
-        <div class="sp w400">regular — body copy, 21 / 32, never competes with the headline</div>
-        <div class="sp mono">ibm plex mono — hex codes, specs, captions</div>
-      </div>
-    </div>
+# ------------------------------------------------------------------ 22 brand typeface
+page("type-face", "ivory typeface", f'''
+  <div class="sample">no camera.<br>no studio.<br>only direction.</div>
+  <div class="specs">
+    <div><span class="k">name</span><b>inter display</b><i>alt. söhne kräftig · gt america · pp neue machina</i></div>
+    <div><span class="k">weights</span><b>extrabold · semibold · regular</b><i>headlines · labels · body</i></div>
+    <div><span class="k">setting</span><b>−5% tracking · 0.9 leading</b><i>always lowercase</i></div>
   </div>
-''', "05 — typography")
+''', "brand typeface")
 
-# 23 hierarchy rules
-page("type-rules", "ink", '''
-  <div class="split">
-    <div>
-      <div class="eyebrow">hierarchy</div>
-      <h1 class="display m">there are<br>two levels.<br>there is<br>no third.</h1>
-    </div>
-    <div class="col">
-      <p class="body">headlines are set tight — negative tracking, tight leading, weight doing the work. body copy is set small, generous in leading, and never competes with the headline.</p>
-      <p class="body">in any layout: the thing you read first, and the thing you read second.</p>
-      <div class="eyebrow gap">the numbering signature</div>
-      <div class="numsig"><span>01 —</span><span>02 —</span><span>03 —</span></div>
-      <p class="body dim">numbers are set with an em dash and a space. this is a signature. keep it.</p>
-    </div>
+# ------------------------------------------------------------------ 23 type annotations (designed hero + specs)
+page("type-annot", "ink annot", f'''
+  <div class="hero">{img("perfume-honey.jpg", "center 40%")}<div class="hero-t">
+    <div class="wmrow">{WM_IVORY}</div>
+    <h2>the bottle<br>wasn't shot.<br>it was directed.</h2>
+    <p>spec frame for a perfume house. product locked from reference; honey poured because the geometry asked for it.</p>
+    <span class="cta">dm "frame" →</span></div></div>
+  <div class="specs-r">
+    <div><span class="k">h1</span><b>inter display extrabold · 88 / 80</b><i>→ −5% tracking, lowercase, two lines maximum</i></div>
+    <div><span class="k">eyebrow</span><b>inter semibold · 12 / 16 · caps</b><i>→ +20% tracking, one line, always above</i></div>
+    <div><span class="k">body</span><b>inter regular · 16 / 26</b><i>→ never competes with the headline</i></div>
+    <div><span class="k">numbers</span><b>01 — 02 — 03 —</b><i>→ em dash and a space. a signature</i></div>
   </div>
-''', "05 — typography")
+''', "type annotations")
 
-# 24 arabic typography
-page("type-arabic", "ivory", '''
-  <div class="split">
-    <div class="col">
-      <div class="eyebrow">arabic · locked</div>
-      <h1 class="display s">ibm plex sans arabic</h1>
-      <p class="body">latent ships bilingually. the arabic post is not a lesser copy of the english one — it gets its own hook, its own rhythm, and its own type. one arabic face, locked, open licence, immediately usable. never another.</p>
-      <p class="body dim">licensed upgrades, if the budget opens: tt rounds neue arabic (closest geometric match) · greta arabic (editorial, pairs with söhne).</p>
-      <div class="eyebrow gap">register</div>
-      <p class="body">spoken jordanian dialect, not modern standard arabic. <span class="ar-inline">"منشيل كل شي زايد"</span> — not <span class="ar-inline">"نقوم بإزالة كل ما هو زائد."</span></p>
-    </div>
-    <div class="ar-stage">
-      <div class="ar-big">الاختزال</div>
-      <div class="ar-mid">القصة قبل المنتج</div>
-      <div class="ar-mid">الحرفة بكل لقطة</div>
-      <div class="ar-small">منشيل كل شي زايد، وبيضل الجوهر.</div>
-    </div>
+# ------------------------------------------------------------------ 24 arabic typeface
+page("type-arabic", "ivory typeface ar", f'''
+  <div class="sample ar">بدون كاميرا.<br>بدون ستوديو.<br>بس إخراج.</div>
+  <div class="specs">
+    <div><span class="k">name</span><b>ibm plex sans arabic</b><i>locked · open licence</i></div>
+    <div><span class="k">weights</span><b>bold · regular</b><i>headlines · body</i></div>
+    <div><span class="k">register</span><b>spoken jordanian</b><i>never modern standard arabic</i></div>
   </div>
-''', "05 — typography")
+''', "arabic typeface")
 
-# 25 section: image system
-page("image-open", "ink", '''
-  <div class="sec-num">06 —</div>
-  <h1 class="display xl bottom">the image system</h1>
-''', "06 — the image system")
-
-# 26 two worlds
-page("image-worlds", "ink tight", '''
-  <div class="worlds">
-    <div class="world">
-      <img src="images/ink-vessel.jpg" style="object-position:center 60%">
-      <div class="world-text" style="color:#F2EFE7;top:96px;bottom:auto"><div class="eyebrow">the ink world</div><p class="body">near-black studio void. product or subject lit from a single soft source. deep, quiet, expensive.</p><p class="body dim">two worlds. they do not mix inside a single frame.</p></div>
-    </div>
-    <div class="world">
-      <img src="images/cards-topdown.jpg" style="object-position:center 30%">
-      <div class="world-text" style="color:#14141A"><div class="eyebrow">the ivory world</div><p class="body">cream paper grain, visible texture, physical. this is where the brand speaks about itself — identity work, principles, type.</p></div>
-    </div>
+# ------------------------------------------------------------------ 25 system elements (icons-grid layout)
+page("system", "ivory system", f'''
+  <div class="sys-l">
+    <div class="sys"><b>01 —</b><span class="k">numbering</span></div>
+    <div class="sys"><b class="eb">the studio</b><span class="k">eyebrow · caps · +20%</span></div>
+    <div class="sys"><b>ə</b><span class="k">sign-off · closes every caption</span></div>
+    <div class="sys"><b class="rule"></b><span class="k">hairline rule</span></div>
+    <div class="sys"><b>( 01 )</b><span class="k">figure label · mono</span></div>
+    <div class="sys"><b class="dots"></b><span class="k">dotted leader</span></div>
+    <div class="sys"><b>→</b><span class="k">arrow · amman → worldwide</span></div>
+    <div class="sys"><b style="color:#BB4A2E">a</b><span class="k">one marrow character</span></div>
   </div>
-''', "06 — the image system", labels=None)
+  <div class="sys-r"><p>the system elements are small and few. they repeat on every surface — captions, decks, the site — so the brand is recognisable before the logo appears.</p></div>
+''', "system elements")
 
-# 27 composition
-page("image-composition", "ink photo", bleed("ink-vessel.jpg", "center 60%") + '''
-  <div class="thirds"><i></i><i></i><i></i><i></i></div>
-  <div class="scrim right"></div>
-  <div class="right-block">
-    <div class="eyebrow">composition</div>
-    <h1 class="display s">wide negative space. subject held small — or cropped intimately close. never the middle distance.</h1>
-    <p class="body dim">centred or hard-left. horizon and eyeline held on thirds.</p>
+# ------------------------------------------------------------------ 26 post templates (thumbnail grid)
+page("templates", "ivory templates", f'''
+  <div class="tpl">
+    <div class="t ink-t"><span class="eb">01 —</span><span class="h">restraint</span></div>
+    <div class="t"><img src="images/ink-vessel.jpg" style="object-position:center 70%"></div>
+    <div class="t iv-t"><span class="h2">latənt</span></div>
+    <div class="t"><img src="images/portrait.jpg" style="object-position:20% 20%"></div>
+    <div class="t marrow-t"><span class="h">ə</span></div>
+    <div class="t iv-t"><span class="p">the bottle wasn't shot.<br>it was directed.</span></div>
+    <div class="t"><img src="images/coffee.jpg" style="object-position:30% center"></div>
+    <div class="t ink-t"><span class="h3">no camera.<br>no studio.<br>only direction.</span></div>
+    <div class="t"><img src="images/cards-topdown.jpg" style="object-position:center 40%"></div>
   </div>
-''', "06 — the image system")
+  <div class="tpl-r"><p><b>grid</b><br>alternate the worlds: ink post, ivory post. never three of one in a row. every row of three holds one dark frame and one light frame.<br><br><b>caption</b><br>hook · substance · credit · ask. lowercase, clipped, declarative. then the ə.</p></div>
+''', "post templates")
 
-# 28 grain + realism
-page("image-grain", "ink photo", bleed("portrait.jpg", "left 20%", "transform:scale(1.6);transform-origin:12% 30%") + '''
-  <div class="scrim right"></div>
-  <div class="right-block">
-    <div class="eyebrow">grain · skin · imperfection</div>
-    <h1 class="display s">perfect is the tell.</h1>
-    <p class="body">every asset carries grain. grain is what separates a render from a photograph, and a photograph from a product shot. it is the studio's fingerprint.</p>
-    <p class="body">pores. flyaway hairs. the indentation a chain leaves on a collarbone. visual noise is what real cameras capture every day. no clean, plastic, un-grained surface leaves here.</p>
+# ------------------------------------------------------------------ 27 mockups (opener)
+page("mock-open", "ink", img("water.jpg", "center", "strip low"), "mockups", "10")
+
+# ------------------------------------------------------------------ 28 phones triptych
+page("mock-phones", "ink phones", f'''
+  <div class="ph"><div class="scr ivory-s"><div class="ig-top"><span class="av">ə</span><span>latentstudio.jo</span></div><div class="ig-grid"><img src="images/perfume-honey.jpg"><i></i><img src="images/portrait.jpg" style="object-position:20% 20%"><img src="images/ink-vessel.jpg" style="object-position:center 70%"><i class="m"></i><img src="images/coffee.jpg" style="object-position:30% center"></div></div></div>
+  <div class="ph"><div class="scr"><img src="images/perfume-honey.jpg" style="object-position:center 40%"><div class="story-t">the bottle wasn't shot.<br>it was directed.</div><div class="story-b">{WM_IVORY}</div></div></div>
+  <div class="ph"><div class="scr marrow-s"><span class="big-sy">ə</span><div class="story-b">{WM_INK}</div></div></div>
+''', chrome=False)
+
+# ------------------------------------------------------------------ 29–37 photographic mockups
+for name, src in [("mock-pylon", "pylon.jpg"), ("mock-card", "card-pocket.jpg"), ("mock-storefront", "storefront.jpg"),
+                  ("mock-laptop", "laptop-plinth.jpg"), ("mock-booklet", "booklet.jpg"), ("mock-appicon", "app-icon.jpg"),
+                  ("mock-tote", "tote.jpg"), ("mock-poster", "poster.jpg"), ("mock-tape", "tape.jpg"), ("mock-shirt", "tshirt.jpg")]:
+    page(name, "photo-full", img(src, "center", "bleed"), chrome=False)
+
+# ------------------------------------------------------------------ thank you
+page("thanks", "ink thanks", f'''
+  <div class="thanks-c">
+    <span class="sy-s">ə</span>
+    <div class="ty">thank you</div>
+    <div class="rule"></div>
+    <div class="by">brought to you by latent studio · amman → worldwide</div>
+    <div class="url">latent-studio-ai.com · @latentstudio.jo</div>
   </div>
-''', "06 — the image system")
+''', chrome=False)
 
-# 29 never
-page("image-never", "ivory", '''
-  <div class="split">
-    <div><div class="eyebrow">the image system</div><h1 class="display m">never.</h1></div>
-    <ul class="never">
-      <li>stock-photo lighting</li>
-      <li>symmetrical product-on-white</li>
-      <li>lens flare</li>
-      <li>bokeh circles as decoration</li>
-      <li>text over a subject's face</li>
-      <li>more than one typeface per frame</li>
-      <li>emojis in the artwork</li>
-      <li>whip cuts, zooms, trend transitions</li>
-    </ul>
-  </div>
-''', "06 — the image system")
-
-# 30 section: applications
-page("apps-open", "ivory", '''
-  <div class="sec-num">07 —</div>
-  <h1 class="display xl bottom">applications</h1>
-''', "07 — applications")
-
-# 31 business cards (photo + perspective-mapped wordmark)
-CARD_DST = [(720, 542), (1205, 320), (1400, 545), (905, 780)]   # top card corners in the 2048x1152 frame
-scale = 1920 / 2048
-dst = [(x * scale, y * scale) for x, y in CARD_DST]
-CW, CH = 340, 192
-m3d = matrix3d(CW, CH, dst)
-page("apps-cards", "ivory photo", bleed("cards-topdown.jpg", "center") + f'''
-  <div class="card-face" style="width:{CW}px;height:{CH}px;transform:{m3d}">
-    <img src="logo/latent-symbol-ink.svg" class="card-sym">
-    <div class="card-lines"><span>latent studio</span><span>amman → worldwide</span><span>latent-studio-ai.com</span></div>
-  </div>
-  <div class="over-note"><div class="eyebrow">stationery</div><p class="body">uncoated 540 gsm ivory board. symbol only on the face; the wordmark lives on the reverse. one colour. no foil, no emboss — restraint is the finish.</p></div>
-''', "07 — applications")
-
-# 32 poster + instagram
-page("apps-poster-phone", "ink tight", '''
-  <div class="apps2">
-    <div class="poster">
-      <div class="p-top"><span>latent studio</span><span>identity sprint</span></div>
-      <div class="p-mid"><span class="p-mark">ə</span></div>
-      <div class="p-head">no camera.<br>no studio.<br>only direction.</div>
-      <div class="p-foot"><span>amman → worldwide</span><span>latent-studio-ai.com</span></div>
-    </div>
-    <div class="phone">
-      <div class="ph-bar"><span class="ph-avatar">ə</span><span class="ph-name">latentstudio.jo</span></div>
-      <div class="ph-img"><img src="images/perfume-honey.jpg"></div>
-      <div class="ph-cap"><b>latentstudio.jo</b> the bottle wasn't shot. it was directed.<br><br>spec frame for a perfume house. product locked from reference; honey poured because the geometry asked for it.<br><br>want your brand held to the same standard? dm. ə</div>
-    </div>
-    <div class="apps-note">
-      <div class="eyebrow">print · social</div>
-      <p class="body">the ivory world speaks about the studio. the ink world shows the work. every caption closes with ə.</p>
-    </div>
-  </div>
-''', "07 — applications", labels=None)
-
-# 33 section: voice
-page("voice", "ivory", '''
-  <div class="split">
-    <div>
-      <div class="sec-num small">08 —</div>
-      <h1 class="display m">lowercase.<br>clipped.<br>declarative.</h1>
-      <p class="body">we state, we do not persuade. sentence fragments are correct. em dashes are correct. exclamation marks are not.</p>
-      <p class="body dim">write it. then cut a third of it.</p>
-    </div>
-    <div class="col">
-      <div class="eyebrow">caption architecture</div>
-      <ol class="beats">
-        <li><span class="n">01 —</span> the hook. one line, lowercase, no set-up.</li>
-        <li><span class="n">02 —</span> the substance. two to four short lines.</li>
-        <li><span class="n">03 —</span> the credit. attribution and rights, stated plainly.</li>
-        <li><span class="n">04 —</span> the ask. one cta. then the ə.</li>
-      </ol>
-      <div class="eyebrow gap">banned</div>
-      <p class="body strike">best price · cheap · affordable · easily · budget · revolutionise · transform · unlock · elevate your brand to the next level · "ai-generated" as an apology · very · really · amazing · stunning · excited to share</p>
-    </div>
-  </div>
-''', "08 — voice")
-
-# 34 the grid
-page("grid", "ivory tight grid", '''
-  <div class="split">
-    <div class="gridtext">
-      <div class="sec-num small">09 —</div>
-      <h1 class="display m" style="margin-bottom:34px">the grid is<br>one image.</h1>
-      <p class="body">the profile is a portfolio, not a feed. it is read as one image before any single post is read.</p>
-      <ul class="rules">
-        <li>alternate the worlds. ink post, ivory post. never three of one in a row.</li>
-        <li>each row of three holds at least one dark frame and one light frame.</li>
-        <li>never two similar crops adjacent.</li>
-        <li>pin three: the offer, the principles, the best piece of work.</li>
-      </ul>
-    </div>
-    <div class="ig">
-      <div class="t ink"><img src="images/perfume-honey.jpg"></div>
-      <div class="t ivory-t"><span class="t-word">latənt</span></div>
-      <div class="t ink"><img src="images/portrait.jpg" style="object-position:20% 20%"></div>
-      <div class="t ivory-t"><span class="t-num">01 —</span><span class="t-sm">restraint</span></div>
-      <div class="t ink"><img src="images/ink-vessel.jpg" style="object-position:center 70%"></div>
-      <div class="t ivory-t"><img src="images/cards-topdown.jpg" style="object-position:center 40%"></div>
-      <div class="t ink"><img src="images/coffee.jpg" style="object-position:30% center"></div>
-      <div class="t marrow-t"><span class="t-sym">ə</span></div>
-      <div class="t ink"><span class="t-sm ivory-c">no camera.<br>no studio.<br>only direction.</span></div>
-    </div>
-  </div>
-''', "09 — the grid", labels=None)
-
-# 35 back cover
-page("back", "ink", '''
-  <div class="back-mark">ə</div>
-  <div class="back-lines">
-    <span>latent studio</span>
-    <span>amman → worldwide</span>
-    <span>latent-studio-ai.com · @latentstudio.jo</span>
-  </div>
-''', number=False, labels=("LATENT STUDIO", "BRAND BOOK · 2026"))
-
-# --------------------------------------------------------------------------
-# CSS
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------ CSS
 CSS = r'''
 @page { size: 1920px 1080px; margin: 0; }
 * { box-sizing: border-box; }
 html, body { margin:0; padding:0; background:#888; }
-body { font-family: "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-.page { position:relative; width:1920px; height:1080px; overflow:hidden; padding:96px; page-break-after:always; break-after:page;
+body { font-family:"Inter", system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+.page { position:relative; width:1920px; height:1080px; overflow:hidden; page-break-after:always; break-after:page;
         -webkit-print-color-adjust:exact; print-color-adjust:exact; margin:0 auto; }
-.screen .page { margin: 24px auto; }
 .page:last-child { page-break-after:auto; break-after:auto; }
-@media print { .screen .page { margin:0 auto; } html, body { background:none; } }
-.ink   { background:#14141A; color:#F2EFE7; }
+.screen .page { margin:24px auto; }
+@media print { .screen .page { margin:0 auto; } html, body { background:#14141A; } }
+.ink { background:#14141A; color:#F2EFE7; }
 .ivory { background:#F2EFE7; color:#14141A; }
-.tight { padding:0; }
-.grain { position:absolute; inset:0; background:url(src/grain.png) repeat; background-size:384px 384px; opacity:.16; mix-blend-mode:overlay; pointer-events:none; z-index:50; }
-.ink .grain { opacity:.22; }
+.photo-full { background:#14141A; color:#F2EFE7; }
+.grain { position:absolute; inset:0; background:url(src/grain.png) repeat; background-size:384px 384px; opacity:.13; mix-blend-mode:overlay; pointer-events:none; z-index:60; }
+.ink .grain, .photo-full .grain { opacity:.2; }
+img { display:block; }
+.ar, .sample.ar { font-family:"IBM Plex Sans Arabic", "Almarai", sans-serif; }
 
-/* type */
-.display { font-family:"Inter Display", "Inter", sans-serif; font-weight:800; letter-spacing:-.055em; line-height:.9; margin:0; }
-.display.xl { font-size:300px; letter-spacing:-.06em; }
-.display.l  { font-size:220px; }
-.display.m  { font-size:132px; }
-.display.s  { font-size:76px; letter-spacing:-.045em; line-height:.98; }
-.lab { position:absolute; top:56px; font-size:15px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; opacity:.85; z-index:10; }
-.lab.tl { left:96px; } .lab.tr { right:96px; }
-.foot { position:absolute; bottom:52px; font-size:15px; font-weight:500; letter-spacing:.06em; opacity:.7; z-index:10; }
-.foot.bl { left:96px; } .foot.br { right:96px; font-family:"IBM Plex Mono", monospace; letter-spacing:0; }
-.eyebrow { font-size:14px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; opacity:.8; margin-bottom:22px; }
-.eyebrow.gap { margin-top:44px; }
-.body { font-size:21px; line-height:1.55; margin:0 0 20px; max-width:560px; }
-.body.wide { max-width:860px; }
-.body.center { text-align:center; margin-left:auto; margin-right:auto; }
-.body b { font-weight:600; }
-.dim { opacity:.62; }
-.lede { font-family:"Inter Display", sans-serif; font-weight:500; font-size:40px; letter-spacing:-.02em; line-height:1.15; margin:28px 0 30px; max-width:1100px; }
-.n { font-family:"Inter Display", sans-serif; font-weight:800; letter-spacing:-.02em; }
-.marrow { color:#BB4A2E; }
-.ar, .ar-inline, .ar-stage, .glyph-ar { font-family:"IBM Plex Sans Arabic", "Almarai", sans-serif; }
-.ar-inline { font-weight:500; }
+/* chrome */
+.lab { position:absolute; top:50px; font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; opacity:.85; z-index:20; }
+.lab.tl { left:56px; } .lab.tr { right:56px; }
+.ttl { position:absolute; top:40px; left:0; right:0; text-align:center; z-index:20; }
+.tn { font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.12em; opacity:.7; }
+.tt { font-family:"Inter Display", sans-serif; font-weight:500; font-size:40px; letter-spacing:-.02em; line-height:1.15; margin-top:2px; }
+.ts { font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; margin-top:12px; }
+.pn { position:absolute; bottom:26px; left:0; right:0; text-align:center; font-family:"IBM Plex Mono", monospace; font-size:11px; opacity:.7; z-index:20; }
+.photo-full .pn { color:#F2EFE7; text-shadow:0 0 6px rgba(0,0,0,.5); }
+.k { font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.08em; opacity:.75; }
+p { margin:0; }
+.under-title { position:absolute; top:120px; left:50%; transform:translateX(-50%); width:760px; text-align:center; font-size:13.5px; line-height:1.6; opacity:.85; }
+.side-p { position:absolute; top:150px; left:56px; width:300px; font-size:13px; line-height:1.6; opacity:.85; }
+.foot-p { position:absolute; bottom:64px; left:50%; transform:translateX(-50%); width:760px; text-align:center; font-size:13px; line-height:1.6; opacity:.8; }
 
-/* layouts */
-.split { display:grid; grid-template-columns: 1fr 1fr; gap:96px; height:100%; align-items:center; }
-.col { max-width:640px; }
-.center-block { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:96px; z-index:5; }
-.bottom-block { position:absolute; left:96px; right:96px; bottom:120px; z-index:5; }
-.bottom-block .n { font-size:34px; margin-bottom:18px; opacity:.9; }
-.bottom-block .display { margin-bottom:28px; }
-.right-block { position:absolute; right:96px; top:50%; transform:translateY(-50%); width:620px; z-index:5; }
-.right-block.wide { width:760px; }
-.right-block .n { font-size:34px; margin-bottom:18px; }
-.right-block .display { margin-bottom:28px; }
-.bottom-row { position:absolute; left:96px; right:96px; bottom:120px; display:grid; grid-template-columns:1fr 1fr; gap:96px; z-index:5; }
-.sec-num { font-family:"Inter Display", sans-serif; font-weight:800; font-size:64px; letter-spacing:-.03em; position:absolute; top:150px; left:96px; }
-.sec-num.small { position:static; font-size:40px; margin-bottom:24px; }
-.display.bottom { position:absolute; left:88px; bottom:120px; margin:0; }
-.body.corner { position:absolute; right:96px; top:150px; width:420px; }
-.bleed { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
-.scrim { position:absolute; inset:0; z-index:2; background:linear-gradient(to top, rgba(20,20,26,.92) 0%, rgba(20,20,26,.55) 38%, rgba(20,20,26,0) 70%); }
-.scrim.soft { background:linear-gradient(to top, rgba(20,20,26,.85) 0%, rgba(20,20,26,.35) 40%, rgba(20,20,26,0) 65%); }
-.scrim.right { background:linear-gradient(to left, rgba(20,20,26,.96) 0%, rgba(20,20,26,.82) 38%, rgba(20,20,26,0) 68%); }
-.ivory.photo .scrim { display:none; }
-.over-note { position:absolute; left:96px; bottom:120px; width:560px; z-index:5; }
-.over-note.ink-note { color:#F2EFE7; left:50%; transform:translateX(-50%); text-align:center; bottom:100px; }
-.over-note.ink-note .body { margin:0 auto; }
+/* strips */
+.strip { position:absolute; left:56px; right:56px; top:150px; height:420px; width:auto; object-fit:cover; }
+.strip.low { top:300px; height:700px; }
+.bleed { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 
 /* cover */
-.cover-mark { font-family:"Inter Display", sans-serif; font-weight:800; font-size:780px; line-height:1; letter-spacing:0; position:absolute; left:50%; top:50%; transform:translate(-50%,-56%); }
-.cover-word { position:absolute; left:96px; bottom:110px; } .cover-word img { height:60px; }
-.cover-sub { position:absolute; right:96px; bottom:110px; text-align:right; font-size:16px; line-height:1.7; letter-spacing:.02em; }
-.cover-sub .dim { font-size:14px; }
+.cover-h { position:absolute; top:48px; left:40px; right:40px; margin:0; font-family:"Inter Display", sans-serif; font-weight:800; font-size:372px; letter-spacing:-.06em; line-height:1; text-align:center; white-space:nowrap; }
+.cover-photo { position:absolute; left:50%; top:330px; transform:translateX(-50%); width:300px; height:340px; object-fit:cover; }
+.cover-p { position:absolute; bottom:120px; left:50%; transform:translateX(-50%); width:620px; text-align:center; font-size:12.5px; line-height:1.6; opacity:.85; }
 
-/* definition */
-.definition .display { margin-top:0; }
+/* contents */
+.toc { list-style:none; margin:0; padding:0; position:absolute; left:56px; right:56px; top:612px; }
+.toc li { display:flex; align-items:baseline; font-size:26px; letter-spacing:-.01em; font-weight:400; margin-bottom:24px; }
+.toc li i { flex:1; border-bottom:2px dotted rgba(20,20,26,.45); margin:0 18px 6px; }
+.toc li b { font-weight:400; font-family:"IBM Plex Mono", monospace; font-size:20px; }
 
-/* toc */
-.toc { list-style:none; margin:0; padding:0; font-size:36px; line-height:1.95; letter-spacing:-.015em; font-weight:500; }
-.toc .n { display:inline-block; width:120px; }
+/* split */
+.split .half { position:absolute; top:0; bottom:0; width:50%; }
+.split .half.photo { left:0; } .split .half.photo img { width:100%; height:100%; object-fit:cover; }
+.split .half.text { right:0; background:#14141A; display:flex; flex-direction:column; justify-content:center; padding:0 220px 0 190px; gap:20px; }
+.split .half.text p { font-size:13.5px; line-height:1.65; opacity:.9; }
 
-/* principles */
-.three { display:grid; grid-template-columns:repeat(3,1fr); gap:72px; height:100%; align-items:end; padding-bottom:40px; }
-.pr .n { font-size:40px; margin-bottom:22px; }
-.pr h2 { font-family:"Inter Display", sans-serif; font-weight:800; font-size:54px; letter-spacing:-.045em; line-height:.95; margin:0 0 14px; }
-.pr .ar { font-size:30px; font-weight:700; margin-bottom:26px; direction:rtl; text-align:left; }
-.pr .body { font-size:19px; }
+/* vision */
+.tiny { position:absolute; left:50%; top:400px; transform:translateX(-50%); width:120px; height:160px; object-fit:cover; }
+.vision-p { position:absolute; top:640px; left:50%; transform:translateX(-50%); width:560px; text-align:center; font-size:13.5px; line-height:1.65; opacity:.85; }
 
-/* mark */
-.symbol-stage { display:flex; align-items:center; justify-content:center; height:100%; }
-.symbol-stage img { height:520px; }
-.wm-stage { position:absolute; left:96px; right:96px; top:150px; bottom:390px; display:flex; align-items:center; justify-content:center; }
-.wm-stage img { width:1400px; }
-.cs-stage { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:34px; }
-.cs-box { position:relative; padding:64px; }
-.cs-box img { width:560px; display:block; position:relative; z-index:2; }
-.cs-guides { position:absolute; inset:0; border:1px dashed rgba(20,20,26,.35); }
-.cs-guides:before, .cs-guides:after { content:""; position:absolute; border:1px dashed rgba(20,20,26,.35); }
-.cs-guides:before { left:64px; right:64px; top:0; bottom:0; border-top:0; border-bottom:0; }
-.cs-guides:after { top:64px; bottom:64px; left:0; right:0; border-left:0; border-right:0; }
-.cs-x { position:absolute; font-family:"IBM Plex Mono", monospace; font-size:16px; opacity:.6; }
-.cs-x.t { top:20px; left:50%; } .cs-x.b { bottom:20px; left:50%; } .cs-x.l { left:24px; top:50%; } .cs-x.r { right:24px; top:50%; }
-.cap { font-family:"IBM Plex Mono", monospace; font-size:14px; letter-spacing:.04em; opacity:.7; }
-.cap.center { text-align:center; }
-.minsize { display:flex; align-items:flex-end; gap:36px; margin-top:20px; }
-.minsize .cap { margin-left:8px; padding-bottom:4px; }
-.quad { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; height:100%; }
-.q { display:flex; align-items:center; justify-content:center; position:relative; }
-.q img { width:420px; }
-.q .cap { position:absolute; left:40px; bottom:34px; }
-.misuse { display:grid; grid-template-columns:repeat(4,1fr); gap:32px; margin-top:56px; }
-.mu-box { height:220px; background:#E8E4DA; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; margin-bottom:14px; }
-.mu-box:after { content:""; position:absolute; left:-10%; top:50%; width:120%; height:3px; background:#BB4A2E; transform:rotate(-24deg); opacity:.0; }
-.mu-box img { width:230px; }
-.fake { font-family:"Inter Display", sans-serif; font-weight:800; font-size:76px; letter-spacing:-.045em; color:#14141A; }
-.fake.outline { color:transparent; -webkit-text-stroke:2px #14141A; }
+/* mood */
+.mood4 { position:absolute; left:0; right:0; top:300px; bottom:0; display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+.mood4 figure { margin:0; position:relative; overflow:hidden; }
+.mood4 figure img { width:100%; height:100%; object-fit:cover; }
+.mood4 figure span { position:absolute; top:-22px; left:50%; transform:translateX(-50%); font-family:"IBM Plex Mono", monospace; font-size:10px; opacity:.7; }
+.mood .grain { z-index:60; }
+
+/* concept */
+.c-left { position:absolute; left:56px; top:190px; bottom:60px; width:420px; display:grid; grid-template-rows:1fr 1fr; gap:14px; }
+.c-left img { width:100%; height:100%; object-fit:cover; }
+.c-mid { position:absolute; left:560px; right:560px; top:50%; transform:translateY(-50%); font-size:12.5px; line-height:1.6; text-align:center; display:flex; flex-direction:column; gap:16px; opacity:.9; }
+.c-mid b { font-weight:600; }
+.c-right { position:absolute; right:56px; top:190px; bottom:60px; width:420px; }
+.c-right img { width:100%; height:100%; object-fit:cover; }
+
+/* logo pages */
+.stage { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:5; }
+.stage .wm { width:560px; }
+.anatomy .stage .wm { width:1040px; }
+.callout { position:absolute; z-index:6; font-size:11px; line-height:1.5; opacity:.85; }
+.callout i { position:absolute; background:rgba(242,239,231,.6); }
+.c1 { left:300px; top:230px; width:220px; } .c1 i { left:0; top:44px; width:1px; height:160px; }
+.c2 { left:1000px; top:190px; width:260px; } .c2 i { left:0; top:58px; width:1px; height:220px; }
+.c3 { left:420px; top:760px; width:220px; } .c3 i { left:0; top:-80px; width:1px; height:70px; }
+.c4 { left:1260px; top:800px; width:220px; } .c4 i { left:0; top:-120px; width:1px; height:110px; }
+.icon-box { position:absolute; left:50%; top:150px; transform:translateX(-50%); width:840px; height:820px; border:1px solid rgba(20,20,26,.35); display:flex; align-items:center; justify-content:center; }
+.icon-box .sy { width:220px; }
+.icon-box .k, .sq .k { position:absolute; top:10px; left:12px; }
+.icon-col { position:absolute; right:56px; top:150px; display:flex; flex-direction:column; gap:36px; }
+.sq { width:250px; height:250px; position:relative; display:flex; align-items:center; justify-content:center; }
+.sq .sy { width:70px; }
+.cols4 { position:absolute; left:0; right:0; top:280px; bottom:0; display:grid; grid-template-columns:repeat(4,1fr); }
+.cols4 > div { position:relative; display:flex; align-items:center; justify-content:center; }
+.cols4 .wm { width:280px; }
+.cols4 .k { position:absolute; top:14px; left:50%; transform:translateX(-50%); }
+.dim-scrim { position:absolute; inset:0; background:rgba(20,20,26,.35); z-index:1; }
+.photo-full .stage .wm { width:900px; filter:drop-shadow(0 6px 30px rgba(0,0,0,.35)); }
+.full-lock { flex-direction:column; gap:36px; }
+.full-lock .sy { width:110px; } .full-lock .wm { width:560px; }
+.full-lock .tag { font-size:13px; letter-spacing:.2em; text-transform:uppercase; opacity:.85; margin-top:6px; }
+
+/* clear space + misuse */
+.cs { position:absolute; left:440px; top:150px; width:640px; display:flex; flex-direction:column; align-items:center; gap:18px; }
+.cs-box { position:relative; padding:56px; }
+.cs-box .wm { width:440px; position:relative; z-index:2; }
+.cs-box .g { position:absolute; inset:0; border:1px dashed rgba(20,20,26,.4); }
+.cs-box .g:before, .cs-box .g:after { content:""; position:absolute; border:1px dashed rgba(20,20,26,.4); }
+.cs-box .g:before { left:56px; right:56px; top:0; bottom:0; border-top:0; border-bottom:0; }
+.cs-box .g:after { top:56px; bottom:56px; left:0; right:0; border-left:0; border-right:0; }
+.cs .x { position:absolute; font-family:"IBM Plex Mono", monospace; font-size:11px; opacity:.6; }
+.cs .x.t { top:18px; left:50%; } .cs .x.b { bottom:18px; left:50%; } .cs .x.l { left:22px; top:50%; } .cs .x.r { right:22px; top:50%; }
+.misuse { position:absolute; left:1160px; right:56px; top:150px; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.misuse .k { display:block; margin-top:8px; }
+.misuse .k:before { content:"✕ "; color:#BB4A2E; }
+.mu { height:160px; background:#E8E4DA; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.mu img { width:150px; }
+.fake { font-family:"Inter Display", sans-serif; font-weight:800; font-size:50px; letter-spacing:-.045em; color:#14141A; }
+.fake.outline { color:transparent; -webkit-text-stroke:1.5px #14141A; }
 .fake.grad { background:linear-gradient(90deg,#14141A,#BB4A2E); -webkit-background-clip:text; background-clip:text; color:transparent; }
-.fake.shadow { text-shadow:8px 8px 0 rgba(20,20,26,.35); }
-.mu-box.busy { background:url(images/coffee.jpg) center/cover; }
-.mu .cap:before { content:"✕  "; color:#BB4A2E; }
+
+.minsize { position:absolute; left:440px; top:560px; width:640px; display:flex; flex-direction:column; gap:26px; }
+.ms-row { display:flex; align-items:flex-end; gap:40px; } .ms-row .k { margin-left:8px; padding-bottom:4px; }
+.misuse .mu { height:150px; }
 
 /* colour */
-.swatches { display:grid; grid-template-columns:1fr 1fr 1fr; height:100%; }
-.sw { padding:96px 72px; position:relative; display:flex; flex-direction:column; }
-.sw-name { font-family:"Inter Display", sans-serif; font-weight:800; font-size:120px; letter-spacing:-.055em; line-height:.9; margin-bottom:34px; }
-.sw-meta { display:flex; flex-direction:column; gap:6px; font-family:"IBM Plex Mono", monospace; font-size:17px; letter-spacing:.02em; opacity:.85; margin-bottom:34px; }
-.sw-role { font-size:20px; line-height:1.5; max-width:380px; }
-.sw-pct { position:absolute; left:72px; bottom:80px; font-family:"Inter Display", sans-serif; font-weight:800; font-size:220px; letter-spacing:-.06em; line-height:.8; opacity:.9; }
-.sw-pct:after { content:"%"; font-size:60px; letter-spacing:0; vertical-align:top; margin-left:6px; opacity:.6; }
-.chips { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:34px 0 30px; }
-.chip { height:110px; display:flex; align-items:flex-end; padding:14px; font-family:"IBM Plex Mono", monospace; font-size:14px; letter-spacing:.04em; color:#14141A; }
+.p3 { position:absolute; left:56px; right:56px; top:130px; bottom:60px; display:grid; grid-template-columns:repeat(3,1fr); gap:0; }
+.p3 > div { display:grid; grid-template-rows:1fr 1fr; }
+.p3 figure { margin:0; overflow:hidden; } .p3 figure img { width:100%; height:100%; object-fit:cover; }
+.p3 .blk { padding:34px 36px; display:flex; flex-direction:column; }
+.p3 .blk b { font-weight:600; font-size:13px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:auto; }
+.p3 .blk span { font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.06em; line-height:1.9; opacity:.85; }
+.ratio-bar { position:absolute; left:56px; right:56px; top:260px; bottom:60px; display:flex; }
+.ratio-bar > div { position:relative; padding:36px; }
+.ratio-bar b { font-family:"Inter Display", sans-serif; font-weight:800; font-size:180px; letter-spacing:-.06em; line-height:.8; display:block; }
+.ratio-bar span { position:absolute; left:36px; bottom:36px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.08em; opacity:.8; }
+.reg { position:absolute; left:56px; right:56px; top:130px; height:720px; display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.reg figure { margin:0; position:relative; overflow:hidden; }
+.reg figure img { width:100%; height:100%; object-fit:cover; }
+.reg figure .k { position:absolute; top:22px; left:50%; transform:translateX(-50%); white-space:nowrap; }
+.reg .chips { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; gap:10px; }
+.reg .chips i { display:block; width:190px; height:56px; box-shadow:0 8px 24px rgba(0,0,0,.25); }
+.tex { position:absolute; left:0; right:0; top:200px; bottom:0; display:grid; grid-template-columns:repeat(4,1fr); }
+.tex > div { position:relative; display:flex; align-items:center; justify-content:center; }
+.tex .k { position:absolute; top:-26px; left:50%; transform:translateX(-50%); white-space:nowrap; color:#14141A !important; }
+.tex .wm { width:240px; }
 
-/* type */
-.glyph-stage { display:flex; align-items:baseline; justify-content:center; gap:30px; height:100%; }
-.glyph { font-family:"Inter Display", sans-serif; font-weight:800; font-size:560px; letter-spacing:-.07em; line-height:1; }
-.glyph-ar { font-weight:700; font-size:200px; opacity:.85; }
-.specimen { margin-top:30px; display:flex; flex-direction:column; gap:14px; }
-.sp { font-size:24px; letter-spacing:-.01em; }
-.sp.w800 { font-family:"Inter Display", sans-serif; font-weight:800; font-size:34px; letter-spacing:-.045em; }
-.sp.w600 { font-weight:600; font-size:16px; letter-spacing:.2em; text-transform:uppercase; }
-.sp.w400 { font-weight:400; font-size:21px; }
-.sp.mono { font-family:"IBM Plex Mono", monospace; font-size:17px; }
-.numsig { display:flex; gap:48px; font-family:"Inter Display", sans-serif; font-weight:800; font-size:64px; letter-spacing:-.03em; margin:8px 0 22px; }
-.ar-stage { direction:rtl; text-align:right; display:flex; flex-direction:column; justify-content:center; gap:34px; height:100%; }
-.ar-big { font-weight:700; font-size:200px; line-height:1; letter-spacing:-.01em; }
-.ar-mid { font-weight:700; font-size:72px; line-height:1.1; }
-.ar-small { font-weight:400; font-size:30px; opacity:.7; }
+/* typography */
+.sample { position:absolute; left:56px; right:56px; top:200px; text-align:center; font-family:"Inter Display", sans-serif; font-weight:800; font-size:150px; letter-spacing:-.055em; line-height:.92; }
+.sample.ar { font-weight:700; font-size:130px; letter-spacing:0; line-height:1.15; direction:rtl; }
+.specs { position:absolute; left:50%; transform:translateX(-50%); bottom:110px; display:flex; gap:120px; text-align:center; }
+.specs .k { display:block; margin-bottom:10px; }
+.specs b { display:block; font-weight:500; font-size:14px; }
+.specs i { display:block; font-style:normal; font-size:11.5px; opacity:.6; margin-top:4px; }
+.annot .hero { position:absolute; left:0; top:0; bottom:0; width:50%; overflow:hidden; }
+.annot .hero > img { width:100%; height:100%; object-fit:cover; opacity:.85; }
+.annot .hero-t { position:absolute; left:64px; right:64px; bottom:80px; z-index:2; }
+.annot .wmrow .wm { width:120px; margin-bottom:36px; }
+.annot h2 { margin:0 0 18px; font-family:"Inter Display", sans-serif; font-weight:800; font-size:88px; letter-spacing:-.05em; line-height:.9; }
+.annot .hero-t p { font-size:14px; line-height:1.6; max-width:420px; opacity:.85; margin-bottom:20px; }
+.annot .cta { font-size:11px; letter-spacing:.2em; text-transform:uppercase; }
+.annot .hero:after { content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(20,20,26,.9), rgba(20,20,26,0) 60%); }
+.annot .hero-t { z-index:3; }
+.specs-r { position:absolute; left:50%; right:0; top:0; bottom:0; padding:150px 96px 0 96px; display:flex; flex-direction:column; justify-content:center; gap:34px; }
+.specs-r .k { display:block; margin-bottom:6px; }
+.specs-r b { display:block; font-weight:500; font-size:15px; }
+.specs-r i { display:block; font-style:normal; font-size:12px; opacity:.6; margin-top:4px; }
 
-/* image system */
-.worlds { display:grid; grid-template-columns:1fr 1fr; height:100%; }
-.world { position:relative; overflow:hidden; }
-.world img { width:100%; height:100%; object-fit:cover; display:block; }
-.world-text { position:absolute; left:72px; right:72px; bottom:90px; }
-.world-text .body { max-width:520px; }
-.thirds { position:absolute; inset:0; z-index:3; }
-.thirds i { position:absolute; background:rgba(242,239,231,.45); }
-.thirds i:nth-child(1){ left:33.333%; top:0; bottom:0; width:1px; }
-.thirds i:nth-child(2){ left:66.666%; top:0; bottom:0; width:1px; }
-.thirds i:nth-child(3){ top:33.333%; left:0; right:0; height:1px; }
-.thirds i:nth-child(4){ top:66.666%; left:0; right:0; height:1px; }
-.never { list-style:none; margin:0; padding:0; font-family:"Inter Display", sans-serif; font-weight:800; font-size:44px; letter-spacing:-.04em; line-height:1.5; }
-.never li:before { content:"—  "; opacity:.35; }
+/* system elements */
+.sys-l { position:absolute; left:0; top:0; bottom:0; width:50%; background:#E8E4DA; display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(2,1fr); padding:160px 60px 80px; gap:24px; }
+.sys { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; text-align:center; }
+.sys b { font-family:"Inter Display", sans-serif; font-weight:800; font-size:64px; letter-spacing:-.04em; line-height:1; }
+.sys b.eb { font-family:"Inter", sans-serif; font-weight:600; font-size:12px; letter-spacing:.2em; text-transform:uppercase; }
+.sys b.rule { width:120px; height:1px; background:#14141A; }
+.sys b.dots { width:120px; height:0; border-bottom:2px dotted #14141A; }
+.sys-r { position:absolute; right:0; top:0; bottom:0; width:50%; display:flex; align-items:center; justify-content:center; padding:0 200px; text-align:center; font-size:13.5px; line-height:1.65; opacity:.85; }
 
-/* applications */
-.card-face { position:absolute; left:0; top:0; transform-origin:0 0; z-index:4; padding:18px 20px; display:flex; flex-direction:column; justify-content:space-between; mix-blend-mode:multiply; }
-.card-sym { height:34px; width:auto; align-self:flex-start; opacity:.92; }
-.card-lines { display:flex; flex-direction:column; gap:2px; font-size:9.5px; letter-spacing:.06em; color:#14141A; opacity:.85; }
-.apps2 { position:relative; height:100%; }
-.poster { position:absolute; left:120px; top:90px; width:560px; height:800px; background:#F2EFE7; color:#14141A; padding:38px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 40px 80px rgba(0,0,0,.45); }
-.p-top, .p-foot { display:flex; justify-content:space-between; font-size:13px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; }
-.p-mid { flex:1; display:flex; align-items:center; justify-content:center; }
-.p-mark { font-family:"Inter Display", sans-serif; font-weight:800; font-size:340px; line-height:1; color:#BB4A2E; }
-.p-head { font-family:"Inter Display", sans-serif; font-weight:800; font-size:64px; letter-spacing:-.05em; line-height:.92; margin-bottom:34px; }
-.phone { position:absolute; left:820px; top:70px; width:380px; height:840px; background:#F2EFE7; color:#14141A; border-radius:44px; padding:22px 0 0; overflow:hidden; box-shadow:0 40px 80px rgba(0,0,0,.45); border:10px solid #232329; }
-.ph-bar { display:flex; align-items:center; gap:10px; padding:10px 18px 14px; }
-.ph-avatar { width:34px; height:34px; border-radius:50%; background:#14141A; color:#F2EFE7; display:flex; align-items:center; justify-content:center; font-family:"Inter Display", sans-serif; font-weight:800; font-size:20px; }
-.ph-name { font-size:14px; font-weight:600; }
-.ph-img { height:450px; background:#14141A; } .ph-img img { width:100%; height:100%; object-fit:cover; object-position:center 40%; display:block; }
-.ph-cap { padding:18px 18px; font-size:13.5px; line-height:1.45; }
-.apps-note { position:absolute; right:110px; bottom:120px; width:460px; color:#F2EFE7; }
+/* templates */
+.tpl { position:absolute; left:56px; top:130px; width:920px; height:890px; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); gap:8px; }
+.tpl .t { position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#14141A; }
+.tpl .t img { width:100%; height:100%; object-fit:cover; }
+.tpl .ink-t { background:#14141A; color:#F2EFE7; } .tpl .iv-t { background:#F2EFE7; color:#14141A; box-shadow:inset 0 0 0 1px rgba(20,20,26,.12); } .tpl .marrow-t { background:#BB4A2E; color:#F2EFE7; }
+.tpl .h { font-family:"Inter Display", sans-serif; font-weight:800; font-size:64px; letter-spacing:-.05em; }
+.tpl .h2 { font-family:"Inter Display", sans-serif; font-weight:800; font-size:52px; letter-spacing:-.05em; }
+.tpl .h3 { font-family:"Inter Display", sans-serif; font-weight:800; font-size:26px; letter-spacing:-.04em; line-height:1; position:absolute; left:22px; bottom:22px; }
+.tpl .eb { position:absolute; left:22px; top:18px; font-family:"Inter Display", sans-serif; font-weight:800; font-size:26px; letter-spacing:-.03em; }
+.tpl .ink-t .h { position:absolute; left:22px; bottom:18px; font-size:30px; }
+.tpl .p { font-size:14px; line-height:1.4; text-align:center; padding:0 30px; }
+.tpl-r { position:absolute; left:1080px; right:56px; top:0; bottom:0; display:flex; align-items:center; font-size:13.5px; line-height:1.65; opacity:.85; }
+.tpl-r b { font-weight:600; }
 
-/* voice */
-.beats { list-style:none; margin:0 0 10px; padding:0; font-size:21px; line-height:1.5; }
-.beats li { margin-bottom:12px; }
-.beats .n { display:inline-block; width:74px; }
-.strike { text-decoration:line-through; text-decoration-color:#BB4A2E; text-decoration-thickness:2px; opacity:.75; }
+/* phones */
+.phones .ph { position:absolute; top:120px; width:390px; height:840px; background:#232329; border-radius:52px; padding:12px; box-shadow:0 40px 80px rgba(0,0,0,.5); }
+.phones .ph:nth-child(1) { left:330px; } .phones .ph:nth-child(2) { left:765px; } .phones .ph:nth-child(3) { left:1200px; }
+.scr { width:100%; height:100%; border-radius:42px; overflow:hidden; position:relative; background:#14141A; }
+.scr > img { width:100%; height:100%; object-fit:cover; }
+.ivory-s { background:#F2EFE7; color:#14141A; } .marrow-s { background:#BB4A2E; color:#14141A; display:flex; align-items:center; justify-content:center; }
+.ig-top { display:flex; align-items:center; gap:10px; padding:64px 20px 16px; font-size:13px; font-weight:600; }
+.ig-top .av { width:34px; height:34px; border-radius:50%; background:#14141A; color:#F2EFE7; display:flex; align-items:center; justify-content:center; font-family:"Inter Display", sans-serif; font-weight:800; font-size:20px; }
+.ig-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+.ig-grid img, .ig-grid i { display:block; width:100%; aspect-ratio:1/1; object-fit:cover; background:#F2EFE7; box-shadow:inset 0 0 0 1px rgba(20,20,26,.1); }
+.ig-grid i.m { background:#BB4A2E; }
+.story-t { position:absolute; left:26px; right:26px; bottom:120px; font-family:"Inter Display", sans-serif; font-weight:800; font-size:34px; letter-spacing:-.04em; line-height:.95; color:#F2EFE7; text-shadow:0 2px 20px rgba(0,0,0,.5); }
+.story-b { position:absolute; left:26px; bottom:44px; } .story-b .wm { width:80px; }
+.big-sy { font-family:"Inter Display", sans-serif; font-weight:800; font-size:260px; line-height:1; color:#14141A; }
 
-/* grid */
-.grid .split { grid-template-columns: 1fr 1080px; gap:0; }
-.gridtext { padding:96px; }
-.rules { list-style:none; margin:10px 0 0; padding:0; font-size:19px; line-height:1.5; max-width:560px; }
-.rules li { margin-bottom:10px; padding-left:28px; text-indent:-28px; } .rules li:before { content:"—  "; opacity:.45; }
-.ig { display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); gap:6px; height:1080px; padding:0; background:#F2EFE7; }
-.t { position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-.t.ink { background:#14141A; } .t.ivory-t { background:#F2EFE7; color:#14141A; box-shadow:inset 0 0 0 1px rgba(20,20,26,.08); } .t.marrow-t { background:#BB4A2E; color:#F2EFE7; }
-.t img { width:100%; height:100%; object-fit:cover; display:block; }
-.t-word { font-family:"Inter Display", sans-serif; font-weight:800; font-size:84px; letter-spacing:-.05em; }
-.t-sym { font-family:"Inter Display", sans-serif; font-weight:800; font-size:200px; line-height:1; }
-.t-num { font-family:"Inter Display", sans-serif; font-weight:800; font-size:64px; letter-spacing:-.03em; position:absolute; left:28px; top:24px; }
-.t-sm { font-family:"Inter Display", sans-serif; font-weight:800; font-size:30px; letter-spacing:-.04em; line-height:1; position:absolute; left:28px; bottom:26px; }
-.ivory-c { color:#F2EFE7; }
-
-/* back */
-.back-mark { font-family:"Inter Display", sans-serif; font-weight:800; font-size:260px; line-height:1; position:absolute; left:96px; bottom:96px; color:#BB4A2E; }
-.back-lines { position:absolute; right:96px; bottom:120px; text-align:right; display:flex; flex-direction:column; gap:6px; font-size:17px; letter-spacing:.02em; opacity:.85; }
+/* thanks */
+.thanks-c { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; text-align:center; }
+.sy-s { font-family:"Inter Display", sans-serif; font-weight:800; font-size:44px; margin-bottom:180px; }
+.ty { font-size:12px; letter-spacing:.2em; text-transform:uppercase; }
+.rule { width:160px; height:1px; background:rgba(242,239,231,.5); }
+.by { font-size:12px; letter-spacing:.14em; text-transform:uppercase; opacity:.85; }
+.url { position:absolute; bottom:64px; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.08em; opacity:.6; }
 '''
 
 def build_html():
@@ -762,7 +534,6 @@ def build_html():
 <html lang="en"><head><meta charset="utf-8"><title>latənt — brand book</title>
 <style>{CSS}</style>
 <script>
-  // ?page=N shows only that page (used for PNG capture)
   addEventListener('DOMContentLoaded', () => {{
     const q = new URLSearchParams(location.search).get('page');
     if (q) {{ document.querySelectorAll('.page').forEach(p => {{ if (p.id !== 'p'+q) p.remove(); }}); document.body.style.background='transparent'; }}
@@ -777,18 +548,25 @@ def build_html():
         f.write(doc)
     return out
 
-def render(out):
+def render(out, only=None):
     os.makedirs(PAGES_DIR, exist_ok=True)
+    for f in os.listdir(PAGES_DIR):
+        if f.endswith(".png") and only is None:
+            os.remove(os.path.join(PAGES_DIR, f))
     url = "file://" + out
     for i, (name, _) in enumerate(pages, 1):
+        if only and i not in only:
+            continue
         png = os.path.join(PAGES_DIR, f"{i:02d}-{name}.png")
-        subprocess.run([CHROME, "--headless=new", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",
+        subprocess.run([CHROME, "--no-sandbox", "--disable-gpu", "--hide-scrollbars",
                         "--window-size=1920,1080", "--force-device-scale-factor=2",
                         f"--screenshot={png}", f"{url}?page={i}"], check=True,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         print("png", png)
+    if only:
+        return
     pdf = os.path.join(ROOT, "latent-brand-book.pdf")
-    subprocess.run([CHROME, "--headless=new", "--no-sandbox", "--disable-gpu", "--no-pdf-header-footer",
+    subprocess.run([CHROME, "--no-sandbox", "--disable-gpu", "--no-pdf-header-footer",
                     f"--print-to-pdf={pdf}", url], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     print("pdf", pdf)
 
@@ -796,4 +574,8 @@ if __name__ == "__main__":
     out = build_html()
     print("html", out, "pages", len(pages))
     if "--html" not in sys.argv:
-        render(out)
+        only = None
+        for a in sys.argv[1:]:
+            if a.startswith("--only="):
+                only = [int(x) for x in a[7:].split(",")]
+        render(out, only)

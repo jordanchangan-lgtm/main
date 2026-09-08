@@ -16,11 +16,12 @@ Theme folder: `latent-portfolio/`. Install zip: `latent-portfolio.zip` (Appearan
 | "Portfolio" post type | `inc/post-type.php` | One post per project. Ordered by the Order box. Fields: the work, sector, city, year, note, filter word, PDF. |
 | Project editor | `inc/meta-boxes.php`, `assets/admin.js` | Details box + a Pieces box: pick images and MP4s from the Media Library, drag to reorder, label each, choose a poster frame for films. Ratios are read from the files. |
 | The stage | `inc/render.php`, `assets/portfolio.js`, `style.css` | The same markup, CSS and vanilla JS as the static site. No jQuery, no framework, no page builder. |
-| Front page | `front-page.php` | Intro panel → the stage → contact panel. |
+| Front page | `front-page.php` | Intro panel → the stage → About panel → contact panel. |
+| About panel | `template-parts/about.php`, `page.php` | Any WordPress Page chosen in Customize → Studio → About page. Its text is the panel, its featured image the blurred ground, three credit columns from the Customizer. The page's own URL (`/about/`) shows the same panel. |
 | Page template | `template-portfolio.php` | "Portfolio stage" — assign it to any page to get the stage there. |
 | Shortcode | `functions.php` | `[latent_portfolio]` drops the stage into any page or builder block. |
-| Customizer | `inc/customizer.php` | Appearance → Customize → Studio: tagline, city, email, phone, Instagram, LinkedIn, clock zone. |
-| Demo importer | `inc/demo.php`, `demo/` | Appearance → Latent demo → one click creates the six sample projects (41 pieces + the brand book PDF). |
+| Customizer | `inc/customizer.php` | Appearance → Customize → Studio: tagline, city, email, phone, Instagram, LinkedIn, clock zone, the About page and its three credit columns. |
+| Demo importer | `inc/demo.php`, `demo/` | Appearance → Latent demo → one click creates six empty slots (Project 1 … 6) with default plates at mixed ratios, and a placeholder About page. |
 | Fonts | `assets/fonts/` | Archivo and IBM Plex Mono served from the theme. No Google Fonts request. |
 
 Requires WordPress 6.4+ and PHP 7.4+. No plugins needed.
@@ -29,9 +30,13 @@ Requires WordPress 6.4+ and PHP 7.4+. No plugins needed.
 
 1. Appearance → Themes → Add New → Upload Theme → `latent-portfolio.zip` → Activate.
 2. Settings → Reading → "Your homepage displays: A static page" is not required; the theme's `front-page.php` shows the stage on the home URL either way.
-3. Appearance → Latent demo → Import the demo, to see it populated. Delete the sample projects later from Portfolio.
+3. Appearance → Latent demo → Import the demo: six empty slots named Project 1 to 6 with default plates, so the stage has a shape. Rename them and swap the plates for the client's pieces, or delete them.
 4. Appearance → Customize → Studio: put in the studio's own name, tagline, email, links.
 5. Settings → Media: nothing to change. Large MP4s need `upload_max_filesize` on the host to allow them (most hosts: 64–256 MB).
+
+## The About page
+
+Write it as an ordinary WordPress Page (Pages → Add New): title, a few paragraphs, a featured image for the ground. Then Appearance → Customize → Studio → About page: pick it. The three credit columns under the text are Customizer textareas; the first line of each is the heading.
 
 ## Adding a project
 
@@ -45,4 +50,4 @@ Portfolio → Add project. Title is the brand. Fill the details. In Pieces, "Add
 
 ## Local run used for the demo
 
-The demo screenshots and recording were made on WordPress 7.1 with the SQLite Database Integration plugin, PHP 8.4, headless Chromium at 1440×900 and iPhone 13. Films show their poster frames in the recording because headless Chromium ships without H.264.
+The demo screenshots and recording show the six default slots on WordPress 7.1 with the SQLite Database Integration plugin, PHP 8.4, headless Chromium at 1440×900 and iPhone 13. Films show their poster frames in the recording because headless Chromium ships without H.264.

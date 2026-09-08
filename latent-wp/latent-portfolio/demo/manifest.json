@@ -1,333 +1,241 @@
 [
  {
-  "title": "Atelier Rebul",
-  "slug": "atelier-rebul",
-  "project": "Élixir 2",
-  "sector": "Perfume",
-  "city": "Istanbul",
+  "title": "Project 1",
+  "slug": "project-1",
+  "project": "The work \u00b7 one line",
+  "sector": "Sector",
+  "city": "City",
   "year": "2026",
-  "note": "Nine plates + film",
-  "filter": "Perfume",
-  "pdf": "",
-  "media": [
-   {
-    "type": "video",
-    "file": "atelier-rebul-01.mp4",
-    "poster": "atelier-rebul-01-poster.jpg",
-    "ar": "720/1290",
-    "label": "Film · 9:16 · 0:20",
-    "dur": "0:20"
-   },
-   {
-    "type": "image",
-    "file": "atelier-rebul-02.jpg",
-    "ar": "900/1612",
-    "label": "Plate 01"
-   },
-   {
-    "type": "image",
-    "file": "atelier-rebul-03.jpg",
-    "ar": "900/1612",
-    "label": "Plate 02"
-   },
-   {
-    "type": "image",
-    "file": "atelier-rebul-04.jpg",
-    "ar": "900/1612",
-    "label": "Plate 03"
-   },
-   {
-    "type": "image",
-    "file": "atelier-rebul-05.jpg",
-    "ar": "900/1612",
-    "label": "Plate 04"
-   },
-   {
-    "type": "image",
-    "file": "atelier-rebul-06.jpg",
-    "ar": "900/1612",
-    "label": "Plate 05"
-   },
-   {
-    "type": "image",
-    "file": "atelier-rebul-07.jpg",
-    "ar": "900/1612",
-    "label": "Plate 06"
-   },
-   {
-    "type": "image",
-    "file": "atelier-rebul-08.jpg",
-    "ar": "900/1612",
-    "label": "Plate 07"
-   },
-   {
-    "type": "image",
-    "file": "atelier-rebul-09.jpg",
-    "ar": "900/1612",
-    "label": "Plate 08"
-   }
-  ]
- },
- {
-  "title": "Cube Care Center",
-  "slug": "cube-care-center",
-  "project": "Identity + campaign",
-  "sector": "Motorcycle wash",
-  "city": "Amman",
-  "year": "2026",
-  "note": "Logo, palette, type, posters",
-  "filter": "Care",
+  "note": "Replace these plates with the client's pieces",
+  "filter": "01",
   "pdf": "",
   "media": [
    {
     "type": "image",
-    "file": "cube-care-center-01.jpg",
-    "ar": "800/993",
-    "label": "Poster 01"
+    "file": "project-1-01.jpg",
+    "ar": "787/1400",
+    "label": "Piece 01"
    },
    {
     "type": "image",
-    "file": "cube-care-center-02.jpg",
-    "ar": "800/993",
-    "label": "Poster 02"
+    "file": "project-1-02.jpg",
+    "ar": "1400/787",
+    "label": "Piece 02"
    },
    {
     "type": "image",
-    "file": "cube-care-center-03.jpg",
-    "ar": "800/993",
-    "label": "Poster 03"
+    "file": "project-1-03.jpg",
+    "ar": "1400/1400",
+    "label": "Piece 03"
    },
    {
     "type": "image",
-    "file": "cube-care-center-04.jpg",
-    "ar": "800/993",
-    "label": "Poster 04"
+    "file": "project-1-04.jpg",
+    "ar": "1050/1400",
+    "label": "Piece 04"
+   },
+   {
+    "type": "image",
+    "file": "project-1-05.jpg",
+    "ar": "1400/1120",
+    "label": "Piece 05"
    }
   ]
  },
  {
-  "title": "Cube Coffee House",
-  "slug": "cube-coffee-house",
-  "project": "Identity + campaign",
-  "sector": "Coffee",
-  "city": "Amman",
+  "title": "Project 2",
+  "slug": "project-2",
+  "project": "The work \u00b7 one line",
+  "sector": "Sector",
+  "city": "City",
   "year": "2026",
-  "note": "Logo, palette, type, posters, films",
-  "filter": "Coffee",
-  "pdf": "",
-  "media": [
-   {
-    "type": "video",
-    "file": "cube-coffee-house-01.mp4",
-    "poster": "cube-coffee-house-01-poster.jpg",
-    "ar": "576/714",
-    "label": "Film · pour · 0:08",
-    "dur": "0:08"
-   },
-   {
-    "type": "image",
-    "file": "cube-coffee-house-02.jpg",
-    "ar": "800/993",
-    "label": "Poster 01"
-   },
-   {
-    "type": "video",
-    "file": "cube-coffee-house-03.mp4",
-    "poster": "cube-coffee-house-03-poster.jpg",
-    "ar": "576/714",
-    "label": "Film · bean bags · 0:08",
-    "dur": "0:08"
-   },
-   {
-    "type": "image",
-    "file": "cube-coffee-house-04.jpg",
-    "ar": "800/993",
-    "label": "Poster 02"
-   },
-   {
-    "type": "image",
-    "file": "cube-coffee-house-05.jpg",
-    "ar": "800/993",
-    "label": "Poster 03"
-   }
-  ]
- },
- {
-  "title": "Rawabina Al-Khadhraa",
-  "slug": "rawabina-al-khadhraa",
-  "project": "Touch of Green",
-  "sector": "Landscaping",
-  "city": "Amman",
-  "year": "2026",
-  "note": "Editorial website · ten panels",
-  "filter": "Web",
+  "note": "Replace these plates with the client's pieces",
+  "filter": "02",
   "pdf": "",
   "media": [
    {
     "type": "image",
-    "file": "rawabina-al-khadhraa-01.jpg",
-    "ar": "1200/750",
-    "label": "Home · the leaf"
+    "file": "project-2-01.jpg",
+    "ar": "1050/1400",
+    "label": "Piece 01"
    },
    {
     "type": "image",
-    "file": "rawabina-al-khadhraa-02.jpg",
-    "ar": "1200/750",
-    "label": "A touch of green across the Kingdom"
+    "file": "project-2-02.jpg",
+    "ar": "1400/1120",
+    "label": "Piece 02"
    },
    {
     "type": "image",
-    "file": "rawabina-al-khadhraa-03.jpg",
-    "ar": "1200/490",
-    "label": "About · a specialist in living landscapes"
+    "file": "project-2-03.jpg",
+    "ar": "933/1400",
+    "label": "Piece 03"
    },
    {
     "type": "image",
-    "file": "rawabina-al-khadhraa-04.jpg",
-    "ar": "1200/320",
-    "label": "Since 1997 · the numbers"
-   },
-   {
-    "type": "image",
-    "file": "rawabina-al-khadhraa-05.jpg",
-    "ar": "1200/989",
-    "label": "Approach · we start by listening"
-   },
-   {
-    "type": "image",
-    "file": "rawabina-al-khadhraa-06.jpg",
-    "ar": "1200/577",
-    "label": "Built in four scientific parts"
-   },
-   {
-    "type": "image",
-    "file": "rawabina-al-khadhraa-07.jpg",
-    "ar": "1200/450",
-    "label": "Maintenance · materials · warranty"
-   },
-   {
-    "type": "image",
-    "file": "rawabina-al-khadhraa-08.jpg",
-    "ar": "1200/750",
-    "label": "Landscapes we've grown"
-   },
-   {
-    "type": "image",
-    "file": "rawabina-al-khadhraa-09.jpg",
-    "ar": "1200/350",
-    "label": "Trusted on the Kingdom's landmark works"
-   },
-   {
-    "type": "image",
-    "file": "rawabina-al-khadhraa-10.jpg",
-    "ar": "1200/420",
-    "label": "Footer · a touch of green, since 1997"
+    "file": "project-2-04.jpg",
+    "ar": "1400/875",
+    "label": "Piece 04"
    }
   ]
  },
  {
-  "title": "Latent",
-  "slug": "latent",
-  "project": "Identity + brand film",
-  "sector": "Identity",
-  "city": "Amman",
+  "title": "Project 3",
+  "slug": "project-3",
+  "project": "The work \u00b7 one line",
+  "sector": "Sector",
+  "city": "City",
   "year": "2026",
-  "note": "Mark · palette · world · colophon",
-  "filter": "Studio",
+  "note": "Replace these plates with the client's pieces",
+  "filter": "03",
   "pdf": "",
   "media": [
    {
-    "type": "video",
-    "file": "latent-01.mp4",
-    "poster": "latent-01-poster.jpg",
-    "ar": "720/1280",
-    "label": "Brand film · 9:16 · 0:05",
-    "dur": "0:05"
+    "type": "image",
+    "file": "project-3-01.jpg",
+    "ar": "1400/875",
+    "label": "Piece 01"
    },
    {
     "type": "image",
-    "file": "latent-02.jpg",
-    "ar": "1000/1250",
-    "label": "Mark · construction"
+    "file": "project-3-02.jpg",
+    "ar": "1120/1400",
+    "label": "Piece 02"
    },
    {
     "type": "image",
-    "file": "latent-03.jpg",
-    "ar": "1000/1250",
-    "label": "Colour & theme"
+    "file": "project-3-03.jpg",
+    "ar": "787/1400",
+    "label": "Piece 03"
    },
    {
     "type": "image",
-    "file": "latent-04.jpg",
-    "ar": "1000/1250",
-    "label": "World · objects"
+    "file": "project-3-04.jpg",
+    "ar": "1400/787",
+    "label": "Piece 04"
    },
    {
     "type": "image",
-    "file": "latent-05.jpg",
-    "ar": "1000/1250",
-    "label": "Colophon"
+    "file": "project-3-05.jpg",
+    "ar": "1400/1400",
+    "label": "Piece 05"
+   },
+   {
+    "type": "image",
+    "file": "project-3-06.jpg",
+    "ar": "1050/1400",
+    "label": "Piece 06"
    }
   ]
  },
  {
-  "title": "Latent brand book",
-  "slug": "latent-brand-book",
-  "project": "Thirty-five spreads",
-  "sector": "Identity",
-  "city": "Amman",
+  "title": "Project 4",
+  "slug": "project-4",
+  "project": "The work \u00b7 one line",
+  "sector": "Sector",
+  "city": "City",
   "year": "2026",
-  "note": "The book as a PDF, beside eight of its spreads",
-  "filter": "Book",
-  "pdf": "latent-brand-book.pdf",
+  "note": "Replace these plates with the client's pieces",
+  "filter": "04",
+  "pdf": "",
   "media": [
    {
     "type": "image",
-    "file": "latent-brand-book-01.jpg",
-    "ar": "1440/810",
-    "label": "Cover"
+    "file": "project-4-01.jpg",
+    "ar": "1400/787",
+    "label": "Piece 01"
    },
    {
     "type": "image",
-    "file": "latent-brand-book-02.jpg",
-    "ar": "1440/810",
-    "label": "Wordmark on ink"
+    "file": "project-4-02.jpg",
+    "ar": "1400/1400",
+    "label": "Piece 02"
    },
    {
     "type": "image",
-    "file": "latent-brand-book-03.jpg",
-    "ar": "1440/810",
-    "label": "The mark"
+    "file": "project-4-03.jpg",
+    "ar": "1050/1400",
+    "label": "Piece 03"
+   }
+  ]
+ },
+ {
+  "title": "Project 5",
+  "slug": "project-5",
+  "project": "The work \u00b7 one line",
+  "sector": "Sector",
+  "city": "City",
+  "year": "2026",
+  "note": "Replace these plates with the client's pieces",
+  "filter": "05",
+  "pdf": "",
+  "media": [
+   {
+    "type": "image",
+    "file": "project-5-01.jpg",
+    "ar": "1400/1120",
+    "label": "Piece 01"
    },
    {
     "type": "image",
-    "file": "latent-brand-book-04.jpg",
-    "ar": "1440/810",
-    "label": "Colour system"
+    "file": "project-5-02.jpg",
+    "ar": "933/1400",
+    "label": "Piece 02"
    },
    {
     "type": "image",
-    "file": "latent-brand-book-05.jpg",
-    "ar": "1440/810",
-    "label": "No camera. No studio."
+    "file": "project-5-03.jpg",
+    "ar": "1400/875",
+    "label": "Piece 03"
    },
    {
     "type": "image",
-    "file": "latent-brand-book-06.jpg",
-    "ar": "1440/810",
-    "label": "Phone mockups"
+    "file": "project-5-04.jpg",
+    "ar": "1120/1400",
+    "label": "Piece 04"
    },
    {
     "type": "image",
-    "file": "latent-brand-book-07.jpg",
-    "ar": "1440/810",
-    "label": "Stationery"
+    "file": "project-5-05.jpg",
+    "ar": "787/1400",
+    "label": "Piece 05"
+   }
+  ]
+ },
+ {
+  "title": "Project 6",
+  "slug": "project-6",
+  "project": "The work \u00b7 one line",
+  "sector": "Sector",
+  "city": "City",
+  "year": "2026",
+  "note": "Replace these plates with the client's pieces",
+  "filter": "06",
+  "pdf": "",
+  "media": [
+   {
+    "type": "image",
+    "file": "project-6-01.jpg",
+    "ar": "1120/1400",
+    "label": "Piece 01"
    },
    {
     "type": "image",
-    "file": "latent-brand-book-08.jpg",
-    "ar": "1440/810",
-    "label": "Tape"
+    "file": "project-6-02.jpg",
+    "ar": "787/1400",
+    "label": "Piece 02"
+   },
+   {
+    "type": "image",
+    "file": "project-6-03.jpg",
+    "ar": "1400/787",
+    "label": "Piece 03"
+   },
+   {
+    "type": "image",
+    "file": "project-6-04.jpg",
+    "ar": "1400/1400",
+    "label": "Piece 04"
    }
   ]
  }

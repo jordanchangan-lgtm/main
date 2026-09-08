@@ -1,0 +1,334 @@
+[
+ {
+  "title": "Atelier Rebul",
+  "slug": "atelier-rebul",
+  "project": "Élixir 2",
+  "sector": "Perfume",
+  "city": "Istanbul",
+  "year": "2026",
+  "note": "Nine plates + film",
+  "filter": "Perfume",
+  "pdf": "",
+  "media": [
+   {
+    "type": "video",
+    "file": "atelier-rebul-01.mp4",
+    "poster": "atelier-rebul-01-poster.jpg",
+    "ar": "720/1290",
+    "label": "Film · 9:16 · 0:20",
+    "dur": "0:20"
+   },
+   {
+    "type": "image",
+    "file": "atelier-rebul-02.jpg",
+    "ar": "900/1612",
+    "label": "Plate 01"
+   },
+   {
+    "type": "image",
+    "file": "atelier-rebul-03.jpg",
+    "ar": "900/1612",
+    "label": "Plate 02"
+   },
+   {
+    "type": "image",
+    "file": "atelier-rebul-04.jpg",
+    "ar": "900/1612",
+    "label": "Plate 03"
+   },
+   {
+    "type": "image",
+    "file": "atelier-rebul-05.jpg",
+    "ar": "900/1612",
+    "label": "Plate 04"
+   },
+   {
+    "type": "image",
+    "file": "atelier-rebul-06.jpg",
+    "ar": "900/1612",
+    "label": "Plate 05"
+   },
+   {
+    "type": "image",
+    "file": "atelier-rebul-07.jpg",
+    "ar": "900/1612",
+    "label": "Plate 06"
+   },
+   {
+    "type": "image",
+    "file": "atelier-rebul-08.jpg",
+    "ar": "900/1612",
+    "label": "Plate 07"
+   },
+   {
+    "type": "image",
+    "file": "atelier-rebul-09.jpg",
+    "ar": "900/1612",
+    "label": "Plate 08"
+   }
+  ]
+ },
+ {
+  "title": "Cube Care Center",
+  "slug": "cube-care-center",
+  "project": "Identity + campaign",
+  "sector": "Motorcycle wash",
+  "city": "Amman",
+  "year": "2026",
+  "note": "Logo, palette, type, posters",
+  "filter": "Care",
+  "pdf": "",
+  "media": [
+   {
+    "type": "image",
+    "file": "cube-care-center-01.jpg",
+    "ar": "800/993",
+    "label": "Poster 01"
+   },
+   {
+    "type": "image",
+    "file": "cube-care-center-02.jpg",
+    "ar": "800/993",
+    "label": "Poster 02"
+   },
+   {
+    "type": "image",
+    "file": "cube-care-center-03.jpg",
+    "ar": "800/993",
+    "label": "Poster 03"
+   },
+   {
+    "type": "image",
+    "file": "cube-care-center-04.jpg",
+    "ar": "800/993",
+    "label": "Poster 04"
+   }
+  ]
+ },
+ {
+  "title": "Cube Coffee House",
+  "slug": "cube-coffee-house",
+  "project": "Identity + campaign",
+  "sector": "Coffee",
+  "city": "Amman",
+  "year": "2026",
+  "note": "Logo, palette, type, posters, films",
+  "filter": "Coffee",
+  "pdf": "",
+  "media": [
+   {
+    "type": "video",
+    "file": "cube-coffee-house-01.mp4",
+    "poster": "cube-coffee-house-01-poster.jpg",
+    "ar": "576/714",
+    "label": "Film · pour · 0:08",
+    "dur": "0:08"
+   },
+   {
+    "type": "image",
+    "file": "cube-coffee-house-02.jpg",
+    "ar": "800/993",
+    "label": "Poster 01"
+   },
+   {
+    "type": "video",
+    "file": "cube-coffee-house-03.mp4",
+    "poster": "cube-coffee-house-03-poster.jpg",
+    "ar": "576/714",
+    "label": "Film · bean bags · 0:08",
+    "dur": "0:08"
+   },
+   {
+    "type": "image",
+    "file": "cube-coffee-house-04.jpg",
+    "ar": "800/993",
+    "label": "Poster 02"
+   },
+   {
+    "type": "image",
+    "file": "cube-coffee-house-05.jpg",
+    "ar": "800/993",
+    "label": "Poster 03"
+   }
+  ]
+ },
+ {
+  "title": "Rawabina Al-Khadhraa",
+  "slug": "rawabina-al-khadhraa",
+  "project": "Touch of Green",
+  "sector": "Landscaping",
+  "city": "Amman",
+  "year": "2026",
+  "note": "Editorial website · ten panels",
+  "filter": "Web",
+  "pdf": "",
+  "media": [
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-01.jpg",
+    "ar": "1200/750",
+    "label": "Home · the leaf"
+   },
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-02.jpg",
+    "ar": "1200/750",
+    "label": "A touch of green across the Kingdom"
+   },
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-03.jpg",
+    "ar": "1200/490",
+    "label": "About · a specialist in living landscapes"
+   },
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-04.jpg",
+    "ar": "1200/320",
+    "label": "Since 1997 · the numbers"
+   },
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-05.jpg",
+    "ar": "1200/989",
+    "label": "Approach · we start by listening"
+   },
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-06.jpg",
+    "ar": "1200/577",
+    "label": "Built in four scientific parts"
+   },
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-07.jpg",
+    "ar": "1200/450",
+    "label": "Maintenance · materials · warranty"
+   },
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-08.jpg",
+    "ar": "1200/750",
+    "label": "Landscapes we've grown"
+   },
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-09.jpg",
+    "ar": "1200/350",
+    "label": "Trusted on the Kingdom's landmark works"
+   },
+   {
+    "type": "image",
+    "file": "rawabina-al-khadhraa-10.jpg",
+    "ar": "1200/420",
+    "label": "Footer · a touch of green, since 1997"
+   }
+  ]
+ },
+ {
+  "title": "Latent",
+  "slug": "latent",
+  "project": "Identity + brand film",
+  "sector": "Identity",
+  "city": "Amman",
+  "year": "2026",
+  "note": "Mark · palette · world · colophon",
+  "filter": "Studio",
+  "pdf": "",
+  "media": [
+   {
+    "type": "video",
+    "file": "latent-01.mp4",
+    "poster": "latent-01-poster.jpg",
+    "ar": "720/1280",
+    "label": "Brand film · 9:16 · 0:05",
+    "dur": "0:05"
+   },
+   {
+    "type": "image",
+    "file": "latent-02.jpg",
+    "ar": "1000/1250",
+    "label": "Mark · construction"
+   },
+   {
+    "type": "image",
+    "file": "latent-03.jpg",
+    "ar": "1000/1250",
+    "label": "Colour & theme"
+   },
+   {
+    "type": "image",
+    "file": "latent-04.jpg",
+    "ar": "1000/1250",
+    "label": "World · objects"
+   },
+   {
+    "type": "image",
+    "file": "latent-05.jpg",
+    "ar": "1000/1250",
+    "label": "Colophon"
+   }
+  ]
+ },
+ {
+  "title": "Latent brand book",
+  "slug": "latent-brand-book",
+  "project": "Thirty-five spreads",
+  "sector": "Identity",
+  "city": "Amman",
+  "year": "2026",
+  "note": "The book as a PDF, beside eight of its spreads",
+  "filter": "Book",
+  "pdf": "latent-brand-book.pdf",
+  "media": [
+   {
+    "type": "image",
+    "file": "latent-brand-book-01.jpg",
+    "ar": "1440/810",
+    "label": "Cover"
+   },
+   {
+    "type": "image",
+    "file": "latent-brand-book-02.jpg",
+    "ar": "1440/810",
+    "label": "Wordmark on ink"
+   },
+   {
+    "type": "image",
+    "file": "latent-brand-book-03.jpg",
+    "ar": "1440/810",
+    "label": "The mark"
+   },
+   {
+    "type": "image",
+    "file": "latent-brand-book-04.jpg",
+    "ar": "1440/810",
+    "label": "Colour system"
+   },
+   {
+    "type": "image",
+    "file": "latent-brand-book-05.jpg",
+    "ar": "1440/810",
+    "label": "No camera. No studio."
+   },
+   {
+    "type": "image",
+    "file": "latent-brand-book-06.jpg",
+    "ar": "1440/810",
+    "label": "Phone mockups"
+   },
+   {
+    "type": "image",
+    "file": "latent-brand-book-07.jpg",
+    "ar": "1440/810",
+    "label": "Stationery"
+   },
+   {
+    "type": "image",
+    "file": "latent-brand-book-08.jpg",
+    "ar": "1440/810",
+    "label": "Tape"
+   }
+  ]
+ }
+]

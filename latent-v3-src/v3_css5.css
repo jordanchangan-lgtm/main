@@ -1,0 +1,39 @@
+
+/* ---------- last word: phone sizes, the hero over a bright face, the footer ---------- */
+@media(max-width:820px){
+  .hero.home .hs,.hero.home .hs-name,.hero.home .hs-role,.hs,.hs-role{font-size:11px}
+  .hero.home .hs-foot,.hs-foot,.hero.home .hs-meta,.hs-meta{font-size:11px}
+  .ixl-title sup{font-size:11px}
+  .ixl-row .meta{font-size:11px}
+  .foot span:last-child{display:none}
+}
+@media(max-width:899px){.bar nav{font-size:11px;letter-spacing:.04em;gap:10px}}
+@media(max-width:600px){.bar nav{font-size:11px;letter-spacing:.02em;gap:8px}}
+/* the name and the role sit in the lower band under a scrim; the eyes at the centre stay clean */
+.hero.home .hs-name,.hero.home .hs-role{top:auto;bottom:22%}
+.hero.home .pv-grad{background:linear-gradient(180deg,rgba(11,11,13,.35) 0%,rgba(11,11,13,0) 22%,rgba(11,11,13,0) 56%,rgba(11,11,13,.86) 100%)}
+.hero.home .hs{text-shadow:0 1px 16px rgba(0,0,0,.6)}
+/* the name and the role: lower band, no half-height shift (the home rules carry four classes) */
+.hero.home.prisma .hs-name,.hero.home.prisma .hs-role{top:auto;bottom:22%;transform:none}
+@media(max-width:820px){.hero.home.prisma .hs-name,.hero.home.prisma .hs-role{top:auto;bottom:27%;transform:none}}
+/* index filters and rows on phones */
+@media(max-width:899px){.ixl-filter,.ixl-filter span,.ixl-filter b{font-size:11px}.ixl .ixl-row .meta,.js-steps .ixl-row .meta{font-size:11px}.ixl-title sup{font-size:11px}}
+/* packages: two by two on phones, nothing under 11 px */
+@media(max-width:700px){
+  .pz-beat .xg{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:150px;height:auto;gap:8px}
+  .pz-beat .xg-p,.pz-beat .xg.hov .xg-p,.pz-beat .xg.hov .xg-p.on{flex:none}
+  .pz-beat .xg-in{padding:12px}
+  .pz-beat .xg-n{font-size:11px}
+  .pz-beat .xg-name{font-size:14px;letter-spacing:-.01em;margin-top:4px}
+  .pz-beat .xg-badge{font-size:11px;padding:3px 7px;top:9px;right:9px}
+  .pz-beat .xg-price b{font-size:22px}
+  .pz-beat .xg-price span,.pz-beat .xg-open{font-size:11px}
+}
+/* phone: the name and the role on two lines, the role keeps its right edge (set by the balance script) */
+@media(max-width:820px){.hero.home.prisma .hs-name{bottom:32%}.hero.home.prisma .hs-role{bottom:26.5%}}
+/* prices on phones: nothing under 11 px */
+@media(max-width:700px){
+  .pz-beat .pk-custom h3{font-size:12px}.pz-beat .pk-custom p{font-size:11.5px}.pz-beat .pk-custom .pk-cta{font-size:11px}
+  .pr3 h3.grp,.pr3 h3.grp b{font-size:11px}.pr3 .row .nm small{font-size:11px}.pr3 .row .amt i{font-size:11px}
+}
+@media(max-width:700px){.pz-terms .pct span{font-size:11px}.pz-terms .pct b{font-size:18px}}

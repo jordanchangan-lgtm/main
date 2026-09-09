@@ -264,15 +264,15 @@ the coordinates, so adding a city needs no hand-placement.
 
 ## Still needed from the client
 
-- [ ] **An email address.** Still the one thing missing — the contact row shows
-      `TO BE CONFIRMED`. The primary button dials 0770 303 0030 instead.
+Email and opening hours were removed from the contact card at the client's
+request — do not put them back without being asked.
+
 - [ ] **The Mosul branch street address.** The letterhead gives the *registered*
       office, which is in Baghdad (Al-Qadisiyah, M 602, St 11, Bldg 3/148).
       This site is for the Mosul branch and its own address is still blank.
 - [ ] **One phone number resolved.** The letterhead prints a third number twice
       with two different digits — 0750 316 5555 and 0750 361 5555. Neither is
       published; the note on the page says so.
-- [ ] **Opening hours.**
 - [ ] The authorised director's name was on the letterhead and has been
       removed from the site at the client's request. Put it back only if asked.
 - [ ] **Higher-resolution photographs.** The seven in `assets/fleet/` came
@@ -288,8 +288,6 @@ the coordinates, so adding a city needs no hand-placement.
 - [ ] **The registered English name.** The letterhead prints "Transportion";
       the site spells it "Transport". Say the word if it must match the
       certificate exactly.
-- [ ] **Arabic / RTL version** — the site is English with Arabic throughout;
-      a full RTL build with a language toggle has not been built.
 
 ## Gotchas carried over from the last project
 

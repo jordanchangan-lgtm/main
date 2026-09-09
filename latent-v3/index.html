@@ -1582,6 +1582,22 @@ a.stk-l{cursor:pointer}
   .wk-cta{height:1.8em;white-space:nowrap;overflow:hidden}
 }
 
+/* the full-frame player: the picture or film keeps its own ratio, sits centred, and fills the width on phones */
+.fm-stage img,.fm-stage video{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;background:transparent}
+@media(max-width:899px){
+  .fm-modal{padding:60px 10px 44px;gap:10px}
+  .fm-head{padding:0 8px 10px}
+  .fm-stage{align-items:center}
+}
+
+/* a hidden film or still takes no room beside the one on show */
+.fm-stage video[hidden],.fm-stage img[hidden]{display:none}
+
+/* the price rows are links to a written email */
+.pr3 .ix a.row{color:inherit;text-decoration:none;cursor:pointer;transition:color .3s}
+.pr3 .ix a.row:hover .nm{color:var(--marrow)}
+.xg-p{cursor:pointer}
+
 .js-steps .ixl-prev figcaption{display:none}
 /* the sectors line, stacked like the method's */
 .sec-stk{margin:0 auto;width:100%}
@@ -1881,14 +1897,14 @@ a.stk-l{cursor:pointer}
       <div class="xg js-xg rv" role="list" aria-label="Packages"></div>
       <div class="pk-custom rv">
         <div><h3>Client customizable</h3><p>Tell us how many videos and posts you need, and how long each runs &mdash; we build the package around it.</p></div>
-        <a class="pk-cta" href="#contact">On request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a class="pk-cta" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20client%20customizable%20package&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20client%20customizable%20package.%0A%0ABrand%20%2F%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">On request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
       <div class="pr3">
         <div class="pr3-col rv" style="--k:1"><h3 class="grp"><b>02</b> Brand &amp; web</h3>
           <div class="ix">
-            <div class="row"><span class="ixn">1</span><div class="nm">Brand identity<small>Logo, palette, type, guidelines, mockups</small></div><div class="amt">375<i>JD</i></div></div>
-            <div class="row"><span class="ixn">2</span><div class="nm">Website &middot; standard<small>Static build, no animation</small></div><div class="amt">225<i>JD</i></div></div>
-            <div class="row"><span class="ixn">3</span><div class="nm">Website &middot; editorial<small>Fully animated &middot; scope-dependent</small></div><div class="amt">375&ndash;550<i>JD</i></div></div>
+            <a class="row" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Brand%20identity%20%C2%B7%20375%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Brand%20identity%20%C2%B7%20375%20JD.%0A%0ABrand%20%2F%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A"><span class="ixn">1</span><div class="nm">Brand identity<small>Logo, palette, type, guidelines, mockups</small></div><div class="amt">375<i>JD</i></div></a>
+            <a class="row" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20standard%20website%20%C2%B7%20225%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20standard%20website%20%C2%B7%20225%20JD.%0A%0ABrand%20%2F%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A"><span class="ixn">2</span><div class="nm">Website &middot; standard<small>Static build, no animation</small></div><div class="amt">225<i>JD</i></div></a>
+            <a class="row" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20editorial%20website%20%C2%B7%20375%20to%20550%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20editorial%20website%20%C2%B7%20375%20to%20550%20JD.%0A%0ABrand%20%2F%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A"><span class="ixn">3</span><div class="nm">Website &middot; editorial<small>Fully animated &middot; scope-dependent</small></div><div class="amt">375&ndash;550<i>JD</i></div></a>
           </div>
         </div>
         <div class="pr3-col rv" style="--k:2"><h3 class="grp"><b>03</b> Single pieces</h3>
@@ -1945,7 +1961,7 @@ a.stk-l{cursor:pointer}
 <div class="fm-modal js-fm" role="dialog" aria-modal="true" aria-label="Brand film" hidden>
   <div class="fm-head">
     <p class="fm-t"><span class="js-fm-title">Latent</span> <span class="sep">|</span> <span class="cl js-fm-client">Brand film</span></p>
-    <p class="fm-meta"><span class="js-fm-note">Identity &middot; motion &middot; worlds</span><span>Amman</span><span>2026</span><span class="js-fm-time">0:00 / 0:05</span></p>
+    <p class="fm-meta"><span class="js-fm-note">Identity &middot; motion &middot; worlds</span><span class="js-fm-time">0:00 / 0:05</span></p>
   </div>
   <div class="fm-stage js-fm-stage"><video class="js-fm-v" playsinline preload="metadata"></video><img class="js-fm-img" alt="" hidden><span class="fm-state js-fm-state">[ Pause ]</span></div>
   <button type="button" class="fm-x js-fm-close">[ Close ]</button>
@@ -2230,6 +2246,13 @@ a.stk-l{cursor:pointer}
   ];
   var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
   var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  /* every package writes an email to the studio with the package named in it */
+  var MAIL = "latentstudio.jo@gmail.com";
+  function mailtoFor(what){
+    var subject = "Enquiry \u00b7 " + what;
+    var body = "Hello Latent Studio,\n\nI would like to start with the " + what + ".\n\nBrand / product:\nWhat we are launching:\nWhen:\n\nThanks,\n";
+    return "mailto:" + MAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  }
   var xg = document.querySelector(".js-xg");
   if(xg){
     var feats = function(pk){ return '<ul class="xg-feats">' + pk.feats.map(function(f){ return "<li>" + CHECK + "<span>" + f + "</span></li>"; }).join("") + "</ul>"; };
@@ -2238,7 +2261,7 @@ a.stk-l{cursor:pointer}
         (pk.pop ? '<span class="xg-badge">Most chosen</span>' : "") +
         '<div class="xg-in"><div><div class="xg-n">' + pk.n + '</div><h3 class="xg-name">' + pk.name + '</h3>' +
         '<p class="xg-desc">' + pk.desc + '</p>' + feats(pk) + '</div>' +
-        '<div><div class="xg-price"><b>' + pk.price + '</b><span>JD</span></div><div class="xg-open">Open</div></div></div></div>';
+        '<div><div class="xg-price"><b>' + pk.price + '</b><span>JD</span></div><a class="xg-open" href="' + mailtoFor(pk.name + " package \u00b7 " + pk.price + " JD") + '">Enquire</a></div></div></div>';
     }).join("");
     var panels = [].slice.call(xg.children);
     var modal = document.querySelector(".js-xg-modal"), sheet = modal.querySelector(".js-xg-sheet"), count = modal.querySelector(".js-xg-count");
@@ -2252,7 +2275,7 @@ a.stk-l{cursor:pointer}
       sheet.className = "xg-sheet js-xg-sheet" + (pk.pop ? " pop" : "");
       sheet.innerHTML = '<div><div class="xg-n">' + pk.n + (pk.pop ? " · Most chosen" : "") + '</div><h3 class="xg-name">' + pk.name + '</h3>' +
         '<p class="xg-desc">' + pk.desc + '</p><div class="xg-price" style="margin-top:22px"><b>' + pk.price + '</b><span>JD · per package</span></div>' +
-        '<a class="xg-cta" href="#contact">Start with ' + pk.name + " " + ARROW + '</a></div>' +
+        '<a class="xg-cta" href="' + mailtoFor(pk.name + " package \u00b7 " + pk.price + " JD") + '">Start with ' + pk.name + " " + ARROW + '</a></div>' +
         '<div>' + feats(pk) + '</div>';
       count.textContent = (i + 1) + " / " + PACKS.length;
       sheet.querySelector(".xg-cta").addEventListener("click", close);
@@ -2274,12 +2297,11 @@ a.stk-l{cursor:pointer}
     panels.forEach(function(p, i){
       p.addEventListener("mouseenter", function(){ if(fine) hover(i); });
       p.addEventListener("mouseleave", function(){ if(fine) hover(null); });
-      p.addEventListener("click", function(){
-        // on touch the first tap expands, the second opens — a hover you can feel
-        if(!fine && !p.classList.contains("on")){ hover(i); return; }
-        open(i);
+      p.addEventListener("click", function(e){
+        if(e.target.closest && e.target.closest(".xg-open")) return; // the link itself
+        location.href = mailtoFor(PACKS[i].name + " package \u00b7 " + PACKS[i].price + " JD");
       });
-      p.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); open(i); } });
+      p.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); location.href = mailtoFor(PACKS[i].name + " package \u00b7 " + PACKS[i].price + " JD"); } });
     });
     modal.addEventListener("click", function(e){ if(e.target === modal) close(); });
     modal.querySelector(".js-xg-close").addEventListener("click", close);

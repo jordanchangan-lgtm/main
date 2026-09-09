@@ -820,8 +820,8 @@ footer{border-top:1px solid var(--line);padding:34px 0}
       <div class="stats">
         <div class="stat" style="--i:0"><b data-count="3" data-pad="2">0</b><span data-t="hero.s1">Licensed activities</span></div>
         <div class="stat" style="--i:1"><b data-count="1" data-pad="2">0</b><span data-t="hero.s2">Mosul branch</span></div>
-        <div class="stat" style="--i:2"><b>—</b><span data-t="hero.s3">Units / year <em class="tbc" style="font-style:normal">TBC</em></span></div>
-        <div class="stat" style="--i:3"><b>—</b><span data-t="hero.s4">Markets served <em class="tbc" style="font-style:normal">TBC</em></span></div>
+        <div class="stat" style="--i:2"><b data-count="1365">0</b><span data-t="hero.s3">Vehicles imported, 2025</span></div>
+        <div class="stat" style="--i:3"><b data-count="5" data-pad="2">0</b><span data-t="hero.s4">Entry corridors</span></div>
       </div>
     </div>
   </div>
@@ -930,9 +930,9 @@ footer{border-top:1px solid var(--line);padding:34px 0}
   <div class="rail" data-i="04"></div>
   <div class="wrap pad">
     <p class="eyebrow" data-t="reach.eyebrow">04 — Reach</p>
-    <h2 data-t="reach.h">Mosul is the hub.<br />The corridors run outward.</h2>
-    <p class="lede" style="margin-top:20px" data-t="reach.lede">Vehicles reach Iraq through a handful of ports and land crossings.
-      We work the leg from there to Mosul, and onward to wherever the buyer is.</p>
+    <h2 data-t="reach.h">Mosul is the hub.<br />Every corridor converges here.</h2>
+    <p class="lede" style="margin-top:20px" data-t="reach.lede">Vehicles are sourced in China, the United States and Canada, and reach Iraq
+      through a handful of ports and land crossings. We work the leg from there to Mosul, and onward across the north and south.</p>
 
     <div class="mapbox up">
       <div class="mapinner">
@@ -945,19 +945,21 @@ footer{border-top:1px solid var(--line);padding:34px 0}
     </div>
 
     <ul class="corr" id="corr">
-      <li data-city="Jebel Ali"><span data-t="city.jebelali">Jebel Ali, UAE</span><i data-t="dir.inbound">Inbound</i></li>
-      <li data-city="Mersin"><span data-t="city.mersin">Mersin, Türkiye</span><i data-t="dir.inbound">Inbound</i></li>
-      <li data-city="Poti"><span data-t="city.poti">Poti, Georgia</span><i data-t="dir.inbound">Inbound</i></li>
-      <li data-city="Shanghai"><span data-t="city.shanghai">Shanghai, China</span><i data-t="dir.inbound">Inbound</i></li>
-      <li data-city="Yokohama"><span data-t="city.yokohama">Yokohama, Japan</span><i data-t="dir.inbound">Inbound</i></li>
-      <li data-city="Aqaba"><span data-t="city.aqaba">Aqaba, Jordan</span><i data-t="dir.inbound">Inbound</i></li>
-      <li data-city="Rotterdam"><span data-t="city.rotterdam">Rotterdam, Netherlands</span><i data-t="dir.inbound">Inbound</i></li>
+      <li data-city="China"><span data-t="city.china">China</span><i data-t="dir.origin">Origin</i></li>
+      <li data-city="United States"><span data-t="city.usa">United States</span><i data-t="dir.origin">Origin</i></li>
+      <li data-city="Canada"><span data-t="city.canada">Canada</span><i data-t="dir.origin">Origin</i></li>
+      <li data-city="Jebel Ali"><span data-t="city.jebelali">Jebel Ali · Dubai, UAE</span><i data-t="dir.via">Via</i></li>
+      <li data-city="Umm Qasr"><span data-t="city.ummqasr">Umm Qasr, Iraq</span><i data-t="dir.via">Via</i></li>
+      <li data-city="Umm Qasr"><span data-t="city.safwan">Safwan crossing, Iraq</span><i data-t="dir.via">Via</i></li>
+      <li data-city="Mersin"><span data-t="city.mersin">Mersin, Türkiye</span><i data-t="dir.via">Via</i></li>
+      <li data-city="Aqaba"><span data-t="city.aqaba">Aqaba, Jordan</span><i data-t="dir.via">Via</i></li>
       <li data-city="Erbil"><span data-t="city.erbil">Erbil</span><i data-t="dir.onward">Onward</i></li>
+      <li data-city="Duhok"><span data-t="city.duhok">Duhok</span><i data-t="dir.onward">Onward</i></li>
+      <li data-city="Zakho"><span data-t="city.zakho">Zakho</span><i data-t="dir.onward">Onward</i></li>
+      <li data-city="Nineveh"><span data-t="city.nineveh">Nineveh</span><i data-t="dir.onward">Onward</i></li>
       <li data-city="Baghdad"><span data-t="city.baghdad">Baghdad</span><i data-t="dir.onward">Onward</i></li>
       <li data-city="Basra"><span data-t="city.basra">Basra</span><i data-t="dir.onward">Onward</i></li>
     </ul>
-    <p class="legal" data-t="reach.legal">Corridor list is a proposal based on the routes that serve Iraq — confirm which of these
-      Wardat Al-Zuhoor actually works and we will cut the rest.</p>
   </div>
 </section>
 
@@ -1125,11 +1127,12 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
   function counters() {
     $$("[data-count]").forEach(function (el) {
       var to = +el.dataset.count, pad = +(el.dataset.pad || 0), t0 = 0;
-      if (reduce) { el.textContent = String(to).padStart(pad, "0"); return; }
+      if (reduce) { el.textContent = pad ? String(to).padStart(pad, "0") : to.toLocaleString("en-US"); return; }
       requestAnimationFrame(function step(t) {
         if (!t0) t0 = t;
         var k = clamp((t - t0) / 900, 0, 1);
-        el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 3)))).padStart(pad, "0");
+        var v = Math.round(to * (1 - Math.pow(1 - k, 3)));
+        el.textContent = pad ? String(v).padStart(pad, "0") : v.toLocaleString("en-US");
         if (k < 1) requestAnimationFrame(step);
       });
     });
@@ -1331,16 +1334,19 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
 
     var HUB = { name: "Mosul", lon: 43.13, lat: 36.34, hub: true };
     var NODES = [
-      { name: "Rotterdam", lon: 4.48,  lat: 51.92, dx: 0,  dy: -12 },
-      { name: "Poti",      lon: 41.67, lat: 42.15, dx: -6, dy: -12 },
-      { name: "Mersin",    lon: 34.64, lat: 36.80, dx: -8, dy: -12 },
-      { name: "Aqaba",     lon: 35.00, lat: 29.53, dx: -4, dy: 16 },
-      { name: "Jebel Ali", lon: 55.03, lat: 24.98, dx: 8,  dy: 14 },
-      { name: "Shanghai",  lon: 121.47, lat: 31.23, dx: 8, dy: -12 },
-      { name: "Yokohama",  lon: 139.64, lat: 35.44, dx: 8, dy: 14 },
-      { name: "Erbil",     lon: 44.01, lat: 36.19, small: true },
-      { name: "Baghdad",   lon: 44.36, lat: 33.31, small: true },
-      { name: "Basra",     lon: 47.78, lat: 30.51, small: true }
+      { name: "China",         lon: 119.5, lat: 31.5,  dx: 9,  dy: -12 },
+      { name: "United States", lon: -95.0, lat: 39.0,  dx: 9,  dy: -12 },
+      { name: "Canada",        lon: -100.0, lat: 55.0, dx: 9,  dy: -12 },
+      { name: "Mersin",        lon: 34.64, lat: 36.80, dx: -8, dy: -13 },
+      { name: "Aqaba",         lon: 35.00, lat: 29.53, dx: -7, dy: 16 },
+      { name: "Jebel Ali",     lon: 55.03, lat: 24.98, dx: 9,  dy: 30 },
+      { name: "Umm Qasr",      lon: 47.93, lat: 30.03, dx: 9,  dy: 14 },
+      { name: "Erbil",   lon: 44.01, lat: 36.19, small: true },
+      { name: "Duhok",   lon: 42.99, lat: 36.86, small: true },
+      { name: "Zakho",   lon: 42.68, lat: 37.14, small: true },
+      { name: "Nineveh", lon: 42.30, lat: 36.10, small: true },
+      { name: "Baghdad", lon: 44.36, lat: 33.31, small: true },
+      { name: "Basra",   lon: 47.78, lat: 30.51, small: true }
     ];
 
     function arcPath(a, b) {
@@ -1518,13 +1524,13 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     var host = $("#radial"); if (!host) return;
     var HUB = { lon: 43.13, lat: 36.34 };
     var PTS = [
-      { n: "ROTTERDAM", lon: 4.48,   lat: 51.92 },
-      { n: "POTI",      lon: 41.67,  lat: 42.15 },
+      { n: "CHINA",     lon: 119.5,  lat: 31.5 },
+      { n: "USA",       lon: -95.0,  lat: 39.0 },
+      { n: "CANADA",    lon: -100.0, lat: 55.0 },
       { n: "MERSIN",    lon: 34.64,  lat: 36.80 },
       { n: "AQABA",     lon: 35.00,  lat: 29.53 },
       { n: "JEBEL ALI", lon: 55.03,  lat: 24.98 },
-      { n: "SHANGHAI",  lon: 121.47, lat: 31.23 },
-      { n: "YOKOHAMA",  lon: 139.64, lat: 35.44 }
+      { n: "UMM QASR",  lon: 47.93,  lat: 30.03 }
     ];
     var rad = Math.PI / 180, R = 6371;
     function geo(a, b) {
@@ -1737,8 +1743,8 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     "hero.legal":"شركة وردة الزهور لتجارة السيارات والنقل العام والتجارة العامة — فرع الموصل",
     "hero.lede":"تجارة السيارات، والنقل العام، والتجارة العامة — تُدار من الموصل. نشتري، وننقل، ونسلّم: سيارة واحدة أو حمولة كاملة.",
     "hero.s1":"أنشطة مُرخّصة","hero.s2":"فرع الموصل",
-    "hero.s3":"وحدة سنوياً <em class=\"tbc\" style=\"font-style:normal\">قيد التأكيد</em>",
-    "hero.s4":"أسواق نخدمها <em class=\"tbc\" style=\"font-style:normal\">قيد التأكيد</em>",
+    "hero.s3":"سيارة مستوردة في ٢٠٢٥",
+    "hero.s4":"منافذ دخول",
     "hero.scroll":"مرّر",
 
     "about.eyebrow":"٠١ — الشركة",
@@ -1774,13 +1780,14 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     "fleet.c7":"<b>الواجهة الزجاجية</b><span>الساحة</span>",
 
     "reach.eyebrow":"٠٤ — نطاق العمل",
-    "reach.h":"الموصل هي المركز.<br />والممرّات تمتدّ إلى الخارج.",
-    "reach.lede":"تصل السيارات إلى العراق عبر عدد محدود من الموانئ والمنافذ البرّية. نتولّى المرحلة من هناك إلى الموصل، ثم إلى حيث يكون المشتري.",
-    "city.jebelali":"جبل علي، الإمارات","city.mersin":"مرسين، تركيا","city.poti":"بوتي، جورجيا",
-    "city.shanghai":"شنغهاي، الصين","city.yokohama":"يوكوهاما، اليابان","city.aqaba":"العقبة، الأردن",
-    "city.rotterdam":"روتردام، هولندا","city.erbil":"أربيل","city.baghdad":"بغداد","city.basra":"البصرة",
-    "dir.inbound":"وارد","dir.onward":"توزيع داخلي",
-    "reach.legal":"قائمة الممرّات مقترحة استناداً إلى الطرق التي تخدم العراق — أكّد أيّها تعمل عليه الشركة فعلاً وسنحذف البقية.",
+    "reach.h":"الموصل هي المركز.<br />وعندها تلتقي كل الممرّات.",
+    "reach.lede":"تُستورد السيارات من الصين والولايات المتحدة وكندا، وتصل إلى العراق عبر عدد محدود من الموانئ والمنافذ البرّية. نتولّى المرحلة من هناك إلى الموصل، ثم توزيعها في الشمال والجنوب.",
+    "city.china":"الصين","city.usa":"الولايات المتحدة","city.canada":"كندا",
+    "city.jebelali":"جبل علي · دبي، الإمارات","city.ummqasr":"أم قصر، العراق",
+    "city.safwan":"منفذ صفوان، العراق","city.mersin":"مرسين، تركيا","city.aqaba":"العقبة، الأردن",
+    "city.erbil":"أربيل","city.duhok":"دهوك","city.zakho":"زاخو","city.nineveh":"نينوى",
+    "city.baghdad":"بغداد","city.basra":"البصرة",
+    "dir.origin":"المصدر","dir.via":"عبر","dir.onward":"توزيع داخلي",
 
     "proc.eyebrow":"٠٥ — آلية العمل","proc.h":"خمس خطوات،<br />وملف واحد.",
     "proc.lede":"مجموعة وثائق واحدة ترافق المركبة من ورقة المواصفات حتى توقيع التسليم. لا شيء يُعاد تركيبه بعد وقوعه.",

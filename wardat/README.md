@@ -221,6 +221,24 @@ Two things that will bite whoever regenerates them:
 The cool steel grade is applied at export, not asked of the model — it drifted
 warm both times. The exact filter chain is in `VIDEO-DIRECTION.md`.
 
+### Where the corridor data came from
+
+The reach section is not invented. The client sent three voice notes
+(9 Sep 2026), transcribed and cross-checked with two model sizes:
+
+- **Origins:** China, the United States and Canada. An earlier draft listed
+  Rotterdam, Poti, Shanghai and Yokohama — all removed; the client replaced
+  the Netherlands with the United States and added Canada beneath it.
+- **Entry points:** Jebel Ali · Dubai, Umm Qasr, the Safwan crossing, Mersin,
+  Aqaba.
+- **Onward:** Erbil, Duhok, Zakho, Nineveh, Baghdad, Basra.
+- **1,365 vehicles**, taken from the company's tax accounting for
+  1 Jan – 30 Dec 2025. That is the figure in the hero, labelled with its year
+  rather than as an open-ended rate.
+
+Umm Qasr and Safwan are ~25 km apart, and Jebel Ali is Dubai's port, so at
+world scale they share map nodes; the list underneath keeps them separate.
+
 ### The map
 
 Desktop draws a real dotted world map. The landmass is a **168 × 74 grid
@@ -263,10 +281,10 @@ the coordinates, so adding a city needs no hand-placement.
 - [ ] **A decision on the number plate.** `assets/fleet/06.jpg` and the hero
       film both show a legible temporary trade plate on the company's own
       stock. Normal for a dealer, but say the word and it gets blurred.
-- [ ] **Two hero numbers** — "units / year" and "markets served" show `—` and a
-      TBC tag until real figures arrive.
-- [ ] **Confirm the corridor list.** It is a proposal based on the routes that
-      serve Iraq, not a claim about routes the company runs.
+- [ ] **The corridor count.** The client named six corridors in a voice note,
+      counting Dubai and Jebel Ali separately — but Jebel Ali *is* Dubai's car
+      port, so the site lists them as one row and the stat reads **05 entry
+      corridors**. Say the word and it becomes six with two rows.
 - [ ] **The registered English name.** The letterhead prints "Transportion";
       the site spells it "Transport". Say the word if it must match the
       certificate exactly.

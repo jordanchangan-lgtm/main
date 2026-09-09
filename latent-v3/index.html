@@ -1623,14 +1623,14 @@ a.stk-l{cursor:pointer}
     <div class="st-stage js-slider" data-scene="a">
       <div class="lat-bg" aria-hidden="true"><i class="lb lb1"></i><i class="lb lb2"></i><i class="lb lb3"></i><i class="lat-dots"></i><i class="lat-grain"></i><i class="lat-vig"></i></div>
       <div class="sc sc-a js-sc" data-s="a"><div class="st-copy"><p class="statement js-split js-lock"><span class="mk">( Studio )</span><span>Latent Studio makes campaign imagery and product film for cosmetics, coffee, clothing, jewellery and perfume brands — you name it, we make it.</span></p></div></div>
-      <div class="sc sc-b js-sc" data-s="b"><div class="wv js-wv" role="list" aria-label="What we make">
-        <p class="wv-eye">( What we make )</p>
-        <p class="wv-l" role="listitem" style="--i:0"><span>Campaign stills</span></p>
-        <p class="wv-l" role="listitem" style="--i:1"><span>Product film</span></p>
-        <p class="wv-l" role="listitem" style="--i:2"><span>Carousels</span></p>
-        <p class="wv-l" role="listitem" style="--i:3"><span>Brand identity</span></p>
-        <p class="wv-l" role="listitem" style="--i:4"><span>Editorial web</span></p>
-      </div></div>
+      <div class="sc sc-b js-sc" data-s="b"><div class="st-stack"><p class="sr">Campaign stills, product film, carousels, brand identity, editorial web.</p><ul class="lt js-lt" aria-hidden="true">
+          <li style="--i:0"><p>&nbsp;</p><p>Campaign stills</p></li>
+          <li style="--i:1"><p>Campaign stills</p><p>Product film</p></li>
+          <li style="--i:2"><p>Product film</p><p>Carousels</p></li>
+          <li style="--i:3"><p>Carousels</p><p>Brand identity</p></li>
+          <li style="--i:4"><p>Brand identity</p><p>Editorial web</p></li>
+          <li style="--i:5"><p>Editorial web</p><p>&nbsp;</p></li>
+        </ul></div></div>
       <div class="sc sc-c js-sc" data-s="c"><div class="sp js-sp" id="tenets" data-side="left">
   <div class="sp-bg" aria-hidden="true"><i class="sp-bg-l"></i><i class="sp-bg-r"></i></div>
 
@@ -2786,21 +2786,15 @@ a.stk-l{cursor:pointer}
     var cur = p < .30 ? "a" : p < .58 ? "b" : p < .80 ? "c" : "d";
     if(window.innerWidth >= 900){ scStage.style.setProperty("--z", (1 + p * .9).toFixed(3)); scStage.style.setProperty("--py", Math.round(p * 90)); }
     if(scCueBar) scCueBar.style.setProperty("--p", p.toFixed(3));
-    /* the block: its lines keep rising with the scroll until they leave the top */
-    wvP = clamp01((p - .30) / .28);
-    var pq = clamp01((p - .30) / .50);
-    if(wv) wv.style.setProperty("--wy", ((.10 - pq * 1.3) * vh).toFixed(1));
-    scs.forEach(function(el){ if(el.dataset.s === "b"){ el.classList.toggle("on", p >= .30 && p < .86); el.classList.remove("gone"); } });
     if(cur === scAt) return;
     scAt = cur; scStage.dataset.scene = cur;
     var order = ["a","b","c"], vis = cur === "d" ? "c" : cur;
     scs.forEach(function(el){
-      if(el.dataset.s === "b") return;
       var i = order.indexOf(el.dataset.s), j = order.indexOf(vis);
       el.classList.toggle("on", i === j); el.classList.toggle("gone", i < j);
     });
     if(scCue) scCue.textContent = SC_NAMES[cur];
-    wvSet(cur === "b");
+    if(cur === "b") ltStart();
     if(cur === "c" || cur === "d"){ if(typeof spShow === "function") spShow(); }
     if(typeof spSwitch === "function" && sp){
       var want = cur === "d" ? "right" : "left";
@@ -2808,23 +2802,6 @@ a.stk-l{cursor:pointer}
     }
     if(lt){ ltSeen = cur === "b"; }
   }
-
-  /* ---- the wavy block (21st WavyBlock): every line sits at
-     x = base + A·cos(35°·i + 6·progress − 180°), smoothed, and keeps
-     drifting on its own while the scene is up ---- */
-  var wv = document.querySelector(".js-wv"), wvL = wv ? [].slice.call(wv.querySelectorAll(".wv-l")) : [], wvP = 0, wvT = 0, wvRun = false, wvLast = 0, wvX = [];
-  function wvFrame(ts){
-    if(!wvRun) return;
-    var dt = wvLast ? Math.min(.05, (ts - wvLast) / 1000) : 0; wvLast = ts; wvT += dt * .5;
-    var vw = window.innerWidth, A = vw * (vw < 900 ? .05 : .09), base = vw * (vw < 900 ? -.01 : .02);
-    wvL.forEach(function(el, i){
-      var target = base + A * Math.cos(i * 35 * Math.PI / 180 + 6 * wvP + wvT - Math.PI);
-      wvX[i] = wvX[i] == null ? target : wvX[i] + (target - wvX[i]) * .08;
-      el.style.transform = "translate3d(" + wvX[i].toFixed(1) + "px,0,0)";
-    });
-    requestAnimationFrame(wvFrame);
-  }
-  function wvSet(on){ if(!wv || on === wvRun) return; wvRun = on; wvLast = 0; if(on) requestAnimationFrame(wvFrame); }
 
   /* ---- the portfolio stage: five projects on one locked screen. It
      starts empty and ink; each project's pieces lay themselves out to

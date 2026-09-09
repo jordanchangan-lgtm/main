@@ -74,13 +74,15 @@
         var avg = hs.reduce(function(a, c){ return a + c; }, 0) / hs.length * scale;
         if(!best || avg > best.avg) best = { rows:rows, hs:hs, scale:scale, avg:avg };
       }
-      var y = 0, g = gap * best.scale;
+      var g = gap * best.scale, used = best.hs.reduce(function(a, c){ return a + c * best.scale; }, 0) + g * (best.rows.length - 1);
+      // the block of rows sits centred in the media area; tiles are absolute, so the offset goes on each top
+      var y = Math.max(0, Math.round((H - used) / 2));
       best.rows.forEach(function(row, ri){
         var h = best.hs[ri] * best.scale, x = 0;
         row.forEach(function(i){ var w = h * ars[i], m = items[i]; m.style.width = Math.round(w) + "px"; m.style.height = Math.round(h) + "px"; m.style.left = Math.round(x) + "px"; m.style.top = Math.round(y) + "px"; x += w + g; });
         y += h + g;
       });
-      set.querySelector(".wk-in").style.paddingTop = Math.max(0, Math.round((H - (y - g)) / 2)) + "px";
+      set.querySelector(".wk-in").style.paddingTop = "";
     });
   }
   function wkFit(){

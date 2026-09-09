@@ -1862,7 +1862,10 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
       var go = function () {
         gate.classList.add("gone");
         document.body.classList.remove("gated");
-        setTimeout(function () { if (window.__startHero) window.__startHero(); }, instant ? 0 : 260);
+        setTimeout(function () {
+          if (window.__startHero) window.__startHero();
+          if (window.__armNav) window.__armNav();
+        }, instant ? 0 : 260);
       };
       if (instant) { gate.style.transition = "none"; go(); return; }
       gate.classList.add("going");
@@ -1891,7 +1894,11 @@ var LAND_COLS = 168, LAND_ROWS = 74, LAND_LAT0 = 80, LAND_LAT1 = -58;
     pill.addEventListener("focusin", function () { clearTimeout(t); expand(); });
     pill.addEventListener("focusout", function () { arm(1100); });
     addEventListener("resize", function () { if (innerWidth < WIDE) { clearTimeout(t); expand(); } }, { passive: true });
-    if (!reduce) arm(2400);              // two seconds after the hero settles
+    // Armed by the gate, not by page load: the timer used to run while the gate
+    // still covered the screen, so the bar was already tucked away by the time
+    // anyone saw the page.
+    window.__armNav = function () { expand(); if (!reduce) arm(2400); };
+    if (!$("#gate")) window.__armNav();
   })();
 
   /* ---------- the dark panels react to the pointer ---------- */

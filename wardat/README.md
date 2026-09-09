@@ -126,8 +126,12 @@ no Arabic equivalent, so in Arabic they switch to Almarai at a heavier weight
 rather than staying in a Latin mono face.
 
 The gate shows once. The choice is kept in `localStorage` under `wz-lang`, and
-returning visitors go straight in. The hero hold waits for the gate: the lock
-controller exposes `window.__startHero`, and the gate calls it as it lifts.
+returning visitors go straight in. Two things wait for the gate rather than for
+page load, and the gate calls both as it lifts: `window.__startHero` (the hero
+hold) and `window.__armNav` (the bar's retract timer). The nav one matters —
+armed at load, the 2.4 s timer ran while the gate still covered the screen, so
+the bar was already tucked away before anyone saw the page and the links never
+appeared.
 
 ### The nav retracts
 

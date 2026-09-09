@@ -2257,11 +2257,11 @@ a.stk-l{cursor:pointer}
   if(xg){
     var feats = function(pk){ return '<ul class="xg-feats">' + pk.feats.map(function(f){ return "<li>" + CHECK + "<span>" + f + "</span></li>"; }).join("") + "</ul>"; };
     xg.innerHTML = PACKS.map(function(pk, i){
-      return '<div class="xg-p' + (pk.pop ? " pop" : "") + '" role="listitem" tabindex="0" data-i="' + i + '">' +
+      return '<a class="xg-p' + (pk.pop ? " pop" : "") + '" role="listitem" data-i="' + i + '" href="' + mailtoFor(pk.name + " package \u00b7 " + pk.price + " JD") + '">' +
         (pk.pop ? '<span class="xg-badge">Most chosen</span>' : "") +
         '<div class="xg-in"><div><div class="xg-n">' + pk.n + '</div><h3 class="xg-name">' + pk.name + '</h3>' +
         '<p class="xg-desc">' + pk.desc + '</p>' + feats(pk) + '</div>' +
-        '<div><div class="xg-price"><b>' + pk.price + '</b><span>JD</span></div><a class="xg-open" href="' + mailtoFor(pk.name + " package \u00b7 " + pk.price + " JD") + '">Enquire</a></div></div></div>';
+        '<div><div class="xg-price"><b>' + pk.price + '</b><span>JD</span></div><span class="xg-open">Enquire</span></div></div></a>';
     }).join("");
     var panels = [].slice.call(xg.children);
     var modal = document.querySelector(".js-xg-modal"), sheet = modal.querySelector(".js-xg-sheet"), count = modal.querySelector(".js-xg-count");
@@ -2297,11 +2297,7 @@ a.stk-l{cursor:pointer}
     panels.forEach(function(p, i){
       p.addEventListener("mouseenter", function(){ if(fine) hover(i); });
       p.addEventListener("mouseleave", function(){ if(fine) hover(null); });
-      p.addEventListener("click", function(e){
-        if(e.target.closest && e.target.closest(".xg-open")) return; // the link itself
-        location.href = mailtoFor(PACKS[i].name + " package \u00b7 " + PACKS[i].price + " JD");
-      });
-      p.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); location.href = mailtoFor(PACKS[i].name + " package \u00b7 " + PACKS[i].price + " JD"); } });
+      /* the card is a link to the written email; nothing to script */
     });
     modal.addEventListener("click", function(e){ if(e.target === modal) close(); });
     modal.querySelector(".js-xg-close").addEventListener("click", close);

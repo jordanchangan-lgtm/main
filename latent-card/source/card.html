@@ -5,38 +5,33 @@
 @font-face{font-family:"Archivo";font-weight:400;src:url("fonts/Archivo_normal_400.woff2") format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-weight:400;src:url("fonts/IBM_Plex_Mono_normal_400.woff2") format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-weight:500;src:url("fonts/IBM_Plex_Mono_normal_500.woff2") format("woff2")}
-:root{--ink:#14141A;--ivory:#F2EFE7;--marrow:#BB4A2E;--stone:#7C776E;--bleed:3mm}
+:root{--ink:#14141A;--ivory:#F2EFE7;--marrow:#BB4A2E;--stone:#8A857B;--bleed:3mm}
 *{box-sizing:border-box}
 @page{size:91mm 61mm;margin:0}
 html,body{margin:0;padding:0;background:#fff;-webkit-font-smoothing:antialiased;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-/* each face is a page: trim 85 × 55 mm inside 3 mm of bleed */
 .page{width:91mm;height:61mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
 .page:last-child{page-break-after:auto;break-after:auto}
 .face{position:absolute;left:var(--bleed);top:var(--bleed);width:85mm;height:55mm}
 .front{background:var(--ink);color:var(--ivory)}
 .back{background:var(--ivory);color:var(--ink)}
-/* the wordmark: display grotesk, extra-bold, tracked −4.5%, always lowercase, the schwa a letter */
+/* wordmark: display grotesk, extra-bold, tracked −4.5%, lowercase, the schwa a letter — small, alone in the dark */
 .wm{font-family:"Archivo";font-weight:700;letter-spacing:-.045em;line-height:1;margin:0}
-.front .wm{position:absolute;left:50%;top:50%;transform:translate(-50%,-56%);font-size:34pt}
-/* back: 5 mm safe margin inside the trim */
-.back .in{position:absolute;left:6mm;top:6mm;right:6mm;bottom:6mm}
-.mark{font-family:"Archivo";font-weight:700;font-size:15pt;line-height:1;position:absolute;left:0;top:0}
-.route{position:absolute;right:0;top:1.2mm;font-family:"IBM Plex Mono";font-size:5.6pt;letter-spacing:.14em;text-transform:lowercase;color:var(--stone)}
-.name{position:absolute;left:0;top:16.2mm;margin:0;font-family:"Archivo";font-weight:600;font-size:13pt;letter-spacing:-.02em;line-height:1}
-.title{position:absolute;left:0;top:22.6mm;margin:0;font-family:"IBM Plex Mono";font-weight:500;font-size:6pt;letter-spacing:.18em;text-transform:uppercase;color:var(--marrow)}
-.rule{position:absolute;left:0;right:0;top:28.6mm;height:0.25mm;background:var(--ink)}
-.lines{position:absolute;left:0;bottom:0;margin:0;font-family:"IBM Plex Mono";font-size:6.2pt;letter-spacing:.06em;line-height:1.75;color:var(--ink)}
-.lines b{font-weight:400;color:var(--stone);display:inline-block;width:11mm}
-.small{position:absolute;right:0;bottom:0;font-family:"IBM Plex Mono";font-size:5.4pt;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);text-align:right;line-height:1.75}
+.front .wm{position:absolute;left:50%;top:50%;transform:translate(-50%,-56%);font-size:17pt}
+/* back: one column, 7 mm inside the trim, everything sits on the bottom margin */
+.back .in{position:absolute;left:7mm;top:7mm;right:7mm;bottom:7mm}
+.mark{font-family:"Archivo";font-weight:700;font-size:10pt;line-height:1;position:absolute;left:0;top:0;color:var(--ink)}
+.who{position:absolute;left:0;bottom:15.2mm;margin:0}
+.name{margin:0;font-family:"Archivo";font-weight:500;font-size:9.5pt;letter-spacing:-.01em;line-height:1}
+.title{margin:1.9mm 0 0;font-family:"IBM Plex Mono";font-weight:400;font-size:5.4pt;letter-spacing:.12em;text-transform:uppercase;color:var(--stone)}
+.lines{position:absolute;left:0;bottom:0;margin:0;font-family:"IBM Plex Mono";font-weight:400;font-size:5.8pt;letter-spacing:.02em;line-height:1.7;color:var(--ink)}
+.lines a{color:inherit;text-decoration:none}
+.route{position:absolute;right:0;bottom:0;margin:0;font-family:"IBM Plex Mono";font-size:5.2pt;letter-spacing:.12em;color:var(--stone);line-height:1.7}
 </style></head><body>
 <div class="page"><div class="face front" id="front"><p class="wm">latənt</p></div></div>
 <div class="page"><div class="face back" id="back"><div class="in">
   <span class="mark" aria-hidden="true">ə</span>
-  <span class="route">amman → worldwide</span>
-  <p class="name">Laith Al Qasem</p>
-  <p class="title">CEO · Art Director</p>
-  <i class="rule"></i>
-  <p class="lines"><span><b>T</b>+962 79 987 7131</span><br><span><b>E</b>latentstudio.jo@gmail.com</span><br><span><b>W</b>latent-studio-ai.com</span></p>
-  <p class="small">Latent Studio<br>@latentstudio.jo</p>
+  <div class="who"><p class="name">Laith Al Qasem</p><p class="title">CEO · Art Director</p></div>
+  <p class="lines">+962 79 987 7131<br>latentstudio.jo@gmail.com<br>latent-studio-ai.com</p>
+  <p class="route">amman</p>
 </div></div></div>
 </body></html>

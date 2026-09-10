@@ -20,7 +20,6 @@ _work=''
 for k,(img,r,num,word,txt) in enumerate(STEPS):
     _work+='        <div class="hw js-hw" style="--k:%d;--r:%s"><span class="hw-img"><img src="%s" alt="" loading="lazy" decoding="async">%s</span><span class="hw-cap"><b>%s</b><em>%s</em><p>%s</p></span></div>\n'%(k,r,img,_micro(num,word),num,word,txt)
 V2='''<section class="sec dark st2 js-st2" id="studio">
-  <div class="st2-bg js-st2-bg" aria-hidden="true"><i class="d1"></i><i class="d2"></i></div>
   <div class="inner st2-in">
     <p class="st2-line js-bright">Latent is an AI-native design studio in Amman, making the visual side of a brand with generative tools in the hands of art directors.</p>
     <p class="st2-corner st2-tl rv">We direct before we generate.<br>Minimal first, craft always,<br>built to ship.</p>

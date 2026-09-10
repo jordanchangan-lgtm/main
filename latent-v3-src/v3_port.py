@@ -13,7 +13,28 @@ def _poster(f):
     m=_re.search(r'(?:poster|src)="(data:image[^"]+)"', f); return m.group(1) if m else ''
 def _year(p): return p['meta'].split('·')[-1].strip()
 _n=len(_wk)
-if os.environ.get('PORTFOLIO')=='2':
+if os.environ.get('PORTFOLIO')=='3':
+    # ---- version three, after the Halo Reel: each project pins; its pieces ride an ellipse anchored to one edge
+    #      and make one full spin as the page scrolls, the name parked in the space the ring leaves; sides alternate ----
+    _holds=''
+    for i,p in enumerate(_wk):
+        figs=_figs[i]; N=len(figs); wide=sum(1 for f in figs if _ar(f)[0]/_ar(f)[1]>1.1)>N/2
+        cw,ch=(360,225) if wide else (220,360)
+        side='right' if i%2==0 else 'left'   # the ring hangs on the left edge first, the name on the right
+        cards=''.join('        '+f+'\n' for f in figs)
+        _holds+='''    <div class="hr-hold js-hr %s" data-i="%d">
+      <div class="hr-stage">
+        <div class="hr-ring js-hr-ring" data-w="%d" data-h="%d">
+%s        </div>
+        <div class="hr-label"><p class="hr-kick">%02d / %02d &middot; %s &middot; %s</p><h3 class="hr-name">%s</h3><p class="hr-proj">%s &middot; %s</p><p class="hr-cue"><span class="js-hr-cue">Scroll to spin</span> &middot; %d pieces &middot; click one to open it</p></div>
+      </div>
+    </div>
+'''%(side,i,cw,ch,cards,i+1,_n,CAT[i],_year(p),p['t'],p['proj'],p['note'],N)
+    _port='''<section class="sec dark hr js-hrsec" id="work">
+  <div class="inner hr-head"><p class="pf2-head rv"><b>( Portfolio )</b> All work <span>[ %02d ]</span></p></div>
+%s</section>
+'''%(_n,_holds)
+elif os.environ.get('PORTFOLIO')=='2':
     # ---- version two: the dark dots path; each project's name in the middle, its pieces scattered left and right ----
     _seed=[11]
     def _rnd():
@@ -24,8 +45,8 @@ if os.environ.get('PORTFOLIO')=='2':
         for k,f in enumerate(figs):
             w,h=_ar(f); wide=w/h>1.1; left=(k%2==0)
             y=6+(k/N)*82+(_rnd()-.5)*6
-            if wide: x=(2+_rnd()*4) if left else (62+_rnd()*4); xm=(0+_rnd()*3) if left else (39+_rnd()*3); W='clamp(220px,28vw,520px)'; WM='58%'
-            else:    x=(4+_rnd()*14) if left else (66+_rnd()*14); xm=(2+_rnd()*10) if left else (54+_rnd()*8); W='clamp(120px,15vw,260px)'; WM='36%'
+            if wide: x=(1+_rnd()*3) if left else (55+_rnd()*3); xm=(0+_rnd()*3) if left else (39+_rnd()*3); W='clamp(300px,38vw,700px)'; WM='58%'
+            else:    x=(2+_rnd()*10) if left else (68+_rnd()*8); xm=(2+_rnd()*10) if left else (54+_rnd()*8); W='clamp(180px,22vw,400px)'; WM='36%'
             m=_re.match(r'<figure class="wk-m js-film" style="([^"]*)"([^>]*)>(<video[^>]*></video>|<img[^>]*>)(.*)</figure>', f, _re.S)
             media, rest, attrs = m.group(3), m.group(4), m.group(2)
             items+='      <figure class="pf2-item js-film" style="--x:%.1f%%;--xm:%.1f%%;--y:%.1f%%;--w:%s;--wm:%s"%s><span class="pf2-img" style="--r:%d/%d">%s</span>%s</figure>\n'%(x,xm,y,W,WM,attrs,w,h,media,rest)
@@ -34,7 +55,6 @@ if os.environ.get('PORTFOLIO')=='2':
 %s    </div>
 '''%(N,i,i+1,_n,CAT[i],_year(p),p['t'],p['proj'],p['note'],items)
     _port='''<section class="sec dark pf2 js-pf2" id="work">
-  <div class="st2-bg" aria-hidden="true"><i class="d1"></i><i class="d2"></i></div>
   <div class="inner pf2-in">
     <p class="pf2-head rv"><b>( Portfolio )</b> All work <span>[ %02d ]</span></p>
 %s  </div>

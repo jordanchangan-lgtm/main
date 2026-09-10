@@ -1,0 +1,87 @@
+<title>Latent Price List Options</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#14141A;--ivory:#F2EFE7;--marrow:#BB4A2E;--stone:#7A776F;--rule:rgba(20,20,26,.14);--band:#E7E3D8}
+body{background:var(--ivory);color:var(--ink);font-family:"Archivo","Helvetica Neue",Arial,sans-serif;margin:0;padding:48px 24px 96px}
+.mono{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+h1{margin:0 0 6px;font-weight:600;font-size:clamp(28px,4vw,52px);letter-spacing:-.04em}
+.lead{max-width:60ch;color:var(--stone);font-size:16px;line-height:1.5;margin:0 0 56px}
+.opt{max-width:1180px;margin:0 auto 96px;padding-top:24px;border-top:1px solid var(--rule)}
+.opt-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;align-items:baseline;margin-bottom:28px}
+.opt-h h2{margin:0;font-weight:600;font-size:clamp(22px,2.6vw,34px);letter-spacing:-.03em}.opt-h h2 b{color:var(--marrow);font-weight:500;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;margin-right:14px;vertical-align:.3em}
+.opt-h p{margin:0;max-width:52ch;color:var(--stone);font-size:14px;line-height:1.5}
+.pick{color:var(--marrow)}
+/* A: editorial list */
+.A{border-top:1px solid var(--rule)}
+.A .row{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:0 40px;align-items:baseline;padding:28px 0;border-bottom:1px solid var(--rule)}
+.A .n{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--stone);width:3ch}
+.A .name{font-weight:600;font-size:clamp(34px,5vw,72px);line-height:.95;letter-spacing:-.045em}.A .pop .name{color:var(--marrow)}
+.A .name em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--marrow);border:1px solid var(--marrow);border-radius:999px;padding:5px 10px;margin-left:16px;vertical-align:.6em}
+.A .desc{display:block;margin-top:8px;font-size:15px;color:var(--stone)}
+.A .feats{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px 24px;margin-top:16px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.A .feats span::before{content:"+ ";color:var(--marrow)}
+.A .price{font-weight:500;font-size:clamp(28px,3.4vw,52px);letter-spacing:-.03em;white-space:nowrap}.A .price i{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--stone);margin-left:8px;vertical-align:.5em}
+.A .go{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
+/* B: ink cards with big numerals */
+.B{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.B .card{position:relative;background:var(--ink);color:var(--ivory);border-radius:16px;padding:26px 24px 24px;min-height:440px;display:flex;flex-direction:column;justify-content:space-between}
+.B .card.pop{background:var(--marrow)}
+.B .k{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.7;display:flex;justify-content:space-between}
+.B h3{margin:22px 0 8px;font-weight:600;font-size:26px;letter-spacing:-.03em}
+.B p{margin:0;font-size:14px;line-height:1.5;opacity:.8}
+.B ul{list-style:none;margin:22px 0 0;padding:18px 0 0;border-top:1px solid rgba(242,239,231,.18);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;line-height:1.8}
+.B .big{font-weight:600;font-size:clamp(56px,6.5vw,96px);letter-spacing:-.05em;line-height:.9;margin-top:28px}.B .big i{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;margin-left:8px;vertical-align:1.6em}
+.B .cta{margin-top:18px;display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;border-bottom:1px solid currentColor;padding-bottom:4px}
+/* C: the spec ledger */
+.C{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.C table{width:100%;border-collapse:collapse}
+.C th{text-align:left;font-weight:400;color:var(--stone);padding:0 12px 14px 0;border-bottom:1px solid var(--ink);font-size:11px;letter-spacing:.16em}
+.C td{padding:18px 12px 18px 0;border-bottom:1px solid var(--rule);vertical-align:baseline}
+.C td.name{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(22px,2.4vw,36px);letter-spacing:-.035em;text-transform:none;width:26%}
+.C tr.pop td.name{color:var(--marrow)}
+.C td.price{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(24px,2.6vw,40px);letter-spacing:-.03em;text-transform:none;text-align:right;white-space:nowrap}
+.C td.price i{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--stone);margin-left:6px;vertical-align:.5em}
+.C td.v{color:var(--ink)}.C td.v small{display:block;color:var(--stone);font-size:10.5px;margin-top:4px;text-transform:none;letter-spacing:.04em}
+.C .dot{color:var(--marrow)}
+@media(max-width:820px){.A .row{grid-template-columns:auto 1fr;gap:8px 14px}.A .price,.A .go{grid-column:2}.B{grid-template-columns:1fr}.C table,.C thead,.C tbody,.C tr,.C td{display:block}.C thead{display:none}.C td{padding:6px 0;border:0}.C tr{padding:18px 0;border-bottom:1px solid var(--rule)}.C td.price{text-align:left}}
+</style>
+<div class="opt" style="border:0;margin-bottom:24px">
+  <p class="mono" style="color:var(--marrow);margin:0 0 14px">( Prices ) three directions</p>
+  <h1>The price list, three ways.</h1>
+  <p class="lead">Same four packages, same numbers. A is the editorial list now in the site. B is type-led ink cards. C is a spec ledger in mono. Say A, B or C and I wire that one in, or mix: a B-style hero card for Growth over a C table, for instance.</p>
+</div>
+
+<div class="opt">
+  <div class="opt-h"><h2><b>A</b>Editorial list <span class="pick">· in the site now</span></h2><p>One row per package, the name as the headline, the price on the right, the included items opening under the row on hover. Growth in marrow with the tag.</p></div>
+  <div class="A">
+    <div class="row"><span class="n">01</span><span><span class="name">Starter</span><span class="desc">A first month of showing up, done properly.</span></span><span class="price">200<i>JD</i></span><span class="go">Enquire →</span></div>
+    <div class="row"><span class="n">02</span><span><span class="name">Essential</span><span class="desc">The steady feed: more posts, more reels.</span></span><span class="price">275<i>JD</i></span><span class="go">Enquire →</span></div>
+    <div class="row pop"><span class="n">03</span><span><span class="name">Growth<em>Most chosen</em></span><span class="desc">Scripted film enters the picture.</span><span class="feats"><span>5 carousel posts</span><span>3 cinematic reels · 15 s each</span><span>Full scripted video, cinematics, edits + SFX</span><span>2–7 shots per reel</span><span>1080p delivery</span></span></span><span class="price">375<i>JD</i></span><span class="go">Enquire →</span></div>
+    <div class="row"><span class="n">04</span><span><span class="name">Signature</span><span class="desc">The full campaign, longer and louder.</span></span><span class="price">425<i>JD</i></span><span class="go">Enquire →</span></div>
+  </div>
+</div>
+
+<div class="opt">
+  <div class="opt-h"><h2><b>B</b>Ink cards, big numerals</h2><p>Four tall cards on ink, the price as the biggest thing on the card, the items in mono under a hairline. Growth is the marrow card. Closest to the old layout, much bolder.</p></div>
+  <div class="B">
+    <div class="card"><div><div class="k"><span>01</span><span>Per package</span></div><h3>Starter</h3><p>A first month of showing up, done properly.</p><ul><li>4 carousel posts</li><li>3 reels · 15 s each</li><li>Showcase videos, 1–2 shots</li><li>1080p delivery</li></ul></div><div><div class="big">200<i>JD</i></div><span class="cta">Start with Starter</span></div></div>
+    <div class="card"><div><div class="k"><span>02</span><span>Per package</span></div><h3>Essential</h3><p>The steady feed: more posts, more reels.</p><ul><li>5 carousel posts</li><li>4 reels · 15 s each</li><li>Showcase videos, 1–2 shots</li><li>1080p delivery</li></ul></div><div><div class="big">275<i>JD</i></div><span class="cta">Start with Essential</span></div></div>
+    <div class="card pop"><div><div class="k"><span>03</span><span>Most chosen</span></div><h3>Growth</h3><p>Scripted film enters the picture.</p><ul><li>5 carousel posts</li><li>3 cinematic reels · 15 s</li><li>Scripted video, edits + SFX</li><li>2–7 shots per reel</li><li>1080p delivery</li></ul></div><div><div class="big">375<i>JD</i></div><span class="cta">Start with Growth</span></div></div>
+    <div class="card"><div><div class="k"><span>04</span><span>Per package</span></div><h3>Signature</h3><p>The full campaign, longer and louder.</p><ul><li>6 carousel posts</li><li>3 cinematic reels · 20 s</li><li>Scripted video, edits + SFX</li><li>2–7 shots per reel</li><li>1080p delivery</li></ul></div><div><div class="big">425<i>JD</i></div><span class="cta">Start with Signature</span></div></div>
+  </div>
+</div>
+
+<div class="opt">
+  <div class="opt-h"><h2><b>C</b>Spec ledger</h2><p>One mono table, everything comparable at a glance: posts, reels, film, shots, delivery, price. The names and prices in Archivo so it still reads as Latent, not as a spreadsheet.</p></div>
+  <div class="C">
+    <table>
+      <thead><tr><th>Package</th><th>Posts</th><th>Reels</th><th>Film</th><th>Delivery</th><th style="text-align:right">Price</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Starter</td><td class="v">4 carousels</td><td class="v">3 × 15 s<small>Showcase, 1–2 shots</small></td><td class="v"><span class="dot">·</span></td><td class="v">1080p</td><td class="price">200<i>JD</i></td></tr>
+        <tr><td class="name">Essential</td><td class="v">5 carousels</td><td class="v">4 × 15 s<small>Showcase, 1–2 shots</small></td><td class="v"><span class="dot">·</span></td><td class="v">1080p</td><td class="price">275<i>JD</i></td></tr>
+        <tr class="pop"><td class="name">Growth</td><td class="v">5 carousels</td><td class="v">3 × 15 s<small>Cinematic, 2–7 shots</small></td><td class="v">Scripted + SFX</td><td class="v">1080p</td><td class="price">375<i>JD</i></td></tr>
+        <tr><td class="name">Signature</td><td class="v">6 carousels</td><td class="v">3 × 20 s<small>Cinematic, 2–7 shots</small></td><td class="v">Scripted + SFX</td><td class="v">1080p</td><td class="price">425<i>JD</i></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>

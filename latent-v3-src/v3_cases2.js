@@ -392,3 +392,9 @@
   }
   window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); window.addEventListener("load", frame); frame();
 })();
+/* the price list: on touch screens a tap opens the row's items first, a second tap follows the link */
+(function(){
+  var rows = [].slice.call(document.querySelectorAll(".pq-row")); if(!rows.length) return;
+  var touch = window.matchMedia("(hover: none)").matches; if(!touch) return;
+  rows.forEach(function(r){ r.addEventListener("click", function(e){ if(!r.classList.contains("open")){ e.preventDefault(); rows.forEach(function(x){ x.classList.remove("open"); }); r.classList.add("open"); } }); });
+})();

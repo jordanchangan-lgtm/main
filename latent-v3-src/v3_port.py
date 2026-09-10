@@ -39,7 +39,7 @@ if os.environ.get('PORTFOLIO')=='4':
 '''%(side,leadf,i+1,_n,CAT[i],_year(p),p['t'],p['proj'],p['note'],len(figs),thumbs)
     _port='''<section class="sec dark pb js-pb" id="work">
   <div class="inner pb-in">
-    <p class="pf2-head rv"><b>( Portfolio )</b> All work <span>[ %02d ]</span></p>
+    <p class="pf2-head rv"><b>( Portfolio )</b> Chosen art pieces <span>[ %02d ]</span></p>
 %s  </div>
 </section>
 '''%(_n,_rows)
@@ -61,7 +61,7 @@ elif os.environ.get('PORTFOLIO')=='3':
     </div>
 '''%(side,i,cw,ch,cards,i+1,_n,CAT[i],_year(p),p['t'],p['proj'],p['note'],N)
     _port='''<section class="sec dark hr js-hrsec" id="work">
-  <div class="inner hr-head"><p class="pf2-head rv"><b>( Portfolio )</b> All work <span>[ %02d ]</span></p></div>
+  <div class="inner hr-head"><p class="pf2-head rv"><b>( Portfolio )</b> Chosen art pieces <span>[ %02d ]</span></p></div>
 %s</section>
 '''%(_n,_holds)
 elif os.environ.get('PORTFOLIO')=='2':
@@ -86,7 +86,7 @@ elif os.environ.get('PORTFOLIO')=='2':
 '''%(N,i,i+1,_n,CAT[i],_year(p),p['t'],p['proj'],p['note'],items)
     _port='''<section class="sec dark pf2 js-pf2" id="work">
   <div class="inner pf2-in">
-    <p class="pf2-head rv"><b>( Portfolio )</b> All work <span>[ %02d ]</span></p>
+    <p class="pf2-head rv"><b>( Portfolio )</b> Chosen art pieces <span>[ %02d ]</span></p>
 %s  </div>
 </section>
 '''%(_n,_ch)
@@ -106,7 +106,7 @@ else:
   <div class="inner">
     <div class="wk3-head">
       <p class="wk3-filter js-wk3-filter"><span data-f="all" class="on">All</span><span data-f="film">Film</span><span data-f="identity">Identity</span><span data-f="perfume">Perfume</span><span data-f="web">Web</span></p>
-      <p class="wk3-title rv">All work<sup>[ %02d ]</sup></p>
+      <p class="wk3-title rv">Chosen art pieces<sup>[ %02d ]</sup></p>
       <p class="wk3-view"><button type="button" class="js-wk3-view on" data-v="list">List</button><i>|</i><button type="button" class="js-wk3-view" data-v="grid">Grid</button></p>
     </div>
     <div class="wk3-listwrap js-wk3-listwrap">

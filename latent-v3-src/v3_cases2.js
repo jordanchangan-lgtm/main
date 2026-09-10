@@ -57,9 +57,10 @@
     reveal.textContent = m === "grid" ? "[ Back to the list ]" : "[ Reveal full projects ]"; requestAnimationFrame(function(){ window.dispatchEvent(new Event("scroll")); });
     if(hint) hint.textContent = m === "grid" ? "Click any piece to open it full frame." : "Hover a project to see it. Click it to open all its pieces.";
   }
+  var touch = window.matchMedia("(hover: none)").matches, tapped = -1;
   rows.forEach(function(r, k){
-    r.addEventListener("mouseenter", function(){ show(k); }); r.addEventListener("focus", function(){ show(k); });
-    r.addEventListener("click", function(e){ e.preventDefault(); setMode("grid"); var g = groups[k]; if(g) setTimeout(function(){ g.scrollIntoView({ behavior:"smooth", block:"start" }); }, 60); });
+    r.addEventListener("mouseenter", function(){ if(!touch) show(k); }); r.addEventListener("focus", function(){ if(!touch) show(k); });
+    r.addEventListener("click", function(e){ e.preventDefault(); if(touch && tapped !== k){ tapped = k; show(k); return; } setMode("grid"); var g = groups[k]; if(g) setTimeout(function(){ g.scrollIntoView({ behavior:"smooth", block:"start" }); }, 60); });
   });
   reveal.addEventListener("click", function(){ setMode(mode === "grid" ? "list" : "grid"); if(mode === "list") sec.scrollIntoView({ behavior:"smooth", block:"start" }); });
   views.forEach(function(v){ v.addEventListener("click", function(){ setMode(v.dataset.v); }); });
@@ -397,4 +398,21 @@
   var rows = [].slice.call(document.querySelectorAll(".pq-row")); if(!rows.length) return;
   var touch = window.matchMedia("(hover: none)").matches; if(!touch) return;
   rows.forEach(function(r){ r.addEventListener("click", function(e){ if(!r.classList.contains("open")){ e.preventDefault(); rows.forEach(function(x){ x.classList.remove("open"); }); r.classList.add("open"); } }); });
+})();
+/* the annotation labels never leave their picture: measured after layout, nudged back inside when they run past an edge */
+(function(){
+  var figs = [].slice.call(document.querySelectorAll(".wp-img")); if(!figs.length) return;
+  function fit(){
+    figs.forEach(function(f){
+      var fr = f.getBoundingClientRect(); if(!fr.width) return;
+      [].forEach.call(f.querySelectorAll(".an-lb"), function(l){
+        l.style.marginLeft = "0px"; l.style.marginTop = "0px";
+        var r = l.getBoundingClientRect(), dx = 0, dy = 0, pad = 8;
+        if(r.left < fr.left + pad) dx = fr.left + pad - r.left; else if(r.right > fr.right - pad) dx = fr.right - pad - r.right;
+        if(r.top < fr.top + pad) dy = fr.top + pad - r.top; else if(r.bottom > fr.bottom - pad) dy = fr.bottom - pad - r.bottom;
+        if(dx) l.style.marginLeft = dx.toFixed(1) + "px"; if(dy) l.style.marginTop = dy.toFixed(1) + "px";
+      });
+    });
+  }
+  window.addEventListener("resize", fit); window.addEventListener("load", fit); if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit); setTimeout(fit, 400); fit();
 })();

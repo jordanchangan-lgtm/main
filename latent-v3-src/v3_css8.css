@@ -331,3 +331,6 @@
   .an-mr{left:var(--xm);top:var(--ym);transform:translate(-100%,-50%) translateY(6px)}.an-on .an-mr{transform:translate(-100%,-50%)}
 }
 @media (prefers-reduced-motion:reduce){.wp-img{clip-path:none!important}.wp-txt .bw{opacity:1}.an .an-sq,.an .an-lb{opacity:1;transform:none}.an .an-ln,.an .an-ar{stroke-dashoffset:0}}
+/* the type block after the film, on white, before the cut to black */
+.ty5{background:#fff;padding:0;min-height:0}
+.ty5 .hw2-type{padding:clamp(60px,12vh,140px) var(--gut) clamp(60px,12vh,140px)}

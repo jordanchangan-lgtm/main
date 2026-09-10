@@ -38,6 +38,11 @@ V2H='''<div class="blinds wh js-blinds" aria-hidden="true"><i></i><i></i><i></i>
 <section class="sec light wp js-wp" id="how">
   <div class="inner wp-in">
 %s  </div>
+</section>
+
+'''%_steps5
+# the film panel follows this path directly; the type block and the cut to black come after the film (see v3_port.py)
+TYPE5='''<section class="sec light ty5">
   <div class="hw2-type">
     <p class="ty2-kick rv">What we make</p>
     <h2 class="ty2-stack"><span class="rv" style="--k:0">Posts</span><span class="rv" style="--k:1">Reels</span><span class="rv" style="--k:2">Campaigns</span><span class="rv" style="--k:3">Identity</span><span class="rv" style="--k:4">Websites</span></h2>
@@ -45,7 +50,6 @@ V2H='''<div class="blinds wh js-blinds" aria-hidden="true"><i></i><i></i><i></i>
   </div>
 </section>
 <div class="blinds rev wh js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-
-'''%_steps5
+'''
 _hi=V2.index('<div class="blinds js-blinds"')
 V2=V2[:_hi]+V2H

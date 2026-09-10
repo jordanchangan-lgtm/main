@@ -94,6 +94,12 @@ else:
   </div>
 </section>
 '''%(_n,_rows,_pvs,_groups)
-# the portfolio sits right after How it works
-_mi=s.index('<!-- ================= METHOD')
-s=s[:_mi]+_port+'\n'+s[_mi:]
+if os.environ.get('HOW')=='5':
+    # the film panel follows the white path directly; then the type block, the cut to black, and the portfolio
+    _mi=s.index('<!-- ================= METHOD'); _me=s.index('</section>',s.index('id="method"',_mi))+len('</section>')
+    s=s[:_me]+'\n'+TYPE5+_port+'\n'+s[_me:]
+    s=s.replace('<section class="sec dark method wipe" id="method" style="--prev:var(--ivory)">','<section class="sec dark method wipe" id="method" style="--prev:#fff">',1)
+else:
+    # the portfolio sits right after How it works
+    _mi=s.index('<!-- ================= METHOD')
+    s=s[:_mi]+_port+'\n'+s[_mi:]

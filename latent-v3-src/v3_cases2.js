@@ -72,13 +72,15 @@
   }); });
   show(0);
 })();
-/* portfolio, version two: on the dots path, each project's name gathers in the middle while its pieces
-   scroll in at the sides, wipe open as they arrive and squash onto their bottom edge as they leave at the top */
+/* the dark path sections (portfolio version two, How it works version two): names and step texts gather out of
+   scattered starts as they arrive and fade as they leave; pieces wipe open as they arrive and squash onto their
+   bottom edge as they leave at the top */
 (function(){
-  var sec = document.querySelector(".js-pf2"); if(!sec) return;
+  var secs = [].slice.call(document.querySelectorAll(".js-path, .js-pf2")).filter(function(s, i, a){ return a.indexOf(s) === i; }); if(!secs.length) return;
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, seed = 11;
   function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
-  [].forEach.call(sec.querySelectorAll(".js-words"), function(el){
+  var all = []; secs.forEach(function(sec){ all = all.concat([].slice.call(sec.querySelectorAll(".js-words"))); });
+  all.forEach(function(el){
     var words = el.textContent.trim().split(/\s+/); el.textContent = "";
     words.forEach(function(w, i){
       var sp = document.createElement("span"); sp.className = "cw"; sp.textContent = w;
@@ -86,23 +88,30 @@
       el.appendChild(sp); if(i < words.length - 1) el.appendChild(document.createTextNode(" "));
     });
   });
-  var chs = [].slice.call(sec.querySelectorAll(".pf2-ch")).map(function(ch){
-    return { el: ch, lab: ch.querySelector(".pf2-lab"), words: [].slice.call(ch.querySelectorAll(".js-words")), items: [].slice.call(ch.querySelectorAll(".pf2-item")) };
+  var chs = [], free = all.filter(function(el){ return !el.closest(".pf2-lab"); }), items = [];
+  secs.forEach(function(sec){
+    [].forEach.call(sec.querySelectorAll(".pf2-ch"), function(ch){ chs.push({ el: ch, lab: ch.querySelector(".pf2-lab"), words: [].slice.call(ch.querySelectorAll(".pf2-lab .js-words")) }); });
+    items = items.concat([].slice.call(sec.querySelectorAll(".pf2-item")));
   });
+  function set(w, pin, pout){ w.style.setProperty("--p", (reduce ? 1 : pin).toFixed(3)); w.style.setProperty("--q", (reduce ? 1 : pout).toFixed(3)); }
   function frame(){
     ticking = false; var vh = window.innerHeight;
     chs.forEach(function(c){
       var r = c.el.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
       var pin = Math.min(1, Math.max(0, (vh * .95 - r.top) / (vh * .45)));
       var pout = Math.min(1, Math.max(0, (r.bottom - vh * .36 - c.lab.offsetHeight * .5) / (vh * .22)));
-      c.words.forEach(function(w){ w.style.setProperty("--p", (reduce ? 1 : pin).toFixed(3)); w.style.setProperty("--q", (reduce ? 1 : pout).toFixed(3)); });
-      c.items.forEach(function(it){
-        var box = it.firstElementChild, b = box.getBoundingClientRect();
-        if(b.top < vh * .92 && !it.classList.contains("in")) it.classList.add("in");
-        if(reduce || b.bottom < -10 || b.top > vh + 10) return;
-        var t = Math.min(1, Math.max(0, (vh * .46 - b.bottom) / (vh * .32))), e = t * t * (3 - 2 * t);
-        box.style.transform = e > 0 ? "scaleY(" + (1 - .985 * e).toFixed(4) + ")" : "";
-      });
+      c.words.forEach(function(w){ set(w, pin, pout); });
+    });
+    free.forEach(function(w){
+      var r = w.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
+      set(w, Math.min(1, Math.max(0, (vh - r.top) / (vh * .38))), Math.min(1, Math.max(0, r.bottom / (vh * .16))));
+    });
+    items.forEach(function(it){
+      var box = it.firstElementChild, b = box.getBoundingClientRect();
+      if(b.top < vh * .92 && !it.classList.contains("in")) it.classList.add("in");
+      if(reduce || b.bottom < -10 || b.top > vh + 10) return;
+      var t = Math.min(1, Math.max(0, (vh * .46 - b.bottom) / (vh * .32))), e = t * t * (3 - 2 * t);
+      box.style.transform = e > 0 ? "scaleY(" + (1 - .985 * e).toFixed(4) + ")" : "";
     });
   }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }

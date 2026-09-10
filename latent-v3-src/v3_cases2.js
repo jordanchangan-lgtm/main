@@ -310,32 +310,29 @@
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
 })();
-/* How it works, version five: driven by position, like the black run. A picture opens widthwise (from its own side)
-   as it rises through the lower half of the screen and closes back as it leaves at the top; its annotations draw in
-   once it is open; the sentence beside it brightens word by word as it climbs and fades out at the top. */
+/* How it works, version five: triggered by the scroll, played by the clock. When a step rises into the screen the
+   picture opens widthwise from its own side in one move, the annotations draw once it is open, and the sentence
+   beside it brightens word by word. Leaving at the top, or scrolling back below it, closes it again. */
 (function(){
   var sec = document.querySelector(".js-wp"); if(!sec) return;
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
-  var imgs = [].slice.call(sec.querySelectorAll(".js-wp-img")).map(function(im){ return { el: im, left: im.closest(".wp-step").classList.contains("left") }; });
+  var imgs = [].slice.call(sec.querySelectorAll(".js-wp-img")).map(function(im){ return { el: im, on: false, t: null }; });
   var txts = [].slice.call(sec.querySelectorAll(".js-wp-txt")).map(function(t){
     var ws = t.textContent.trim().split(/\s+/); t.textContent = "";
     ws.forEach(function(w, i){ var sp = document.createElement("span"); sp.className = "bw"; sp.textContent = w; sp.style.setProperty("--i", i); t.appendChild(sp); if(i < ws.length - 1) t.appendChild(document.createTextNode(" ")); });
-    return { el: t, n: ws.length };
+    return { el: t };
   });
-  var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
+  function setImg(o, on){
+    if(o.on === on) return; o.on = on; o.el.classList.toggle("on", on); if(o.t){ clearTimeout(o.t); o.t = null; }
+    if(on) o.t = setTimeout(function(){ o.el.classList.add("an-on"); o.t = null; }, reduce ? 0 : 780); else o.el.classList.remove("an-on");
+  }
+  var steps = [].slice.call(sec.querySelectorAll(".wp-step")).map(function(s){ return { el: s, img: imgs.filter(function(o){ return s.contains(o.el); })[0], txt: s.querySelector(".js-wp-txt") }; });
   function frame(){
     ticking = false; var vh = window.innerHeight;
-    imgs.forEach(function(o){
-      var im = o.el, r = im.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
-      var open = reduce ? 1 : ease(clamp((vh * .9 - r.top) / (vh * .34))) * (1 - ease(clamp((vh * .2 - r.bottom) / (vh * .2))));
-      var hide = ((1 - open) * 100).toFixed(2) + "%";
-      im.style.clipPath = o.left ? "inset(0 " + hide + " 0 0 round clamp(10px,1vw,16px))" : "inset(0 0 0 " + hide + " round clamp(10px,1vw,16px))";
-      im.classList.toggle("an-on", open > .92);
-    });
-    txts.forEach(function(t){
-      var r = t.el.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
-      var p = reduce ? 1 : clamp((vh * .9 - r.top) / (vh * .42)), q = reduce ? 1 : clamp(r.bottom / (vh * .16));
-      t.el.style.setProperty("--p", (p * (t.n + 1)).toFixed(2)); t.el.style.setProperty("--q", q.toFixed(3));
+    steps.forEach(function(s){
+      var r = s.el.getBoundingClientRect(), on;
+      if(r.top < vh * .78 && r.bottom > vh * .12) on = true; else if(r.top > vh * .96 || r.bottom < vh * .04) on = false; else return;
+      if(s.img) setImg(s.img, on); if(s.txt) s.txt.classList.toggle("on", on);
     });
   }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
@@ -487,4 +484,22 @@
       list.style.transform = window.innerWidth > 820 ? "translate3d(0," + (list.offsetHeight / 2 - c).toFixed(1) + "px,0)" : "none"; }
   }
   window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); frame();
+})();
+/* hero lines rise word by word through line masks, the same move as the type block */
+(function(){
+  var els = [].slice.call(document.querySelectorAll(".hero .js-pu2")); if(!els.length) return;
+  function mask(node, w){ var m = document.createElement("span"); m.className = "hm"; var i = document.createElement("span"); i.className = "hm-in"; i.style.setProperty("--w", w); m.appendChild(i); node.parentNode.insertBefore(m, node); i.appendChild(node); return m; }
+  els.forEach(function(el){
+    var w = 0, nodes = [];
+    (function walk(n){ [].slice.call(n.childNodes).forEach(function(c){
+      if(c.nodeType === 3){ if(c.textContent.trim()) nodes.push(c); }
+      else if(c.nodeType === 1){ if(c.tagName === "BR") return; if(c.classList.contains("cyc") || c.classList.contains("logo") || c.id === "clock"){ nodes.push(c); return; } walk(c); } }); })(el);
+    nodes.forEach(function(n){
+      if(n.nodeType === 1){ mask(n, w++); return; }
+      var parts = n.textContent.split(/(\s+)/), frag = document.createDocumentFragment();
+      parts.forEach(function(p){ if(!p) return; if(/^\s+$/.test(p)){ frag.appendChild(document.createTextNode(" ")); return; } var t = document.createTextNode(p); frag.appendChild(t); mask(t, w++).parentNode; });
+      n.parentNode.replaceChild(frag, n);
+    });
+    if(el.classList.contains("in")){ el.classList.remove("in"); void el.offsetWidth; requestAnimationFrame(function(){ el.classList.add("in"); }); }
+  });
 })();

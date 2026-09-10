@@ -38,4 +38,4 @@ rep('''      <p class="eyebrow rv"><b>( Sectors )</b> Where the work lands</p>
 # the last stylesheet word: appended at the very end of the page styles so nothing below it can override
 _j=s.rfind('</style>'); s=s[:_j]+open(SP+'v3_css5.css').read()+(open(SP+'v3_css6.css').read() if os.environ.get('TEXTB') else '')+s[_j:]
 
-exec(open(SP+'v3_cases.py').read())
+exec(open(SP+('v3_cases2.py' if os.environ.get('SECTION')=='2' else 'v3_cases.py')).read())

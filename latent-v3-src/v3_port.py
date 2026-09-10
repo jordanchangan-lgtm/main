@@ -7,6 +7,9 @@ _sets=_re.findall(r'<div class="wk-set js-wk-set" data-i="(\d)"><div class="wk-i
 _figs=[_re.findall(r'<figure class="wk-m js-film".*?</figure>', inner, _re.S) for _,inner in _sets]
 TAGS=[['perfume','film'],['identity'],['identity','film'],['web'],['identity','film'],['identity']]
 CAT=['Perfume','Identity','Identity','Web','Identity','Identity']
+# Cube Care Center is out of the portfolio
+_keep=[i for i,p in enumerate(_wk) if p['t']!='Cube Care Center']
+_wk=[_wk[i] for i in _keep]; _figs=[_figs[i] for i in _keep]; TAGS=[TAGS[i] for i in _keep]; CAT=[CAT[i] for i in _keep]
 def _ar(f):
     m=_re.search(r'--ar:(\d+)/(\d+)', f); return (int(m.group(1)),int(m.group(2))) if m else (9,16)
 def _poster(f):
@@ -65,13 +68,13 @@ else:
     _rows=''; _pvs=''; _groups=''
     for i,p in enumerate(_wk):
         figs=_figs[i]; w,h=_ar(figs[0])
-        _rows+='        <a class="wk3-row js-wk3-row" data-i="%d" data-tags="%s" href="#work" style="--k:%d"><span class="r-n">%s</span><span class="r-p">%s</span><span class="r-c">%s</span><span class="r-y">%s</span><span class="r-a">&nearr;</span></a>\n'%(i,' '.join(TAGS[i]),i,p['t'],p['proj'],CAT[i],_year(p))
+        _rows+='        <a class="wk3-row js-wk3-row rv" data-i="%d" data-tags="%s" href="#work" style="--k:%d"><span class="r-n">%s</span><span class="r-p">%s</span><span class="r-c">%s</span><span class="r-y">%s</span><span class="r-a">&nearr;</span></a>\n'%(i,' '.join(TAGS[i]),i,p['t'],p['proj'],CAT[i],_year(p))
         _pvs+='        <div class="wk3-pv js-wk3-pv" data-i="%d" style="--ar:%d/%d"><img src="%s" alt="" loading="lazy" decoding="async"></div>\n'%(i,w,h,_poster(figs[0]))
         tiles=''
         for f in figs:
             fw,fh=_ar(f); t=_re.search(r'data-title="([^"]*)"',f).group(1); note=_re.search(r'data-note="([^"]*)"',f).group(1)
-            tiles+='          <div class="wk3-tile%s"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i>%s<p class="wk3-cap"><span>%s</span><span>%s</span><em>%s</em></p></div>\n'%(' wide' if fw/fh>1.1 else '', f, t, _year(p), note)
-        _groups+='      <div class="wk3-group js-wk3-group" data-i="%d" data-tags="%s"><p class="wk3-gh"><b>%02d</b> %s <span>%s &middot; %s &middot; %s</span></p><div class="wk3-tiles">\n%s        </div></div>\n'%(i,' '.join(TAGS[i]),i+1,p['t'],p['proj'],CAT[i],_year(p),tiles)
+            tiles+='          <div class="wk3-tile rv%s"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i>%s<p class="wk3-cap"><span>%s</span><span>%s</span><em>%s</em></p></div>\n'%(' wide' if fw/fh>1.1 else '', f, t, _year(p), note)
+        _groups+='      <div class="wk3-group js-wk3-group" data-i="%d" data-tags="%s"><p class="wk3-gh rv"><b>%02d</b> %s <span>%s &middot; %s &middot; %s</span></p><div class="wk3-tiles">\n%s        </div></div>\n'%(i,' '.join(TAGS[i]),i+1,p['t'],p['proj'],CAT[i],_year(p),tiles)
     _port='''<section class="sec dark wipe wk3 js-wk3" id="work" style="--prev:var(--ivory)">
   <div class="inner">
     <div class="wk3-head">

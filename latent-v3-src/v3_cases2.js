@@ -7,7 +7,7 @@
   var sets = blindsAll.map(function(b){ return { el: b, slats: [].slice.call(b.children) }; });
   function frame(){
     ticking = false; var vh = window.innerHeight;
-    if(line){ var st = sec.getBoundingClientRect(); var p = reduce ? 1 : Math.min(1, Math.max(0, -st.top / (vh * .52))); line.classList.toggle("on", reduce || st.top <= 1); line.style.setProperty("--p", (p * (words.length + 3)).toFixed(2)); }
+    if(line){ var st = sec.getBoundingClientRect(); var p = reduce ? 1 : Math.min(1, Math.max(0, -st.top / (vh * .52))); line.classList.toggle("on", reduce || st.top <= 1); var lr = line.getBoundingClientRect(); line.classList.toggle("out", !reduce && lr.bottom < vh * .15); line.style.setProperty("--p", (p * (words.length + 3)).toFixed(2)); }
     sets.forEach(function(st){ var b = st.el.getBoundingClientRect(); var q = reduce ? 1 : Math.min(1, Math.max(0, (vh * .9 - b.top) / (vh * .55)));
       st.slats.forEach(function(sl, i){ sl.classList.toggle("on", q > (i + 1) / (st.slats.length + 1)); }); });
   }
@@ -37,7 +37,7 @@
       track.style.transform = "translate3d(" + (-x).toFixed(1) + "px,0,0)";
       if(type) type.classList.toggle("in", p > .82);
     }
-    cards.forEach(function(c){ var b = c.getBoundingClientRect(); reveal(c, on ? (b.left < vw * .88 && b.right > 0) : (b.top < vh * .9 && b.bottom > 0)); });
+    cards.forEach(function(c){ var b = c.getBoundingClientRect(); reveal(c, on ? (b.left < vw * .88 && b.right > 0) : (b.top < vh * .9 && b.bottom > 0)); c.classList.toggle("out", on ? (b.right < vw * .22 && b.right > -10) : (b.bottom < vh * .12 && b.bottom > -10)); });
   }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", measure); window.addEventListener("load", measure); measure();
@@ -54,7 +54,7 @@
   function setMode(m){
     mode = m; grid.hidden = m !== "grid"; listwrap.hidden = m === "grid"; sec.classList.toggle("grid-on", m === "grid");
     views.forEach(function(v){ v.classList.toggle("on", v.dataset.v === m); });
-    reveal.textContent = m === "grid" ? "[ Back to the list ]" : "[ Reveal full projects ]";
+    reveal.textContent = m === "grid" ? "[ Back to the list ]" : "[ Reveal full projects ]"; requestAnimationFrame(function(){ window.dispatchEvent(new Event("scroll")); });
     if(hint) hint.textContent = m === "grid" ? "Click any piece to open it full frame." : "Hover a project to see it. Click it to open all its pieces.";
   }
   rows.forEach(function(r, k){
@@ -109,7 +109,7 @@
     });
     items.forEach(function(it){
       var box = it.firstElementChild, b = box.getBoundingClientRect();
-      if(b.top < vh * .92 && !it.classList.contains("in")) it.classList.add("in");
+      if(b.top < vh * .92 && !it.classList.contains("in")) it.classList.add("in"); if(b.top > vh * 1.05) it.classList.remove("in");
       if(reduce || b.bottom < -10 || b.top > vh + 10) return;
       var t = Math.min(1, Math.max(0, (vh * .46 - b.bottom) / (vh * .32))), e = t * t * (3 - 2 * t);
       box.style.transform = e > 0 ? "scaleY(" + (1 - .985 * e).toFixed(4) + ")" : "";
@@ -162,11 +162,12 @@
     rings.forEach(function(r){
       var b = r.hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
       var run = Math.max(1, r.hold.offsetHeight - vh), p = reduce ? 0 : Math.min(1, Math.max(0, -b.top / run));
-      var rot = -p * TAU * r.dir;
+      var rot = -p * TAU * r.dir, env = Math.min(1, p / .06) * (1 - Math.max(0, (p - .93) / .07)); env = env * env * (3 - 2 * env); if(reduce) env = 1;
+      r.hold.classList.toggle("in", p > .01 && p < .96); r.hold.classList.toggle("gone", p >= .96);
       r.cards.forEach(function(c, i){
         var th = i * r.step + rot, cos = Math.cos(th), sin = Math.sin(th);
         var x = r.dir * cos * r.rx, y = sin * r.ry, s = MIN + (1 - MIN) * ((cos + 1) / 2);
-        c.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0) scale(" + s.toFixed(3) + ")";
+        c.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0) scale(" + (s * env).toFixed(3) + ")";
         c.style.zIndex = Math.round(s * 1000);
       });
       if(r.cue) r.cue.textContent = p >= .99 ? "Full turn" : "Scroll to spin";
@@ -195,4 +196,35 @@
     var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }); }, { rootMargin:"0px 0px -20% 0px" });
     words.forEach(function(w){ if(!w.closest(".hz-type")) io.observe(w); });
   } else words.forEach(function(w){ w.classList.add("in"); });
+  var tk = false;
+  function tyFrame(){ tk = false; var vh = window.innerHeight, vw = window.innerWidth, hz = document.querySelector(".hz-on");
+    words.forEach(function(w){ var b = w.getBoundingClientRect(); var horiz = hz && w.closest(".hz-track");
+      w.classList.toggle("out", horiz ? (b.right < vw * .2 && b.right > -10) : (b.bottom < vh * .1 && b.bottom > -10));
+      if(!w.closest(".hz-type")){ if(b.top > vh * 1.05) w.classList.remove("in"); else if(b.top < vh * .9) w.classList.add("in"); } }); }
+  window.addEventListener("scroll", function(){ if(!tk){ tk = true; requestAnimationFrame(tyFrame); } }, { passive:true }); tyFrame();
+})();
+/* every revealed thing goes both ways: it rises when scrolled to, lifts out as it leaves at the top, and resets
+   below the screen so it plays again on the way back. Inside the pinned horizontal track the axis is horizontal. */
+(function(){
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; if(reduce) return;
+  var els = [].slice.call(document.querySelectorAll(".rv")).filter(function(el){ return !el.closest(".js-lk") && !el.closest(".ty2-stack"); }).map(function(el){ return { el: el, track: !!el.closest(".hz-track") }; });
+  if(!els.length) return; var ticking = false;
+  function frame(){
+    ticking = false; var vh = window.innerHeight, vw = window.innerWidth, hzOn = !!document.querySelector(".hz-on");
+    els.forEach(function(o){
+      var el = o.el; if(el.offsetParent === null && getComputedStyle(el).position !== "fixed") return;
+      var b = el.getBoundingClientRect();
+      if(o.track && hzOn){
+        if(b.left > vw * 1.05 || b.top > vh * 1.05){ el.classList.remove("in"); el.classList.remove("out"); return; }
+        if(b.left < vw * .92) el.classList.add("in");
+        el.classList.toggle("out", b.right < vw * .18 && b.right > -10);
+      } else {
+        if(b.top > vh * 1.05){ el.classList.remove("in"); el.classList.remove("out"); return; }
+        if(b.top < vh * .92) el.classList.add("in");
+        el.classList.toggle("out", b.bottom < vh * .1 && b.bottom > -10);
+      }
+    });
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); setTimeout(frame, 300);
 })();

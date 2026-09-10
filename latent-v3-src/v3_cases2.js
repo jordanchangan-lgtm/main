@@ -179,7 +179,7 @@
 /* the type block: every word is split into letters inside a line mask; it rises when its block is in view and
    the letters roll on hover, the delay spreading from the letter under the pointer */
 (function(){
-  var words = [].slice.call(document.querySelectorAll(".ty2-stack span")); if(!words.length) return;
+  var words = [].slice.call(document.querySelectorAll(".ty2-stack > span")); if(!words.length) return;
   words.forEach(function(w){
     var txt = w.textContent, inner = document.createElement("span"); inner.className = "ty2-in"; w.textContent = ""; w.setAttribute("aria-label", txt);
     var chars = txt.split("").map(function(ch, i){

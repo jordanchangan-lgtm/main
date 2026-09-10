@@ -277,3 +277,35 @@
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
 })();
+/* How it works, version four: one locked stage. The scroll runs through the steps in turn: the previous pair leaves
+   (picture closing back to the left, words dimming), the picture opens widthwise from the left, then the sentence
+   appears word by word; the page cannot move on until the last word is there. */
+(function(){
+  var sec = document.querySelector(".js-sq"); if(!sec) return;
+  var hold = sec.querySelector(".js-sq-hold"), steps = [].slice.call(sec.querySelectorAll(".js-sq-step")), N = steps.length;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
+  var S = steps.map(function(st){
+    var txt = st.querySelector(".js-sq-txt"), ws = txt.textContent.trim().split(/\s+/), spans = []; txt.textContent = "";
+    ws.forEach(function(w, i){ var sp = document.createElement("span"); sp.className = "bw"; sp.textContent = w; sp.style.setProperty("--i", i); txt.appendChild(sp); if(i < ws.length - 1) txt.appendChild(document.createTextNode(" ")); spans.push(sp); });
+    return { el: st, img: st.querySelector(".js-sq-img"), txt: txt, n: ws.length };
+  });
+  var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
+  function frame(){
+    ticking = false; var vh = window.innerHeight, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
+    var run = Math.max(1, hold.offsetHeight - vh), p = reduce ? 1 : clamp(-b.top / run), f = p * N;
+    S.forEach(function(s, i){
+      var local = f - i;                          // 0 at the start of this step, 1 at its end
+      var on = reduce || (local > -0.001 && local < 1.16);
+      s.el.classList.toggle("on", on); if(!on && !reduce) return;
+      if(reduce){ s.img.style.clipPath = "none"; s.txt.style.setProperty("--p", s.n + 2); return; }
+      var open = ease(clamp(local / .32));                                   // the picture opens over the first third
+      var words = clamp((local - .34) / .62);                                // the words arrive over the rest
+      var leave = i < N - 1 ? ease(clamp((local - 1) / .16)) : 0;           // then the pair leaves as the next step starts
+      var w = open * (1 - leave);
+      s.img.style.clipPath = "inset(0 " + ((1 - w) * 100).toFixed(2) + "% 0 0 round clamp(10px,1vw,16px))";
+      s.txt.style.setProperty("--p", (words * (s.n + 1)).toFixed(2)); s.txt.style.opacity = Math.min(1 - leave, clamp((local - .3) / .05)).toFixed(3);
+    });
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
+})();

@@ -279,3 +279,21 @@
   .tr-head{margin-bottom:14px}.tr-word{font-size:40px}.tr-line{font-size:14px;min-height:0}.tr-idx{margin-top:14px}
 }
 @media (prefers-reduced-motion:reduce){.tr-hold{height:auto}.tr-stage{position:relative;height:auto}.tr-col{position:relative;transform:none!important}.tr-right{opacity:1;transform:none}.tr-now.pre .tr-w > span{transform:none;opacity:1}}
+/* ---------- How it works, version four: the locked sequence on white ---------- */
+.sq{padding:0;background:#fff}
+.sq-hold{position:relative;height:calc(100svh + var(--n,6) * 95vh)}
+.sq-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.sq-step{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:center;gap:clamp(24px,4vw,72px);padding:0 var(--gut);visibility:hidden}
+.sq-step.on{visibility:visible}
+.sq-img{margin:0;position:relative;width:100%;aspect-ratio:16/10;max-height:64vh;overflow:hidden;border-radius:clamp(10px,1vw,16px);background:#fff;clip-path:inset(0 100% 0 0 round clamp(10px,1vw,16px));will-change:clip-path}
+.sq-img img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block}
+.sq-txt{margin:0;max-width:24ch;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(22px,2.3vw,36px);line-height:1.18;letter-spacing:-.03em;color:var(--ink);text-wrap:pretty}
+.sq-txt .bw{opacity:calc(.14 + .86 * clamp(0, calc(var(--p, 0) - var(--i)), 1))}
+.sq .hw2-type{padding:clamp(60px,12vh,140px) var(--gut) clamp(40px,8vh,96px)}
+@media(max-width:820px){
+  .sq-hold{height:calc(100svh + var(--n,6) * 85vh)}
+  .sq-step{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:center;gap:22px;padding:0 var(--gut)}
+  .sq-img{max-height:44svh}
+  .sq-txt{font-size:22px;max-width:none}
+}
+@media (prefers-reduced-motion:reduce){.sq-hold{height:auto}.sq-stage{position:relative;height:auto}.sq-step{position:relative;visibility:visible;min-height:80svh}.sq-img{clip-path:none!important}.sq-txt .bw{opacity:1}}

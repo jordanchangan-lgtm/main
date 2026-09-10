@@ -4,12 +4,12 @@
 _sa=s.index('<section class="sec light" id="studio" style="padding:0">'); _sb=s.index('<!-- ================= METHOD')
 W=lambda name: du('gen/'+name,'image/jpeg')
 shoes,chair,fish,cup,umbrella,cactus=[W(n) for n in ('p1.jpg','p2.jpg','p3.jpg','l1.jpg','l2.jpg','l3.jpg')]
-FACTS=[
- ('img',shoes,'0','Cameras, studios or crews on any job.'),
- ('txt',None,None,'A brief becomes a direction, the direction becomes frames, the frames become final files &mdash; in days, not weeks.'),
- ('img',chair,'3','Rules on every job: minimal, simple, never average.'),
- ('ink',None,'2026','Founded in Amman, working worldwide.'),
- ('img',fish,'7','Things we make, from a post to a whole website.'),
+STEPS=[
+ ('img',shoes,'01','Brief','You send the product, the palette and the mood. We write the direction.'),
+ ('txt',None,None,None,'The same path on every job: brief, direction, frames, craft, files. Days, not weeks.'),
+ ('img',chair,'02','Direct','Light, lens, angle and story are decided before a single frame is made.'),
+ ('ink',None,'03','Generate','Hundreds of frames. Only the ones that look shot are kept.'),
+ ('img',fish,'04','Craft','Retouch, grade and type by hand. Then the files ship in every format.'),
 ]
 WORK=[
  (cup,'Standing on the ceiling','Explorations &middot; 2026'),
@@ -20,10 +20,10 @@ WORK=[
  (a['rawabina'],'Rawabina','Touch of Green &middot; editorial website'),
 ]
 _facts=''
-for kind,img,num,txt in FACTS:
-    if kind=='img': _facts+='        <div class="kf kf-img rv"><img src="%s" alt="" loading="lazy" decoding="async"><div class="kf-in"><b>%s</b><p>%s</p></div></div>\n'%(img,num,txt)
-    elif kind=='ink': _facts+='        <div class="kf kf-ink rv"><div class="kf-in"><b>%s</b><p>%s</p></div></div>\n'%(num,txt)
-    else: _facts+='        <div class="kf kf-txt rv"><p>%s</p></div>\n'%txt
+for k,(kind,img,num,word,txt) in enumerate(STEPS):
+    if kind=='img': _facts+='        <div class="kf kf-img rv" style="--k:%d"><img src="%s" alt="" loading="lazy" decoding="async"><span class="kf-kick">( %s ) %s</span><div class="kf-in"><b class="kf-word">%s</b><p>%s</p></div><i class="kf-num">%s</i></div>\n'%(k,img,num,word,word,txt,num)
+    elif kind=='ink': _facts+='        <div class="kf kf-ink rv" style="--k:%d"><span class="kf-kick">( %s ) %s</span><div class="kf-in"><b class="kf-word">%s</b><p>%s</p></div><i class="kf-num">%s</i></div>\n'%(k,num,word,word,txt,num)
+    else: _facts+='        <div class="kf kf-txt rv" style="--k:%d"><p>%s</p></div>\n'%(k,txt)
 _work=''.join('        <a class="wk2" href="#work" style="--k:%d"><span class="wk2-img" style="--r:%s"><img src="%s" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">%s</span><span class="wk2-d">%s</span></a>\n'%(i%2, '16/10' if i%2==0 else '4/5' if False else '16/10', img, t, d) for i,(img,t,d) in enumerate(WORK))
 V2='''<section class="sec dark st2 js-st2" id="studio">
   <div class="st2-bg js-st2-bg" aria-hidden="true"><i class="g1"></i><i class="g2"></i><i class="s1"></i><i class="s2"></i><i class="s3"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
@@ -41,7 +41,8 @@ V2='''<section class="sec dark st2 js-st2" id="studio">
 <div class="blinds js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <section class="sec light kfs" id="facts">
   <div class="inner">
-    <h2 class="kf-title rv">Key facts</h2>
+    <h2 class="kf-title rv">How it works</h2>
+    <p class="kf-sub rv">From a brief to final files, the same way every time.</p>
     <div class="kf-row">
 ''' + _facts + '''    </div>
     <p class="kf-clients rv"><b>Clients so far</b><span>Atelier Rebul</span><span>Cube Care Center</span><span>Cube Coffee House</span><span>Rawabina Al-Khadhraa</span></p>

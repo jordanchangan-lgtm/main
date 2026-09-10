@@ -89,7 +89,16 @@
 .hw2-line{margin:12px 0 0;font-size:15px;line-height:1.55;color:rgba(242,239,231,.72)}
 .pf2-item.in .hw-m{opacity:1}
 .hw2-type{text-align:center;padding:clamp(40px,10vh,120px) 0 clamp(20px,4vh,48px)}
-.hw2 .ty2-stack,.hw2 .ty2-foot{color:var(--ivory)}.hw2 .ty2-kick{color:rgba(242,239,231,.55)}
+/* the off-white path: ink dots on ivory, ink type, the same motion */
+.hw2.light{background:var(--ivory)}
+.hw2.light .st2-bg .d1{background-image:radial-gradient(circle at 1px 1px,rgba(20,20,26,.6) 1px,transparent 0);opacity:.16}
+.hw2.light .pf2-head{color:rgba(20,20,26,.55)}.hw2.light .pf2-head span{color:var(--ink)}
+.hw2.light .hw2-title,.hw2.light .hw2-word{color:var(--ink)}
+.hw2.light .hw2-sub{color:rgba(20,20,26,.62)}.hw2.light .hw2-line{color:rgba(20,20,26,.72)}
+.hw2.light .pf2-img{background:var(--band)}
+.hw2.light .ty2-stack,.hw2.light .ty2-foot{color:var(--ink)}.hw2.light .ty2-kick{color:var(--stone)}
+/* the cut back from ivory to ink */
+.blinds.rev{background:var(--ivory)}.blinds.rev i{background:var(--ink)}
 @media(max-width:820px){
   .st2-line{font-size:clamp(26px,7.6vw,34px);max-width:none;margin:0}
   .st2-in{padding-top:56svh}

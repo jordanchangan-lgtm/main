@@ -14,7 +14,8 @@ for k,(img,r,num,word,txt) in enumerate(STEPS):
       <div class="hw2-txt" style="--tx:%.1f%%;--ty:%.1f%%"><p class="hw2-kick js-words">( %s ) Step %s of six</p><h3 class="hw2-word js-words">%s</h3><p class="hw2-line js-words">%s</p></div>
     </div>
 '''%(x,iy,W,r,img,_micro(num,word),tx,ty,num,num,word,txt)
-V2H='''<section class="sec dark pf2 hw2 js-pf2 js-path" id="how">
+V2H='''<div class="blinds js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<section class="sec light pf2 hw2 js-pf2 js-path" id="how">
   <div class="st2-bg" aria-hidden="true"><i class="d1"></i><i class="d2"></i></div>
   <div class="inner pf2-in">
     <div class="hw2-head"><p class="pf2-head rv"><b>( How it works )</b> From a brief to final files</p><h2 class="hw2-title js-words">How it works</h2><p class="hw2-sub js-words">Six steps, the same way every time. No set, no crew, no reshoot day.</p></div>
@@ -25,6 +26,7 @@ V2H='''<section class="sec dark pf2 hw2 js-pf2 js-path" id="how">
     </div>
   </div>
 </section>
+<div class="blinds rev js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 
 '''%_chs
 _hi=V2.index('<div class="blinds js-blinds"'); _hj=V2.index('<!-- ', _hi) if '<!-- ' in V2[_hi:] else len(V2)

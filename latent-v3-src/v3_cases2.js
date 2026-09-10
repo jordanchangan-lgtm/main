@@ -416,3 +416,73 @@
   }
   window.addEventListener("resize", fit); window.addEventListener("load", fit); if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit); setTimeout(fit, 400); fit();
 })();
+/* prices, version five: the giant sentence. One line wider than the screen, moved right to left by the page scroll;
+   each letter carries its own vertical offset and settles onto the baseline as it crosses the screen. */
+(function(){
+  var sec = document.querySelector(".js-gs"); if(!sec) return;
+  var hold = sec.querySelector(".js-gs-hold"), line = sec.querySelector(".js-gs-line"), reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, seed = 5;
+  function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+  var text = line.textContent, key = "Let’s generate", ki = text.indexOf(key); line.textContent = "";
+  var chars = [];
+  text.split(" ").forEach(function(w, wi, arr){
+    var word = document.createElement("span"); word.className = "gw";
+    var start = text.indexOf(w, wi ? undefined : 0);
+    Array.from(w).forEach(function(ch){ var c = document.createElement("span"); c.className = "gc"; c.textContent = ch; c.dataset.r = ((rnd() - .5) * .9).toFixed(3); word.appendChild(c); chars.push(c); });
+    if(ki >= 0 && (w.indexOf("Let") === 0 || w.indexOf("generate") === 0)) word.classList.add("gk");
+    line.appendChild(word); if(wi < arr.length - 1) line.appendChild(document.createTextNode(" "));
+  });
+  var W = 0;
+  function measure(){ W = line.scrollWidth; if(!reduce) hold.style.height = (window.innerHeight + W * 1.05 + window.innerWidth * .6) + "px"; frame(); }
+  function frame(){
+    ticking = false; if(reduce) return; var vh = window.innerHeight, vw = window.innerWidth, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
+    var run = Math.max(1, hold.offsetHeight - vh), p = Math.min(1, Math.max(0, -b.top / run));
+    var x0 = vw * .96, x1 = vw * .92 - W, x = x0 + (x1 - x0) * p;
+    line.style.transform = "translate3d(" + x.toFixed(1) + "px,-50%,0)";
+    var fs = parseFloat(getComputedStyle(line).fontSize);
+    chars.forEach(function(c){
+      var cx = x + c.offsetLeft, t = Math.min(1, Math.max(0, (vw * .78 - cx) / (vw * .38))), e = t * t * (3 - 2 * t);
+      c.style.transform = "translate3d(0," + ((1 - e) * parseFloat(c.dataset.r) * fs).toFixed(1) + "px,0)";
+    });
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", measure); window.addEventListener("load", measure); if(document.fonts && document.fonts.ready) document.fonts.ready.then(measure); measure();
+})();
+/* the four moves, version four: we close that gap. Each move takes one segment of the hold: the right words come in
+   from the right, the left words from the left, the picture opens between them, holds, then squeezes shut as the
+   words close the gap; the description shows while the picture is open. */
+(function(){
+  var sec = document.querySelector(".js-gp"); if(!sec) return;
+  var hold = sec.querySelector(".js-gp-hold"), lines = [].slice.call(sec.querySelectorAll(".js-gp-line")), N = lines.length, reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
+  var L = lines.map(function(l){ return { el: l, a: l.querySelector(".gp-l"), b: l.querySelector(".gp-r"), t: l.querySelector(".gp-tile") }; });
+  var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
+  function frame(){
+    ticking = false; if(reduce) return; var vh = window.innerHeight, vw = window.innerWidth, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
+    var run = Math.max(1, hold.offsetHeight - vh), p = clamp(-b.top / run), f = p * N;
+    L.forEach(function(o, i){
+      var q = f - i, on = q > -0.001 && q < 1.0001 || (i === N - 1 && q >= 1); o.el.classList.toggle("on", on); if(!on) return;
+      q = clamp(q);
+      var inR = ease(clamp(q / .22)), inL = ease(clamp((q - .08) / .24)), open = ease(clamp((q - .3) / .2)) * (1 - ease(clamp((q - .72) / .2)));
+      var fs = parseFloat(getComputedStyle(o.el.querySelector(".gp-row")).fontSize), tileW = fs * 2.0 * open;
+      o.b.style.transform = "translate3d(" + ((1 - inR) * vw * .7).toFixed(1) + "px,0,0)";
+      o.a.style.transform = "translate3d(" + (-(1 - inL) * vw * .7).toFixed(1) + "px,0,0)";
+      o.t.style.width = tileW.toFixed(1) + "px";
+      o.el.classList.toggle("told", q > .34 && q < .9);
+      var out = i < N - 1 ? ease(clamp((q - .92) / .08)) : 0; o.el.style.opacity = (1 - out).toFixed(3);
+    });
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", frame); window.addEventListener("load", frame); frame();
+})();
+/* things we make: one bright at a time as the page scrolls the pinned list */
+(function(){
+  var sec = document.querySelector(".js-td"); if(!sec) return;
+  var hold = sec.querySelector(".js-td-hold"), items = [].slice.call(sec.querySelectorAll(".js-td-item")), N = items.length, ticking = false, at = -1;
+  function frame(){
+    ticking = false; var vh = window.innerHeight, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
+    var run = Math.max(1, hold.offsetHeight - vh), p = Math.min(1, Math.max(0, -b.top / run)), i = Math.min(N - 1, Math.floor(p * N));
+    if(i !== at){ at = i; items.forEach(function(it, k){ it.classList.toggle("on", k === i); });
+      var list = items[i].parentNode, st = list.parentNode.getBoundingClientRect(), it = items[i], c = it.offsetTop + it.offsetHeight / 2;
+      list.style.transform = "translate3d(0," + (list.offsetHeight / 2 - c).toFixed(1) + "px,0)"; }
+  }
+  window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); frame();
+})();

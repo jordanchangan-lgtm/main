@@ -16,7 +16,30 @@ def _poster(f):
     m=_re.search(r'(?:poster|src)="(data:image[^"]+)"', f); return m.group(1) if m else ''
 def _year(p): return p['meta'].split('·')[-1].strip()
 _n=len(_wk)
-if os.environ.get('PORTFOLIO')=='4':
+if os.environ.get('PORTFOLIO')=='5':
+    # ---- version five: not a portfolio. The things we make, stacked huge on a pinned dark screen, one bright at a
+    #      time as the page scrolls, a small picture beside the bright one, a line on the left, words down the right. ----
+    def _first_img(i,k=0):
+        try: return _poster(_figs[i][k])
+        except Exception: return ''
+    THINGS=[('Posts',_first_img(0,1),'900/1612'),('Carousels',_first_img(1,0),'4/5'),('Reels',_first_img(0,0),'720/1290'),('Campaigns',_first_img(1,1),'4/5'),
+            ('Brand identities',_first_img(3,0),'4/5'),('Websites',_first_img(2,0),'16/10'),('Portfolios',_first_img(4,0),'4/5'),('Anything AI',shoes,'1288/1600')]
+    _items=''.join('        <div class="td-item js-td-item%s" data-i="%d"><span class="td-name">%s</span><span class="td-thumb" style="--ar:%s"><img src="%s" alt="" loading="lazy" decoding="async"></span></div>\n'%(' on' if i==0 else '',i,n,ar,img) for i,(n,img,ar) in enumerate(THINGS))
+    _port='''<section class="sec dark td js-td" id="work">
+  <div class="td-hold js-td-hold" style="--n:%d">
+    <div class="td-stage">
+      <p class="td-mono td-kick"><i>&#9679;</i> What we make</p>
+      <div class="td-grid">
+        <div class="td-quote"><p class="td-mono">( Client stories ) 01 / 03</p><p class="td-q">&ldquo;A brief on Monday, a written direction on Tuesday, the campaign frames by Friday. Nothing looked generated.&rdquo;</p><p class="td-who">Founder, a coffee house in Amman</p></div>
+        <div class="td-list"><div class="td-items">
+%s        </div></div>
+        <div class="td-side"><span>Minimal</span><span>Simple</span><span>Never average</span><span>Directed</span><span>Real</span><span>Shot, not typed</span><span>Days, not weeks</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+'''%(len(THINGS),_items)
+elif os.environ.get('PORTFOLIO')=='4':
     # ---- version four: the white path mechanism in the black style. Each project is a row: the lead piece opens
     #      widthwise from its side (right, then left, alternating) with the name beside it; the rest of its pieces
     #      wipe in below one after another; every piece opens full frame. ----
@@ -124,7 +147,7 @@ else:
 if os.environ.get('HOW')=='5':
     # the film panel follows the white path directly; then the type block, the cut to black, and the portfolio
     _mi=s.index('<!-- ================= METHOD'); _me=s.index('</section>',s.index('id="method"',_mi))+len('</section>')
-    s=s[:_me]+'\n'+TYPE5+_port+'\n'+s[_me:]
+    s=s[:_me]+'\n'+(TYPE5 if os.environ.get('PORTFOLIO')!='5' else '<div class="blinds rev wh js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>\n')+_port+'\n'+s[_me:]
     s=s.replace('<section class="sec dark method wipe" id="method" style="--prev:var(--ivory)">','<section class="sec dark method wipe" id="method" style="--prev:#fff">',1)
 else:
     # the portfolio sits right after How it works

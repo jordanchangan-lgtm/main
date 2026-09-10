@@ -6,7 +6,7 @@ rep('<meta property="og:description" content="Campaign imagery and product film.
     '<meta property="og:description" content="Brand visuals made with AI, directed like film. Not your average AI post.">')
 # hero
 rep('<p class="hs hs-foot js-pu2" style="--d:.55s">Campaign imagery and product film for all brands &mdash;<br>you name it, we make it.</p>',
-    '<p class="hs hs-foot js-pu2" style="--d:.55s">Brand visuals made with AI, directed like film.<br>Not your average AI post.</p>')
+    '<p class="hs hs-foot js-pu2" style="--d:.55s">Brand visuals made with AI,<br class="ph-br"> directed like film.<br>Not your average AI post.</p>')
 rep('var WORDS = ["visual identity","reels","posts","campaigns","websites","branding"];',
     'var WORDS = ["posts","carousels","reels","campaigns","identities","websites","portfolios"];')
 # studio: the statement says who we are, the stack says what we make, the tenets say how

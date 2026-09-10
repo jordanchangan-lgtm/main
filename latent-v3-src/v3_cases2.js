@@ -7,10 +7,32 @@
   var slats = blinds ? [].slice.call(blinds.children) : [];
   function frame(){
     ticking = false; var vh = window.innerHeight;
-    if(line){ var r = line.getBoundingClientRect(); var p = reduce ? 1 : Math.min(1, Math.max(0, (vh * .82 - r.top) / (r.height + vh * .25))); line.style.setProperty("--p", (p * (words.length + 3)).toFixed(2)); }
+    if(line){ var r = line.getBoundingClientRect(); var p = reduce ? 1 : Math.min(1, Math.max(0, (vh - r.top) / (vh * .72))); line.style.setProperty("--p", (p * (words.length + 3)).toFixed(2)); }
     if(blinds){ var b = blinds.getBoundingClientRect(); var q = reduce ? 1 : Math.min(1, Math.max(0, (vh * .9 - b.top) / (vh * .55)));
       slats.forEach(function(sl, i){ sl.classList.toggle("on", q > (i + 1) / (slats.length + 1)); }); }
   }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); frame();
+})();
+/* the selected work: a pinned horizontal scroll, as in the reference. The page scrolls down, the track slides left;
+   the type block is the last item and is on screen when the hold ends, so the page resumes downward from it */
+(function(){
+  var sec = document.querySelector(".js-hz"); if(!sec) return;
+  var hold = sec.querySelector(".js-hz-hold"), track = sec.querySelector(".js-hz-track"), type = sec.querySelector(".hz-type");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, on = false;
+  function measure(){
+    on = window.innerWidth > 820 && !reduce; sec.classList.toggle("hz-on", on);
+    if(!on){ hold.style.height = ""; track.style.transform = ""; return; }
+    var run = track.scrollWidth - window.innerWidth; hold.style.height = (window.innerHeight + run) + "px"; frame();
+  }
+  function frame(){
+    ticking = false; if(!on) return;
+    var r = hold.getBoundingClientRect(), vh = window.innerHeight, run = Math.max(1, hold.offsetHeight - vh);
+    var p = Math.min(1, Math.max(0, -r.top / run)), x = p * (track.scrollWidth - window.innerWidth);
+    track.style.transform = "translate3d(" + (-x).toFixed(1) + "px,0,0)";
+    type.classList.toggle("in", p > .82);
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", measure); window.addEventListener("load", measure); measure();
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 })();

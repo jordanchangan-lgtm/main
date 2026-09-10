@@ -636,7 +636,7 @@ rep("""    bar.classList.toggle("on", hero.getBoundingClientRect().bottom < 40);
 rep("""  function inContact(){ return contactSec && contactSec.getBoundingClientRect().top < window.innerHeight * .5; }""",
     """  function inContact(){ if(!contactSec) return false; var g = geo.grounds.filter(function(x){ return x.el === contactSec; })[0]; return g ? g.top - window.scrollY < window.innerHeight * .5 : false; }""")
 open(os.environ.get('OUT','/home/user/main/latent-v3')+'/index.html','w',encoding='utf-8').write(s)
-open('/home/user/main/latent-v3/_headers','w').write('/*\n  Cache-Control: public, max-age=0, must-revalidate\n  X-Content-Type-Options: nosniff\n')
+open(os.environ.get('OUT','/home/user/main/latent-v3')+'/_headers','w').write('/*\n  Cache-Control: public, max-age=0, must-revalidate\n  X-Content-Type-Options: nosniff\n')
 print('written',len(s))
 
 # ---------------- dedupe: every big data URI is carried once; repeats point at the first ----------------

@@ -19,7 +19,7 @@ for (const [name, opts] of [['d',{viewport:{width:1440,height:900}}],['m',{...de
   const shots=[['#studio',0.02],['#studio',0.34],['#studio',0.7],['#method',0.1],['#sectors',0.1]];
   let k=0; for(const [sel,f] of shots){ await pg.evaluate(([s,f])=>{ const e=document.querySelector(s); const hold=e.closest('.lk-hold')||e; const top=hold.getBoundingClientRect().top+scrollY; scrollTo(0, top + (hold.offsetHeight-innerHeight)*f); },[sel,f]); await pg.waitForTimeout(1600); await pg.screenshot({path:`copy_${name}_${k++}.png`}); }
   // statement inside its panel?
-  const st = await pg.evaluate(()=>{ const p=document.querySelector('.statement')||document.querySelector('.cs-stmt'); const sec=document.querySelector('#studio'); const r=p.getBoundingClientRect(), s=sec.getBoundingClientRect(); return {fs:getComputedStyle(p).fontSize, h:Math.round(r.height), inside: r.top>=s.top-1 && r.bottom<=s.bottom+1, secH:Math.round(s.height)}; });
+  const st = await pg.evaluate(()=>{ const p=document.querySelector('.statement')||document.querySelector('.cs-stmt')||document.querySelector('.st2-line'); const sec=document.querySelector('#studio'); const r=p.getBoundingClientRect(), s=sec.getBoundingClientRect(); return {fs:getComputedStyle(p).fontSize, h:Math.round(r.height), inside: r.top>=s.top-1 && r.bottom<=s.bottom+1, secH:Math.round(s.height)}; });
   console.log(name, 'SMALL', name==='m'?JSON.stringify(small):small.length, 'bytes first 3s', (bytes3/1024).toFixed(0)+'KB', 'hero', JSON.stringify(hero), 'broken', broken, 'errors', errs, 'bad', bad.slice(0,4), 'small', small, 'statement', JSON.stringify(st));
   await ctx.close();
 }

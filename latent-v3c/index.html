@@ -1721,16 +1721,37 @@ a.stk-l{cursor:pointer}
 /* ---------- version two after the hero ---------- */
 .mono-link{display:inline-flex;gap:10px;align-items:baseline;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:inherit;text-decoration:none}
 .mono-link span{transition:transform .3s}.mono-link:hover span{transform:translateX(4px)}
-/* the statement on ink */
-.st2{padding-top:clamp(80px,14vh,160px);padding-bottom:clamp(80px,14vh,160px);min-height:100svh;display:flex;align-items:center}
-.st2 .inner{position:relative;max-width:none}
-.st2-line{margin:clamp(40px,8vh,90px) 0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(28px,4.6vw,68px);line-height:1.08;letter-spacing:-.035em;color:var(--ivory);max-width:20ch;text-wrap:pretty}
-.bw{display:inline-block;opacity:calc(.18 + .82 * clamp(0, calc(var(--p, 0) - var(--i)), 1))}
+/* the statement on ink, after the reference: nothing until the hero has fully left, then the paragraph
+   climbs the screen brightening word by word, the small notes follow it up the long dark run.
+   The background is pinned for the whole run: a slow ember of marrow and dark glass shards drifting on ink. */
+.st2{position:relative;padding:0 var(--gut) clamp(60px,10vh,120px);overflow:hidden}
+.st2-bg{position:sticky;top:0;height:100vh;height:100svh;margin-bottom:-100vh;margin-bottom:-100svh;pointer-events:none;overflow:hidden;z-index:0}
+.st2-bg i{position:absolute;display:block;will-change:transform}
+.st2-bg .g1{width:44vw;height:44vw;left:48%;top:36%;border-radius:50%;background:radial-gradient(closest-side,rgba(187,74,46,.42),rgba(187,74,46,.12) 42%,rgba(187,74,46,0) 72%);animation:stg1 22s ease-in-out infinite alternate}
+.st2-bg .g2{width:26vw;height:26vw;left:56%;top:44%;border-radius:50%;background:radial-gradient(closest-side,rgba(230,132,84,.34),rgba(187,74,46,0) 70%);animation:stg2 17s ease-in-out infinite alternate}
+.st2-bg .s1,.st2-bg .s2,.st2-bg .s3{width:56vw;height:7vw;left:30%;top:52%;background:linear-gradient(90deg,rgba(242,239,231,0),rgba(242,239,231,.055) 30%,rgba(242,239,231,.09) 50%,rgba(242,239,231,.04) 72%,rgba(242,239,231,0));filter:blur(1.5px);transform-origin:50% 50%}
+.st2-bg .s1{transform:rotate(-24deg);animation:sts1 30s ease-in-out infinite alternate}
+.st2-bg .s2{width:38vw;height:4vw;left:52%;top:30%;transform:rotate(-58deg);animation:sts2 26s ease-in-out infinite alternate}
+.st2-bg .s3{width:70vw;height:2.4vw;left:10%;top:70%;opacity:.7;transform:rotate(-18deg);animation:sts3 34s ease-in-out infinite alternate}
+.st2-bg .l1,.st2-bg .l2,.st2-bg .l3{height:1px;width:22vw;background:linear-gradient(90deg,rgba(242,239,231,0),rgba(242,239,231,.45),rgba(242,239,231,0));transform-origin:50% 50%}
+.st2-bg .l1{left:20%;top:24%;transform:rotate(-24deg);animation:sts1 30s ease-in-out infinite alternate}
+.st2-bg .l2{left:62%;top:66%;width:16vw;transform:rotate(-24deg);animation:sts3 34s ease-in-out infinite alternate}
+.st2-bg .l3{left:40%;top:82%;width:30vw;transform:rotate(-58deg);animation:sts2 26s ease-in-out infinite alternate}
+@keyframes stg1{from{transform:translate3d(-6vw,4vh,0) scale(1)}to{transform:translate3d(6vw,-8vh,0) scale(1.18)}}
+@keyframes stg2{from{transform:translate3d(4vw,-2vh,0) scale(.9)}to{transform:translate3d(-8vw,10vh,0) scale(1.2)}}
+@keyframes sts1{from{transform:translate3d(-4vw,3vh,0) rotate(-26deg)}to{transform:translate3d(5vw,-5vh,0) rotate(-20deg)}}
+@keyframes sts2{from{transform:translate3d(3vw,4vh,0) rotate(-60deg)}to{transform:translate3d(-4vw,-6vh,0) rotate(-52deg)}}
+@keyframes sts3{from{transform:translate3d(5vw,-2vh,0) rotate(-16deg)}to{transform:translate3d(-6vw,4vh,0) rotate(-22deg)}}
+.st2-in{position:relative;z-index:1;max-width:none;padding-top:100vh;padding-top:100svh;display:flex;flex-direction:column;align-items:flex-start}
+.st2-line{margin:0 0 0 clamp(0px,7vw,140px);font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(28px,4.6vw,68px);line-height:1.08;letter-spacing:-.035em;color:var(--ivory);max-width:22ch;text-wrap:pretty}
+.bw{display:inline-block;opacity:calc(.16 + .84 * clamp(0, calc(var(--p, 0) - var(--i)), 1))}
 .st2-corner{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.7;color:rgba(242,239,231,.62)}
-.st2-br{display:flex;flex-direction:column;gap:18px;align-items:flex-start;margin-left:auto;max-width:34ch;color:rgba(242,239,231,.78)}
+.st2-tl{margin-top:clamp(120px,42vh,460px)}
+.st2-br{display:flex;flex-direction:column;gap:18px;align-items:flex-start;margin:clamp(80px,26vh,300px) 0 0 auto;max-width:34ch;color:rgba(242,239,231,.78)}
 .st2-br p{margin:0;font-size:15px;line-height:1.6}
+.st2-bl{margin-top:clamp(120px,48vh,520px)}
 /* the marquee */
-.mq{padding:clamp(40px,8vh,90px) 0 clamp(60px,10vh,120px);overflow:hidden;position:relative}
+.mq{padding:clamp(20px,4vh,50px) 0 clamp(60px,10vh,120px);overflow:hidden;position:relative}
 .mq-corner{margin:0 0 clamp(24px,4vh,40px) var(--gut);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.7;color:rgba(242,239,231,.62)}
 .mq-track{display:flex;white-space:nowrap;width:max-content;animation:mq 26s linear infinite}
 .mq-run{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(56px,10vw,150px);line-height:1;letter-spacing:-.03em;text-transform:uppercase;color:var(--ivory);padding-right:.35em}
@@ -1756,40 +1777,48 @@ a.stk-l{cursor:pointer}
 .kf-txt p{margin:0;font-size:14px;line-height:1.5;color:var(--ink);text-align:center}
 .kf-clients{display:flex;flex-wrap:wrap;gap:12px clamp(24px,3vw,48px);justify-content:center;align-items:baseline;margin:clamp(40px,7vh,80px) 0 0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:15px;letter-spacing:-.01em;color:var(--ink)}
 .kf-clients b{flex-basis:100%;text-align:center;font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin-bottom:6px}
-/* selected work and explorations */
-.sw2{padding-top:clamp(48px,9vh,110px)}
-.sw2-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);gap:0 clamp(24px,4vw,64px);align-items:start;max-width:none}
-.sw2-side{position:sticky;top:110px;display:flex;flex-direction:column;gap:22px;align-items:flex-start}
+/* selected work and explorations: the horizontal track */
+.hz{padding:0}
+.hz-hold{position:relative}
+.hz-stage{position:relative}
+.hz-on .hz-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center}
+.hz-track{display:flex;flex-direction:column;gap:56px;padding:clamp(48px,9vh,110px) var(--gut)}
+.hz-on .hz-track{flex-direction:row;align-items:center;gap:clamp(28px,3.4vw,56px);padding:0 0 0 var(--gut);width:max-content;will-change:transform}
+.hz-head{display:flex;flex-direction:column;gap:22px;align-items:flex-start}
+.hz-on .hz-head{flex:0 0 clamp(300px,26vw,420px);margin-right:clamp(16px,2vw,40px)}
 .sw2-title{margin:0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(30px,3.6vw,54px);line-height:1.04;letter-spacing:-.03em;color:var(--ink)}
-.sw2-cards{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vh,72px) clamp(16px,2vw,32px)}
 .wk2{display:block;text-decoration:none;color:var(--ink)}
-.wk2:nth-child(even){transform:translateY(clamp(48px,10vh,120px))}
+.hz-on .wk2{flex:0 0 clamp(420px,42vw,720px)}
+.hz-on .wk2:nth-of-type(even){transform:translateY(clamp(24px,5vh,56px))}
 .wk2-img{display:block;position:relative;width:100%;aspect-ratio:var(--r,16/10);border-radius:clamp(10px,1vw,16px);overflow:hidden;background:var(--band)}
 .wk2-img img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
 .wk2:hover .wk2-img img{transform:scale(1.04)}
 .wk2-t{display:block;margin:14px 0 4px;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(18px,1.5vw,22px);letter-spacing:-.02em}
 .wk2-d{display:block;font-size:13px;color:var(--stone)}
-.sw2-disc{grid-column:2;justify-self:end;max-width:30ch;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center;margin-top:clamp(56px,12vh,140px)}
-.sw2-disc p{margin:0;font-size:clamp(16px,1.3vw,19px);line-height:1.45;color:var(--ink)}
-/* the type block */
-.ty2{padding-top:clamp(64px,12vh,140px);padding-bottom:clamp(64px,12vh,140px);text-align:center}
+.hz-disc{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;max-width:30ch}
+.hz-on .hz-disc{flex:0 0 clamp(300px,28vw,440px);margin:0 clamp(24px,4vw,72px)}
+.hz-disc p{margin:0;font-size:clamp(16px,1.3vw,19px);line-height:1.45;color:var(--ink)}
+/* the type block: the last item of the track, a full screen wide */
+.hz-type{text-align:center;padding:clamp(40px,8vh,96px) 0}
+.hz-on .hz-type{flex:0 0 100vw;padding:0 var(--gut);box-sizing:border-box}
 .ty2-kick{margin:0 0 clamp(24px,4vh,40px);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
 .ty2-stack{margin:0;display:flex;flex-direction:column;align-items:center;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;text-transform:uppercase;font-size:clamp(44px,8.6vw,124px);line-height:.86;letter-spacing:-.04em;color:var(--ink)}
+.hz-on .ty2-stack span{opacity:0;transform:translateY(30px);transition:opacity .7s ease calc(var(--k) * .08s),transform .8s cubic-bezier(.2,.8,.2,1) calc(var(--k) * .08s)}
+.hz-on .hz-type.in .ty2-stack span{opacity:1;transform:none}
 .ty2-foot{display:flex;flex-wrap:wrap;justify-content:center;gap:16px clamp(24px,4vw,64px);margin:clamp(28px,5vh,48px) 0 0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
 @media(max-width:820px){
-  .st2-line{font-size:clamp(26px,7.6vw,34px);max-width:none;margin:32px 0}
-  .st2-br{max-width:none}
+  .st2-line{font-size:clamp(26px,7.6vw,34px);max-width:none;margin:0}
+  .st2-in{padding-top:100svh}
+  .st2-tl{margin-top:30vh}.st2-br{max-width:none;margin-top:18vh;margin-left:0}.st2-bl{margin-top:30vh}
+  .st2-bg .g1{width:90vw;height:90vw;left:20%;top:30%}.st2-bg .g2{width:60vw;height:60vw}
+  .st2-bg .s1,.st2-bg .s2,.st2-bg .s3{width:120vw;height:14vw;left:-10%}
   .mq-run{font-size:64px}
   .kf-row{grid-template-columns:1fr 1fr}
   .kf-in b{font-size:34px}
-  .sw2-grid{grid-template-columns:1fr;gap:32px}
-  .sw2-side{position:static}
-  .sw2-cards{grid-template-columns:1fr;gap:40px}
-  .wk2:nth-child(even){transform:none}
-  .sw2-disc{grid-column:1;justify-self:center}
+  .hz-track{gap:40px}
   .ty2-stack{font-size:15vw}
 }
-@media (prefers-reduced-motion:reduce){.mq-track{animation:none}.blinds i{transform:scaleX(1)}.bw{opacity:1}}
+@media (prefers-reduced-motion:reduce){.st2-bg i{animation:none}.mq-track{animation:none}.blinds i{transform:scaleX(1)}.bw{opacity:1}}
 </style>
 </head>
 <body>
@@ -1818,10 +1847,12 @@ a.stk-l{cursor:pointer}
      In the reference the intro paragraph and the client list live in a
      single tall panel, not two — the text just keeps scrolling inside it. -->
 <section class="sec dark st2 js-st2" id="studio">
-  <div class="inner">
-    <p class="st2-corner st2-tl rv">We direct before we generate.<br>Minimal first, craft always,<br>built to ship.</p>
+  <div class="st2-bg js-st2-bg" aria-hidden="true"><i class="g1"></i><i class="g2"></i><i class="s1"></i><i class="s2"></i><i class="s3"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+  <div class="inner st2-in">
     <p class="st2-line js-bright">Latent is an AI-native design studio in Amman, making the visual side of a brand with generative tools in the hands of art directors.</p>
+    <p class="st2-corner st2-tl rv">We direct before we generate.<br>Minimal first, craft always,<br>built to ship.</p>
     <div class="st2-br rv"><p>Our job is to make AI work look shot, not typed: brand visuals that are minimal, simple and never average.</p><a class="mono-link" href="#method">More about us <span>&rarr;</span></a></div>
+    <p class="st2-corner st2-bl rv">Focused direction.<br>Measured delivery.</p>
   </div>
 </section>
 <section class="sec dark mq" aria-hidden="true">
@@ -1842,25 +1873,25 @@ a.stk-l{cursor:pointer}
     <p class="kf-clients rv"><b>Clients so far</b><span>Atelier Rebul</span><span>Cube Care Center</span><span>Cube Coffee House</span><span>Rawabina Al-Khadhraa</span></p>
   </div>
 </section>
-<section class="sec light sw2" id="explorations">
-  <div class="inner sw2-grid">
-    <div class="sw2-side"><h2 class="sw2-title rv">Selected work<br>&amp; explorations</h2><a class="mono-link rv" href="#work">View all projects <span>&rarr;</span></a></div>
-    <div class="sw2-cards">
-        <a class="wk2 rv" href="#work" style="--k:0"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/08-1fccf689e9.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Standing on the ceiling</span><span class="wk2-d">Explorations &middot; 2026</span></a>
-        <a class="wk2 rv" href="#work" style="--k:1"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/09-e1887959c2.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Atelier Rebul</span><span class="wk2-d">&Eacute;lixir 2 &middot; nine plates and a film</span></a>
-        <a class="wk2 rv" href="#work" style="--k:0"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/10-db504f6b80.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">The egg on the fork</span><span class="wk2-d">Explorations &middot; 2026</span></a>
-        <a class="wk2 rv" href="#work" style="--k:1"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/11-db08c91f4c.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Cube Care Center</span><span class="wk2-d">Identity and campaign</span></a>
-        <a class="wk2 rv" href="#work" style="--k:0"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/12-a617fdf2b6.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Rain indoors</span><span class="wk2-d">Explorations &middot; 2026</span></a>
-        <a class="wk2 rv" href="#work" style="--k:1"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/13-2efb31380e.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Rawabina</span><span class="wk2-d">Touch of Green &middot; editorial website</span></a>
+<section class="sec light hz js-hz" id="explorations">
+  <div class="hz-hold js-hz-hold">
+    <div class="hz-stage">
+      <div class="hz-track js-hz-track">
+        <div class="hz-head"><h2 class="sw2-title">Selected work<br>&amp; explorations</h2><a class="mono-link" href="#work">View all projects <span>&rarr;</span></a></div>
+        <a class="wk2" href="#work" style="--k:0"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/08-1fccf689e9.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Standing on the ceiling</span><span class="wk2-d">Explorations &middot; 2026</span></a>
+        <a class="wk2" href="#work" style="--k:1"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/09-e1887959c2.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Atelier Rebul</span><span class="wk2-d">&Eacute;lixir 2 &middot; nine plates and a film</span></a>
+        <a class="wk2" href="#work" style="--k:0"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/10-db504f6b80.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">The egg on the fork</span><span class="wk2-d">Explorations &middot; 2026</span></a>
+        <a class="wk2" href="#work" style="--k:1"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/11-db08c91f4c.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Cube Care Center</span><span class="wk2-d">Identity and campaign</span></a>
+        <a class="wk2" href="#work" style="--k:0"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/12-a617fdf2b6.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Rain indoors</span><span class="wk2-d">Explorations &middot; 2026</span></a>
+        <a class="wk2" href="#work" style="--k:1"><span class="wk2-img" style="--r:16/10"><img fetchpriority="low" src="media/13-2efb31380e.jpg" alt="" loading="lazy" decoding="async"></span><span class="wk2-t">Rawabina</span><span class="wk2-d">Touch of Green &middot; editorial website</span></a>
+        <div class="hz-disc"><p>Discover the complete collection of posts, films, identities and websites.</p><a class="mono-link" href="#work">View all projects <span>&rarr;</span></a></div>
+        <div class="hz-type" id="services">
+          <p class="ty2-kick">What we make</p>
+          <h2 class="ty2-stack"><span style="--k:0">Posts</span><span style="--k:1">Reels</span><span style="--k:2">Campaigns</span><span style="--k:3">Identity</span><span style="--k:4">Websites</span></h2>
+          <p class="ty2-foot"><span>&#9679; Directed with taste. Built to ship.</span><a class="mono-link" href="#prices">View prices <span>&rarr;</span></a></p>
+        </div>
+      </div>
     </div>
-    <div class="sw2-disc rv"><p>Discover the complete collection of posts, films, identities and websites.</p><a class="mono-link" href="#work">View all projects <span>&rarr;</span></a></div>
-  </div>
-</section>
-<section class="sec light ty2" id="services">
-  <div class="inner">
-    <p class="ty2-kick rv">What we make</p>
-    <h2 class="ty2-stack"><span class="rv" style="--k:0">Posts</span><span class="rv" style="--k:1">Reels</span><span class="rv" style="--k:2">Campaigns</span><span class="rv" style="--k:3">Identity</span><span class="rv" style="--k:4">Websites</span></h2>
-    <p class="ty2-foot rv"><span>&#9679; Directed with taste. Built to ship.</span><a class="mono-link" href="#prices">View prices <span>&rarr;</span></a></p>
   </div>
 </section>
 
@@ -3221,12 +3252,34 @@ a.stk-l{cursor:pointer}
   var slats = blinds ? [].slice.call(blinds.children) : [];
   function frame(){
     ticking = false; var vh = window.innerHeight;
-    if(line){ var r = line.getBoundingClientRect(); var p = reduce ? 1 : Math.min(1, Math.max(0, (vh * .82 - r.top) / (r.height + vh * .25))); line.style.setProperty("--p", (p * (words.length + 3)).toFixed(2)); }
+    if(line){ var r = line.getBoundingClientRect(); var p = reduce ? 1 : Math.min(1, Math.max(0, (vh - r.top) / (vh * .72))); line.style.setProperty("--p", (p * (words.length + 3)).toFixed(2)); }
     if(blinds){ var b = blinds.getBoundingClientRect(); var q = reduce ? 1 : Math.min(1, Math.max(0, (vh * .9 - b.top) / (vh * .55)));
       slats.forEach(function(sl, i){ sl.classList.toggle("on", q > (i + 1) / (slats.length + 1)); }); }
   }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); frame();
+})();
+/* the selected work: a pinned horizontal scroll, as in the reference. The page scrolls down, the track slides left;
+   the type block is the last item and is on screen when the hold ends, so the page resumes downward from it */
+(function(){
+  var sec = document.querySelector(".js-hz"); if(!sec) return;
+  var hold = sec.querySelector(".js-hz-hold"), track = sec.querySelector(".js-hz-track"), type = sec.querySelector(".hz-type");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, on = false;
+  function measure(){
+    on = window.innerWidth > 820 && !reduce; sec.classList.toggle("hz-on", on);
+    if(!on){ hold.style.height = ""; track.style.transform = ""; return; }
+    var run = track.scrollWidth - window.innerWidth; hold.style.height = (window.innerHeight + run) + "px"; frame();
+  }
+  function frame(){
+    ticking = false; if(!on) return;
+    var r = hold.getBoundingClientRect(), vh = window.innerHeight, run = Math.max(1, hold.offsetHeight - vh);
+    var p = Math.min(1, Math.max(0, -r.top / run)), x = p * (track.scrollWidth - window.innerWidth);
+    track.style.transform = "translate3d(" + (-x).toFixed(1) + "px,0,0)";
+    type.classList.toggle("in", p > .82);
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", measure); window.addEventListener("load", measure); measure();
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 })();
 </script>
 </body>

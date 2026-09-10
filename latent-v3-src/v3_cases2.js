@@ -228,3 +228,52 @@
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); setTimeout(frame, 300);
 })();
+/* How it works, version three: the text-rotate demo. The page scroll moves the pictures past the centre of the left
+   half; whenever a new one is nearest, the kicker, the word and the line rotate: the old characters leave upward with a
+   5 ms stagger, then the new ones rise in from 50 px below (mode "wait", spring with no bounce, .6 s). */
+(function(){
+  var sec = document.querySelector(".js-tr"); if(!sec) return;
+  var hold = sec.querySelector(".js-tr-hold"), col = sec.querySelector(".js-tr-col"), items = [].slice.call(col.children),
+      kick = sec.querySelector(".js-tr-kick"), word = sec.querySelector(".js-tr-word"), line = sec.querySelector(".js-tr-line"),
+      idxEl = sec.querySelector(".js-tr-idx"), cue = sec.querySelector(".js-tr-cue"), steps = JSON.parse(sec.dataset.steps || "[]"), N = items.length;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, cur = -1, timers = {};
+  function seg(t){ if(typeof Intl !== "undefined" && "Segmenter" in Intl){ var s = new Intl.Segmenter("en", { granularity:"grapheme" }); return Array.from(s.segment(t), function(x){ return x.segment; }); } return Array.from(t); }
+  function build(text, by){
+    var now = document.createElement("span"); now.className = "tr-now"; var n = 0, ws = text.split(" ");
+    ws.forEach(function(w, wi){
+      var m = document.createElement("span"); m.className = "tr-w";
+      (by === "words" ? [w] : seg(w)).forEach(function(ch){ var c = document.createElement("span"); c.textContent = ch; c.style.setProperty("--d", (n * (by === "words" ? .03 : .005)).toFixed(3)); n++; m.appendChild(c); });
+      now.appendChild(m); if(wi < ws.length - 1){ var sp = document.createElement("span"); sp.className = "tr-sp"; sp.textContent = " "; now.appendChild(sp); }
+    });
+    return now;
+  }
+  function rotate(el, text, by){
+    var key = el.className; if(timers[key]) clearTimeout(timers[key]);
+    var old = el.querySelector(".tr-now:not(.leave)");
+    [].forEach.call(el.querySelectorAll(".tr-now.leave"), function(x){ x.remove(); });
+    var enter = function(){
+      var now = build(text, by); now.classList.add("pre"); el.appendChild(now);
+      if(reduce){ now.classList.remove("pre"); return; }
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ now.classList.remove("pre"); }); });
+    };
+    if(old && !reduce){ old.classList.add("leave"); timers[key] = setTimeout(function(){ old.remove(); enter(); }, 320); }
+    else { if(old) old.remove(); enter(); }
+  }
+  function show(i){
+    if(i === cur) return; cur = i; var s = steps[i] || {};
+    rotate(kick, "( " + s.n + " ) Step " + s.n + " of " + (N < 10 ? ["zero","one","two","three","four","five","six","seven","eight","nine"][N] : N), "chars");
+    rotate(word, s.w || "", "chars"); rotate(line, s.t || "", "words");
+    if(idxEl) idxEl.textContent = s.n || ""; if(cue) cue.textContent = i === N - 1 ? "Last step" : "Scroll";
+  }
+  function frame(){
+    ticking = false; var vh = window.innerHeight, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
+    var run = Math.max(1, hold.offsetHeight - vh), p = Math.min(1, Math.max(0, -b.top / run)), f = p * (N - 1);
+    var itemH = items[0].offsetHeight || vh;
+    if(!reduce) col.style.transform = "translate3d(0," + (-f * itemH).toFixed(1) + "px,0)";
+    items.forEach(function(it, i){ var d = Math.min(1, Math.abs(i - f)); var im = it.firstElementChild; im.style.transform = "scale(" + (1 - .22 * d).toFixed(3) + ")"; im.style.opacity = (1 - .6 * d).toFixed(3); });
+    hold.classList.toggle("in", b.top < vh * .6 && p < .999 || (p >= .999 && b.bottom > vh * .55)); hold.classList.toggle("gone", p >= .999 && b.bottom <= vh * .55);
+    show(Math.round(f));
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
+})();

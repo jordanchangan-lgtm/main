@@ -50,6 +50,7 @@ V2='''<section class="sec dark st2 js-st2" id="studio">
 
 '''
 if os.environ.get('HOW')=='2': exec(open(SP+'v3_how2.py').read())
+if os.environ.get('HOW')=='3': exec(open(SP+'v3_how3.py').read())
 s=s[:_sa]+V2+s[_sb:]
 exec(open(SP+'v3_port.py').read())
 # the method panel follows a light section now

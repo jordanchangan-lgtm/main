@@ -2053,6 +2053,89 @@ a.stk-l{cursor:pointer}
 /* the type block after the film, on white, before the cut to black */
 .ty5{background:#fff;padding:0;min-height:0}
 .ty5 .hw2-type{padding:clamp(60px,12vh,140px) var(--gut) clamp(60px,12vh,140px)}
+/* ---------- prices, version two: the receipts (after 21st's Receipt Pricing) ---------- */
+.rc-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.6vw,26px);align-items:start;margin:clamp(24px,4vh,40px) 0 clamp(40px,7vh,72px)}
+.rc-row.rv{opacity:1;transform:none}
+.rc-slip{filter:drop-shadow(0 1px 1px rgba(0,0,0,.06)) drop-shadow(0 10px 14px rgba(0,0,0,.12));transition:transform .2s ease}
+.rc-slip:hover{transform:translateY(-2px)}
+.rc-paper{--tw:12px;--th:12px;position:relative;overflow:hidden;background:#fff;color:var(--ink);padding:30px 22px 26px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;line-height:1.5;
+  background-image:repeating-linear-gradient(180deg,rgba(20,20,26,.045) 0 1px,transparent 1px 4px);
+  -webkit-mask-image:linear-gradient(135deg,transparent 50%,#000 0),linear-gradient(-135deg,transparent 50%,#000 0),linear-gradient(#000,#000),linear-gradient(135deg,#000 50%,transparent 0),linear-gradient(-135deg,#000 50%,transparent 0);
+  mask-image:linear-gradient(135deg,transparent 50%,#000 0),linear-gradient(-135deg,transparent 50%,#000 0),linear-gradient(#000,#000),linear-gradient(135deg,#000 50%,transparent 0),linear-gradient(-135deg,#000 50%,transparent 0);
+  -webkit-mask-size:var(--tw) var(--th),var(--tw) var(--th),100% calc(100% - var(--th)),var(--tw) var(--th),var(--tw) var(--th);mask-size:var(--tw) var(--th),var(--tw) var(--th),100% calc(100% - var(--th)),var(--tw) var(--th),var(--tw) var(--th);
+  -webkit-mask-position:0 0,0 0,0 calc(var(--th) / 2),0 100%,0 100%;mask-position:0 0,0 0,0 calc(var(--th) / 2),0 100%,0 100%;
+  -webkit-mask-repeat:repeat-x,repeat-x,no-repeat,repeat-x,repeat-x;mask-repeat:repeat-x,repeat-x,no-repeat,repeat-x,repeat-x;
+  clip-path:inset(0 0 100% 0)}
+.rc-row.in .rc-paper{clip-path:inset(0 0 0 0);transition:clip-path .46s cubic-bezier(.22,1,.36,1) calc(var(--k,0) * 60ms)}
+.rc-headline{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,transparent 0,transparent 86%,rgba(20,20,26,.06) 97%,rgba(20,20,26,.3) 100%);transform:translateY(-100%)}
+.rc-row.in .rc-headline{transform:translateY(0);opacity:0;transition:transform .46s cubic-bezier(.22,1,.36,1) calc(var(--k,0) * 60ms),opacity .16s linear calc(.46s + var(--k,0) * 60ms)}
+.rc-head{text-align:center}.rc-merchant{margin:0;font-weight:600;font-size:13px;letter-spacing:.34em}.rc-sub{margin:6px 0 0;color:var(--stone);letter-spacing:.14em}
+.rc-rule{border:0;border-top:1px dashed rgba(20,20,26,.3);margin:16px 0 12px}
+.rc-meta{margin:0;color:var(--stone)}.rc-meta div{display:flex;justify-content:space-between;gap:12px}.rc-meta dd{margin:0;color:var(--ink);font-variant-numeric:tabular-nums}
+.rc-title{text-align:center}.rc-title h3{margin:0;font-size:18px;font-weight:600;letter-spacing:.2em}.rc-title p{margin:6px 0 0;color:var(--stone);letter-spacing:.1em;text-transform:none}
+.rc-stamp{margin:10px 0 0!important;color:var(--marrow)!important;font-weight:600;letter-spacing:.24em!important;text-transform:uppercase!important}
+.rc-items{list-style:none;margin:0;padding:0;font-size:11px}.rc-items li{display:flex;align-items:baseline;gap:6px;padding:3px 0}
+.rc-items li span{flex:0 0 auto}.rc-items li i{flex:1;min-width:12px;border-bottom:1px dotted rgba(20,20,26,.35);transform:translateY(-.28em)}.rc-items li b{flex:0 0 auto;font-weight:500;font-variant-numeric:tabular-nums}
+.rc-total{border-top:3px double rgba(20,20,26,.4);padding-top:12px}.rc-total>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.rc-total p{margin:0;font-weight:600}
+.rc-amt{font-size:22px;letter-spacing:0;font-variant-numeric:tabular-nums}.rc-amt span{font-size:11px;letter-spacing:.1em;color:var(--stone)}
+.rc-note{margin:8px 0 0!important;font-weight:400!important;color:var(--stone);letter-spacing:.1em}
+.rc-cta{display:flex;align-items:center;justify-content:center;height:44px;margin-top:20px;border:1px solid rgba(20,20,26,.3);border-radius:6px;font-weight:600;letter-spacing:.16em;color:var(--ink);text-decoration:none;transition:background .2s,color .2s,transform .15s}
+.rc-cta:hover{background:rgba(20,20,26,.05)}.rc-cta:active{transform:scale(.98)}
+.rc-cta.pop{background:var(--marrow);border-color:var(--marrow);color:var(--ivory)}.rc-cta.pop:hover{background:#a9412a}
+.rc-code{margin-top:24px;text-align:center}.rc-bars{display:flex;justify-content:center;height:36px}.rc-bars u{display:block;height:100%}.rc-bars u.on{background:var(--ink)}
+.rc-code p{margin:6px 0 0;color:var(--stone);letter-spacing:.24em}
+@media(max-width:1100px){.rc-row{grid-template-columns:1fr 1fr}}
+@media(max-width:820px){.rc-row{grid-template-columns:1fr;gap:18px}.rc-paper{padding:26px 18px 22px}}
+@media (prefers-reduced-motion:reduce){.rc-paper{clip-path:none!important}.rc-headline{display:none}}
+/* ---------- the four moves, version two: the sticky scroll reveal ---------- */
+.ss-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,120px);align-items:start;margin:clamp(40px,8vh,96px) 0}
+.ss-steps{padding:8vh 0}
+.ss-step{padding:clamp(40px,14vh,160px) 0;opacity:.28;transition:opacity .5s ease}
+.ss-step.on{opacity:1}
+.ss-n{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--marrow);margin-bottom:14px}
+.ss-t{margin:0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(34px,4.4vw,72px);line-height:1;letter-spacing:-.04em;color:var(--ink)}
+.ss-d{margin:16px 0 0;max-width:34ch;font-size:clamp(15px,1.3vw,19px);line-height:1.55;color:var(--stone)}
+.ss-side{position:sticky;top:clamp(80px,14vh,140px)}
+.ss-card{margin:0;position:relative;aspect-ratio:4/5;max-height:72vh;border-radius:clamp(12px,1.2vw,18px);overflow:hidden;background:var(--c,var(--ink));transition:background .7s ease}
+.ss-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .7s ease,transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.ss-card img.on{opacity:1;transform:none}
+.ss-card figcaption{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:12px;padding:16px 18px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory);background:linear-gradient(0deg,rgba(20,20,26,.6),rgba(20,20,26,0))}
+.js-ss-tab{cursor:pointer}
+@media(max-width:820px){.ss-grid{grid-template-columns:1fr;gap:24px}.ss-side{position:sticky;top:64px;order:-1}.ss-card{aspect-ratio:16/10;max-height:44svh}.ss-step{padding:12vh 0}.ss-t{font-size:36px}}
+/* ---------- portfolio, version four: the white path mechanism in the black style ---------- */
+.pb{padding:0}
+.pb-in{max-width:none;padding:clamp(60px,14vh,160px) var(--gut) clamp(40px,10vh,120px)}
+.pb .pf2-head{margin-bottom:clamp(60px,18vh,220px)}
+.pb-row{margin-bottom:clamp(140px,44vh,560px)}
+.pb-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:0 clamp(32px,5vw,96px);align-items:center}
+.pb-row.left .pb-main{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.pb-row .pb-lead{grid-column:2;grid-row:1}.pb-row .pb-txt{grid-column:1;grid-row:1;justify-self:end;text-align:right}
+.pb-row.left .pb-lead{grid-column:1}.pb-row.left .pb-txt{grid-column:2;justify-self:start;text-align:left}
+.pb-lead{position:relative;display:block;width:100%;height:auto;left:auto;top:auto;margin:0;aspect-ratio:16/10;overflow:hidden;border-radius:clamp(10px,1vw,16px);background:#000;cursor:pointer;clip-path:inset(0 0 0 100% round clamp(10px,1vw,16px));transition:none;will-change:clip-path}
+.pb-row.left .pb-lead{clip-path:inset(0 100% 0 0 round clamp(10px,1vw,16px))}
+.pb-lm{position:absolute;inset:0}.pb-lm img,.pb-lm video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transform:none;transition:none}
+.pb-lead .play{position:absolute;left:12px;bottom:12px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory);opacity:0;transition:opacity .3s}.pb-lead:hover .play{opacity:1}
+.pb-kick{margin:0 0 14px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--marrow)}
+.pb-name{margin:0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(34px,4.6vw,76px);line-height:1;letter-spacing:-.04em;color:var(--ivory)}
+.pb-proj{margin:14px 0 0;max-width:26ch;font-size:clamp(15px,1.3vw,20px);line-height:1.5;color:rgba(242,239,231,.7)}
+.pb-row .pb-txt .pb-proj{margin-left:auto}.pb-row.left .pb-txt .pb-proj{margin-left:0}
+.pb-cue{margin:20px 0 0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,231,.45)}
+.pb-name .bw,.pb-proj .bw{opacity:calc((.14 + .86 * clamp(0, calc(var(--p, 0) - var(--i)), 1)) * var(--q, 1))}
+.pb-strip{display:flex;flex-wrap:wrap;gap:clamp(10px,1.2vw,18px);margin-top:clamp(20px,3vh,36px)}
+.pb-th{height:clamp(120px,22vh,260px);aspect-ratio:var(--ar,9/16);border-radius:8px;overflow:hidden;background:#000;clip-path:inset(0 100% 0 0);transition:clip-path .9s cubic-bezier(.76,0,.24,1) calc(var(--k,0) * .07s)}
+.pb-th.in{clip-path:inset(0 0 0 0)}
+.pb-th .wk-m{position:relative;display:block;width:100%;height:100%;left:auto;top:auto;margin:0;overflow:hidden;cursor:pointer;clip-path:none;transition:none}
+.pb-th .wk-m img,.pb-th .wk-m video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transform:none;transition:none}
+.pb-th .wk-m .play{position:absolute;left:8px;bottom:8px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ivory);opacity:0;transition:opacity .3s}.pb-th .wk-m:hover .play{opacity:1}
+@media(max-width:820px){
+  .pb-row{margin-bottom:28vh}
+  .pb-main,.pb-row.left .pb-main{grid-template-columns:1fr;gap:18px 0}
+  .pb-row .pb-lead,.pb-row.left .pb-lead{grid-column:1;grid-row:1}
+  .pb-row .pb-txt,.pb-row.left .pb-txt{grid-column:1;grid-row:2;justify-self:start;text-align:left}
+  .pb-row .pb-txt .pb-proj{margin-left:0}.pb-name{font-size:36px}
+  .pb-th{height:120px}
+}
+@media (prefers-reduced-motion:reduce){.pb-lead,.pb-th{clip-path:none!important}.pb-name .bw,.pb-proj .bw{opacity:1}}
 </style>
 </head>
 <body>
@@ -2148,80 +2231,82 @@ a.stk-l{cursor:pointer}
   </div>
 </section>
 <div class="blinds rev wh js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-<section class="sec dark hr js-hrsec" id="work">
-  <div class="inner hr-head"><p class="pf2-head rv"><b>( Portfolio )</b> All work <span>[ 05 ]</span></p></div>
-    <div class="hr-hold js-hr right" data-i="0">
-      <div class="hr-stage">
-        <div class="hr-ring js-hr-ring" data-w="220" data-h="360">
-        <figure class="wk-m js-film" style="--k:0;--ar:720/1290" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Film · 9:16 · 0:20 · Istanbul · 2026" data-dur="0:20"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/14-5f98d5f7c3.jpg" src="media/12-70bfcc9117.mp4"></video><span class="play">[ Play ]</span></figure>
-        <figure class="wk-m js-film" style="--k:1;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 01 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/15-e1887959c2.jpg" alt="Plate 01" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:2;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 02 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/16-15cb2fcfb2.jpg" alt="Plate 02" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:3;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 03 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/17-9b83c7175b.jpg" alt="Plate 03" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:4;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 04 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/18-7ac7171781.jpg" alt="Plate 04" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:5;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 05 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/19-14d9b4c44e.jpg" alt="Plate 05" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:6;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 06 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/20-af051ff8ef.jpg" alt="Plate 06" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:7;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 07 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/21-ada447e653.jpg" alt="Plate 07" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:8;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 08 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/22-75ece9e0cc.jpg" alt="Plate 08" loading="lazy"><span class="play">[ Open ]</span></figure>
-        </div>
-        <div class="hr-label"><p class="hr-kick">01 / 05 &middot; Perfume &middot; 2026</p><h3 class="hr-name">Atelier Rebul</h3><p class="hr-proj">Élixir 2 &middot; Nine plates + film</p><p class="hr-cue"><span class="js-hr-cue">Scroll to spin</span> &middot; 9 pieces &middot; click one to open it</p></div>
+<section class="sec dark pb js-pb" id="work">
+  <div class="inner pb-in">
+    <p class="pf2-head rv"><b>( Portfolio )</b> All work <span>[ 05 ]</span></p>
+    <div class="pb-row right">
+      <div class="pb-main">
+        <figure class="wk-m js-film pb-lead js-pb-lead" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Film · 9:16 · 0:20 · Istanbul · 2026" data-dur="0:20"><span class="pb-lm"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/14-5f98d5f7c3.jpg" src="media/12-70bfcc9117.mp4"></video></span><span class="play">[ Play ]</span></figure>
+        <div class="pb-txt"><p class="pb-kick">01 / 05 &middot; Perfume &middot; 2026</p><h3 class="pb-name js-pb-name">Atelier Rebul</h3><p class="pb-proj js-pb-line">Élixir 2 &middot; Nine plates + film</p><p class="pb-cue">9 pieces &middot; click one to open it</p></div>
+      </div>
+      <div class="pb-strip">
+          <div class="pb-th js-pb-th" style="--k:0;--ar:900/1612"><figure class="wk-m js-film" style="--k:1;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 01 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/15-e1887959c2.jpg" alt="Plate 01" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:1;--ar:900/1612"><figure class="wk-m js-film" style="--k:2;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 02 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/16-15cb2fcfb2.jpg" alt="Plate 02" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:2;--ar:900/1612"><figure class="wk-m js-film" style="--k:3;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 03 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/17-9b83c7175b.jpg" alt="Plate 03" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:3;--ar:900/1612"><figure class="wk-m js-film" style="--k:4;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 04 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/18-7ac7171781.jpg" alt="Plate 04" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:4;--ar:900/1612"><figure class="wk-m js-film" style="--k:5;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 05 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/19-14d9b4c44e.jpg" alt="Plate 05" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:5;--ar:900/1612"><figure class="wk-m js-film" style="--k:6;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 06 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/20-af051ff8ef.jpg" alt="Plate 06" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:6;--ar:900/1612"><figure class="wk-m js-film" style="--k:7;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 07 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/21-ada447e653.jpg" alt="Plate 07" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:7;--ar:900/1612"><figure class="wk-m js-film" style="--k:8;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 08 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/22-75ece9e0cc.jpg" alt="Plate 08" loading="lazy"><span class="play">[ Open ]</span></figure></div>
       </div>
     </div>
-    <div class="hr-hold js-hr left" data-i="1">
-      <div class="hr-stage">
-        <div class="hr-ring js-hr-ring" data-w="220" data-h="360">
-        <figure class="wk-m js-film" style="--k:0;--ar:576/714" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Film · pour · 0:08 · Amman · 2026" data-dur="0:08"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/23-7b1a9203b7.jpg" src="media/24-3dd929f1b8.mp4"></video><span class="play">[ Play ]</span></figure>
-        <figure class="wk-m js-film" style="--k:1;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 01 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/25-e2990e6d14.jpg" alt="Poster 01" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:2;--ar:576/714" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Film · bean bags · 0:08 · Amman · 2026" data-dur="0:08"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/26-48d6c757ea.jpg" src="media/27-f55954100f.mp4"></video><span class="play">[ Play ]</span></figure>
-        <figure class="wk-m js-film" style="--k:3;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 02 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/28-36c5d6c78c.jpg" alt="Poster 02" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:4;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 03 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/29-4499655a55.jpg" alt="Poster 03" loading="lazy"><span class="play">[ Open ]</span></figure>
-        </div>
-        <div class="hr-label"><p class="hr-kick">02 / 05 &middot; Identity &middot; 2026</p><h3 class="hr-name">Cube Coffee House</h3><p class="hr-proj">Identity + campaign &middot; Logo, palette, type, posters, films</p><p class="hr-cue"><span class="js-hr-cue">Scroll to spin</span> &middot; 5 pieces &middot; click one to open it</p></div>
+    <div class="pb-row left">
+      <div class="pb-main">
+        <figure class="wk-m js-film pb-lead js-pb-lead" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Film · pour · 0:08 · Amman · 2026" data-dur="0:08"><span class="pb-lm"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/23-7b1a9203b7.jpg" src="media/24-3dd929f1b8.mp4"></video></span><span class="play">[ Play ]</span></figure>
+        <div class="pb-txt"><p class="pb-kick">02 / 05 &middot; Identity &middot; 2026</p><h3 class="pb-name js-pb-name">Cube Coffee House</h3><p class="pb-proj js-pb-line">Identity + campaign &middot; Logo, palette, type, posters, films</p><p class="pb-cue">5 pieces &middot; click one to open it</p></div>
+      </div>
+      <div class="pb-strip">
+          <div class="pb-th js-pb-th" style="--k:0;--ar:800/993"><figure class="wk-m js-film" style="--k:1;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 01 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/25-e2990e6d14.jpg" alt="Poster 01" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:1;--ar:576/714"><figure class="wk-m js-film" style="--k:2;--ar:576/714" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Film · bean bags · 0:08 · Amman · 2026" data-dur="0:08"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/26-48d6c757ea.jpg" src="media/27-f55954100f.mp4"></video><span class="play">[ Play ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:2;--ar:800/993"><figure class="wk-m js-film" style="--k:3;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 02 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/28-36c5d6c78c.jpg" alt="Poster 02" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:3;--ar:800/993"><figure class="wk-m js-film" style="--k:4;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 03 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/29-4499655a55.jpg" alt="Poster 03" loading="lazy"><span class="play">[ Open ]</span></figure></div>
       </div>
     </div>
-    <div class="hr-hold js-hr right" data-i="2">
-      <div class="hr-stage">
-        <div class="hr-ring js-hr-ring" data-w="360" data-h="225">
-        <figure class="wk-m js-film" style="--k:0;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Home · the leaf · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/30-de56f4747b.jpg" alt="Home · the leaf" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:1;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="A touch of green across the Kingdom · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/31-ad07964687.jpg" alt="A touch of green across the Kingdom" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:2;--ar:1200/490" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="About · a specialist in living landscapes · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/32-a446e5fffe.jpg" alt="About · a specialist in living landscapes" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:3;--ar:1200/320" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Since 1997 · the numbers · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/33-a4426a7a3a.jpg" alt="Since 1997 · the numbers" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:4;--ar:1200/989" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Approach · we start by listening · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/34-052e8e4c50.jpg" alt="Approach · we start by listening" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:5;--ar:1200/577" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Built in four scientific parts · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/35-2774406099.jpg" alt="Built in four scientific parts" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:6;--ar:1200/450" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Maintenance · materials · warranty · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/36-96af1fc6aa.jpg" alt="Maintenance · materials · warranty" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:7;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Landscapes we&#x27;ve grown · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/37-ec45da355b.jpg" alt="Landscapes we&#x27;ve grown" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:8;--ar:1200/350" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Trusted on the Kingdom&#x27;s landmark works · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/38-dce4465caf.jpg" alt="Trusted on the Kingdom&#x27;s landmark works" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:9;--ar:1200/420" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Footer · a touch of green, since 1997 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/39-4d21530e0e.jpg" alt="Footer · a touch of green, since 1997" loading="lazy"><span class="play">[ Open ]</span></figure>
-        </div>
-        <div class="hr-label"><p class="hr-kick">03 / 05 &middot; Web &middot; 2026</p><h3 class="hr-name">Rawabina Al-Khadhraa</h3><p class="hr-proj">Touch of Green &middot; Editorial website · ten panels</p><p class="hr-cue"><span class="js-hr-cue">Scroll to spin</span> &middot; 10 pieces &middot; click one to open it</p></div>
+    <div class="pb-row right">
+      <div class="pb-main">
+        <figure class="wk-m js-film pb-lead js-pb-lead" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Home · the leaf · Amman · 2026" data-img="1"><span class="pb-lm"><img fetchpriority="low" src="media/30-de56f4747b.jpg" alt="Home · the leaf" loading="lazy"></span><span class="play">[ Open ]</span></figure>
+        <div class="pb-txt"><p class="pb-kick">03 / 05 &middot; Web &middot; 2026</p><h3 class="pb-name js-pb-name">Rawabina Al-Khadhraa</h3><p class="pb-proj js-pb-line">Touch of Green &middot; Editorial website · ten panels</p><p class="pb-cue">10 pieces &middot; click one to open it</p></div>
+      </div>
+      <div class="pb-strip">
+          <div class="pb-th js-pb-th" style="--k:0;--ar:1200/750"><figure class="wk-m js-film" style="--k:1;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="A touch of green across the Kingdom · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/31-ad07964687.jpg" alt="A touch of green across the Kingdom" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:1;--ar:1200/490"><figure class="wk-m js-film" style="--k:2;--ar:1200/490" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="About · a specialist in living landscapes · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/32-a446e5fffe.jpg" alt="About · a specialist in living landscapes" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:2;--ar:1200/320"><figure class="wk-m js-film" style="--k:3;--ar:1200/320" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Since 1997 · the numbers · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/33-a4426a7a3a.jpg" alt="Since 1997 · the numbers" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:3;--ar:1200/989"><figure class="wk-m js-film" style="--k:4;--ar:1200/989" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Approach · we start by listening · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/34-052e8e4c50.jpg" alt="Approach · we start by listening" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:4;--ar:1200/577"><figure class="wk-m js-film" style="--k:5;--ar:1200/577" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Built in four scientific parts · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/35-2774406099.jpg" alt="Built in four scientific parts" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:5;--ar:1200/450"><figure class="wk-m js-film" style="--k:6;--ar:1200/450" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Maintenance · materials · warranty · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/36-96af1fc6aa.jpg" alt="Maintenance · materials · warranty" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:6;--ar:1200/750"><figure class="wk-m js-film" style="--k:7;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Landscapes we&#x27;ve grown · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/37-ec45da355b.jpg" alt="Landscapes we&#x27;ve grown" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:7;--ar:1200/350"><figure class="wk-m js-film" style="--k:8;--ar:1200/350" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Trusted on the Kingdom&#x27;s landmark works · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/38-dce4465caf.jpg" alt="Trusted on the Kingdom&#x27;s landmark works" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:8;--ar:1200/420"><figure class="wk-m js-film" style="--k:9;--ar:1200/420" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Footer · a touch of green, since 1997 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/39-4d21530e0e.jpg" alt="Footer · a touch of green, since 1997" loading="lazy"><span class="play">[ Open ]</span></figure></div>
       </div>
     </div>
-    <div class="hr-hold js-hr left" data-i="3">
-      <div class="hr-stage">
-        <div class="hr-ring js-hr-ring" data-w="220" data-h="360">
-        <figure class="wk-m js-film" style="--k:0;--ar:720/1280" data-title="Latent" data-client="Identity + brand film" data-note="Brand film · 9:16 · 0:05 · Amman · 2026" data-dur="0:05"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/40-b1760e8edf.jpg" src="media/41-0b7cf8cf26.mp4"></video><span class="play">[ Play ]</span></figure>
-        <figure class="wk-m js-film" style="--k:1;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Mark · construction · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/42-8c6bab5207.jpg" alt="Mark · construction" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:2;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Colour &amp; theme · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/43-8bbf5eef82.jpg" alt="Colour &amp; theme" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:3;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="World · objects · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/44-819f68055d.jpg" alt="World · objects" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:4;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Colophon · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/45-72167351bf.jpg" alt="Colophon" loading="lazy"><span class="play">[ Open ]</span></figure>
-        </div>
-        <div class="hr-label"><p class="hr-kick">04 / 05 &middot; Identity &middot; 2026</p><h3 class="hr-name">Latent</h3><p class="hr-proj">Identity + brand film &middot; Mark · palette · world · colophon</p><p class="hr-cue"><span class="js-hr-cue">Scroll to spin</span> &middot; 5 pieces &middot; click one to open it</p></div>
+    <div class="pb-row left">
+      <div class="pb-main">
+        <figure class="wk-m js-film pb-lead js-pb-lead" data-title="Latent" data-client="Identity + brand film" data-note="Brand film · 9:16 · 0:05 · Amman · 2026" data-dur="0:05"><span class="pb-lm"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/40-b1760e8edf.jpg" src="media/41-0b7cf8cf26.mp4"></video></span><span class="play">[ Play ]</span></figure>
+        <div class="pb-txt"><p class="pb-kick">04 / 05 &middot; Identity &middot; 2026</p><h3 class="pb-name js-pb-name">Latent</h3><p class="pb-proj js-pb-line">Identity + brand film &middot; Mark · palette · world · colophon</p><p class="pb-cue">5 pieces &middot; click one to open it</p></div>
+      </div>
+      <div class="pb-strip">
+          <div class="pb-th js-pb-th" style="--k:0;--ar:1000/1250"><figure class="wk-m js-film" style="--k:1;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Mark · construction · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/42-8c6bab5207.jpg" alt="Mark · construction" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:1;--ar:1000/1250"><figure class="wk-m js-film" style="--k:2;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Colour &amp; theme · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/43-8bbf5eef82.jpg" alt="Colour &amp; theme" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:2;--ar:1000/1250"><figure class="wk-m js-film" style="--k:3;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="World · objects · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/44-819f68055d.jpg" alt="World · objects" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:3;--ar:1000/1250"><figure class="wk-m js-film" style="--k:4;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Colophon · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/45-72167351bf.jpg" alt="Colophon" loading="lazy"><span class="play">[ Open ]</span></figure></div>
       </div>
     </div>
-    <div class="hr-hold js-hr right" data-i="4">
-      <div class="hr-stage">
-        <div class="hr-ring js-hr-ring" data-w="360" data-h="225">
-        <figure class="wk-m js-film" style="--k:0;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Cover · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/46-5683f4853b.jpg" alt="Cover" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:1;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Wordmark on ink · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/47-c268d9e9ea.jpg" alt="Wordmark on ink" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:2;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="The mark · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/48-1fd4363325.jpg" alt="The mark" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:3;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Colour system · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/49-95c66ceea0.jpg" alt="Colour system" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:4;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="No camera. No studio. · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/50-2bc7ce8c25.jpg" alt="No camera. No studio." loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:5;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Phone mockups · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/51-1cf31dd417.jpg" alt="Phone mockups" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:6;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Stationery · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/52-ff0025d2b5.jpg" alt="Stationery" loading="lazy"><span class="play">[ Open ]</span></figure>
-        <figure class="wk-m js-film" style="--k:7;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Tape · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/53-d1e149b88a.jpg" alt="Tape" loading="lazy"><span class="play">[ Open ]</span></figure>
-        </div>
-        <div class="hr-label"><p class="hr-kick">05 / 05 &middot; Identity &middot; 2026</p><h3 class="hr-name">Latent brand book</h3><p class="hr-proj">Thirty-five spreads &middot; Eight of its thirty-five spreads</p><p class="hr-cue"><span class="js-hr-cue">Scroll to spin</span> &middot; 8 pieces &middot; click one to open it</p></div>
+    <div class="pb-row right">
+      <div class="pb-main">
+        <figure class="wk-m js-film pb-lead js-pb-lead" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Cover · Amman · 2026" data-img="1"><span class="pb-lm"><img fetchpriority="low" src="media/46-5683f4853b.jpg" alt="Cover" loading="lazy"></span><span class="play">[ Open ]</span></figure>
+        <div class="pb-txt"><p class="pb-kick">05 / 05 &middot; Identity &middot; 2026</p><h3 class="pb-name js-pb-name">Latent brand book</h3><p class="pb-proj js-pb-line">Thirty-five spreads &middot; Eight of its thirty-five spreads</p><p class="pb-cue">8 pieces &middot; click one to open it</p></div>
+      </div>
+      <div class="pb-strip">
+          <div class="pb-th js-pb-th" style="--k:0;--ar:1440/810"><figure class="wk-m js-film" style="--k:1;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Wordmark on ink · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/47-c268d9e9ea.jpg" alt="Wordmark on ink" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:1;--ar:1440/810"><figure class="wk-m js-film" style="--k:2;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="The mark · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/48-1fd4363325.jpg" alt="The mark" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:2;--ar:1440/810"><figure class="wk-m js-film" style="--k:3;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Colour system · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/49-95c66ceea0.jpg" alt="Colour system" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:3;--ar:1440/810"><figure class="wk-m js-film" style="--k:4;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="No camera. No studio. · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/50-2bc7ce8c25.jpg" alt="No camera. No studio." loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:4;--ar:1440/810"><figure class="wk-m js-film" style="--k:5;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Phone mockups · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/51-1cf31dd417.jpg" alt="Phone mockups" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:5;--ar:1440/810"><figure class="wk-m js-film" style="--k:6;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Stationery · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/52-ff0025d2b5.jpg" alt="Stationery" loading="lazy"><span class="play">[ Open ]</span></figure></div>
+          <div class="pb-th js-pb-th" style="--k:6;--ar:1440/810"><figure class="wk-m js-film" style="--k:7;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Tape · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/53-d1e149b88a.jpg" alt="Tape" loading="lazy"><span class="play">[ Open ]</span></figure></div>
       </div>
     </div>
+  </div>
 </section>
 
 
@@ -2243,35 +2328,29 @@ a.stk-l{cursor:pointer}
 
 <!-- ================= PORTFOLIO — one locked stage: the media and the words appear in place, the name rotates in (21st TextRotate) ================= -->
 <!-- ================= PROCESS — the four moves as an index ================= -->
-<section class="sec light wipe" id="process" style="--prev:var(--ink)">
+<section class="sec light wipe ss js-ss" id="process" style="--prev:var(--ink)">
   <div class="inner">
-    <div class="beat">
-      <div class="ixl js-ixl js-steps" data-every="2800">
-        <div class="ixl-head rv">
-          <p class="ixl-filter"><b>( How it works )</b><span data-i="0">Brief</span><span data-i="1">Direction</span><span data-i="2">Frames</span><span data-i="3">Delivery</span></p>
-          <p class="ixl-title">Four moves<sup>[ 4 ]</sup></p>
-          <p class="ixl-count">Days, not weeks</p>
-        </div>
-        <div class="ixl-body">
-          <ol class="ixl-rows rv" style="--k:1">
-          <li class="ixl-row" data-i="0"><span class="n">1</span><span class="nm">Brief</span><span class="meta">Product, palette, audience. What the work has to do.</span></li>
-          <li class="ixl-row" data-i="1"><span class="n">2</span><span class="nm">Direction</span><span class="meta">Concept, light, motion, grade — agreed before anything is made.</span></li>
-          <li class="ixl-row" data-i="2"><span class="n">3</span><span class="nm">Frames</span><span class="meta">We make many. We show the ones that pass.</span></li>
-          <li class="ixl-row" data-i="3"><span class="n">4</span><span class="nm">Delivery</span><span class="meta">Final files, sized for every placement.</span></li>
-          </ol>
-          <div class="ixl-side rv" style="--k:2">
-            <figure class="ixl-prev js-ixl-prev">
-            <img alt="" data-ar="1000/1250" data-i="0" src="media/42-8c6bab5207.jpg" class="on">
-            <img alt="" data-ar="1000/1250" data-i="1" src="media/43-8bbf5eef82.jpg">
-            <img alt="" data-ar="1000/1250" data-i="2" src="media/44-819f68055d.jpg">
-            <img alt="" data-ar="1000/1250" data-i="3" src="media/45-72167351bf.jpg">
-              <figcaption><span class="js-ixl-cap">Brief</span><span class="js-ixl-cap2">Mark &middot; construction</span></figcaption>
-            </figure>
-          </div>
-        </div>
-        <p class="ixl-note rv" style="--k:3">Every job runs the same way, in the same order. You see the direction before anything is made, and the frames before anything is final.</p>
-      </div>
+    <div class="ixl-head rv">
+      <p class="ixl-filter"><b>( How it works )</b><span data-i="0" class="js-ss-tab on">Brief</span><span data-i="1" class="js-ss-tab">Direction</span><span data-i="2" class="js-ss-tab">Frames</span><span data-i="3" class="js-ss-tab">Delivery</span></p>
+      <p class="ixl-title">Four moves<sup>[ 4 ]</sup></p>
+      <p class="ixl-count">Days, not weeks</p>
     </div>
+    <div class="ss-grid">
+      <div class="ss-steps js-ss-steps">
+        <div class="ss-step js-ss-step on" data-i="0"><span class="ss-n">01</span><h3 class="ss-t">Brief</h3><p class="ss-d">Product, palette, audience. What the work has to do.</p></div>
+        <div class="ss-step js-ss-step" data-i="1"><span class="ss-n">02</span><h3 class="ss-t">Direction</h3><p class="ss-d">Concept, light, motion, grade — agreed before anything is made.</p></div>
+        <div class="ss-step js-ss-step" data-i="2"><span class="ss-n">03</span><h3 class="ss-t">Frames</h3><p class="ss-d">We make many. We show the ones that pass.</p></div>
+        <div class="ss-step js-ss-step" data-i="3"><span class="ss-n">04</span><h3 class="ss-t">Delivery</h3><p class="ss-d">Final files, sized for every placement.</p></div>
+      </div>
+      <div class="ss-side"><figure class="ss-card js-ss-card" style="--c:var(--ink)">
+          <img fetchpriority="low" src="media/42-8c6bab5207.jpg" alt="" data-i="0" loading="lazy" decoding="async" class="on">
+          <img fetchpriority="low" src="media/43-8bbf5eef82.jpg" alt="" data-i="1" loading="lazy" decoding="async">
+          <img fetchpriority="low" src="media/44-819f68055d.jpg" alt="" data-i="2" loading="lazy" decoding="async">
+          <img fetchpriority="low" src="media/45-72167351bf.jpg" alt="" data-i="3" loading="lazy" decoding="async">
+          <figcaption><span class="js-ss-cap">Brief</span><span class="js-ss-cap2">Mark &middot; construction</span></figcaption>
+      </figure></div>
+    </div>
+    <p class="ixl-note rv">Every job runs the same way, in the same order. You see the direction before anything is made, and the frames before anything is final.</p>
   </div>
 </section>
 
@@ -2280,7 +2359,56 @@ a.stk-l{cursor:pointer}
   <div class="inner">
     <div class="beat pz-beat">
       <div class="aw-row rv"><h3 class="aw-t">Prices <span class="sep">|</span> <span class="cl">2026</span></h3><p class="aw-meta"><span>Jordanian dinar &middot; exclusive of tax</span><span>Every package costs less than the same items bought one by one</span></p></div>
-      <div class="xg js-xg rv" role="list" aria-label="Packages"></div>
+      <div class="rc-row rv" role="list" aria-label="Packages">
+      <div class="rc-slip" style="--k:0">
+        <article class="rc-paper" aria-label="Starter package">
+          <header class="rc-head"><p class="rc-merchant">Latent Studio</p><p class="rc-sub">Amman · brand visuals made with AI</p></header>
+          <hr class="rc-rule"><dl class="rc-meta"><div><dt>Order</dt><dd>LS-56948</dd></div><div><dt>Package</dt><dd>01 / 04</dd></div></dl><hr class="rc-rule">
+          <div class="rc-title"><h3>Starter</h3><p>A first month of showing up, done properly.</p></div>
+          <hr class="rc-rule"><ul class="rc-items"><li><span>Carousel posts</span><i></i><b>4</b></li><li><span>Reels · 15 s</span><i></i><b>3</b></li><li><span>Showcase video</span><i></i><b>1–2 shots</b></li><li><span>Delivery</span><i></i><b>1080p</b></li></ul><hr class="rc-rule">
+          <div class="rc-total"><div><p>Total due</p><p class="rc-amt">200 <span>JD</span></p></div><p class="rc-note">Per package · exclusive of tax · less than the same items one by one</p></div>
+          <a class="rc-cta" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Starter%20package%20%C2%B7%20200%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Starter%20package%20%C2%B7%20200%20JD.%0A%0ABrand%20/%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">Start with Starter</a>
+          <div class="rc-code" aria-hidden="true"><div class="rc-bars"><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:1px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:1px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:1px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:1px" class="on"></u><u style="width:2px"></u><u style="width:1px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:3px"></u><u style="width:1px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:3px"></u></div><p>LS-56948-26</p></div>
+          <i class="rc-headline" aria-hidden="true"></i>
+        </article>
+      </div>
+      <div class="rc-slip" style="--k:1">
+        <article class="rc-paper" aria-label="Essential package">
+          <header class="rc-head"><p class="rc-merchant">Latent Studio</p><p class="rc-sub">Amman · brand visuals made with AI</p></header>
+          <hr class="rc-rule"><dl class="rc-meta"><div><dt>Order</dt><dd>LS-77963</dd></div><div><dt>Package</dt><dd>02 / 04</dd></div></dl><hr class="rc-rule">
+          <div class="rc-title"><h3>Essential</h3><p>The steady feed: more posts, more reels.</p></div>
+          <hr class="rc-rule"><ul class="rc-items"><li><span>Carousel posts</span><i></i><b>5</b></li><li><span>Reels · 15 s</span><i></i><b>4</b></li><li><span>Showcase video</span><i></i><b>1–2 shots</b></li><li><span>Delivery</span><i></i><b>1080p</b></li></ul><hr class="rc-rule">
+          <div class="rc-total"><div><p>Total due</p><p class="rc-amt">275 <span>JD</span></p></div><p class="rc-note">Per package · exclusive of tax · less than the same items one by one</p></div>
+          <a class="rc-cta" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Essential%20package%20%C2%B7%20275%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Essential%20package%20%C2%B7%20275%20JD.%0A%0ABrand%20/%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">Start with Essential</a>
+          <div class="rc-code" aria-hidden="true"><div class="rc-bars"><u style="width:1px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:1px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:1px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:1px"></u><u style="width:1px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:1px" class="on"></u><u style="width:1px"></u></div><p>LS-77963-26</p></div>
+          <i class="rc-headline" aria-hidden="true"></i>
+        </article>
+      </div>
+      <div class="rc-slip pop" style="--k:2">
+        <article class="rc-paper" aria-label="Growth package">
+          <header class="rc-head"><p class="rc-merchant">Latent Studio</p><p class="rc-sub">Amman · brand visuals made with AI</p></header>
+          <hr class="rc-rule"><dl class="rc-meta"><div><dt>Order</dt><dd>LS-30454</dd></div><div><dt>Package</dt><dd>03 / 04</dd></div></dl><hr class="rc-rule">
+          <div class="rc-title"><h3>Growth</h3><p>Scripted film enters the picture.</p><p class="rc-stamp">*** Most chosen ***</p></div>
+          <hr class="rc-rule"><ul class="rc-items"><li><span>Carousel posts</span><i></i><b>5</b></li><li><span>Cinematic reels · 15 s</span><i></i><b>3</b></li><li><span>Scripted film + SFX</span><i></i><b>Incl.</b></li><li><span>Shots per reel</span><i></i><b>2–7</b></li><li><span>Delivery</span><i></i><b>1080p</b></li></ul><hr class="rc-rule">
+          <div class="rc-total"><div><p>Total due</p><p class="rc-amt">375 <span>JD</span></p></div><p class="rc-note">Per package · exclusive of tax · less than the same items one by one</p></div>
+          <a class="rc-cta pop" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Growth%20package%20%C2%B7%20375%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Growth%20package%20%C2%B7%20375%20JD.%0A%0ABrand%20/%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">Start with Growth</a>
+          <div class="rc-code" aria-hidden="true"><div class="rc-bars"><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:1px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:1px" class="on"></u><u style="width:3px"></u><u style="width:1px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:1px" class="on"></u><u style="width:2px"></u><u style="width:1px" class="on"></u><u style="width:2px"></u><u style="width:1px" class="on"></u><u style="width:3px"></u><u style="width:1px" class="on"></u><u style="width:3px"></u><u style="width:1px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:2px"></u><u style="width:1px" class="on"></u><u style="width:3px"></u></div><p>LS-30454-26</p></div>
+          <i class="rc-headline" aria-hidden="true"></i>
+        </article>
+      </div>
+      <div class="rc-slip" style="--k:3">
+        <article class="rc-paper" aria-label="Signature package">
+          <header class="rc-head"><p class="rc-merchant">Latent Studio</p><p class="rc-sub">Amman · brand visuals made with AI</p></header>
+          <hr class="rc-rule"><dl class="rc-meta"><div><dt>Order</dt><dd>LS-19165</dd></div><div><dt>Package</dt><dd>04 / 04</dd></div></dl><hr class="rc-rule">
+          <div class="rc-title"><h3>Signature</h3><p>The full campaign, longer and louder.</p></div>
+          <hr class="rc-rule"><ul class="rc-items"><li><span>Carousel posts</span><i></i><b>6</b></li><li><span>Cinematic reels · 20 s</span><i></i><b>3</b></li><li><span>Scripted film + SFX</span><i></i><b>Incl.</b></li><li><span>Shots per reel</span><i></i><b>2–7</b></li><li><span>Delivery</span><i></i><b>1080p</b></li></ul><hr class="rc-rule">
+          <div class="rc-total"><div><p>Total due</p><p class="rc-amt">425 <span>JD</span></p></div><p class="rc-note">Per package · exclusive of tax · less than the same items one by one</p></div>
+          <a class="rc-cta" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Signature%20package%20%C2%B7%20425%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Signature%20package%20%C2%B7%20425%20JD.%0A%0ABrand%20/%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">Start with Signature</a>
+          <div class="rc-code" aria-hidden="true"><div class="rc-bars"><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:1px"></u><u style="width:1px" class="on"></u><u style="width:1px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:3px"></u><u style="width:1px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u><u style="width:3px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:2px" class="on"></u><u style="width:1px"></u><u style="width:1px" class="on"></u><u style="width:2px"></u><u style="width:2px" class="on"></u><u style="width:3px"></u></div><p>LS-19165-26</p></div>
+          <i class="rc-headline" aria-hidden="true"></i>
+        </article>
+      </div>
+    </div>
       <div class="pk-custom rv">
         <div><h3>Client customizable</h3><p>Tell us how many videos and posts you need, and how long each runs &mdash; we build the package around it.</p></div>
         <a class="pk-cta" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20client%20customizable%20package&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20client%20customizable%20package.%0A%0ABrand%20%2F%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">On request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -3812,6 +3940,58 @@ a.stk-l{cursor:pointer}
   }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
+})();
+/* the four moves, version two: the nearest move to the reading line is the active one; the sticky card swaps its
+   picture and colour to match (after Aceternity's sticky scroll reveal) */
+(function(){
+  var sec = document.querySelector(".js-ss"); if(!sec) return;
+  var steps = [].slice.call(sec.querySelectorAll(".js-ss-step")), card = sec.querySelector(".js-ss-card"), imgs = [].slice.call(card.querySelectorAll("img")),
+      cap = sec.querySelector(".js-ss-cap"), cap2 = sec.querySelector(".js-ss-cap2"), tabs = [].slice.call(sec.querySelectorAll(".js-ss-tab")), ticking = false, at = -1;
+  var COL = ["var(--ink)", "var(--marrow)", "#2A2A31", "var(--band)"], CAPS = ["Mark · construction", "Mark · in the world", "Mark · on the plate", "Mark · shipped"];
+  function show(i){
+    if(i === at) return; at = i;
+    steps.forEach(function(s, k){ s.classList.toggle("on", k === i); }); imgs.forEach(function(im){ im.classList.toggle("on", +im.dataset.i === i); });
+    tabs.forEach(function(t, k){ t.classList.toggle("on", k === i); });
+    card.style.setProperty("--c", COL[i % COL.length]); if(cap) cap.textContent = steps[i].querySelector(".ss-t").textContent; if(cap2) cap2.textContent = CAPS[i] || "";
+  }
+  function frame(){
+    ticking = false; var vh = window.innerHeight, line = vh * .42, best = 0, bd = 1e9;
+    steps.forEach(function(s, k){ var r = s.getBoundingClientRect(), c = (r.top + r.bottom) / 2, d = Math.abs(c - line); if(d < bd){ bd = d; best = k; } });
+    show(best);
+  }
+  tabs.forEach(function(t, k){ t.addEventListener("click", function(){ steps[k].scrollIntoView({ behavior:"smooth", block:"center" }); }); });
+  window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); frame();
+})();
+/* portfolio, version four: the white path mechanism. The lead piece opens widthwise from its side as it rises and
+   closes back as it leaves; the name and line brighten word by word; the strip below wipes in piece by piece. */
+(function(){
+  var sec = document.querySelector(".js-pb"); if(!sec) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
+  var leads = [].slice.call(sec.querySelectorAll(".js-pb-lead")).map(function(el){ return { el: el, left: el.closest(".pb-row").classList.contains("left"), v: el.querySelector("video") }; });
+  var thumbs = [].slice.call(sec.querySelectorAll(".js-pb-th"));
+  var texts = [].slice.call(sec.querySelectorAll(".js-pb-name, .js-pb-line")).map(function(t){
+    var ws = t.textContent.trim().split(/\s+/); t.textContent = "";
+    ws.forEach(function(w, i){ var sp = document.createElement("span"); sp.className = "bw"; sp.textContent = w; sp.style.setProperty("--i", i); t.appendChild(sp); if(i < ws.length - 1) t.appendChild(document.createTextNode(" ")); });
+    return { el: t, n: ws.length };
+  });
+  var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
+  function frame(){
+    ticking = false; var vh = window.innerHeight;
+    leads.forEach(function(o){
+      var r = o.el.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10){ if(o.v && !o.v.paused) o.v.pause(); return; }
+      var open = reduce ? 1 : ease(clamp((vh * .9 - r.top) / (vh * .34))) * (1 - ease(clamp((vh * .2 - r.bottom) / (vh * .2))));
+      var hide = ((1 - open) * 100).toFixed(2) + "%";
+      o.el.style.clipPath = o.left ? "inset(0 " + hide + " 0 0 round clamp(10px,1vw,16px))" : "inset(0 0 0 " + hide + " round clamp(10px,1vw,16px))";
+      if(o.v){ if(open > .5 && o.v.paused){ var pr = o.v.play(); if(pr && pr.catch) pr.catch(function(){}); } else if(open <= .5 && !o.v.paused) o.v.pause(); }
+    });
+    thumbs.forEach(function(t){ var r = t.getBoundingClientRect(); if(r.top > vh * 1.05) t.classList.remove("in"); else if(r.top < vh * .92) t.classList.add("in"); });
+    texts.forEach(function(t){
+      var r = t.el.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
+      var p = reduce ? 1 : clamp((vh * .9 - r.top) / (vh * .42)), q = reduce ? 1 : clamp(r.bottom / (vh * .16));
+      t.el.style.setProperty("--p", (p * (t.n + 1)).toFixed(2)); t.el.style.setProperty("--q", q.toFixed(3));
+    });
+  }
+  window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); window.addEventListener("load", frame); frame();
 })();
 </script>
 </body>

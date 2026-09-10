@@ -55,6 +55,8 @@ if os.environ.get('HOW')=='4': exec(open(SP+'v3_how4.py').read())
 if os.environ.get('HOW')=='5': exec(open(SP+'v3_how5.py').read())
 s=s[:_sa]+V2+s[_sb:]
 exec(open(SP+'v3_port.py').read())
+if os.environ.get('PRICES')=='2': exec(open(SP+'v3_prices2.py').read())
+if os.environ.get('PROCESS')=='2': exec(open(SP+'v3_process2.py').read())
 # the method panel follows a light section now
 s=s.replace('<section class="sec dark method wipe" id="method" style="--prev:var(--ivory)">','<section class="sec dark method wipe" id="method" style="--prev:var(--ivory)">',1)
 s=s.replace('</body>', '<script>\n'+open(SP+'v3_cases2.js').read()+'</script>\n</body>', 1)

@@ -16,7 +16,34 @@ def _poster(f):
     m=_re.search(r'(?:poster|src)="(data:image[^"]+)"', f); return m.group(1) if m else ''
 def _year(p): return p['meta'].split('·')[-1].strip()
 _n=len(_wk)
-if os.environ.get('PORTFOLIO')=='3':
+if os.environ.get('PORTFOLIO')=='4':
+    # ---- version four: the white path mechanism in the black style. Each project is a row: the lead piece opens
+    #      widthwise from its side (right, then left, alternating) with the name beside it; the rest of its pieces
+    #      wipe in below one after another; every piece opens full frame. ----
+    _rows=''
+    for i,p in enumerate(_wk):
+        figs=_figs[i]; lead=figs[0]; rest=figs[1:]
+        side='right' if i%2==0 else 'left'
+        m=_re.match(r'<figure class="wk-m js-film" style="([^"]*)"([^>]*)>(<video[^>]*></video>|<img[^>]*>)(.*)</figure>', lead, _re.S)
+        media, restin, attrs = m.group(3), m.group(4), m.group(2)
+        leadf='<figure class="wk-m js-film pb-lead js-pb-lead"%s><span class="pb-lm">%s</span>%s</figure>'%(attrs,media,restin)
+        thumbs=''.join('          <div class="pb-th js-pb-th" style="--k:%d;--ar:%d/%d">%s</div>\n'%(k,_ar(f)[0],_ar(f)[1],f) for k,f in enumerate(rest))
+        _rows+='''    <div class="pb-row %s">
+      <div class="pb-main">
+        %s
+        <div class="pb-txt"><p class="pb-kick">%02d / %02d &middot; %s &middot; %s</p><h3 class="pb-name js-pb-name">%s</h3><p class="pb-proj js-pb-line">%s &middot; %s</p><p class="pb-cue">%d pieces &middot; click one to open it</p></div>
+      </div>
+      <div class="pb-strip">
+%s      </div>
+    </div>
+'''%(side,leadf,i+1,_n,CAT[i],_year(p),p['t'],p['proj'],p['note'],len(figs),thumbs)
+    _port='''<section class="sec dark pb js-pb" id="work">
+  <div class="inner pb-in">
+    <p class="pf2-head rv"><b>( Portfolio )</b> All work <span>[ %02d ]</span></p>
+%s  </div>
+</section>
+'''%(_n,_rows)
+elif os.environ.get('PORTFOLIO')=='3':
     # ---- version three, after the Halo Reel: each project pins; its pieces ride an ellipse anchored to one edge
     #      and make one full spin as the page scrolls, the name parked in the space the ring leaves; sides alternate ----
     _holds=''

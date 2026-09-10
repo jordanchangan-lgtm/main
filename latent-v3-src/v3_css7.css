@@ -4,7 +4,7 @@
    with the category counts at the far left, then rows of three pictures of
    uneven widths and heights, each with a small mono caption. Pictures scroll
    in as they are and squash onto their bottom edge as they leave at the top. ---------- */
-.cs{padding-top:clamp(28px,4vh,44px);padding-bottom:clamp(40px,8vh,96px)}
+.cs{padding-top:clamp(64px,10vh,120px);padding-bottom:clamp(40px,8vh,96px)}
 .cs .inner{max-width:none}
 .cs-item{margin:0;transform:translateY(var(--o,0))}
 .cs-img{position:relative;width:100%;aspect-ratio:var(--r,4/3);overflow:hidden;background:var(--band);transform-origin:50% 100%;will-change:transform}

@@ -1,7 +1,6 @@
 # ---- the studio panel after the hero, after the reference: a wide banner, the title with the counts, then the cases ----
 _sa=s.index('<section class="sec light" id="studio" style="padding:0">'); _sb=s.index('<!-- ================= METHOD')
 _ten=re.findall(r'<img class="sp-pic sp-pic-[lr]" src="([^"]+)"', spm)
-_banner=du('banner.jpg','image/jpeg')
 # slots: (image, caption, column start, span, aspect ratio, vertical offset in vh). Three per row, sizes from the reference.
 SLOTS=[
  [(care[0],'Cube Care Center',1,4,'4/3',0),(cafe[0],'Cube Coffee House',5,3,'16/10',-6),(care[1],'Cube Care Center',8,5,'4/3',-10)],
@@ -17,7 +16,6 @@ for row in SLOTS:
     _rows+='    <div class="cs-row">\n'+_items+'    </div>\n'
 _n=sum(len(r) for r in SLOTS)
 CASES=('<section class="sec light cs js-cs" id="studio">\n  <div class="inner">\n'
- '    <figure class="cs-banner cs-item" style="--r:3/1"><div class="cs-img"><img src="'+_banner+'" alt="" loading="lazy" decoding="async"></div><figcaption>Latent &middot; brand film</figcaption></figure>\n'
  '    <div class="cs-head">\n'
  '      <ul class="cs-counts"><li>Posts (6)</li><li>Films (3)</li><li>Identity (5)</li><li>Web (3)</li></ul>\n'
  '      <h2 class="cs-title">Selected work</h2>\n'

@@ -57,6 +57,7 @@ s=s[:_sa]+V2+s[_sb:]
 exec(open(SP+'v3_port.py').read())
 if os.environ.get('PRICES')=='2': exec(open(SP+'v3_prices2.py').read())
 if os.environ.get('PRICES')=='3': exec(open(SP+'v3_prices3.py').read())
+if os.environ.get('PRICES')=='4': exec(open(SP+'v3_prices4.py').read())
 if os.environ.get('PROCESS')=='2': exec(open(SP+'v3_process2.py').read())
 if os.environ.get('PROCESS')=='3': exec(open(SP+'v3_process3.py').read())
 # the method panel follows a light section now

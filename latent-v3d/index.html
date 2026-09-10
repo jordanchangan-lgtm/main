@@ -2171,6 +2171,17 @@ a.stk-l{cursor:pointer}
   .pq-price{grid-column:2;font-size:30px}.pq-go{grid-column:2}
   .pq-name{font-size:38px}.pq-feats{max-height:none;opacity:1;margin-top:14px;grid-template-columns:1fr}
 }
+/* ---------- prices, version four: the brief and the bold ask, on the endless path ---------- */
+.pz{padding:0}
+.pz-in{max-width:none;padding:clamp(80px,18vh,220px) var(--gut) clamp(80px,20vh,240px)}
+.pz-kick{margin:0 0 clamp(40px,10vh,120px);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
+.pz-kick b{color:var(--marrow);font-weight:500}
+.pz-brief{margin:0 0 clamp(120px,36vh,440px) 0;max-width:30ch;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(20px,2.1vw,32px);line-height:1.25;letter-spacing:-.025em;color:var(--ink);text-wrap:pretty}
+.pz-ask{margin-left:auto;max-width:min(80vw,1100px);text-align:right}
+.pz-q{margin:0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(40px,7.6vw,132px);line-height:.95;letter-spacing:-.05em;color:var(--ink)}
+.pz-go{display:inline-block;margin-top:clamp(16px,3vh,32px);font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(40px,7.6vw,132px);line-height:.95;letter-spacing:-.05em;color:var(--marrow);text-decoration:none;border-bottom:3px solid transparent;transition:border-color .3s}
+.pz-go:hover{border-bottom-color:var(--marrow)}
+@media(max-width:820px){.pz-brief{font-size:20px;max-width:none;margin-bottom:22vh}.pz-ask{max-width:none;text-align:left}.pz-q,.pz-go{font-size:13vw}}
 </style>
 </head>
 <body>
@@ -2384,68 +2395,13 @@ a.stk-l{cursor:pointer}
 </section>
 
 <!-- ================= PRICES — one short panel ================= -->
-<section class="sec light" id="prices">
-  <div class="inner">
-    <div class="beat pz-beat">
-      <div class="aw-row rv"><h3 class="aw-t">Prices <span class="sep">|</span> <span class="cl">2026</span></h3><p class="aw-meta"><span>Jordanian dinar &middot; exclusive of tax</span><span>Every package costs less than the same items bought one by one</span></p></div>
-      <div class="pq" role="list" aria-label="Packages">
-      <a class="pq-row rv" style="--k:0" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Starter%20package%20%C2%B7%20200%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Starter%20package%20%C2%B7%20200%20JD.%0A%0ABrand%20/%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">
-        <span class="pq-n">01</span>
-        <span class="pq-main"><span class="pq-name">Starter</span><span class="pq-desc">A first month of showing up, done properly.</span><span class="pq-feats"><span>4 carousel posts</span><span>3 reels · 15 s each</span><span>Showcase videos, one to two shots</span><span>1080p delivery</span></span></span>
-        <span class="pq-price">200<i>JD</i></span>
-        <span class="pq-go">Enquire &rarr;</span>
-      </a>
-      <a class="pq-row rv" style="--k:1" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Essential%20package%20%C2%B7%20275%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Essential%20package%20%C2%B7%20275%20JD.%0A%0ABrand%20/%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">
-        <span class="pq-n">02</span>
-        <span class="pq-main"><span class="pq-name">Essential</span><span class="pq-desc">The steady feed: more posts, more reels.</span><span class="pq-feats"><span>5 carousel posts</span><span>4 reels · 15 s each</span><span>Showcase videos, one to two shots</span><span>1080p delivery</span></span></span>
-        <span class="pq-price">275<i>JD</i></span>
-        <span class="pq-go">Enquire &rarr;</span>
-      </a>
-      <a class="pq-row rv pop" style="--k:2" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Growth%20package%20%C2%B7%20375%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Growth%20package%20%C2%B7%20375%20JD.%0A%0ABrand%20/%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">
-        <span class="pq-n">03</span>
-        <span class="pq-main"><span class="pq-name">Growth<em>Most chosen</em></span><span class="pq-desc">Scripted film enters the picture.</span><span class="pq-feats"><span>5 carousel posts</span><span>3 cinematic reels · 15 s each</span><span>Full scripted video, cinematics, edits + SFX</span><span>2–7 shots per reel</span><span>1080p delivery</span></span></span>
-        <span class="pq-price">375<i>JD</i></span>
-        <span class="pq-go">Enquire &rarr;</span>
-      </a>
-      <a class="pq-row rv" style="--k:3" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Signature%20package%20%C2%B7%20425%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Signature%20package%20%C2%B7%20425%20JD.%0A%0ABrand%20/%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">
-        <span class="pq-n">04</span>
-        <span class="pq-main"><span class="pq-name">Signature</span><span class="pq-desc">The full campaign, longer and louder.</span><span class="pq-feats"><span>6 carousel posts</span><span>3 cinematic reels · 20 s each</span><span>Full scripted video, cinematics, edits + SFX</span><span>2–7 shots per reel</span><span>1080p delivery</span></span></span>
-        <span class="pq-price">425<i>JD</i></span>
-        <span class="pq-go">Enquire &rarr;</span>
-      </a>
-    </div>
-      <div class="pk-custom rv">
-        <div><h3>Client customizable</h3><p>Tell us how many videos and posts you need, and how long each runs &mdash; we build the package around it.</p></div>
-        <a class="pk-cta" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20client%20customizable%20package&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20client%20customizable%20package.%0A%0ABrand%20%2F%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A">On request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-      </div>
-      <div class="pr3">
-        <div class="pr3-col rv" style="--k:1"><h3 class="grp"><b>02</b> Brand &amp; web</h3>
-          <div class="ix">
-            <a class="row" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20Brand%20identity%20%C2%B7%20375%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20Brand%20identity%20%C2%B7%20375%20JD.%0A%0ABrand%20%2F%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A"><span class="ixn">1</span><div class="nm">Brand identity<small>Logo, palette, type, guidelines, mockups</small></div><div class="amt">375<i>JD</i></div></a>
-            <a class="row" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20standard%20website%20%C2%B7%20225%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20standard%20website%20%C2%B7%20225%20JD.%0A%0ABrand%20%2F%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A"><span class="ixn">2</span><div class="nm">Website &middot; standard<small>Static build, no animation</small></div><div class="amt">225<i>JD</i></div></a>
-            <a class="row" href="mailto:latentstudio.jo@gmail.com?subject=Enquiry%20%C2%B7%20editorial%20website%20%C2%B7%20375%20to%20550%20JD&body=Hello%20Latent%20Studio%2C%0A%0AI%20would%20like%20to%20start%20with%20the%20editorial%20website%20%C2%B7%20375%20to%20550%20JD.%0A%0ABrand%20%2F%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0AThanks%2C%0A"><span class="ixn">3</span><div class="nm">Website &middot; editorial<small>Fully animated &middot; scope-dependent</small></div><div class="amt">375&ndash;550<i>JD</i></div></a>
-          </div>
-        </div>
-        <div class="pr3-col rv" style="--k:2"><h3 class="grp"><b>03</b> Single pieces</h3>
-          <div class="duo">
-            <div><h4>Standard reel</h4><p class="sub">One to two shots, showcase only.</p>
-              <div class="tier"><span>10 / 20 / 30 seconds</span><b>30 / 55 / 80 JD</b></div>
-              <div class="tier"><span>Each additional 5s</span><b>+15 JD</b></div></div>
-            <div><h4>Cinematic reel</h4><p class="sub">Scripted, cinematics, edits + SFX &middot; 2&ndash;7 shots.</p>
-              <div class="tier"><span>10 / 20 / 30 seconds</span><b>80 / 120 / 180 JD</b></div>
-              <div class="tier"><span>Each additional 5s</span><b>+30 JD</b></div></div>
-          </div>
-          <p class="note">Scripting, sound design and one revision round are included in every cinematic reel.</p>
-        </div>
-        <div class="pr3-col rv" style="--k:3"><h3 class="grp"><b>04</b> Terms</h3>
-          <div class="pz-terms">
-            <div class="pct"><b>15%</b><span>off packages &middot; first purchase</span></div>
-            <div class="pct"><b>10%</b><span>off single items &middot; first purchase</span></div>
-            <div class="pct"><b>35%</b><span>down payment &middot; before work begins</span></div>
-          </div>
-          <p class="note">Once per client. Standard reels are excluded from the single-item discount. The down payment covers engine costs up front and protects both sides.</p>
-        </div>
-      </div>
+<section class="sec light pz js-path" id="prices">
+  <div class="inner pz-in">
+    <p class="pz-kick rv"><b>( Prices )</b> What about them?</p>
+    <p class="pz-brief js-words">What about the prices? Ours sit comfortably inside the market, and every package costs less than the same pieces bought one by one. Tell us what you are launching and the list is in your inbox the same day.</p>
+    <div class="pz-ask">
+      <h2 class="pz-q js-words">Have something in mind?</h2>
+      <a class="pz-go js-words" href="mailto:latentstudio.jo@gmail.com?subject=I%20have%20an%20idea%2C%20let%27s%20generate&body=Hello%20Latent%20Studio%2C%0A%0AI%20have%20an%20idea%2C%20let%27s%20generate.%0A%0ABrand%20/%20product%3A%0AWhat%20we%20are%20launching%3A%0AWhen%3A%0A%0APlease%20send%20me%20the%20price%20list.%0A%0AThanks%2C%0A">Let&rsquo;s generate &rarr;</a>
     </div>
   </div>
 </section>

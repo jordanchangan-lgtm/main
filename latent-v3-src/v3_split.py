@@ -1,6 +1,7 @@
 # the deploy folder: a small index.html and a media/ folder, from the single-file build
 import re,base64,hashlib,os,shutil
-SRC='/home/user/main/latent-v3/index.html'; OUT='/home/user/main/latent-v3/'; SINGLE='/tmp/claude-0/-home-user-main/ebce930a-c60e-53f2-9cc9-6aaf1c614988/scratchpad/v3_single.html'
+import os
+SRC=os.environ.get('OUT','/home/user/main/latent-v3')+'/index.html'; OUT=os.environ.get('OUT','/home/user/main/latent-v3')+'/'; SINGLE='/tmp/claude-0/-home-user-main/ebce930a-c60e-53f2-9cc9-6aaf1c614988/scratchpad/'+os.environ.get('SINGLE','v3_single.html')
 s=open(SRC,encoding='utf-8').read()
 if 'data-u-src' not in s and 'media/' in s: raise SystemExit('already split; rebuild first')
 shutil.copy(SRC,SINGLE)

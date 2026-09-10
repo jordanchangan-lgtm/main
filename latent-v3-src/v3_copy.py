@@ -36,4 +36,4 @@ rep('''      <p class="eyebrow rv"><b>( Sectors )</b> Where the work lands</p>
       <p class="lede sec-lede js-split" style="--step:.03s"><span class="js-seg">Anyone can type a prompt, and it shows. We treat a generation like a shoot: real skin and real light, a camera that breathes, one flat field in the brand&rsquo;s own colour, and one detail that is deliberately unexpected. Every frame is directed before it is generated, and only the frames that pass leave the studio.</span></p>
       <p class="sp-blk rv" style="--k:3">Restraint &middot; story before product &middot; craft in every frame</p>''')
 # the last stylesheet word: appended at the very end of the page styles so nothing below it can override
-_j=s.rfind('</style>'); s=s[:_j]+open(SP+'v3_css5.css').read()+s[_j:]
+_j=s.rfind('</style>'); s=s[:_j]+open(SP+'v3_css5.css').read()+(open(SP+'v3_css6.css').read() if os.environ.get('TEXTB') else '')+s[_j:]

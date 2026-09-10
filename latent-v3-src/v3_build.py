@@ -101,8 +101,9 @@ a_h=s.index('<section class="hero" id="top">'); b_h=s.index('</section>',a_h)+le
 import os
 def hv(name,mime):
     return du(name,mime) if os.path.exists(SP+name) else None
-hero_d=hv('hero_d.mp4','video/mp4') or brand['video']; hero_dp=hv('hero_d.jpg','image/jpeg') or brand['poster']
-hero_m=hv('hero_m.mp4','video/mp4') or brand['video']; hero_mp=hv('hero_m.jpg','image/jpeg') or brand['poster']
+HERO=os.environ.get('HERO','hero')
+hero_d=hv(HERO+'_d.mp4','video/mp4') or brand['video']; hero_dp=hv(HERO+'_d.jpg','image/jpeg') or brand['poster']
+hero_m=hv(HERO+'_m.mp4','video/mp4') or brand['video']; hero_mp=hv(HERO+'_m.jpg','image/jpeg') or brand['poster']
 HOME='''<div class="lk-hold js-lk"><section class="hero home prisma js-prisma lk-stage" id="top">
   <div class="pv js-pv" aria-hidden="true">
     <video class="pv-v pv-d js-pv-v" muted loop playsinline preload="metadata" poster="''' + hero_dp + '''" src="''' + hero_d + '''"></video>
@@ -676,5 +677,5 @@ DEDUPE='''<script>
 </script>
 '''
 _k=s2.rfind('<script>'); s2=s2[:_k]+DEDUPE+s2[_k:]  # right before the page script, after every owner element
-open('/home/user/main/latent-v3/index.html','w',encoding='utf-8').write(s2)
+open(os.environ.get('OUT','/home/user/main/latent-v3')+'/index.html','w',encoding='utf-8').write(s2)
 print('dedupe: unique',n[0],'size',len(s2))

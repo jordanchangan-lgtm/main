@@ -1,26 +1,26 @@
-# ---- the studio panel after the hero: the statement, then the work flowing up in three columns ----
+# ---- the studio panel after the hero, after the reference: a wide banner, the title with the counts, then the cases ----
 _sa=s.index('<section class="sec light" id="studio" style="padding:0">'); _sb=s.index('<!-- ================= METHOD')
 _ten=re.findall(r'<img class="sp-pic sp-pic-[lr]" src="([^"]+)"', spm)
-# each row: a label, a line, then pictures as (image, caption, column start, span, top offset in vh, parallax factor)
-ROWS=[
- ('01 · Posts & carousels','Posts that stop the scroll.',[
-   (care[0],'Cube Care Center · poster',1,4,0,.06),(cafe[0],'Cube Coffee House · poster',7,3,14,-.05),(care[1],'Cube Care Center · poster',10,3,6,.02)]),
- ('02 · Reels & campaigns','Directed like film.',[
-   (atel_hi[1],'Atelier Rebul · Élixir 2',2,3,4,-.04),(pour['poster'],'Cube Coffee House · film',6,4,0,.05),(atel_hi[3],'Atelier Rebul · plate 04',10,3,16,.01)]),
- ('03 · Identity','A mark that means something.',[
-   (plates[0]['img'],'Latent · the mark',1,4,0,.03),(plates[1]['img'],'Latent · colour',6,3,18,-.05),(plates[3]['img'],'Latent · colophon',9,4,8,.04)]),
- ('04 · Websites & portfolios','Built like this one.',[
-   (a['rawabina'],'Rawabina · Touch of Green',1,6,0,.02),(rw[0][2],'Rawabina · home',8,5,12,-.04)]),
- ('05 · The rule','Minimal, simple, never average.',[
-   (_ten[0],'Minimalism',3,3,0,.04),(_ten[1],'Simplicity',8,3,10,-.03)]),
+_banner=du('banner.jpg','image/jpeg')
+# slots: (image, caption, column start, span, aspect ratio, vertical offset in vh). Three per row, sizes from the reference.
+SLOTS=[
+ [(care[0],'Cube Care Center',1,4,'4/3',0),(cafe[0],'Cube Coffee House',5,3,'16/10',-6),(care[1],'Cube Care Center',8,5,'4/3',-10)],
+ [(atel_hi[1],'Atelier Rebul',1,3,'4/3',0),(pour['poster'],'Cube Coffee House',4,4,'4/5',8),(atel_hi[3],'Atelier Rebul',8,5,'3/2',-6)],
+ [(plates[0]['img'],'Latent',1,4,'16/10',0),(plates[1]['img'],'Latent',5,3,'4/3',10),(plates[3]['img'],'Latent',8,5,'4/3',-8)],
+ [(a['rawabina'],'Rawabina',1,4,'3/2',0),(rw[0][2],'Rawabina',5,4,'3/2',4),(rw[1][2],'Rawabina',9,4,'3/2',8)],
+ [(cafe[1],'Cube Coffee House',1,4,'3/2',0),(_ten[0],'Latent',5,4,'4/3',6),(_ten[1],'Latent',9,4,'4/3',0)],
+ [(atel_hi[2],'Atelier Rebul',5,4,'1/1',0)],
 ]
 _rows=''
-for lbl,line,pics in ROWS:
-    _items=''.join('        <figure class="cs-item rv" style="--c:%d;--s:%d;--o:%dvh;--k:%s;--r:%s"><div class="cs-img"><img src="%s" alt="" loading="lazy" decoding="async"></div><figcaption>%s</figcaption></figure>\n'%(c,sp,o,k,ar(u),u,esc(cap)) for (u,cap,c,sp,o,k) in pics)
-    _rows+='      <div class="cs-row">\n        <p class="cs-lbl rv"><b>%s</b><span>%s</span></p>\n%s      </div>\n'%(esc(lbl),esc(line),_items)
-CASES=('<section class="sec light cs js-cs" id="studio">\n  <div class="inner">\n    <div class="cs-head">\n'
- '      <p class="eyebrow rv"><b>( Studio )</b> Amman</p>\n'
- '      <p class="cs-stmt rv" style="--k:1">Latent is an AI-native design studio in Amman. We make the visual side of a brand &mdash; posts and carousels, reels and campaigns, the identity, the website, the portfolio &mdash; with generative tools in the hands of art directors.</p>\n'
+for row in SLOTS:
+    _items=''.join('      <figure class="cs-item" style="--c:%d;--s:%d;--r:%s;--o:%dvh"><div class="cs-img"><img src="%s" alt="" loading="lazy" decoding="async"></div><figcaption>%s</figcaption></figure>\n'%(c,sp,r,o,u,esc(cap)) for (u,cap,c,sp,r,o) in row)
+    _rows+='    <div class="cs-row">\n'+_items+'    </div>\n'
+_n=sum(len(r) for r in SLOTS)
+CASES=('<section class="sec light cs js-cs" id="studio">\n  <div class="inner">\n'
+ '    <figure class="cs-banner cs-item" style="--r:3/1"><div class="cs-img"><img src="'+_banner+'" alt="" loading="lazy" decoding="async"></div><figcaption>Latent &middot; brand film</figcaption></figure>\n'
+ '    <div class="cs-head">\n'
+ '      <ul class="cs-counts"><li>Posts (6)</li><li>Films (3)</li><li>Identity (5)</li><li>Web (3)</li></ul>\n'
+ '      <h2 class="cs-title">Selected work</h2>\n'
  '    </div>\n'+_rows+'  </div>\n</section>\n\n')
 s=s[:_sa]+CASES+s[_sb:]
 CSJS=open(SP+'v3_cases.js').read()

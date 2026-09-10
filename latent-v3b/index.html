@@ -1718,38 +1718,37 @@ a.stk-l{cursor:pointer}
   .hero.home.prisma .hs-meta{bottom:5.5%}
 }
 
-/* ---------- the studio gallery ----------
-   The statement, then the work flowing up an ivory ground in three uneven
-   columns. Every picture rises into view, drifts at its own speed against
-   the scroll, and fades as it leaves through the top. Nothing is locked. ---------- */
-.cs{padding-top:clamp(56px,9vh,110px);padding-bottom:clamp(40px,8vh,96px)}
-.cs-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:24px clamp(24px,5vw,80px);align-items:start;margin-bottom:clamp(48px,10vh,120px)}
-.cs-stmt{margin:0;font-size:clamp(20px,2.1vw,32px);line-height:1.3;letter-spacing:-.02em;color:var(--ink);max-width:30ch;text-wrap:pretty}
-.cs-row{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 clamp(12px,1.6vw,24px);align-items:start;margin:0 0 clamp(40px,12vh,140px)}
-.cs-lbl{grid-column:1/-1;display:flex;gap:18px;align-items:baseline;margin:0 0 clamp(18px,3vh,32px);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
-.cs-lbl b{color:var(--marrow);font-weight:500}
-.cs-lbl span{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(18px,1.6vw,24px);letter-spacing:-.02em;text-transform:none;color:var(--ink)}
-.cs-item{grid-column:var(--c) / span var(--s);margin:var(--o) 0 0;transform:translateY(var(--py,0));opacity:var(--fade,1);will-change:transform}
-.cs-item.rv{transition:opacity .9s ease-out calc(var(--k2,0) * .1s),transform .9s cubic-bezier(.2,.8,.2,1)}
-.cs-img{position:relative;width:100%;aspect-ratio:var(--r,4/5);overflow:hidden;background:var(--band);border-radius:3px}
-.cs-img img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.06);transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
-.cs-item.in .cs-img img{transform:none}
-.cs-item figcaption{margin:10px 0 0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
-/* the rise-in: the reveal system lifts .rv 24px; here the lift is longer */
-.cs-item.rv{opacity:0;transform:translateY(90px)}
-.cs-item.rv.in{opacity:var(--fade,1);transform:translateY(var(--py,0))}
+/* ---------- the cases ----------
+   After the reference: one wide banner with its caption centred, the title
+   with the category counts at the far left, then rows of three pictures of
+   uneven widths and heights, each with a small mono caption. Pictures scroll
+   in as they are and squash onto their bottom edge as they leave at the top. ---------- */
+.cs{padding-top:clamp(28px,4vh,44px);padding-bottom:clamp(40px,8vh,96px)}
+.cs .inner{max-width:none}
+.cs-item{margin:0;transform:translateY(var(--o,0))}
+.cs-img{position:relative;width:100%;aspect-ratio:var(--r,4/3);overflow:hidden;background:var(--band);transform-origin:50% 100%;will-change:transform}
+.cs-img img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block}
+.cs-item figcaption{margin:9px 0 0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+.cs-banner{width:100%;margin:0 0 clamp(48px,9vh,110px)}
+.cs-banner figcaption{text-align:center}
+.cs-head{display:grid;grid-template-columns:clamp(96px,9vw,140px) minmax(0,1fr);align-items:end;gap:0 clamp(16px,2vw,32px);margin:0 0 clamp(40px,8vh,96px)}
+.cs-counts{list-style:none;margin:0 0 6px;padding:0;font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.55;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.cs-title{margin:0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(34px,4.2vw,62px);line-height:1;letter-spacing:-.03em;color:var(--ink)}
+.cs-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 clamp(14px,1.7vw,26px);align-items:start;margin:0 0 clamp(64px,14vh,170px)}
+.cs-row .cs-item{grid-column:var(--c) / span var(--s)}
 @media(max-width:820px){
-  .cs-head{grid-template-columns:1fr;gap:14px;margin-bottom:clamp(36px,8vh,64px)}
-  .cs-stmt{font-size:18px;max-width:none}
-  .cs-row{grid-template-columns:repeat(6,minmax(0,1fr));gap:0 12px;margin-bottom:clamp(36px,9vh,72px)}
-  .cs-item{grid-column:auto / span 3;margin-top:calc(var(--o) * .5)}
-  .cs-item:nth-of-type(3n+1){grid-column:1 / span 4}
-  .cs-item:nth-of-type(3n+2){grid-column:5 / span 2;margin-top:calc(var(--o) * .5 + 8vh)}
-  .cs-item:nth-of-type(3n){grid-column:2 / span 4;margin-top:calc(var(--o) * .5 + 4vh)}
-  .cs-lbl{gap:12px;flex-wrap:wrap}
-  .cs-lbl span{font-size:17px}
+  .cs{padding-top:16px}
+  .cs-banner{margin-bottom:40px}
+  .cs-head{grid-template-columns:1fr;gap:14px;margin-bottom:40px}
+  .cs-title{font-size:34px}
+  .cs-row{grid-template-columns:repeat(12,minmax(0,1fr));gap:0 10px;margin-bottom:56px}
+  .cs-row .cs-item{transform:none;margin-bottom:28px}
+  .cs-row .cs-item:nth-of-type(1){grid-column:1 / span 8}
+  .cs-row .cs-item:nth-of-type(2){grid-column:6 / span 7}
+  .cs-row .cs-item:nth-of-type(3){grid-column:1 / span 10}
+  .cs-row .cs-item:only-of-type{grid-column:3 / span 8}
 }
-@media (prefers-reduced-motion:reduce){.cs-item.rv{opacity:1;transform:none;transition:none}.cs-img img{transform:none}}
+@media (prefers-reduced-motion:reduce){.cs-img{transform:none !important}}
 </style>
 </head>
 <body>
@@ -1779,44 +1778,45 @@ a.stk-l{cursor:pointer}
      single tall panel, not two — the text just keeps scrolling inside it. -->
 <section class="sec light cs js-cs" id="studio">
   <div class="inner">
+    <figure class="cs-banner cs-item" style="--r:3/1"><div class="cs-img"><img fetchpriority="low" src="media/05-407dbf912d.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Latent &middot; brand film</figcaption></figure>
     <div class="cs-head">
-      <p class="eyebrow rv"><b>( Studio )</b> Amman</p>
-      <p class="cs-stmt rv" style="--k:1">Latent is an AI-native design studio in Amman. We make the visual side of a brand &mdash; posts and carousels, reels and campaigns, the identity, the website, the portfolio &mdash; with generative tools in the hands of art directors.</p>
+      <ul class="cs-counts"><li>Posts (6)</li><li>Films (3)</li><li>Identity (5)</li><li>Web (3)</li></ul>
+      <h2 class="cs-title">Selected work</h2>
     </div>
-      <div class="cs-row">
-        <p class="cs-lbl rv"><b>01 · Posts &amp; carousels</b><span>Posts that stop the scroll.</span></p>
-        <figure class="cs-item rv" style="--c:1;--s:4;--o:0vh;--k:0.06;--r:800/993"><div class="cs-img"><img fetchpriority="low" src="media/05-db08c91f4c.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Cube Care Center · poster</figcaption></figure>
-        <figure class="cs-item rv" style="--c:7;--s:3;--o:14vh;--k:-0.05;--r:800/993"><div class="cs-img"><img fetchpriority="low" src="media/06-e2990e6d14.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Cube Coffee House · poster</figcaption></figure>
-        <figure class="cs-item rv" style="--c:10;--s:3;--o:6vh;--k:0.02;--r:800/993"><div class="cs-img"><img fetchpriority="low" src="media/07-8ccb9f588c.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Cube Care Center · poster</figcaption></figure>
-      </div>
-      <div class="cs-row">
-        <p class="cs-lbl rv"><b>02 · Reels &amp; campaigns</b><span>Directed like film.</span></p>
-        <figure class="cs-item rv" style="--c:2;--s:3;--o:4vh;--k:-0.04;--r:900/1612"><div class="cs-img"><img fetchpriority="low" src="media/08-e1887959c2.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Atelier Rebul · Élixir 2</figcaption></figure>
-        <figure class="cs-item rv" style="--c:6;--s:4;--o:0vh;--k:0.05;--r:576/714"><div class="cs-img"><img fetchpriority="low" src="media/09-7b1a9203b7.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Cube Coffee House · film</figcaption></figure>
-        <figure class="cs-item rv" style="--c:10;--s:3;--o:16vh;--k:0.01;--r:900/1612"><div class="cs-img"><img fetchpriority="low" src="media/10-9b83c7175b.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Atelier Rebul · plate 04</figcaption></figure>
-      </div>
-      <div class="cs-row">
-        <p class="cs-lbl rv"><b>03 · Identity</b><span>A mark that means something.</span></p>
-        <figure class="cs-item rv" style="--c:1;--s:4;--o:0vh;--k:0.03;--r:1000/1250"><div class="cs-img"><img fetchpriority="low" src="media/11-8c6bab5207.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Latent · the mark</figcaption></figure>
-        <figure class="cs-item rv" style="--c:6;--s:3;--o:18vh;--k:-0.05;--r:1000/1250"><div class="cs-img"><img fetchpriority="low" src="media/12-8bbf5eef82.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Latent · colour</figcaption></figure>
-        <figure class="cs-item rv" style="--c:9;--s:4;--o:8vh;--k:0.04;--r:1000/1250"><div class="cs-img"><img fetchpriority="low" src="media/13-72167351bf.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Latent · colophon</figcaption></figure>
-      </div>
-      <div class="cs-row">
-        <p class="cs-lbl rv"><b>04 · Websites &amp; portfolios</b><span>Built like this one.</span></p>
-        <figure class="cs-item rv" style="--c:1;--s:6;--o:0vh;--k:0.02;--r:1280/732"><div class="cs-img"><img fetchpriority="low" src="media/14-2efb31380e.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Rawabina · Touch of Green</figcaption></figure>
-        <figure class="cs-item rv" style="--c:8;--s:5;--o:12vh;--k:-0.04;--r:1200/750"><div class="cs-img"><img fetchpriority="low" src="media/15-de56f4747b.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Rawabina · home</figcaption></figure>
-      </div>
-      <div class="cs-row">
-        <p class="cs-lbl rv"><b>05 · The rule</b><span>Minimal, simple, never average.</span></p>
-        <figure class="cs-item rv" style="--c:3;--s:3;--o:0vh;--k:0.04;--r:757/940"><div class="cs-img"><img fetchpriority="low" src="media/16-77599d1aae.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Minimalism</figcaption></figure>
-        <figure class="cs-item rv" style="--c:8;--s:3;--o:10vh;--k:-0.03;--r:757/940"><div class="cs-img"><img fetchpriority="low" src="media/17-ad7860b98e.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Simplicity</figcaption></figure>
-      </div>
+    <div class="cs-row">
+      <figure class="cs-item" style="--c:1;--s:4;--r:4/3;--o:0vh"><div class="cs-img"><img fetchpriority="low" src="media/06-db08c91f4c.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Cube Care Center</figcaption></figure>
+      <figure class="cs-item" style="--c:5;--s:3;--r:16/10;--o:-6vh"><div class="cs-img"><img fetchpriority="low" src="media/07-e2990e6d14.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Cube Coffee House</figcaption></figure>
+      <figure class="cs-item" style="--c:8;--s:5;--r:4/3;--o:-10vh"><div class="cs-img"><img fetchpriority="low" src="media/08-8ccb9f588c.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Cube Care Center</figcaption></figure>
+    </div>
+    <div class="cs-row">
+      <figure class="cs-item" style="--c:1;--s:3;--r:4/3;--o:0vh"><div class="cs-img"><img fetchpriority="low" src="media/09-e1887959c2.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Atelier Rebul</figcaption></figure>
+      <figure class="cs-item" style="--c:4;--s:4;--r:4/5;--o:8vh"><div class="cs-img"><img fetchpriority="low" src="media/10-7b1a9203b7.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Cube Coffee House</figcaption></figure>
+      <figure class="cs-item" style="--c:8;--s:5;--r:3/2;--o:-6vh"><div class="cs-img"><img fetchpriority="low" src="media/11-9b83c7175b.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Atelier Rebul</figcaption></figure>
+    </div>
+    <div class="cs-row">
+      <figure class="cs-item" style="--c:1;--s:4;--r:16/10;--o:0vh"><div class="cs-img"><img fetchpriority="low" src="media/12-8c6bab5207.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Latent</figcaption></figure>
+      <figure class="cs-item" style="--c:5;--s:3;--r:4/3;--o:10vh"><div class="cs-img"><img fetchpriority="low" src="media/13-8bbf5eef82.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Latent</figcaption></figure>
+      <figure class="cs-item" style="--c:8;--s:5;--r:4/3;--o:-8vh"><div class="cs-img"><img fetchpriority="low" src="media/14-72167351bf.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Latent</figcaption></figure>
+    </div>
+    <div class="cs-row">
+      <figure class="cs-item" style="--c:1;--s:4;--r:3/2;--o:0vh"><div class="cs-img"><img fetchpriority="low" src="media/15-2efb31380e.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Rawabina</figcaption></figure>
+      <figure class="cs-item" style="--c:5;--s:4;--r:3/2;--o:4vh"><div class="cs-img"><img fetchpriority="low" src="media/16-de56f4747b.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Rawabina</figcaption></figure>
+      <figure class="cs-item" style="--c:9;--s:4;--r:3/2;--o:8vh"><div class="cs-img"><img fetchpriority="low" src="media/17-ad07964687.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Rawabina</figcaption></figure>
+    </div>
+    <div class="cs-row">
+      <figure class="cs-item" style="--c:1;--s:4;--r:3/2;--o:0vh"><div class="cs-img"><img fetchpriority="low" src="media/18-36c5d6c78c.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Cube Coffee House</figcaption></figure>
+      <figure class="cs-item" style="--c:5;--s:4;--r:4/3;--o:6vh"><div class="cs-img"><img fetchpriority="low" src="media/19-77599d1aae.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Latent</figcaption></figure>
+      <figure class="cs-item" style="--c:9;--s:4;--r:4/3;--o:0vh"><div class="cs-img"><img fetchpriority="low" src="media/20-ad7860b98e.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Latent</figcaption></figure>
+    </div>
+    <div class="cs-row">
+      <figure class="cs-item" style="--c:5;--s:4;--r:1/1;--o:0vh"><div class="cs-img"><img fetchpriority="low" src="media/21-15cb2fcfb2.jpg" alt="" loading="lazy" decoding="async"></div><figcaption>Atelier Rebul</figcaption></figure>
+    </div>
   </div>
 </section>
 
 <!-- ================= METHOD ================= -->
 <section class="sec dark method wipe" id="method" style="--prev:var(--ivory)">
-  <video data-src-m="media/19-70bfcc9117.mp4" data-src="media/20-41474b0d50.mp4" class="method-v js-method-v" muted loop playsinline preload="none" poster="media/18-bc52d0527e.jpg" data-poster-m="media/21-5f98d5f7c3.jpg" aria-hidden="true"></video>
+  <video data-src-m="media/23-70bfcc9117.mp4" data-src="media/24-41474b0d50.mp4" class="method-v js-method-v" muted loop playsinline preload="none" poster="media/22-bc52d0527e.jpg" data-poster-m="media/25-5f98d5f7c3.jpg" aria-hidden="true"></video>
   <div class="method-scrim" aria-hidden="true"></div>
   <div class="inner">
     <div class="stage">
@@ -1860,57 +1860,57 @@ a.stk-l{cursor:pointer}
       <div class="wk-body">
         <div class="wk-media js-wk-media">
         <div class="wk-set js-wk-set" data-i="0"><div class="wk-in">
-          <figure class="wk-m js-film" style="--k:0;--ar:720/1290" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Film · 9:16 · 0:20 · Istanbul · 2026" data-dur="0:20"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/21-5f98d5f7c3.jpg" src="media/19-70bfcc9117.mp4"></video><span class="play">[ Play ]</span></figure>
-          <figure class="wk-m js-film" style="--k:1;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 01 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/08-e1887959c2.jpg" alt="Plate 01" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:2;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 02 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/22-15cb2fcfb2.jpg" alt="Plate 02" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:3;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 03 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/10-9b83c7175b.jpg" alt="Plate 03" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:4;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 04 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/23-7ac7171781.jpg" alt="Plate 04" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:5;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 05 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/24-14d9b4c44e.jpg" alt="Plate 05" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:6;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 06 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/25-af051ff8ef.jpg" alt="Plate 06" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:7;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 07 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/26-ada447e653.jpg" alt="Plate 07" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:8;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 08 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/27-75ece9e0cc.jpg" alt="Plate 08" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:0;--ar:720/1290" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Film · 9:16 · 0:20 · Istanbul · 2026" data-dur="0:20"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/25-5f98d5f7c3.jpg" src="media/23-70bfcc9117.mp4"></video><span class="play">[ Play ]</span></figure>
+          <figure class="wk-m js-film" style="--k:1;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 01 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/09-e1887959c2.jpg" alt="Plate 01" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:2;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 02 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/21-15cb2fcfb2.jpg" alt="Plate 02" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:3;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 03 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/11-9b83c7175b.jpg" alt="Plate 03" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:4;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 04 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/26-7ac7171781.jpg" alt="Plate 04" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:5;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 05 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/27-14d9b4c44e.jpg" alt="Plate 05" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:6;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 06 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/28-af051ff8ef.jpg" alt="Plate 06" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:7;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 07 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/29-ada447e653.jpg" alt="Plate 07" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:8;--ar:900/1612" data-title="Atelier Rebul" data-client="Élixir 2" data-note="Plate 08 · Istanbul · 2026" data-img="1"><img fetchpriority="low" src="media/30-75ece9e0cc.jpg" alt="Plate 08" loading="lazy"><span class="play">[ Open ]</span></figure>
         </div></div>
         <div class="wk-set js-wk-set" data-i="1"><div class="wk-in">
-          <figure class="wk-m js-film" style="--k:0;--ar:800/993" data-title="Cube Care Center" data-client="Identity + campaign" data-note="Poster 01 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/05-db08c91f4c.jpg" alt="Poster 01" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:1;--ar:800/993" data-title="Cube Care Center" data-client="Identity + campaign" data-note="Poster 02 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/07-8ccb9f588c.jpg" alt="Poster 02" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:2;--ar:800/993" data-title="Cube Care Center" data-client="Identity + campaign" data-note="Poster 03 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/28-8f9eff1f96.jpg" alt="Poster 03" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:3;--ar:800/993" data-title="Cube Care Center" data-client="Identity + campaign" data-note="Poster 04 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/29-1b28dd37f5.jpg" alt="Poster 04" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:0;--ar:800/993" data-title="Cube Care Center" data-client="Identity + campaign" data-note="Poster 01 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/06-db08c91f4c.jpg" alt="Poster 01" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:1;--ar:800/993" data-title="Cube Care Center" data-client="Identity + campaign" data-note="Poster 02 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/08-8ccb9f588c.jpg" alt="Poster 02" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:2;--ar:800/993" data-title="Cube Care Center" data-client="Identity + campaign" data-note="Poster 03 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/31-8f9eff1f96.jpg" alt="Poster 03" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:3;--ar:800/993" data-title="Cube Care Center" data-client="Identity + campaign" data-note="Poster 04 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/32-1b28dd37f5.jpg" alt="Poster 04" loading="lazy"><span class="play">[ Open ]</span></figure>
         </div></div>
         <div class="wk-set js-wk-set" data-i="2"><div class="wk-in">
-          <figure class="wk-m js-film" style="--k:0;--ar:576/714" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Film · pour · 0:08 · Amman · 2026" data-dur="0:08"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/09-7b1a9203b7.jpg" src="media/30-3dd929f1b8.mp4"></video><span class="play">[ Play ]</span></figure>
-          <figure class="wk-m js-film" style="--k:1;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 01 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/06-e2990e6d14.jpg" alt="Poster 01" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:2;--ar:576/714" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Film · bean bags · 0:08 · Amman · 2026" data-dur="0:08"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/31-48d6c757ea.jpg" src="media/32-f55954100f.mp4"></video><span class="play">[ Play ]</span></figure>
-          <figure class="wk-m js-film" style="--k:3;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 02 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/33-36c5d6c78c.jpg" alt="Poster 02" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:4;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 03 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/34-4499655a55.jpg" alt="Poster 03" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:0;--ar:576/714" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Film · pour · 0:08 · Amman · 2026" data-dur="0:08"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/10-7b1a9203b7.jpg" src="media/33-3dd929f1b8.mp4"></video><span class="play">[ Play ]</span></figure>
+          <figure class="wk-m js-film" style="--k:1;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 01 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/07-e2990e6d14.jpg" alt="Poster 01" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:2;--ar:576/714" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Film · bean bags · 0:08 · Amman · 2026" data-dur="0:08"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/34-48d6c757ea.jpg" src="media/35-f55954100f.mp4"></video><span class="play">[ Play ]</span></figure>
+          <figure class="wk-m js-film" style="--k:3;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 02 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/18-36c5d6c78c.jpg" alt="Poster 02" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:4;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Poster 03 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/36-4499655a55.jpg" alt="Poster 03" loading="lazy"><span class="play">[ Open ]</span></figure>
         </div></div>
         <div class="wk-set js-wk-set" data-i="3"><div class="wk-in">
-          <figure class="wk-m js-film" style="--k:0;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Home · the leaf · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/15-de56f4747b.jpg" alt="Home · the leaf" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:1;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="A touch of green across the Kingdom · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/35-ad07964687.jpg" alt="A touch of green across the Kingdom" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:2;--ar:1200/490" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="About · a specialist in living landscapes · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/36-a446e5fffe.jpg" alt="About · a specialist in living landscapes" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:3;--ar:1200/320" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Since 1997 · the numbers · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/37-a4426a7a3a.jpg" alt="Since 1997 · the numbers" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:4;--ar:1200/989" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Approach · we start by listening · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/38-052e8e4c50.jpg" alt="Approach · we start by listening" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:5;--ar:1200/577" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Built in four scientific parts · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/39-2774406099.jpg" alt="Built in four scientific parts" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:6;--ar:1200/450" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Maintenance · materials · warranty · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/40-96af1fc6aa.jpg" alt="Maintenance · materials · warranty" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:7;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Landscapes we&#x27;ve grown · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/41-ec45da355b.jpg" alt="Landscapes we&#x27;ve grown" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:8;--ar:1200/350" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Trusted on the Kingdom&#x27;s landmark works · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/42-dce4465caf.jpg" alt="Trusted on the Kingdom&#x27;s landmark works" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:9;--ar:1200/420" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Footer · a touch of green, since 1997 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/43-4d21530e0e.jpg" alt="Footer · a touch of green, since 1997" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:0;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Home · the leaf · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/16-de56f4747b.jpg" alt="Home · the leaf" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:1;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="A touch of green across the Kingdom · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/17-ad07964687.jpg" alt="A touch of green across the Kingdom" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:2;--ar:1200/490" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="About · a specialist in living landscapes · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/37-a446e5fffe.jpg" alt="About · a specialist in living landscapes" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:3;--ar:1200/320" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Since 1997 · the numbers · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/38-a4426a7a3a.jpg" alt="Since 1997 · the numbers" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:4;--ar:1200/989" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Approach · we start by listening · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/39-052e8e4c50.jpg" alt="Approach · we start by listening" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:5;--ar:1200/577" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Built in four scientific parts · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/40-2774406099.jpg" alt="Built in four scientific parts" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:6;--ar:1200/450" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Maintenance · materials · warranty · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/41-96af1fc6aa.jpg" alt="Maintenance · materials · warranty" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:7;--ar:1200/750" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Landscapes we&#x27;ve grown · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/42-ec45da355b.jpg" alt="Landscapes we&#x27;ve grown" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:8;--ar:1200/350" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Trusted on the Kingdom&#x27;s landmark works · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/43-dce4465caf.jpg" alt="Trusted on the Kingdom&#x27;s landmark works" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:9;--ar:1200/420" data-title="Rawabina Al-Khadhraa" data-client="Touch of Green" data-note="Footer · a touch of green, since 1997 · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/44-4d21530e0e.jpg" alt="Footer · a touch of green, since 1997" loading="lazy"><span class="play">[ Open ]</span></figure>
         </div></div>
         <div class="wk-set js-wk-set" data-i="4"><div class="wk-in">
-          <figure class="wk-m js-film" style="--k:0;--ar:720/1280" data-title="Latent" data-client="Identity + brand film" data-note="Brand film · 9:16 · 0:05 · Amman · 2026" data-dur="0:05"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/44-b1760e8edf.jpg" src="media/45-0b7cf8cf26.mp4"></video><span class="play">[ Play ]</span></figure>
-          <figure class="wk-m js-film" style="--k:1;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Mark · construction · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/11-8c6bab5207.jpg" alt="Mark · construction" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:2;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Colour &amp; theme · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/12-8bbf5eef82.jpg" alt="Colour &amp; theme" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:3;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="World · objects · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/46-819f68055d.jpg" alt="World · objects" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:4;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Colophon · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/13-72167351bf.jpg" alt="Colophon" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:0;--ar:720/1280" data-title="Latent" data-client="Identity + brand film" data-note="Brand film · 9:16 · 0:05 · Amman · 2026" data-dur="0:05"><video class="js-tile-v" muted loop playsinline preload="none" poster="media/45-b1760e8edf.jpg" src="media/46-0b7cf8cf26.mp4"></video><span class="play">[ Play ]</span></figure>
+          <figure class="wk-m js-film" style="--k:1;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Mark · construction · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/12-8c6bab5207.jpg" alt="Mark · construction" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:2;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Colour &amp; theme · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/13-8bbf5eef82.jpg" alt="Colour &amp; theme" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:3;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="World · objects · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/47-819f68055d.jpg" alt="World · objects" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:4;--ar:1000/1250" data-title="Latent" data-client="Identity + brand film" data-note="Colophon · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/14-72167351bf.jpg" alt="Colophon" loading="lazy"><span class="play">[ Open ]</span></figure>
         </div></div>
         <div class="wk-set js-wk-set" data-i="5"><div class="wk-in">
-          <figure class="wk-m js-film" style="--k:0;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Cover · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/47-5683f4853b.jpg" alt="Cover" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:1;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Wordmark on ink · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/48-c268d9e9ea.jpg" alt="Wordmark on ink" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:2;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="The mark · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/49-1fd4363325.jpg" alt="The mark" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:3;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Colour system · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/50-95c66ceea0.jpg" alt="Colour system" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:4;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="No camera. No studio. · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/51-2bc7ce8c25.jpg" alt="No camera. No studio." loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:5;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Phone mockups · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/52-1cf31dd417.jpg" alt="Phone mockups" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:6;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Stationery · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/53-ff0025d2b5.jpg" alt="Stationery" loading="lazy"><span class="play">[ Open ]</span></figure>
-          <figure class="wk-m js-film" style="--k:7;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Tape · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/54-d1e149b88a.jpg" alt="Tape" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:0;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Cover · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/48-5683f4853b.jpg" alt="Cover" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:1;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Wordmark on ink · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/49-c268d9e9ea.jpg" alt="Wordmark on ink" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:2;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="The mark · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/50-1fd4363325.jpg" alt="The mark" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:3;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Colour system · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/51-95c66ceea0.jpg" alt="Colour system" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:4;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="No camera. No studio. · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/52-2bc7ce8c25.jpg" alt="No camera. No studio." loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:5;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Phone mockups · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/53-1cf31dd417.jpg" alt="Phone mockups" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:6;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Stationery · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/54-ff0025d2b5.jpg" alt="Stationery" loading="lazy"><span class="play">[ Open ]</span></figure>
+          <figure class="wk-m js-film" style="--k:7;--ar:1440/810" data-title="Latent brand book" data-client="Thirty-five spreads" data-note="Tape · Amman · 2026" data-img="1"><img fetchpriority="low" src="media/55-d1e149b88a.jpg" alt="Tape" loading="lazy"><span class="play">[ Open ]</span></figure>
         </div></div>
         </div>
         <div class="wk-text">
@@ -1952,10 +1952,10 @@ a.stk-l{cursor:pointer}
           </ol>
           <div class="ixl-side rv" style="--k:2">
             <figure class="ixl-prev js-ixl-prev">
-            <img alt="" data-ar="1000/1250" data-i="0" src="media/11-8c6bab5207.jpg" class="on">
-            <img alt="" data-ar="1000/1250" data-i="1" src="media/12-8bbf5eef82.jpg">
-            <img alt="" data-ar="1000/1250" data-i="2" src="media/46-819f68055d.jpg">
-            <img alt="" data-ar="1000/1250" data-i="3" src="media/13-72167351bf.jpg">
+            <img alt="" data-ar="1000/1250" data-i="0" src="media/12-8c6bab5207.jpg" class="on">
+            <img alt="" data-ar="1000/1250" data-i="1" src="media/13-8bbf5eef82.jpg">
+            <img alt="" data-ar="1000/1250" data-i="2" src="media/47-819f68055d.jpg">
+            <img alt="" data-ar="1000/1250" data-i="3" src="media/14-72167351bf.jpg">
               <figcaption><span class="js-ixl-cap">Brief</span><span class="js-ixl-cap2">Mark &middot; construction</span></figcaption>
             </figure>
           </div>
@@ -3162,19 +3162,19 @@ a.stk-l{cursor:pointer}
 })();
 </script>
 <script>
-/* the studio gallery: every picture drifts at its own speed against the scroll, and fades as it leaves through the top */
+/* the cases: a picture scrolls in as it is, and as it nears the top it squashes down onto its own bottom edge,
+   leaving a line above its caption, the way the reference does it */
 (function(){
   var sec = document.querySelector(".js-cs"); if(!sec) return;
   var items = [].slice.call(sec.querySelectorAll(".cs-item")), reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
   function frame(){
-    ticking = false; var vh = window.innerHeight;
+    ticking = false; if(reduce) return; var vh = window.innerHeight;
     items.forEach(function(el){
-      var r = el.getBoundingClientRect(); if(r.bottom < -vh || r.top > vh * 2) return;
-      var k = reduce ? 0 : parseFloat(el.style.getPropertyValue("--k")) || 0;
-      var mid = r.top + r.height / 2 - vh / 2;
-      var fade = Math.min(1, Math.max(0, r.bottom / (vh * .22)));
-      el.style.setProperty("--py", (-mid * k).toFixed(1) + "px");
-      el.style.setProperty("--fade", fade.toFixed(3));
+      var box = el.firstElementChild, r = box.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
+      // the squash runs while the picture's bottom edge travels from 46% of the screen up to 14%
+      var t = Math.min(1, Math.max(0, (vh * .46 - r.bottom) / (vh * .32)));
+      var e = t * t * (3 - 2 * t);
+      box.style.transform = e > 0 ? "scaleY(" + (1 - .985 * e).toFixed(4) + ")" : "";
     });
   }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }

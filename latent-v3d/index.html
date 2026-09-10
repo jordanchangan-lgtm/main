@@ -2196,27 +2196,29 @@ a.stk-l{cursor:pointer}
 @media (prefers-reduced-motion:reduce){.gs-hold{height:auto}.gs-stage{position:relative;height:auto;padding:12vh var(--gut)}.gs-line{position:relative;transform:none!important;white-space:normal;font-size:clamp(40px,8vw,120px)}.gs-line .gc{transform:none!important}}
 /* ---------- the four moves, version four: we close that gap ---------- */
 .gp{padding:0}
-.gp-hold{position:relative;height:calc(100svh + var(--n,4) * 120vh)}
-.gp-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
-.gp-kick{position:absolute;left:var(--gut);top:clamp(72px,12vh,120px);margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,239,231,.55)}
+.gp-in{max-width:none;padding:clamp(60px,14vh,160px) var(--gut) clamp(40px,10vh,120px)}
+.gp-kick{margin:0 0 clamp(120px,40vh,420px);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,239,231,.55)}
 .gp-kick b{color:var(--marrow);font-weight:500}
-.gp-line{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;visibility:hidden;padding:0 var(--gut)}
-.gp-line.on{visibility:visible}
+.gp-line{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 0 clamp(200px,72vh,760px);overflow:hidden;padding:.2em 0}
+.gp-line:last-child{margin-bottom:clamp(120px,30vh,320px)}
 .gp-row{display:flex;align-items:center;justify-content:center;white-space:nowrap;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:700;font-size:clamp(34px,7.2vw,124px);line-height:1;letter-spacing:-.045em;text-transform:uppercase;color:var(--ivory)}
 .gp-l,.gp-r{display:inline-block;will-change:transform}
 .gp-tile{display:inline-block;position:relative;height:1.55em;width:0;margin:0 .05em;border-radius:.05em;overflow:hidden;background:#000;will-change:width;flex:0 0 auto}
 .gp-tile img{position:absolute;top:0;left:50%;height:100%;width:auto;min-width:2.1em;transform:translateX(-50%);object-fit:cover;display:block}
 .gp-desc{margin:clamp(20px,4vh,40px) 0 0;max-width:38ch;text-align:center;font-size:clamp(15px,1.3vw,20px);line-height:1.5;color:rgba(242,239,231,.72);opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
 .gp-line.told .gp-desc{opacity:1;transform:none}
-@media(max-width:820px){.gp-hold{height:calc(100svh + var(--n,4) * 100vh)}.gp-row{font-size:clamp(22px,6.2vw,34px);letter-spacing:-.04em}.gp-desc{font-size:15px}}
-@media (prefers-reduced-motion:reduce){.gp-hold{height:auto}.gp-stage{position:relative;height:auto}.gp-line{position:relative;visibility:visible;padding:14vh var(--gut)}.gp-tile{width:2em!important}.gp-l,.gp-r{transform:none!important}.gp-desc{opacity:1;transform:none}}
-/* ---------- things we make: the stacked list ---------- */
+@media(max-width:820px){.gp-kick{margin-bottom:clamp(80px,26vh,240px)}.gp-line{margin-bottom:clamp(140px,52vh,480px)}.gp-row{font-size:clamp(22px,6.2vw,34px);letter-spacing:-.04em}.gp-desc{font-size:15px}}
+@media (prefers-reduced-motion:reduce){.gp-tile{width:2em!important}.gp-l,.gp-r{transform:none!important}.gp-desc{opacity:1;transform:none}}
 .td{padding:0}
 .td-hold{position:relative;height:calc(100svh + var(--n,8) * 55vh)}
 .td-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center}
 .td-grid{width:100%;height:100%;display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.9fr) auto;gap:clamp(24px,4vw,80px);align-items:center;padding:0 var(--gut)}
 .td-kick{position:absolute;left:var(--gut);top:clamp(72px,12vh,120px);z-index:2}
 .td-list{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%)}
+.td-quote{display:grid;align-self:center}
+.td-desc{grid-area:1/1;opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .55s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.td-desc.on{opacity:1;transform:none}
+.td-mono b{font-weight:500;color:var(--ivory)}
 .td-mono{margin:0 0 18px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,239,231,.5)}
 .td-mono i{font-style:normal;color:var(--marrow);margin-right:8px}
 .td-q{margin:0;max-width:30ch;font-size:clamp(14px,1.1vw,17px);line-height:1.55;color:rgba(242,239,231,.85)}
@@ -2233,8 +2235,8 @@ a.stk-l{cursor:pointer}
 @media(max-width:820px){
   .td-hold{height:calc(100svh + var(--n,8) * 42vh)}
   .td-grid{grid-template-columns:1fr;gap:18px;align-content:center}
-  .td-quote{display:none}.td-side{display:none}
-  .td-name{font-size:clamp(34px,11vw,52px)}.td-thumb{height:64px}
+  .td-kick{top:64px}.td-grid{align-content:center;grid-template-rows:auto auto;padding-top:96px;padding-bottom:64px}.td-list{order:1;height:auto;mask-image:none;-webkit-mask-image:none}.td-quote{order:2;margin-top:6px}.td-q{font-size:14px;max-width:none}.td-mono{margin-bottom:10px}.td-side{display:none}
+  .td-name{font-size:clamp(28px,9vw,40px);line-height:1.02}.td-thumb{height:40px}
 }
 @media (prefers-reduced-motion:reduce){.td-hold{height:auto}.td-stage{position:relative;height:auto;padding:12vh 0}.td-name{color:var(--ivory)}.td-thumb{opacity:1;transform:none}}
 </style>
@@ -2330,7 +2332,7 @@ a.stk-l{cursor:pointer}
     <div class="td-stage">
       <p class="td-mono td-kick"><i>&#9679;</i> What we make</p>
       <div class="td-grid">
-        <div class="td-quote"><p class="td-mono">( Client stories ) 01 / 03</p><p class="td-q">&ldquo;A brief on Monday, a written direction on Tuesday, the campaign frames by Friday. Nothing looked generated.&rdquo;</p><p class="td-who">Founder, a coffee house in Amman</p></div>
+        <div class="td-quote"><div class="td-desc js-td-desc on"><p class="td-mono">( What we do ) <b>01</b> / 08</p><p class="td-q">Single frames for the feed. One product, one light, one idea, shot like a still from a film and delivered in every size the platform asks for.</p></div><div class="td-desc js-td-desc"><p class="td-mono">( What we do ) <b>02</b> / 08</p><p class="td-q">A sequence that reads left to right. The cover pulls, the middle slides show, the last one asks. Written and framed as one story.</p></div><div class="td-desc js-td-desc"><p class="td-mono">( What we do ) <b>03</b> / 08</p><p class="td-q">Short films for the feed. Directed shot by shot and cut to the beat. No set, no crew, no reshoot day.</p></div><div class="td-desc js-td-desc"><p class="td-mono">( What we do ) <b>04</b> / 08</p><p class="td-q">A whole launch in one language. Key visual, feed, stories, print and screen, all from the same direction so nothing looks stitched on.</p></div><div class="td-desc js-td-desc"><p class="td-mono">( What we do ) <b>05</b> / 08</p><p class="td-q">The look that comes before the shoot. Colour, type, tone and the rules that keep every frame recognisably yours.</p></div><div class="td-desc js-td-desc"><p class="td-mono">( What we do ) <b>06</b> / 08</p><p class="td-q">One page that sells the product as well as the shoot does. Built to load fast, read clearly and be seen on a phone first.</p></div><div class="td-desc js-td-desc"><p class="td-mono">( What we do ) <b>07</b> / 08</p><p class="td-q">Your work, presented. A clean set of pages that shows what you make and gets out of the way.</p></div><div class="td-desc js-td-desc"><p class="td-mono">( What we do ) <b>08</b> / 08</p><p class="td-q">Anything a camera cannot reach or a budget cannot cover. Bring the idea; we direct it into frames.</p></div></div>
         <div class="td-list"><div class="td-items">
         <div class="td-item js-td-item on" data-i="0"><span class="td-name">Posts</span><span class="td-thumb" style="--ar:900/1612"><img fetchpriority="low" src="media/14-e1887959c2.jpg" alt="" loading="lazy" decoding="async"></span></div>
         <div class="td-item js-td-item" data-i="1"><span class="td-name">Carousels</span><span class="td-thumb" style="--ar:4/5"><img fetchpriority="low" src="media/15-7b1a9203b7.jpg" alt="" loading="lazy" decoding="async"></span></div>
@@ -2367,9 +2369,8 @@ a.stk-l{cursor:pointer}
 <!-- ================= PORTFOLIO — one locked stage: the media and the words appear in place, the name rotates in (21st TextRotate) ================= -->
 <!-- ================= PROCESS — the four moves as an index ================= -->
 <section class="sec dark gp js-gp" id="process">
-  <div class="gp-hold js-gp-hold" style="--n:4">
-    <div class="gp-stage">
-      <p class="gp-kick"><b>( Four moves )</b> Every job, the same order</p>
+  <div class="gp-in">
+    <p class="gp-kick"><b>( Four moves )</b> Every job, the same order</p>
       <div class="gp-line js-gp-line" data-i="0">
         <div class="gp-row"><span class="gp-l">We read</span><span class="gp-tile"><img fetchpriority="low" src="media/05-0c45a9b23b.jpg" alt="" loading="lazy" decoding="async"></span><span class="gp-r">the brief</span></div>
         <p class="gp-desc">You send the product. We write the direction.</p>
@@ -2386,7 +2387,6 @@ a.stk-l{cursor:pointer}
         <div class="gp-row"><span class="gp-l">We ship</span><span class="gp-tile"><img fetchpriority="low" src="media/10-a617fdf2b6.jpg" alt="" loading="lazy" decoding="async"></span><span class="gp-r">the files</span></div>
         <p class="gp-desc">Every size, every placement. Days, not weeks.</p>
       </div>
-    </div>
   </div>
 </section>
 
@@ -4006,27 +4006,28 @@ a.stk-l{cursor:pointer}
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", measure); window.addEventListener("load", measure); if(document.fonts && document.fonts.ready) document.fonts.ready.then(measure); measure();
 })();
-/* the four moves, version four: we close that gap. Each move takes one segment of the hold: the right words come in
-   from the right, the left words from the left, the picture opens between them, holds, then squeezes shut as the
-   words close the gap; the description shows while the picture is open. */
+/* the four moves, version four: we close that gap, on the flowing dark run. Each move sits in the page and plays
+   as it rises through the screen: the right words come in from the right, the left words from the left, the picture
+   opens between them while the line sits mid-screen, the description shows, then the picture squeezes shut and the
+   words close the gap as the line leaves at the top. Scrolling back replays it in reverse. */
 (function(){
   var sec = document.querySelector(".js-gp"); if(!sec) return;
-  var hold = sec.querySelector(".js-gp-hold"), lines = [].slice.call(sec.querySelectorAll(".js-gp-line")), N = lines.length, reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
-  var L = lines.map(function(l){ return { el: l, a: l.querySelector(".gp-l"), b: l.querySelector(".gp-r"), t: l.querySelector(".gp-tile") }; });
+  var lines = [].slice.call(sec.querySelectorAll(".js-gp-line")), reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
+  var L = lines.map(function(l){ return { el: l, a: l.querySelector(".gp-l"), b: l.querySelector(".gp-r"), t: l.querySelector(".gp-tile"), row: l.querySelector(".gp-row"), img: l.querySelector(".gp-tile img") }; });
   var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
   function frame(){
-    ticking = false; if(reduce) return; var vh = window.innerHeight, vw = window.innerWidth, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
-    var run = Math.max(1, hold.offsetHeight - vh), p = clamp(-b.top / run), f = p * N;
-    L.forEach(function(o, i){
-      var q = f - i, on = q > -0.001 && q < 1.0001 || (i === N - 1 && q >= 1); o.el.classList.toggle("on", on); if(!on) return;
-      q = clamp(q);
-      var inR = ease(clamp(q / .22)), inL = ease(clamp((q - .08) / .24)), open = ease(clamp((q - .3) / .2)) * (1 - ease(clamp((q - .72) / .2)));
-      var fs = parseFloat(getComputedStyle(o.el.querySelector(".gp-row")).fontSize), tileW = fs * 2.0 * open;
+    ticking = false; if(reduce) return; var vh = window.innerHeight, vw = window.innerWidth;
+    L.forEach(function(o){
+      var r = o.el.getBoundingClientRect(); if(o.img && r.top < vh * 2.5 && o.img.loading !== "eager") o.img.loading = "eager";
+      if(r.bottom < -10 || r.top > vh + 10) return;
+      var a = clamp((vh * .92 - r.top) / (vh * .5)), e = clamp((vh * .42 - r.bottom) / (vh * .3));
+      var inR = ease(clamp(a / .55)), inL = ease(clamp((a - .12) / .55)), open = ease(clamp((a - .5) / .5)) * (1 - ease(e));
+      var fs = parseFloat(getComputedStyle(o.row).fontSize), tileW = fs * 2.0 * open;
       o.b.style.transform = "translate3d(" + ((1 - inR) * vw * .7).toFixed(1) + "px,0,0)";
       o.a.style.transform = "translate3d(" + (-(1 - inL) * vw * .7).toFixed(1) + "px,0,0)";
       o.t.style.width = tileW.toFixed(1) + "px";
-      o.el.classList.toggle("told", q > .34 && q < .9);
-      var out = i < N - 1 ? ease(clamp((q - .92) / .08)) : 0; o.el.style.opacity = (1 - out).toFixed(3);
+      o.el.classList.toggle("told", a > .7 && e < .35);
+      o.el.style.opacity = (1 - ease(clamp((e - .5) / .5))).toFixed(3);
     });
   }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
@@ -4040,8 +4041,9 @@ a.stk-l{cursor:pointer}
     ticking = false; var vh = window.innerHeight, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
     var run = Math.max(1, hold.offsetHeight - vh), p = Math.min(1, Math.max(0, -b.top / run)), i = Math.min(N - 1, Math.floor(p * N));
     if(i !== at){ at = i; items.forEach(function(it, k){ it.classList.toggle("on", k === i); });
+      [].forEach.call(sec.querySelectorAll(".js-td-desc"), function(d, k){ d.classList.toggle("on", k === i); });
       var list = items[i].parentNode, st = list.parentNode.getBoundingClientRect(), it = items[i], c = it.offsetTop + it.offsetHeight / 2;
-      list.style.transform = "translate3d(0," + (list.offsetHeight / 2 - c).toFixed(1) + "px,0)"; }
+      list.style.transform = window.innerWidth > 820 ? "translate3d(0," + (list.offsetHeight / 2 - c).toFixed(1) + "px,0)" : "none"; }
   }
   window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); frame();
 })();

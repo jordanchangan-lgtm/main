@@ -22,15 +22,22 @@ if os.environ.get('PORTFOLIO')=='5':
     def _first_img(i,k=0):
         try: return _poster(_figs[i][k])
         except Exception: return ''
-    THINGS=[('Posts',_first_img(0,1),'900/1612'),('Carousels',_first_img(1,0),'4/5'),('Reels',_first_img(0,0),'720/1290'),('Campaigns',_first_img(1,1),'4/5'),
-            ('Brand identities',_first_img(3,0),'4/5'),('Websites',_first_img(2,0),'16/10'),('Portfolios',_first_img(4,0),'4/5'),('Anything AI',shoes,'1288/1600')]
-    _items=''.join('        <div class="td-item js-td-item%s" data-i="%d"><span class="td-name">%s</span><span class="td-thumb" style="--ar:%s"><img src="%s" alt="" loading="lazy" decoding="async"></span></div>\n'%(' on' if i==0 else '',i,n,ar,img) for i,(n,img,ar) in enumerate(THINGS))
+    THINGS=[('Posts',_first_img(0,1),'900/1612','Single frames for the feed. One product, one light, one idea, shot like a still from a film and delivered in every size the platform asks for.'),
+            ('Carousels',_first_img(1,0),'4/5','A sequence that reads left to right. The cover pulls, the middle slides show, the last one asks. Written and framed as one story.'),
+            ('Reels',_first_img(0,0),'720/1290','Short films for the feed. Directed shot by shot and cut to the beat. No set, no crew, no reshoot day.'),
+            ('Campaigns',_first_img(1,1),'4/5','A whole launch in one language. Key visual, feed, stories, print and screen, all from the same direction so nothing looks stitched on.'),
+            ('Brand identities',_first_img(3,0),'4/5','The look that comes before the shoot. Colour, type, tone and the rules that keep every frame recognisably yours.'),
+            ('Websites',_first_img(2,0),'16/10','One page that sells the product as well as the shoot does. Built to load fast, read clearly and be seen on a phone first.'),
+            ('Portfolios',_first_img(4,0),'4/5','Your work, presented. A clean set of pages that shows what you make and gets out of the way.'),
+            ('Anything AI',shoes,'1288/1600','Anything a camera cannot reach or a budget cannot cover. Bring the idea; we direct it into frames.')]
+    _items=''.join('        <div class="td-item js-td-item%s" data-i="%d"><span class="td-name">%s</span><span class="td-thumb" style="--ar:%s"><img src="%s" alt="" loading="lazy" decoding="async"></span></div>\n'%(' on' if i==0 else '',i,n,ar,img) for i,(n,img,ar,d) in enumerate(THINGS))
+    _descs=''.join('<div class="td-desc js-td-desc%s"><p class="td-mono">( What we do ) <b>%02d</b> / %02d</p><p class="td-q">%s</p></div>'%(' on' if i==0 else '',i+1,len(THINGS),d) for i,(n,img,ar,d) in enumerate(THINGS))
     _port='''<section class="sec dark td js-td" id="work">
   <div class="td-hold js-td-hold" style="--n:%d">
     <div class="td-stage">
       <p class="td-mono td-kick"><i>&#9679;</i> What we make</p>
       <div class="td-grid">
-        <div class="td-quote"><p class="td-mono">( Client stories ) 01 / 03</p><p class="td-q">&ldquo;A brief on Monday, a written direction on Tuesday, the campaign frames by Friday. Nothing looked generated.&rdquo;</p><p class="td-who">Founder, a coffee house in Amman</p></div>
+        <div class="td-quote">%s</div>
         <div class="td-list"><div class="td-items">
 %s        </div></div>
         <div class="td-side"><span>Minimal</span><span>Simple</span><span>Never average</span><span>Directed</span><span>Real</span><span>Shot, not typed</span><span>Days, not weeks</span></div>
@@ -38,7 +45,7 @@ if os.environ.get('PORTFOLIO')=='5':
     </div>
   </div>
 </section>
-'''%(len(THINGS),_items)
+'''%(len(THINGS),_descs,_items)
 elif os.environ.get('PORTFOLIO')=='4':
     # ---- version four: the white path mechanism in the black style. Each project is a row: the lead piece opens
     #      widthwise from its side (right, then left, alternating) with the name beside it; the rest of its pieces

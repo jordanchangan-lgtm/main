@@ -14,10 +14,8 @@ _lines=''.join('''      <div class="gp-line js-gp-line" data-i="%d">
       </div>
 '''%(i,l,img,r,d) for i,(l,r,d,img) in enumerate(GAP))
 _new4p='''<section class="sec dark gp js-gp" id="process">
-  <div class="gp-hold js-gp-hold" style="--n:%d">
-    <div class="gp-stage">
-      <p class="gp-kick"><b>( Four moves )</b> Every job, the same order</p>
-%s    </div>
-  </div>
-</section>'''%(len(GAP),_lines)
+  <div class="gp-in">
+    <p class="gp-kick"><b>( Four moves )</b> Every job, the same order</p>
+%s  </div>
+</section>'''%(_lines,)
 s=s[:_pi4p]+_new4p+s[_pj4p:]

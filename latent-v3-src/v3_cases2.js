@@ -309,3 +309,32 @@
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
 })();
+/* How it works, version five: driven by position, like the black run. A picture opens widthwise from the left as it
+   rises through the lower half of the screen and closes back as it leaves at the top; the sentence brightens word by
+   word as it climbs and fades out at the top. */
+(function(){
+  var sec = document.querySelector(".js-wp"); if(!sec) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
+  var imgs = [].slice.call(sec.querySelectorAll(".js-wp-img"));
+  var txts = [].slice.call(sec.querySelectorAll(".js-wp-txt")).map(function(t){
+    var ws = t.textContent.trim().split(/\s+/); t.textContent = "";
+    ws.forEach(function(w, i){ var sp = document.createElement("span"); sp.className = "bw"; sp.textContent = w; sp.style.setProperty("--i", i); t.appendChild(sp); if(i < ws.length - 1) t.appendChild(document.createTextNode(" ")); });
+    return { el: t, n: ws.length };
+  });
+  var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
+  function frame(){
+    ticking = false; var vh = window.innerHeight;
+    imgs.forEach(function(im){
+      var r = im.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
+      var open = reduce ? 1 : ease(clamp((vh * .92 - r.top) / (vh * .34))) * (1 - ease(clamp((vh * .18 - r.bottom) / (vh * .18))));
+      im.style.clipPath = "inset(0 " + ((1 - open) * 100).toFixed(2) + "% 0 0 round clamp(10px,1vw,16px))";
+    });
+    txts.forEach(function(t){
+      var r = t.el.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
+      var p = reduce ? 1 : clamp((vh * .96 - r.top) / (vh * .5)), q = reduce ? 1 : clamp(r.bottom / (vh * .16));
+      t.el.style.setProperty("--p", (p * (t.n + 1)).toFixed(2)); t.el.style.setProperty("--q", q.toFixed(3));
+    });
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
+})();

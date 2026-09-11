@@ -4,10 +4,11 @@
 import urllib.parse as _up6
 _pi6=s.index('<section class="sec light" id="prices">'); _pj6=s.index('</section>',_pi6)+len('</section>')
 _mail6='mailto:latentstudio.jo@gmail.com?subject='+_up6.quote("I have an idea, let's generate")+'&body='+_up6.quote("Hello Latent Studio,\n\nI have an idea, let's generate.\n\n")
-_new6='''<section class="sec light cb js-cb" id="prices">
-  <div class="inner cb-in">
+_new6='''<section class="sec light cb js-cb js-path" id="prices">
+  <div class="inner cf-in cf-short">
     <p class="pz-kick rv"><b>( Prices )</b> What about them?</p>
-    <p class="pz-brief js-words">What about the prices? Ours sit comfortably inside the market, and every package costs less than the same pieces bought one by one. Tell us what you are launching and the list is in your inbox the same day.</p>
+    <h2 class="cf-h js-words">Priced inside the market.</h2>
+    <p class="cf-p js-words">Every package costs less than the same pieces bought one by one. Tell us what you are launching and the list is in your inbox the same day.</p>
   </div>
   <div class="inner cb-ask">
     <h2 class="ty2-stack cb-stack"><span class="rv" style="--k:0">Have something</span><span class="rv" style="--k:1">in mind?</span><span class="rv cb-go" style="--k:2">Let&rsquo;s generate.</span></h2>

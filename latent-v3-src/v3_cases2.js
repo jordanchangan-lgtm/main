@@ -517,3 +517,15 @@
   box.addEventListener("submit", function(e){ e.preventDefault(); go(); });
   if(idea) idea.addEventListener("keydown", function(e){ if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); go(); } });
 })();
+/* the wall: the meta column follows whichever project sits mid-screen */
+(function(){
+  var sec = document.querySelector(".js-pg"); if(!sec) return;
+  var tiles = [].slice.call(sec.querySelectorAll(".js-pg-tile")), metas = [].slice.call(sec.querySelectorAll(".js-pg-meta")), count = sec.querySelector(".js-pg-count"), ticking = false, at = -1, N = metas.length;
+  function frame(){
+    ticking = false; var vh = window.innerHeight, line = vh * .5, best = -1, bd = 1e9;
+    tiles.forEach(function(t){ var r = t.getBoundingClientRect(); if(r.bottom < 0 || r.top > vh) return; var c = (r.top + r.bottom) / 2, d = Math.abs(c - line); if(r.top <= line && r.bottom >= line) d = -1; if(d < bd){ bd = d; best = +t.dataset.i; } });
+    if(best < 0 || best === at) return; at = best;
+    metas.forEach(function(m, k){ m.classList.toggle("on", k === best); }); if(count) count.textContent = (best + 1 < 10 ? "0" : "") + (best + 1) + " / " + (N < 10 ? "0" : "") + N;
+  }
+  window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); frame();
+})();

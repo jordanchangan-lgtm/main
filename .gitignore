@@ -3,3 +3,4 @@ dist/
 .DS_Store
 *.log
 *.zip
+latent-v3e-deploy.zip

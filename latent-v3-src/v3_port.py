@@ -16,7 +16,34 @@ def _poster(f):
     m=_re.search(r'(?:poster|src)="(data:image[^"]+)"', f); return m.group(1) if m else ''
 def _year(p): return p['meta'].split('·')[-1].strip()
 _n=len(_wk)
-if os.environ.get('PORTFOLIO')=='5':
+if os.environ.get('PORTFOLIO')=='6':
+    # ---- version six: the photographer's wall. A white section; the meta column pinned on the left (kicker, the
+    #      project's name, piece, category, year, note, and a counter); on the right an edge-to-edge two-column
+    #      stream of every piece at its own ratio, each one revealing as it rises; the meta swaps to whichever
+    #      project sits mid-screen. ----
+    _cols=['','']; _ch=[0.0,0.0]
+    for i,p in enumerate(_wk):
+        for k,f in enumerate(_figs[i]):
+            w,h=_ar(f); c=0 if _ch[0]<=_ch[1] else 1
+            _cols[c]+='        <div class="pg-tile rv js-pg-tile" data-i="%d" style="--ar:%d/%d">%s</div>\n'%(i,w,h,f); _ch[c]+=h/w
+    _metas=''.join('<div class="pg-meta js-pg-meta%s" data-i="%d"><h3 class="pg-name">%s</h3><dl class="pg-dl"><dt>Piece</dt><dd>%s</dd><dt>Category</dt><dd>%s</dd><dt>Year</dt><dd>%s</dd><dt>Note</dt><dd>%s</dd></dl></div>'%(' on' if i==0 else '',i,p['t'],p['proj'],CAT[i],_year(p),p['note']) for i,p in enumerate(_wk))
+    _port='''<section class="sec light pg js-pg" id="work">
+  <div class="pg-wrap">
+    <aside class="pg-side">
+      <p class="pg-kick"><b>( Chosen art pieces )</b> <span class="js-pg-count">01 / %02d</span></p>
+      <div class="pg-metas">%s</div>
+      <p class="pg-hint"><span>&darr;</span> Scroll the wall &middot; click a piece to open it</p>
+    </aside>
+    <div class="pg-grid">
+      <div class="pg-col">
+%s      </div>
+      <div class="pg-col">
+%s      </div>
+    </div>
+  </div>
+</section>
+'''%(_n,_metas,_cols[0],_cols[1])
+elif os.environ.get('PORTFOLIO')=='5':
     # ---- version five: not a portfolio. The things we make, stacked huge on a pinned dark screen, one bright at a
     #      time as the page scrolls, a small picture beside the bright one, a line on the left, words down the right. ----
     def _first_img(i,k=0):
@@ -154,7 +181,7 @@ else:
 if os.environ.get('HOW')=='5':
     # the film panel follows the white path directly; then the type block, the cut to black, and the portfolio
     _mi=s.index('<!-- ================= METHOD'); _me=s.index('</section>',s.index('id="method"',_mi))+len('</section>')
-    s=s[:_me]+'\n'+(TYPE5 if os.environ.get('PORTFOLIO')!='5' else '<div class="blinds rev wh js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>\n')+_port+'\n'+s[_me:]
+    s=s[:_me]+'\n'+(TYPE5 if os.environ.get('PORTFOLIO') not in ('5','6') else ('<div class="blinds rev wh js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>\n' if os.environ.get('PORTFOLIO')=='5' else '<div class="blinds wh js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>\n'))+_port+'\n'+s[_me:]
     s=s.replace('<section class="sec dark method wipe" id="method" style="--prev:var(--ivory)">','<section class="sec dark method wipe" id="method" style="--prev:#fff">',1)
 else:
     # the portfolio sits right after How it works

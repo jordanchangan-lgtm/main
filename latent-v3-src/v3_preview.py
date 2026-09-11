@@ -14,7 +14,7 @@ SPd='/tmp/claude-0/-home-user-main/ebce930a-c60e-53f2-9cc9-6aaf1c614988/scratchp
 os.makedirs(SPd+'pvcache',exist_ok=True)
 def slim(m):
     raw=base64.b64decode(m.group(1))
-    if len(raw)<4_500_000: return m.group(0)
+    if len(raw)<int(os.environ.get('PVMAX','4500000')): return m.group(0)
     h=hashlib.md5(raw).hexdigest()[:12]; out=SPd+'pvcache/'+h+'.mp4'
     if not os.path.exists(out):
         src=SPd+'pvcache/'+h+'.src.mp4'; open(src,'wb').write(raw)

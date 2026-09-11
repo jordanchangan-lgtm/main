@@ -546,3 +546,13 @@
   });
   window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); frame();
 })();
+/* the scatter: a project's screen settles when it arrives and is thrown again when it leaves */
+(function(){
+  var sec = document.querySelector(".js-sx"); if(!sec) return;
+  var panels = [].slice.call(sec.querySelectorAll(".js-sx-panel")), ticking = false;
+  function frame(){
+    ticking = false; var vh = window.innerHeight;
+    panels.forEach(function(p){ var r = p.getBoundingClientRect(); var on = r.top < vh * .55 && r.bottom > vh * .45; p.classList.toggle("org", on); });
+  }
+  window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); window.addEventListener("load", frame); frame();
+})();

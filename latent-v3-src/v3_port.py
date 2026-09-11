@@ -21,11 +21,12 @@ if os.environ.get('PORTFOLIO')=='6':
     #      project's name, piece, category, year, note, and a counter); on the right an edge-to-edge two-column
     #      stream of every piece at its own ratio, each one revealing as it rises; the meta swaps to whichever
     #      project sits mid-screen. ----
-    _cols=['','']; _ch=[0.0,0.0]
+    _tiles=''
     for i,p in enumerate(_wk):
-        for k,f in enumerate(_figs[i]):
-            w,h=_ar(f); c=0 if _ch[0]<=_ch[1] else 1
-            _cols[c]+='        <div class="pg-tile rv js-pg-tile" data-i="%d" style="--ar:%d/%d">%s</div>\n'%(i,w,h,f); _ch[c]+=h/w
+        figs=_figs[i]; N=len(figs)
+        for k,f in enumerate(figs):
+            alt=_poster(figs[(k+1)%N]) if N>1 else ''
+            _tiles+='      <div class="pg-tile js-pg-tile" data-i="%d" data-name="%s" data-piece="%s">%s%s</div>\n'%(i,p['t'],p['proj'],f,('<img class="pg-alt" src="%s" alt="" loading="lazy" decoding="async">'%alt) if alt else '')
     _metas=''.join('<div class="pg-meta js-pg-meta%s" data-i="%d"><h3 class="pg-name">%s</h3><dl class="pg-dl"><dt>Piece</dt><dd>%s</dd><dt>Category</dt><dd>%s</dd><dt>Year</dt><dd>%s</dd><dt>Note</dt><dd>%s</dd></dl></div>'%(' on' if i==0 else '',i,p['t'],p['proj'],CAT[i],_year(p),p['note']) for i,p in enumerate(_wk))
     _port='''<section class="sec light pg js-pg" id="work">
   <div class="pg-wrap">
@@ -33,16 +34,13 @@ if os.environ.get('PORTFOLIO')=='6':
       <p class="pg-kick"><b>( Chosen art pieces )</b> <span class="js-pg-count">01 / %02d</span></p>
       <div class="pg-metas">%s</div>
       <p class="pg-hint"><span>&darr;</span> Scroll the wall &middot; click a piece to open it</p>
+      <p class="pg-hover js-pg-hover" aria-hidden="true"><b class="js-pg-hn"></b><span class="js-pg-hp"></span></p>
     </aside>
-    <div class="pg-grid">
-      <div class="pg-col">
-%s      </div>
-      <div class="pg-col">
-%s      </div>
-    </div>
+    <div class="pg-grid js-pg-grid">
+%s    </div>
   </div>
 </section>
-'''%(_n,_metas,_cols[0],_cols[1])
+'''%(_n,_metas,_tiles)
 elif os.environ.get('PORTFOLIO')=='5':
     # ---- version five: not a portfolio. The things we make, stacked huge on a pinned dark screen, one bright at a
     #      time as the page scrolls, a small picture beside the bright one, a line on the left, words down the right. ----

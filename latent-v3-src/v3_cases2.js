@@ -517,15 +517,22 @@
   box.addEventListener("submit", function(e){ e.preventDefault(); go(); });
   if(idea) idea.addEventListener("keydown", function(e){ if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); go(); } });
 })();
-/* the wall: the meta column follows whichever project sits mid-screen */
+/* the wall: the meta column follows whichever row sits mid-screen; a hovered tile prints its name at the top right;
+   the page snaps to rows while the wall is on screen */
 (function(){
   var sec = document.querySelector(".js-pg"); if(!sec) return;
-  var tiles = [].slice.call(sec.querySelectorAll(".js-pg-tile")), metas = [].slice.call(sec.querySelectorAll(".js-pg-meta")), count = sec.querySelector(".js-pg-count"), ticking = false, at = -1, N = metas.length;
+  var tiles = [].slice.call(sec.querySelectorAll(".js-pg-tile")), metas = [].slice.call(sec.querySelectorAll(".js-pg-meta")), count = sec.querySelector(".js-pg-count"),
+      hov = sec.querySelector(".js-pg-hover"), hn = sec.querySelector(".js-pg-hn"), hp = sec.querySelector(".js-pg-hp"), ticking = false, at = -1, N = metas.length, snap = false;
   function frame(){
-    ticking = false; var vh = window.innerHeight, line = vh * .5, best = -1, bd = 1e9;
+    ticking = false; var vh = window.innerHeight, line = vh * .5, best = -1, bd = 1e9, r0 = sec.getBoundingClientRect();
+    var want = r0.top < vh * .5 && r0.bottom > vh * .5 && window.innerWidth > 820; if(want !== snap){ snap = want; document.documentElement.classList.toggle("pg-snap", snap); }
     tiles.forEach(function(t){ var r = t.getBoundingClientRect(); if(r.bottom < 0 || r.top > vh) return; var c = (r.top + r.bottom) / 2, d = Math.abs(c - line); if(r.top <= line && r.bottom >= line) d = -1; if(d < bd){ bd = d; best = +t.dataset.i; } });
     if(best < 0 || best === at) return; at = best;
     metas.forEach(function(m, k){ m.classList.toggle("on", k === best); }); if(count) count.textContent = (best + 1 < 10 ? "0" : "") + (best + 1) + " / " + (N < 10 ? "0" : "") + N;
   }
+  tiles.forEach(function(t){
+    t.addEventListener("mouseenter", function(){ if(hn) hn.textContent = t.dataset.name || ""; if(hp) hp.textContent = t.dataset.piece || ""; if(hov) hov.classList.add("on"); });
+    t.addEventListener("mouseleave", function(){ if(hov) hov.classList.remove("on"); });
+  });
   window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); frame();
 })();

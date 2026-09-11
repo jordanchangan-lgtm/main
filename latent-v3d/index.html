@@ -2435,22 +2435,12 @@ html.pg-snap{scroll-snap-type:y proximity}
     <video class="pv-v pv-m js-pv-v" muted loop playsinline preload="none" poster="media/03-e05071777b.jpg" data-src="media/04-f0f04687bf.mp4"></video>
     <i class="pv-noise"></i><i class="pv-grad"></i>
   </div>
-  <div class="stage he">
-    <p class="he-top js-pu2" style="--d:.1s"><span>Latent.</span><span>Brand visuals<br>&amp; film</span><span>AI-native<br>practice</span><span>Amman<br><span id="clock">--:--</span> GMT+3</span><span>Edition<br>No. 001</span></p>
-    <h1 class="he-head js-pu2" style="--d:.25s">Not your<br>average <em>AI.</em></h1>
-    <p class="he-sub js-pu2" style="--d:.45s">Directed<br>like film.</p>
-    <p class="he-year js-pu2" style="--d:.6s"><span class="logo he-logo" role="img" aria-label="Latent"></span>&copy;20<br>26</p>
-    <i class="he-rule he-rule1 js-he-rule" style="--d:.5s"></i><i class="he-rule he-rule2 js-he-rule" style="--d:.65s"></i>
-    <p class="he-p he-p1 js-pu2" style="--d:.7s">Every frame leaves a trace. Light, lens, angle and story all carry meaning. What looks generated is usually a decision nobody made. Direction begins when someone makes it.</p>
-    <p class="he-p he-p2 js-pu2" style="--d:.85s">We do not believe in prompts as briefs. Each product demands its own light, its own lens, its own way of sitting in the frame. The process is one of testing, reducing, shifting and rebuilding until the frame feels shot, not typed.</p>
-    <span class="he-tab he-tab1 js-pu2" style="--d:.9s">Working method</span>
-    <span class="he-tab he-tab2 js-pu2" style="--d:1s">Design principle</span>
-    <span class="he-v he-v1 js-pu2" style="--d:.95s">A frame is a decision</span>
-    <span class="he-v he-v2 js-pu2" style="--d:1.05s">Light has weight</span>
-    <p class="he-bl js-pu2" style="--d:1.1s">No set. No crew. No reshoot day.</p>
-    <span class="he-ratio js-pu2" style="--d:1.08s">60 &middot; 30 &middot; 10</span>
-    <a class="he-br js-pu2" href="#prices" style="--d:1.15s">Let&rsquo;s generate &#8599;</a>
-    <span class="he-hide"><span class="cyc" id="cyc"></span></span>
+  <div class="stage hb">
+    <h1 class="hb-mark js-pu2" style="--d:.1s"><span class="hb-w">Latent</span> <span class="hb-w">Studio</span></h1>
+    <p class="hb-meta js-pu2" style="--d:.55s"><span>AI-native brand visuals</span><span>Directed like film</span><span>Est. 2026 &middot; Amman</span></p>
+    <p class="hs hs-role js-pu2 hb-role" style="--d:.7s">Your brand deserves better <span class="cyc" id="cyc"></span></p>
+    <a class="hb-cta js-pu2" href="#prices" style="--d:.85s"><small>Have something in mind?</small><b>Let&rsquo;s generate <span>&#8599;</span></b></a>
+    <span id="clock" hidden>&mdash;</span>
   </div>
 </section></div>
 
@@ -4319,6 +4309,37 @@ html.pg-snap{scroll-snap-type:y proximity}
   var first = document.querySelector(".hero .js-pu2"); if(!first) return;
   var mo = new MutationObserver(function(){ var on = first.classList.contains("in"); rules.forEach(function(r){ r.classList.toggle("in", on); }); });
   mo.observe(first, { attributes:true, attributeFilter:["class"] }); rules.forEach(function(r){ r.classList.toggle("in", first.classList.contains("in")); });
+})();
+/* the scatter, settled for real: each screen's resting positions are worked out in the browser against the actual
+   text box and screen, with a seeded shuffle per screen so they stay put between visits; nothing overlaps */
+(function(){
+  var sec = document.querySelector(".js-sx"); if(!sec) return;
+  var panels = [].slice.call(sec.querySelectorAll(".js-sx-panel")), phone = function(){ return window.innerWidth <= 820; };
+  function rng(seed){ return function(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }; }
+  function hit(a, b, m){ return !(a.x + a.w < b.x - m || a.x > b.x + b.w + m || a.y + a.h < b.y - m || a.y > b.y + b.h + m); }
+  function layout(p, i){
+    var W = p.clientWidth, H = p.clientHeight, txt = p.querySelector(".js-sx-text"), tr = txt.getBoundingClientRect(), pr = p.getBoundingClientRect();
+    var tb = { x: tr.left - pr.left, y: tr.top - pr.top, w: tr.width, h: tr.height };
+    var tiles = [].slice.call(p.querySelectorAll(".js-sx-t")).filter(function(t){ return getComputedStyle(t).display !== "none"; });
+    var r = rng(17 + i * 101), m = Math.max(10, W * .012), placed = [], top = phone() ? H * .06 : H * .05, bottom = phone() ? tb.y - m : H * .95;
+    tiles.forEach(function(t, k){
+      var ar = (t.style.getPropertyValue("--ar") || "4/5").split("/"), a = parseFloat(ar[0]) / parseFloat(ar[1] || 1);
+      var wmin = phone() ? W * .30 : W * .15, wmax = phone() ? W * .44 : W * .23, box = null, tries = 0, scale = 1;
+      while(!box && tries < 4000){
+        tries++; if(tries % 800 === 0) scale *= .88;
+        var w = (wmin + r() * (wmax - wmin)) * scale, h = w / a; if(h > (bottom - top) * .9) continue;
+        var x = W * .02 + r() * (W * .96 - w), y = top + r() * (bottom - top - h), b = { x: x, y: y, w: w, h: h };
+        if((!phone() && hit(b, tb, m)) || placed.some(function(o){ return hit(b, o, m); })) continue;
+        box = b;
+      }
+      if(!box) box = { x: W * .02 + k * W * .3, y: top, w: wmin * .8, h: wmin * .8 / a };
+      placed.push(box);
+      t.style.setProperty("--ox", (box.x / W * 100).toFixed(2)); t.style.setProperty("--oy", (box.y / H * 100).toFixed(2)); t.style.setProperty("--ow", (box.w / window.innerWidth * 100).toFixed(2));
+      t.style.setProperty("--px", (box.x / W * 100).toFixed(2)); t.style.setProperty("--py", (box.y / H * 100).toFixed(2)); t.style.setProperty("--pw", (box.w / window.innerWidth * 100).toFixed(2));
+    });
+  }
+  function all(){ panels.forEach(layout); }
+  var t; window.addEventListener("resize", function(){ clearTimeout(t); t = setTimeout(all, 150); }); window.addEventListener("load", all); if(document.fonts && document.fonts.ready) document.fonts.ready.then(all); all();
 })();
 </script>
 </body>

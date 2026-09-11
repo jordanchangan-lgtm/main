@@ -563,3 +563,34 @@
   var mo = new MutationObserver(function(){ var on = first.classList.contains("in"); rules.forEach(function(r){ r.classList.toggle("in", on); }); });
   mo.observe(first, { attributes:true, attributeFilter:["class"] }); rules.forEach(function(r){ r.classList.toggle("in", first.classList.contains("in")); });
 })();
+/* the scatter, settled for real: each screen's resting positions are worked out in the browser against the actual
+   text box and screen, with a seeded shuffle per screen so they stay put between visits; nothing overlaps */
+(function(){
+  var sec = document.querySelector(".js-sx"); if(!sec) return;
+  var panels = [].slice.call(sec.querySelectorAll(".js-sx-panel")), phone = function(){ return window.innerWidth <= 820; };
+  function rng(seed){ return function(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }; }
+  function hit(a, b, m){ return !(a.x + a.w < b.x - m || a.x > b.x + b.w + m || a.y + a.h < b.y - m || a.y > b.y + b.h + m); }
+  function layout(p, i){
+    var W = p.clientWidth, H = p.clientHeight, txt = p.querySelector(".js-sx-text"), tr = txt.getBoundingClientRect(), pr = p.getBoundingClientRect();
+    var tb = { x: tr.left - pr.left, y: tr.top - pr.top, w: tr.width, h: tr.height };
+    var tiles = [].slice.call(p.querySelectorAll(".js-sx-t")).filter(function(t){ return getComputedStyle(t).display !== "none"; });
+    var r = rng(17 + i * 101), m = Math.max(10, W * .012), placed = [], top = phone() ? H * .06 : H * .05, bottom = phone() ? tb.y - m : H * .95;
+    tiles.forEach(function(t, k){
+      var ar = (t.style.getPropertyValue("--ar") || "4/5").split("/"), a = parseFloat(ar[0]) / parseFloat(ar[1] || 1);
+      var wmin = phone() ? W * .30 : W * .15, wmax = phone() ? W * .44 : W * .23, box = null, tries = 0, scale = 1;
+      while(!box && tries < 4000){
+        tries++; if(tries % 800 === 0) scale *= .88;
+        var w = (wmin + r() * (wmax - wmin)) * scale, h = w / a; if(h > (bottom - top) * .9) continue;
+        var x = W * .02 + r() * (W * .96 - w), y = top + r() * (bottom - top - h), b = { x: x, y: y, w: w, h: h };
+        if((!phone() && hit(b, tb, m)) || placed.some(function(o){ return hit(b, o, m); })) continue;
+        box = b;
+      }
+      if(!box) box = { x: W * .02 + k * W * .3, y: top, w: wmin * .8, h: wmin * .8 / a };
+      placed.push(box);
+      t.style.setProperty("--ox", (box.x / W * 100).toFixed(2)); t.style.setProperty("--oy", (box.y / H * 100).toFixed(2)); t.style.setProperty("--ow", (box.w / window.innerWidth * 100).toFixed(2));
+      t.style.setProperty("--px", (box.x / W * 100).toFixed(2)); t.style.setProperty("--py", (box.y / H * 100).toFixed(2)); t.style.setProperty("--pw", (box.w / window.innerWidth * 100).toFixed(2));
+    });
+  }
+  function all(){ panels.forEach(layout); }
+  var t; window.addEventListener("resize", function(){ clearTimeout(t); t = setTimeout(all, 150); }); window.addEventListener("load", all); if(document.fonts && document.fonts.ready) document.fonts.ready.then(all); all();
+})();

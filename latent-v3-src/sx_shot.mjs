@@ -1,6 +1,6 @@
 import { chromium, devices } from '/opt/node22/lib/node_modules/playwright/index.mjs';
 const b = await chromium.launch();
-for (const [name, opts] of [['d',{viewport:{width:1440,height:900}}],['m',{...devices['iPhone 13']}]]){
+for (const [name, opts] of [['d',{viewport:{width:1440,height:900}}],['l',{viewport:{width:1100,height:700}}],['m',{...devices['iPhone 13']}]]){
   const pg = await (await b.newContext(opts)).newPage(); const errs=[]; pg.on('pageerror', e=>errs.push(e.message.slice(0,200)));
   await pg.goto('http://127.0.0.1:8095/', {waitUntil:'load'}); await pg.waitForTimeout(600);
   await pg.addStyleTag({content:'html{scroll-behavior:auto!important}'});

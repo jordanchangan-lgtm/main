@@ -550,4 +550,4 @@
 .cb-arrow{display:inline-block;font-size:16px;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
 .cb-btn:hover .cb-arrow{transform:translate(2px,-2px)}
 .cb-note{margin:18px 0 0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);text-align:center}
-@media(max-width:820px){.cb-stack{font-size:clamp(28px,8.4vw,44px)}.cb-box{border-radius:20px}.cb-chip-t{display:none}.cb-btn{height:40px;padding:0 16px;font-size:14px}.cb-idea{font-size:16px}.cb-note{font-size:10px;line-height:1.5;padding:0 10px}}
+@media(max-width:820px){.cb-stack{font-size:clamp(28px,8.4vw,44px)}.cb-box{border-radius:20px}.cb-chip-t{display:none}.cb-btn{height:40px;padding:0 16px;font-size:14px}.cb-idea{font-size:16px}.cb-note{font-size:11px;line-height:1.5;padding:0 10px}}

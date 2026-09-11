@@ -67,3 +67,4 @@ if os.environ.get('PROCESS')=='4': exec(open(SP+'v3_process4.py').read())
 s=s.replace('<section class="sec dark method wipe" id="method" style="--prev:var(--ivory)">','<section class="sec dark method wipe" id="method" style="--prev:var(--ivory)">',1)
 s=s.replace('</body>', '<script>\n'+open(SP+'v3_cases2.js').read()+'</script>\n</body>', 1)
 _j=s.rfind('</style>'); s=s[:_j]+open(SP+'v3_css8.css').read()+s[_j:]
+if os.environ.get('HEROTXT')=='mark': exec(open(SP+'v3_hero_mark.py').read())

@@ -22,12 +22,15 @@ if os.environ.get('PORTFOLIO')=='6':
     #      stream of every piece at its own ratio, each one revealing as it rises; the meta swaps to whichever
     #      project sits mid-screen. ----
     _tiles=''
+    def _wm(txt): return ''.join('<span class="pgw"><span class="pgw-in" style="--w:%d">%s</span></span> '%(w,x) for w,x in enumerate(txt.split()))
     for i,p in enumerate(_wk):
-        figs=_figs[i]; N=len(figs)
-        for k,f in enumerate(figs):
-            alt=_poster(figs[(k+1)%N]) if N>1 else ''
-            _tiles+='      <div class="pg-tile js-pg-tile" data-i="%d" data-name="%s" data-piece="%s">%s%s</div>\n'%(i,p['t'],p['proj'],f,('<img class="pg-alt" src="%s" alt="" loading="lazy" decoding="async">'%alt) if alt else '')
-    _metas=''.join('<div class="pg-meta js-pg-meta%s" data-i="%d"><h3 class="pg-name">%s</h3><dl class="pg-dl"><dt>Piece</dt><dd>%s</dd><dt>Category</dt><dd>%s</dd><dt>Year</dt><dd>%s</dd><dt>Note</dt><dd>%s</dd></dl></div>'%(' on' if i==0 else '',i,p['t'],p['proj'],CAT[i],_year(p),p['note']) for i,p in enumerate(_wk))
+        figs=_figs[i]; N=len(figs); shown=figs[:3]; more=figs[3:]; cell=0
+        for k,f in enumerate(shown):
+            _tiles+='      <div class="pg-tile rv js-pg-tile %s" data-i="%d" data-name="%s" data-piece="%s" style="--k:%d">%s</div>\n'%('pg-l' if cell%2==0 else 'pg-r',i,p['t'],p['proj'],cell%4,f); cell+=1
+        _tiles+='      <div class="pg-tile pg-open rv js-pg-open %s" data-i="%d" style="--k:%d" role="button" tabindex="0" aria-expanded="false"><span class="pg-open-in"><b class="pg-open-n">%02d</b><span class="pg-open-t js-pg-open-t">Reveal full project</span><span class="pg-open-c">%d more piece%s</span><span class="pg-open-a">&#8599;</span></span></div>\n'%('pg-l' if cell%2==0 else 'pg-r',i,cell%4,N,len(more),'' if len(more)==1 else 's'); cell+=1
+        for j,f in enumerate(more):
+            _tiles+='      <div class="pg-tile pg-more rv js-pg-tile %s" data-i="%d" data-name="%s" data-piece="%s" style="--k:%d" hidden>%s</div>\n'%('pg-l' if j%2==0 else 'pg-r',i,p['t'],p['proj'],j%2,f)
+    _metas=''.join('<div class="pg-meta js-pg-meta%s" data-i="%d"><h3 class="pg-name">%s</h3><dl class="pg-dl"><dt>Piece</dt><dd>%s</dd><dt>Category</dt><dd>%s</dd><dt>Year</dt><dd>%s</dd><dt>Note</dt><dd>%s</dd></dl></div>'%(' on' if i==0 else '',i,_wm(p['t']),_wm(p['proj']),_wm(CAT[i]),_wm(_year(p)),_wm(p['note'])) for i,p in enumerate(_wk))
     _port='''<section class="sec light pg js-pg" id="work">
   <div class="pg-wrap">
     <aside class="pg-side">

@@ -530,6 +530,16 @@
     if(best < 0 || best === at) return; at = best;
     metas.forEach(function(m, k){ m.classList.toggle("on", k === best); }); if(count) count.textContent = (best + 1 < 10 ? "0" : "") + (best + 1) + " / " + (N < 10 ? "0" : "") + N;
   }
+  [].slice.call(sec.querySelectorAll(".js-pg-open")).forEach(function(btn){
+    var i = btn.dataset.i, more = [].slice.call(sec.querySelectorAll(".pg-more[data-i='" + i + "']")), lbl = btn.querySelector(".js-pg-open-t");
+    function toggle(){
+      var open = !btn.classList.contains("open"); btn.classList.toggle("open", open); btn.setAttribute("aria-expanded", open ? "true" : "false"); if(lbl) lbl.textContent = open ? "Close project" : "Reveal full project";
+      if(open){ more.forEach(function(m, k){ m.hidden = false; m.classList.remove("in"); m.classList.remove("out"); m.style.setProperty("--k", k % 2 + Math.floor(k / 2)); }); void sec.offsetWidth; requestAnimationFrame(function(){ more.forEach(function(m){ m.classList.add("in"); }); }); }
+      else { more.forEach(function(m){ m.classList.remove("in"); }); setTimeout(function(){ more.forEach(function(m){ m.hidden = true; }); }, 700); }
+      frame();
+    }
+    btn.addEventListener("click", toggle); btn.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); } });
+  });
   tiles.forEach(function(t){
     t.addEventListener("mouseenter", function(){ if(hn) hn.textContent = t.dataset.name || ""; if(hp) hp.textContent = t.dataset.piece || ""; if(hov) hov.classList.add("on"); });
     t.addEventListener("mouseleave", function(){ if(hov) hov.classList.remove("on"); });

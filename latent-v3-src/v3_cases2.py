@@ -68,3 +68,4 @@ s=s.replace('<section class="sec dark method wipe" id="method" style="--prev:var
 s=s.replace('</body>', '<script>\n'+open(SP+'v3_cases2.js').read()+'</script>\n</body>', 1)
 _j=s.rfind('</style>'); s=s[:_j]+open(SP+'v3_css8.css').read()+s[_j:]
 if os.environ.get('HEROTXT')=='mark': exec(open(SP+'v3_hero_mark.py').read())
+if os.environ.get('HEROTXT')=='edit': exec(open(SP+'v3_hero_edit.py').read())

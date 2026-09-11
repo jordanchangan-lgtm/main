@@ -556,3 +556,10 @@
   }
   window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); window.addEventListener("load", frame); frame();
 })();
+/* the editorial hero: the rules draw when the lines arrive */
+(function(){
+  var rules = [].slice.call(document.querySelectorAll(".js-he-rule")); if(!rules.length) return;
+  var first = document.querySelector(".hero .js-pu2"); if(!first) return;
+  var mo = new MutationObserver(function(){ var on = first.classList.contains("in"); rules.forEach(function(r){ r.classList.toggle("in", on); }); });
+  mo.observe(first, { attributes:true, attributeFilter:["class"] }); rules.forEach(function(r){ r.classList.toggle("in", first.classList.contains("in")); });
+})();

@@ -729,7 +729,7 @@ html.pg-snap{scroll-snap-type:y proximity}
   .sk-wrap{grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:12px;padding:64px var(--gut) 60px}
   .sk-list{top:64px;gap:10px}.sk-kick{font-size:11px;margin-bottom:12px}.sk-li{font-size:11px;line-height:1.4;gap:6px;max-width:none}.sk-li b{font-size:11px;padding-top:.2em}
   .sk-step{width:calc(100% - var(--k) * 2.5%);margin-left:calc(var(--k) * 1.6%);margin-top:calc(6vh - var(--k) * .4vh)}
-  .sk .an-lb{white-space:normal;max-width:min(72%,210px);line-height:1.3;text-align:inherit}
+  .sk .an-lb{display:none;white-space:normal;max-width:min(72%,200px);line-height:1.3}.sk .an i.an-lb:first-of-type,.sk .an i.an-lb:last-of-type{display:block}
   .an-lb{font-size:11px}
 }
 @media (prefers-reduced-motion:reduce){.sk-step .wp-img{clip-path:none!important}.sk-li .bw{opacity:1}}

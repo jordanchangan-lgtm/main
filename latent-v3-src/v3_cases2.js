@@ -503,3 +503,11 @@
     if(el.classList.contains("in")){ el.classList.remove("in"); void el.offsetWidth; requestAnimationFrame(function(){ el.classList.add("in"); }); }
   });
 })();
+/* the composer: the button opens the email; whatever was typed goes into the body */
+(function(){
+  var box = document.querySelector(".js-cb-box"); if(!box) return;
+  var idea = box.querySelector(".js-cb-idea"), base = box.getAttribute("action");
+  function go(){ var t = (idea && idea.value || "").trim(); var href = base + (t ? encodeURIComponent(t + "\n\n") : "") + encodeURIComponent("Please send me the price list.\n\nThanks,\n"); window.location.href = href; }
+  box.addEventListener("submit", function(e){ e.preventDefault(); go(); });
+  if(idea) idea.addEventListener("keydown", function(e){ if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); go(); } });
+})();

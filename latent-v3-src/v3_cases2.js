@@ -310,31 +310,37 @@
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
 })();
-/* How it works, version five: triggered by the scroll, played by the clock. When a step rises into the screen the
-   picture opens widthwise from its own side in one move, the annotations draw once it is open, and the sentence
-   beside it brightens word by word. Leaving at the top, or scrolling back below it, closes it again. */
+/* How it works, version five: the picture opens widthwise from its own side as the page scrolls, on a window short
+   enough that one scroll reveals it whole, smoothed frame to frame so it plays as one wipe; it closes back the same
+   way as it leaves at the top. The sentence beside it brightens word by word on the same window. */
 (function(){
   var sec = document.querySelector(".js-wp"); if(!sec) return;
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
-  var imgs = [].slice.call(sec.querySelectorAll(".js-wp-img")).map(function(im){ return { el: im, on: false, t: null }; });
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, running = false;
+  var imgs = [].slice.call(sec.querySelectorAll(".js-wp-img")).map(function(im){ return { el: im, left: im.closest(".wp-step").classList.contains("left"), cur: 0, t: 0 }; });
   var txts = [].slice.call(sec.querySelectorAll(".js-wp-txt")).map(function(t){
     var ws = t.textContent.trim().split(/\s+/); t.textContent = "";
     ws.forEach(function(w, i){ var sp = document.createElement("span"); sp.className = "bw"; sp.textContent = w; sp.style.setProperty("--i", i); t.appendChild(sp); if(i < ws.length - 1) t.appendChild(document.createTextNode(" ")); });
-    return { el: t };
+    return { el: t, n: ws.length, cur: 0, t: 0, q: 1 };
   });
-  function setImg(o, on){
-    if(o.on === on) return; o.on = on; o.el.classList.toggle("on", on); if(o.t){ clearTimeout(o.t); o.t = null; }
-    if(on) o.t = setTimeout(function(){ o.el.classList.add("an-on"); o.t = null; }, reduce ? 0 : 780); else o.el.classList.remove("an-on");
+  var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
+  function targets(){
+    var vh = window.innerHeight;
+    imgs.forEach(function(o){ var r = o.el.closest(".wp-step").getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
+      o.t = reduce ? 1 : clamp((vh * .92 - r.top) / (vh * .1)) * (1 - ease(clamp((vh * .2 - r.bottom) / (vh * .18)))); });
+    txts.forEach(function(t){ var r = t.el.closest(".wp-step").getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10) return;
+      t.t = reduce ? 1 : clamp((vh * .92 - r.top) / (vh * .12)); t.q = reduce ? 1 : clamp(r.bottom / (vh * .16)); t.el.style.setProperty("--q", t.q.toFixed(3)); });
   }
-  var steps = [].slice.call(sec.querySelectorAll(".wp-step")).map(function(s){ return { el: s, img: imgs.filter(function(o){ return s.contains(o.el); })[0], txt: s.querySelector(".js-wp-txt") }; });
-  function frame(){
-    ticking = false; var vh = window.innerHeight;
-    steps.forEach(function(s){
-      var r = s.el.getBoundingClientRect(), on;
-      if(r.top < vh * .78 && r.bottom > vh * .12) on = true; else if(r.top > vh * .96 || r.bottom < vh * .04) on = false; else return;
-      if(s.img) setImg(s.img, on); if(s.txt) s.txt.classList.toggle("on", on);
-    });
+  function paint(){
+    var more = false;
+    imgs.forEach(function(o){ var d = o.t - o.cur; if(Math.abs(d) < .002){ if(o.cur !== o.t){ o.cur = o.t; } else return; } else { o.cur += d * .16; more = true; }
+      var hide = ((1 - ease(o.cur)) * 100).toFixed(2) + "%";
+      o.el.style.clipPath = o.left ? "inset(0 " + hide + " 0 0 round clamp(10px,1vw,16px))" : "inset(0 0 0 " + hide + " round clamp(10px,1vw,16px))";
+      o.el.classList.toggle("an-on", o.cur > .9); });
+    txts.forEach(function(t){ var d = t.t - t.cur; if(Math.abs(d) < .002){ if(t.cur !== t.t) t.cur = t.t; else return; } else { t.cur += d * .16; more = true; }
+      t.el.style.setProperty("--p", (t.cur * (t.n + 1)).toFixed(2)); });
+    if(more) requestAnimationFrame(paint); else running = false;
   }
+  function frame(){ ticking = false; targets(); if(!running){ running = true; requestAnimationFrame(paint); } }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
 })();

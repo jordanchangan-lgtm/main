@@ -676,7 +676,7 @@ html.pg-snap{scroll-snap-type:y proximity}
   .he-head{top:22%;font-size:clamp(26px,7.6vw,34px)}.he-sub{top:40%;font-size:13px}
   .he-year{left:auto;right:var(--hx);top:40%;font-size:30px;text-align:right}
   .he-rule1{left:auto;right:var(--hx);top:52%;bottom:20%}.he-rule2,.he-p2,.he-tab1,.he-tab2,.he-v1,.he-v2{display:none}
-  .he-p{font-size:11px}.he-p1{left:var(--hx);right:calc(var(--hx) + 24px);width:auto;top:56%}
+  .he-p,.he-tab,.he-v,.he-bl,.he-br,.he-top{font-size:11px}.he-p1{left:var(--hx);right:calc(var(--hx) + 24px);width:auto;top:56%}
   .he-bl{font-size:11px;bottom:calc(18px + env(safe-area-inset-bottom));max-width:52%}.he-br{font-size:11px;bottom:calc(18px + env(safe-area-inset-bottom))}
 }
 @media (max-width:1180px) and (min-width:821px){.he-p1{width:16%}.he-p2{width:20%}.he-year{left:32%}}

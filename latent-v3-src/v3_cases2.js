@@ -594,3 +594,36 @@
   function all(){ panels.forEach(layout); }
   var t; window.addEventListener("resize", function(){ clearTimeout(t); t = setTimeout(all, 150); }); window.addEventListener("load", all); if(document.fonts && document.fonts.ready) document.fonts.ready.then(all); all();
 })();
+/* the staircase: each picture opens from the right on a one-scroll window as it rises, smoothed; its sentence in the
+   pinned list brightens word by word on the same window; both close as the picture leaves at the top */
+(function(){
+  var sec = document.querySelector(".js-sk"); if(!sec) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, running = false;
+  var steps = [].slice.call(sec.querySelectorAll(".js-sk-step")).map(function(st){ var k = st.dataset.k, li = sec.querySelector('.js-sk-li[data-k="' + k + '"]'), w = li && li.querySelector(".js-sk-w"), n = 0;
+    if(w){ var ws = w.textContent.trim().split(/\s+/); w.textContent = ""; ws.forEach(function(x, i){ var sp = document.createElement("span"); sp.className = "bw"; sp.textContent = x; sp.style.setProperty("--i", i); w.appendChild(sp); if(i < ws.length - 1) w.appendChild(document.createTextNode(" ")); }); n = ws.length; }
+    return { el: st, img: st.querySelector(".js-sk-img"), li: li, n: n, cur: 0, t: 0 }; });
+  var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
+  function targets(){ var vh = window.innerHeight; steps.forEach(function(o){ var r = o.el.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10){ o.t = r.top > vh ? 0 : o.t; return; }
+    o.t = reduce ? 1 : clamp((vh * .9 - r.top) / (vh * .12)) * (1 - ease(clamp((vh * .22 - r.bottom) / (vh * .18)))); }); }
+  function paint(){ var more = false;
+    steps.forEach(function(o){ var d = o.t - o.cur; if(Math.abs(d) < .002){ if(o.cur !== o.t) o.cur = o.t; else return; } else { o.cur += d * .16; more = true; }
+      var hide = ((1 - ease(o.cur)) * 100).toFixed(2) + "%"; o.img.style.clipPath = "inset(0 0 0 " + hide + " round clamp(10px,1vw,16px))"; o.img.classList.toggle("an-on", o.cur > .9);
+      if(o.li) o.li.style.setProperty("--p", (o.cur * (o.n + 1)).toFixed(2)); });
+    if(more) requestAnimationFrame(paint); else running = false; }
+  function frame(){ ticking = false; targets(); if(!running){ running = true; requestAnimationFrame(paint); } }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
+})();
+/* the things list: the thumbnails sit in one column past the widest word and the list keeps room for them, so none
+   runs off the edge of the screen */
+(function(){
+  var sec = document.querySelector(".js-td"); if(!sec) return;
+  var list = sec.querySelector(".td-list"), items = [].slice.call(sec.querySelectorAll(".td-item")); if(!list || !items.length) return;
+  function fit(){
+    var gap = Math.max(12, Math.min(32, window.innerWidth * .02)), maxName = 0, maxThumb = 0;
+    items.forEach(function(it){ var nm = it.querySelector(".td-name"), th = it.querySelector(".td-thumb"); if(nm) maxName = Math.max(maxName, nm.getBoundingClientRect().width); if(th){ var h = th.getBoundingClientRect().height, ar = (th.style.getPropertyValue("--ar") || "4/5").split("/"); maxThumb = Math.max(maxThumb, h * parseFloat(ar[0]) / parseFloat(ar[1] || 1)); } });
+    var free = window.innerWidth - list.getBoundingClientRect().left - maxName - gap * 2; var tw = Math.min(maxThumb, Math.max(40, free));
+    list.style.setProperty("--tx", (maxName + gap).toFixed(1) + "px"); list.style.paddingRight = (tw + gap).toFixed(1) + "px"; list.style.setProperty("--tmax", tw.toFixed(1) + "px");
+  }
+  window.addEventListener("resize", fit); window.addEventListener("load", fit); if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit); fit();
+})();

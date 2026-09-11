@@ -2432,6 +2432,28 @@ html.pg-snap{scroll-snap-type:y proximity}
 .cf-p{margin:0 0 clamp(28px,6vh,56px);max-width:44ch;font-size:clamp(17px,1.5vw,23px);line-height:1.5;letter-spacing:-.01em;color:var(--stone)}
 .cf-foot{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
 @media(max-width:820px){.cf-in{padding:80px var(--gut) 120px}.cf-h{font-size:clamp(30px,9vw,40px)}.cf-p{font-size:16px}.cf-foot{font-size:11px;line-height:1.7}}
+/* How it works, the staircase */
+.sk{padding:0;background:#fff;color:var(--ink)}
+.sk-wrap{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:clamp(20px,4vw,64px);align-items:start;padding:clamp(72px,14vh,140px) var(--gut) clamp(60px,12vh,140px)}
+.sk-list{position:sticky;top:clamp(72px,12vh,120px);display:flex;flex-direction:column;gap:clamp(10px,1.6vh,16px)}
+.sk-kick{margin:0 0 clamp(14px,3vh,28px);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}.sk-kick b{color:var(--marrow);font-weight:500}
+.sk-li{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(14px,1.25vw,19px);line-height:1.35;letter-spacing:-.01em;color:var(--ink);max-width:32ch}
+.sk-li b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:10.5px;letter-spacing:.14em;color:var(--marrow);padding-top:.35em}
+.sk-li .bw{opacity:calc(.16 + .84 * clamp(0, calc(var(--p, 0) - var(--i)), 1))}
+.sk-steps{display:flex;flex-direction:column;min-width:0}
+.sk-step{width:calc(58% - var(--k) * 4%);margin-left:calc(var(--k) * 8.4%);margin-top:calc(5vh - var(--k) * .5vh)}
+.sk-step:first-child{margin-top:0}
+.sk-step .wp-img{clip-path:inset(0 0 0 100% round clamp(10px,1vw,16px))}
+@media(max-width:820px){
+  .sk-wrap{grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:12px;padding:64px var(--gut) 60px}
+  .sk-list{top:64px;gap:10px}.sk-kick{font-size:11px;margin-bottom:12px}.sk-li{font-size:11px;line-height:1.4;gap:6px;max-width:none}.sk-li b{font-size:11px;padding-top:.2em}
+  .sk-step{width:calc(100% - var(--k) * 2.5%);margin-left:calc(var(--k) * 1.6%);margin-top:calc(6vh - var(--k) * .4vh)}
+  .sk .an-lb{white-space:normal;max-width:min(72%,210px);line-height:1.3;text-align:inherit}
+  .an-lb{font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){.sk-step .wp-img{clip-path:none!important}.sk-li .bw{opacity:1}}
+.td-thumb{left:var(--tx,calc(100% + clamp(16px,2vw,32px)));max-width:var(--tmax,none)}
+.td-thumb img{object-fit:cover}
 </style>
 </head>
 <body>
@@ -2482,31 +2504,24 @@ html.pg-snap{scroll-snap-type:y proximity}
   </div>
 </section>
 <div class="blinds wh js-blinds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-<section class="sec light wp js-wp" id="how">
-  <div class="inner wp-in">
-    <div class="wp-step right">
-      <figure class="wp-img js-wp-img"><img fetchpriority="low" src="media/05-0c45a9b23b.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="112" y="36" width="30" height="30"/><line class="an-ln" x1="112" y1="51" x2="72" y2="74"/><line class="an-ln an-ar" x1="72.0" y1="74.0" x2="75.2" y2="73.9"/><line class="an-ln an-ar" x1="72.0" y1="74.0" x2="73.7" y2="71.3"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( brief ) product · palette · mood</i><i class="an-lb an-r" style="--x:25.0%;--y:78.0%">the one thing out of place</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">60 · 30 · 10</i></span></figure>
-      <p class="wp-txt js-wp-txt">Brief. You send the product, the palette and the mood. We answer with a written direction, not a mood board.</p>
+<section class="sec light sk js-sk" id="how">
+  <div class="sk-wrap">
+    <div class="sk-list">
+      <p class="sk-kick"><b>( How it works )</b> Six moves, one order</p>
+      <p class="sk-li js-sk-li" data-k="0"><b>01</b> <span class="js-sk-w">Brief. You send the product, the palette and the mood. We answer with a written direction, not a mood board.</span></p>
+      <p class="sk-li js-sk-li" data-k="1"><b>02</b> <span class="js-sk-w">Direct. Light, lens, angle and story are decided before a single frame exists.</span></p>
+      <p class="sk-li js-sk-li" data-k="2"><b>03</b> <span class="js-sk-w">Generate. Hundreds of frames made from the direction, in our own models and styles.</span></p>
+      <p class="sk-li js-sk-li" data-k="3"><b>04</b> <span class="js-sk-w">Select. Only the frames that look shot survive. Most do not.</span></p>
+      <p class="sk-li js-sk-li" data-k="4"><b>05</b> <span class="js-sk-w">Craft. Retouch, grade and type by hand, so nothing reads as a prompt.</span></p>
+      <p class="sk-li js-sk-li" data-k="5"><b>06</b> <span class="js-sk-w">Deliver. Final files in every format you post, print or build with. Days, not weeks.</span></p>
     </div>
-    <div class="wp-step left">
-      <figure class="wp-img js-wp-img"><img fetchpriority="low" src="media/06-42b1448611.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="58" y="48" width="44" height="34"/><line class="an-ln" x1="80" y1="48" x2="80" y2="18"/><line class="an-ln an-ar" x1="80.0" y1="18.0" x2="78.5" y2="20.8"/><line class="an-ln an-ar" x1="80.0" y1="18.0" x2="81.5" y2="20.8"/><line class="an-ln" x1="102" y1="65" x2="134" y2="65"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( direct ) light · lens · angle</i><i class="an-lb an-c" style="--x:50.0%;--y:12.0%">light: top, soft</i><i class="an-lb an-l an-mr" style="--x:85.0%;--y:63.0%;--xm:97%;--ym:72.0%">eye level · 35 mm</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">30 · 60 · 10</i></span></figure>
-      <p class="wp-txt js-wp-txt">Direct. Light, lens, angle and story are decided before a single frame exists.</p>
-    </div>
-    <div class="wp-step right">
-      <figure class="wp-img js-wp-img"><img fetchpriority="low" src="media/07-7f35c2cb31.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="88" y="50" width="22" height="26"/><line class="an-ln" x1="88" y1="63" x2="52" y2="63"/><line class="an-ln" x1="110" y1="50" x2="126" y2="30"/><line class="an-ln an-ar" x1="126.0" y1="30.0" x2="123.0" y2="31.2"/><line class="an-ln an-ar" x1="126.0" y1="30.0" x2="125.4" y2="33.2"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( generate ) frame 214 / 600</i><i class="an-lb an-r" style="--x:31.2%;--y:61.0%">no plastic skin</i><i class="an-lb an-l an-mr" style="--x:80.0%;--y:26.0%;--xm:97%;--ym:35.0%">grain 8%</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">seed 0417</i></span></figure>
-      <p class="wp-txt js-wp-txt">Generate. Hundreds of frames made from the direction, in our own models and styles.</p>
-    </div>
-    <div class="wp-step left">
-      <figure class="wp-img js-wp-img"><img fetchpriority="low" src="media/08-1fccf689e9.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="62" y="16" width="32" height="58"/><line class="an-ln" x1="94" y1="44" x2="122" y2="44"/><line class="an-ln an-ar" x1="122.0" y1="44.0" x2="119.2" y2="42.5"/><line class="an-ln an-ar" x1="122.0" y1="44.0" x2="119.2" y2="45.5"/><line class="an-ln" x1="62" y1="74" x2="36" y2="88"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( select ) kept 1 / 48</i><i class="an-lb an-l an-mr" style="--x:77.5%;--y:42.0%;--xm:97%;--ym:51.0%">one hard shadow</i><i class="an-lb an-r" style="--x:21.2%;--y:91.0%">looks shot</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">10 · 30 · 60</i></span></figure>
-      <p class="wp-txt js-wp-txt">Select. Only the frames that look shot survive. Most do not.</p>
-    </div>
-    <div class="wp-step right">
-      <figure class="wp-img js-wp-img"><img fetchpriority="low" src="media/09-db504f6b80.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="60" y="18" width="42" height="50"/><line class="an-ln" x1="102" y1="43" x2="130" y2="26"/><line class="an-ln an-ar" x1="130.0" y1="26.0" x2="126.8" y2="26.1"/><line class="an-ln an-ar" x1="130.0" y1="26.0" x2="128.4" y2="28.8"/><line class="an-ln" x1="81" y1="68" x2="81" y2="88"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( craft ) grade · grain · type</i><i class="an-lb an-l an-mr" style="--x:82.5%;--y:22.0%;--xm:97%;--ym:31.0%">warm +6</i><i class="an-lb an-c" style="--x:50.6%;--y:91.0%">balance point</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">60 · 30 · 10</i></span></figure>
-      <p class="wp-txt js-wp-txt">Craft. Retouch, grade and type by hand, so nothing reads as a prompt.</p>
-    </div>
-    <div class="wp-step left">
-      <figure class="wp-img js-wp-img"><img fetchpriority="low" src="media/10-a617fdf2b6.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="70" y="22" width="26" height="52"/><line class="an-ln" x1="96" y1="48" x2="128" y2="48"/><line class="an-ln an-ar" x1="128.0" y1="48.0" x2="125.2" y2="46.5"/><line class="an-ln an-ar" x1="128.0" y1="48.0" x2="125.2" y2="49.5"/><line class="an-ln" x1="83" y1="74" x2="83" y2="90"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( deliver ) 4:5 · 9:16 · 16:9</i><i class="an-lb an-l an-mr" style="--x:81.2%;--y:46.0%;--xm:97%;--ym:55.0%">shadow kept</i><i class="an-lb an-c" style="--x:51.9%;--y:93.0%">final files</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">days, not weeks</i></span></figure>
-      <p class="wp-txt js-wp-txt">Deliver. Final files in every format you post, print or build with. Days, not weeks.</p>
+    <div class="sk-steps">
+      <div class="sk-step js-sk-step" data-k="0" style="--k:0"><figure class="wp-img js-sk-img"><img fetchpriority="low" src="media/05-0c45a9b23b.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="112" y="36" width="30" height="30"/><line class="an-ln" x1="112" y1="51" x2="72" y2="74"/><line class="an-ln an-ar" x1="72.0" y1="74.0" x2="75.2" y2="73.9"/><line class="an-ln an-ar" x1="72.0" y1="74.0" x2="73.7" y2="71.3"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( brief ) product · palette · mood</i><i class="an-lb an-r" style="--x:25.0%;--y:78.0%">the one thing out of place</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">60 · 30 · 10</i></span></figure></div>
+      <div class="sk-step js-sk-step" data-k="1" style="--k:1"><figure class="wp-img js-sk-img"><img fetchpriority="low" src="media/06-42b1448611.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="58" y="48" width="44" height="34"/><line class="an-ln" x1="80" y1="48" x2="80" y2="18"/><line class="an-ln an-ar" x1="80.0" y1="18.0" x2="78.5" y2="20.8"/><line class="an-ln an-ar" x1="80.0" y1="18.0" x2="81.5" y2="20.8"/><line class="an-ln" x1="102" y1="65" x2="134" y2="65"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( direct ) light · lens · angle</i><i class="an-lb an-c" style="--x:50.0%;--y:12.0%">light: top, soft</i><i class="an-lb an-l an-mr" style="--x:85.0%;--y:63.0%;--xm:97%;--ym:72.0%">eye level · 35 mm</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">30 · 60 · 10</i></span></figure></div>
+      <div class="sk-step js-sk-step" data-k="2" style="--k:2"><figure class="wp-img js-sk-img"><img fetchpriority="low" src="media/07-7f35c2cb31.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="88" y="50" width="22" height="26"/><line class="an-ln" x1="88" y1="63" x2="52" y2="63"/><line class="an-ln" x1="110" y1="50" x2="126" y2="30"/><line class="an-ln an-ar" x1="126.0" y1="30.0" x2="123.0" y2="31.2"/><line class="an-ln an-ar" x1="126.0" y1="30.0" x2="125.4" y2="33.2"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( generate ) frame 214 / 600</i><i class="an-lb an-r" style="--x:31.2%;--y:61.0%">no plastic skin</i><i class="an-lb an-l an-mr" style="--x:80.0%;--y:26.0%;--xm:97%;--ym:35.0%">grain 8%</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">seed 0417</i></span></figure></div>
+      <div class="sk-step js-sk-step" data-k="3" style="--k:3"><figure class="wp-img js-sk-img"><img fetchpriority="low" src="media/08-1fccf689e9.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="62" y="16" width="32" height="58"/><line class="an-ln" x1="94" y1="44" x2="122" y2="44"/><line class="an-ln an-ar" x1="122.0" y1="44.0" x2="119.2" y2="42.5"/><line class="an-ln an-ar" x1="122.0" y1="44.0" x2="119.2" y2="45.5"/><line class="an-ln" x1="62" y1="74" x2="36" y2="88"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( select ) kept 1 / 48</i><i class="an-lb an-l an-mr" style="--x:77.5%;--y:42.0%;--xm:97%;--ym:51.0%">one hard shadow</i><i class="an-lb an-r" style="--x:21.2%;--y:91.0%">looks shot</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">10 · 30 · 60</i></span></figure></div>
+      <div class="sk-step js-sk-step" data-k="4" style="--k:4"><figure class="wp-img js-sk-img"><img fetchpriority="low" src="media/09-db504f6b80.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="60" y="18" width="42" height="50"/><line class="an-ln" x1="102" y1="43" x2="130" y2="26"/><line class="an-ln an-ar" x1="130.0" y1="26.0" x2="126.8" y2="26.1"/><line class="an-ln an-ar" x1="130.0" y1="26.0" x2="128.4" y2="28.8"/><line class="an-ln" x1="81" y1="68" x2="81" y2="88"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( craft ) grade · grain · type</i><i class="an-lb an-l an-mr" style="--x:82.5%;--y:22.0%;--xm:97%;--ym:31.0%">warm +6</i><i class="an-lb an-c" style="--x:50.6%;--y:91.0%">balance point</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">60 · 30 · 10</i></span></figure></div>
+      <div class="sk-step js-sk-step" data-k="5" style="--k:5"><figure class="wp-img js-sk-img"><img fetchpriority="low" src="media/10-a617fdf2b6.jpg" alt="" loading="lazy" decoding="async"><span class="an" aria-hidden="true"><svg class="an-svg" viewBox="0 0 160 100" preserveAspectRatio="none"><rect class="an-sq" x="70" y="22" width="26" height="52"/><line class="an-ln" x1="96" y1="48" x2="128" y2="48"/><line class="an-ln an-ar" x1="128.0" y1="48.0" x2="125.2" y2="46.5"/><line class="an-ln an-ar" x1="128.0" y1="48.0" x2="125.2" y2="49.5"/><line class="an-ln" x1="83" y1="74" x2="83" y2="90"/></svg><i class="an-lb an-l" style="--x:2.5%;--y:5.0%">( deliver ) 4:5 · 9:16 · 16:9</i><i class="an-lb an-l an-mr" style="--x:81.2%;--y:46.0%;--xm:97%;--ym:55.0%">shadow kept</i><i class="an-lb an-c" style="--x:51.9%;--y:93.0%">final files</i><i class="an-lb an-r" style="--x:97.5%;--y:94.0%">days, not weeks</i></span></figure></div>
     </div>
   </div>
 </section>
@@ -4357,6 +4372,39 @@ html.pg-snap{scroll-snap-type:y proximity}
   }
   function all(){ panels.forEach(layout); }
   var t; window.addEventListener("resize", function(){ clearTimeout(t); t = setTimeout(all, 150); }); window.addEventListener("load", all); if(document.fonts && document.fonts.ready) document.fonts.ready.then(all); all();
+})();
+/* the staircase: each picture opens from the right on a one-scroll window as it rises, smoothed; its sentence in the
+   pinned list brightens word by word on the same window; both close as the picture leaves at the top */
+(function(){
+  var sec = document.querySelector(".js-sk"); if(!sec) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, running = false;
+  var steps = [].slice.call(sec.querySelectorAll(".js-sk-step")).map(function(st){ var k = st.dataset.k, li = sec.querySelector('.js-sk-li[data-k="' + k + '"]'), w = li && li.querySelector(".js-sk-w"), n = 0;
+    if(w){ var ws = w.textContent.trim().split(/\s+/); w.textContent = ""; ws.forEach(function(x, i){ var sp = document.createElement("span"); sp.className = "bw"; sp.textContent = x; sp.style.setProperty("--i", i); w.appendChild(sp); if(i < ws.length - 1) w.appendChild(document.createTextNode(" ")); }); n = ws.length; }
+    return { el: st, img: st.querySelector(".js-sk-img"), li: li, n: n, cur: 0, t: 0 }; });
+  var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
+  function targets(){ var vh = window.innerHeight; steps.forEach(function(o){ var r = o.el.getBoundingClientRect(); if(r.bottom < -10 || r.top > vh + 10){ o.t = r.top > vh ? 0 : o.t; return; }
+    o.t = reduce ? 1 : clamp((vh * .9 - r.top) / (vh * .12)) * (1 - ease(clamp((vh * .22 - r.bottom) / (vh * .18)))); }); }
+  function paint(){ var more = false;
+    steps.forEach(function(o){ var d = o.t - o.cur; if(Math.abs(d) < .002){ if(o.cur !== o.t) o.cur = o.t; else return; } else { o.cur += d * .16; more = true; }
+      var hide = ((1 - ease(o.cur)) * 100).toFixed(2) + "%"; o.img.style.clipPath = "inset(0 0 0 " + hide + " round clamp(10px,1vw,16px))"; o.img.classList.toggle("an-on", o.cur > .9);
+      if(o.li) o.li.style.setProperty("--p", (o.cur * (o.n + 1)).toFixed(2)); });
+    if(more) requestAnimationFrame(paint); else running = false; }
+  function frame(){ ticking = false; targets(); if(!running){ running = true; requestAnimationFrame(paint); } }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
+})();
+/* the things list: the thumbnails sit in one column past the widest word and the list keeps room for them, so none
+   runs off the edge of the screen */
+(function(){
+  var sec = document.querySelector(".js-td"); if(!sec) return;
+  var list = sec.querySelector(".td-list"), items = [].slice.call(sec.querySelectorAll(".td-item")); if(!list || !items.length) return;
+  function fit(){
+    var gap = Math.max(12, Math.min(32, window.innerWidth * .02)), maxName = 0, maxThumb = 0;
+    items.forEach(function(it){ var nm = it.querySelector(".td-name"), th = it.querySelector(".td-thumb"); if(nm) maxName = Math.max(maxName, nm.getBoundingClientRect().width); if(th){ var h = th.getBoundingClientRect().height, ar = (th.style.getPropertyValue("--ar") || "4/5").split("/"); maxThumb = Math.max(maxThumb, h * parseFloat(ar[0]) / parseFloat(ar[1] || 1)); } });
+    var free = window.innerWidth - list.getBoundingClientRect().left - maxName - gap * 2; var tw = Math.min(maxThumb, Math.max(40, free));
+    list.style.setProperty("--tx", (maxName + gap).toFixed(1) + "px"); list.style.paddingRight = (tw + gap).toFixed(1) + "px"; list.style.setProperty("--tmax", tw.toFixed(1) + "px");
+  }
+  window.addEventListener("resize", fit); window.addEventListener("load", fit); if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit); fit();
 })();
 </script>
 </body>

@@ -21,10 +21,10 @@ if os.environ.get('PORTFOLIO')=='7':
         return [(b[0],b[1],b[2]-b[0]) for b in out]
     _panels=''
     for i,p in enumerate(_wk):
-        figs=_figs[i][:6]; N=len(figs); ars=[_ar(f)[0]/_ar(f)[1] for f in figs]
+        figs=_figs[i][:3]; N=len(figs); ars=[_ar(f)[0]/_ar(f)[1] for f in figs]
         tx=_rnd.choice([6,8,54,58]); ty=_rnd.choice([10,14,56,62]); tbox=(tx,ty,tx+32,ty+24)
-        org=_place(N,ars,tbox,12,19,hk=1.6)
-        ph=_place(min(N,4),ars,(0,70,100,100),26,40,hk=0.59,ymax=70)
+        org=_place(N,ars,tbox,15,23,hk=1.6)
+        ph=_place(min(N,3),ars,(0,70,100,100),30,44,hk=0.59,ymax=70)
         tiles=''
         for k,f in enumerate(figs):
             sx=_rnd.uniform(3,88); sy=_rnd.uniform(4,86); sr=_rnd.uniform(-16,16); sw=_rnd.uniform(5.5,8.5)

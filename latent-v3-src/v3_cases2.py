@@ -69,3 +69,4 @@ s=s.replace('</body>', '<script>\n'+open(SP+'v3_cases2.js').read()+'</script>\n<
 _j=s.rfind('</style>'); s=s[:_j]+open(SP+'v3_css8.css').read()+s[_j:]
 if os.environ.get('HEROTXT')=='mark': exec(open(SP+'v3_hero_mark.py').read())
 if os.environ.get('HEROTXT')=='edit': exec(open(SP+'v3_hero_edit.py').read())
+if os.environ.get('SECTORS')=='2': exec(open(SP+'v3_craft2.py').read())

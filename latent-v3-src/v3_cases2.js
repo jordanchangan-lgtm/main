@@ -482,11 +482,14 @@
 (function(){
   var sec = document.querySelector(".js-td"); if(!sec) return;
   var hold = sec.querySelector(".js-td-hold"), items = [].slice.call(sec.querySelectorAll(".js-td-item")), N = items.length, ticking = false, at = -1;
+  var quote = sec.querySelector(".td-quote"); if(quote && !sec.querySelector(".td-pv")){ var pvEl = document.createElement("div"); pvEl.className = "td-pv"; pvEl.innerHTML = '<img alt="" decoding="async">'; quote.appendChild(pvEl); }
   function frame(){
     ticking = false; var vh = window.innerHeight, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
     var run = Math.max(1, hold.offsetHeight - vh), p = Math.min(1, Math.max(0, -b.top / run)), i = Math.min(N - 1, Math.floor(p * N));
     if(i !== at){ at = i; items.forEach(function(it, k){ it.classList.toggle("on", k === i); });
       [].forEach.call(sec.querySelectorAll(".js-td-desc"), function(d, k){ d.classList.toggle("on", k === i); });
+      var pv = sec.querySelector(".td-pv"), th = items[i].querySelector(".td-thumb"), ti = th && th.querySelector("img");
+      if(pv && ti){ pv.querySelector("img").src = ti.getAttribute("src"); pv.style.setProperty("--ar", th.style.getPropertyValue("--ar") || "4/5"); pv.classList.remove("in"); void pv.offsetWidth; pv.classList.add("in"); }
       var list = items[i].parentNode, st = list.parentNode.getBoundingClientRect(), it = items[i], c = it.offsetTop + it.offsetHeight / 2;
       list.style.transform = window.innerWidth > 820 ? "translate3d(0," + (list.offsetHeight / 2 - c).toFixed(1) + "px,0)" : "none"; }
   }

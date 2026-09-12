@@ -1,0 +1,8 @@
+import { chromium, devices } from '/opt/node22/lib/node_modules/playwright/index.mjs';
+const b = await chromium.launch(); const pg = await (await b.newContext({...devices['iPhone 13']})).newPage();
+await pg.goto('http://127.0.0.1:8095/', {waitUntil:'load'}); await pg.waitForTimeout(500);
+await pg.addStyleTag({content:'html{scroll-behavior:auto!important}'}); let k=0;
+for(const [id,f] of [['how-intro',0.9],['how',0.15],['how',0.5],['work',0.4]]){ const info = await pg.evaluate(i=>{ const e=document.getElementById(i); return {t:e.getBoundingClientRect().top+scrollY, h:e.offsetHeight}; }, id);
+  await pg.evaluate(o=>scrollTo(0, o.id==='how-intro'? o.t+o.h-innerHeight*0.55 : o.t+(o.h-innerHeight)*o.f), {...info,f,id}); await pg.waitForTimeout(1300); await pg.screenshot({path:`ph3_${k++}.png`}); }
+console.log(await pg.evaluate(()=>{ const labs=[...document.querySelectorAll('#how .an-lb')].filter(l=>getComputedStyle(l).display!=='none'); let ov=0; for(let i=0;i<labs.length;i++) for(let j=i+1;j<labs.length;j++){ const A=labs[i].getBoundingClientRect(),B=labs[j].getBoundingClientRect(); if(A.width&&B.width&&!(A.right<B.left||A.left>B.right||A.bottom<B.top||A.top>B.bottom)) ov++; } const off=labs.filter(l=>{const r=l.getBoundingClientRect(); const f=l.closest('.wp-img').getBoundingClientRect(); return r.width&&(r.left<f.left-1||r.right>f.right+1);}).length; const d=document.querySelector('.td-quote').getBoundingClientRect(), L=document.querySelector('.td-list').getBoundingClientRect(); return JSON.stringify({labelOverlaps:ov, labelsOff:off, descRight:d.right|0, listLeft:L.left|0}); }));
+await b.close();

@@ -409,8 +409,9 @@
     figs.forEach(function(f){
       var fr = f.getBoundingClientRect(); if(!fr.width) return;
       [].forEach.call(f.querySelectorAll(".an-lb"), function(l){
-        l.style.marginLeft = "0px"; l.style.marginTop = "0px";
+        l.style.marginLeft = "0px"; l.style.marginTop = "0px"; l.style.whiteSpace = ""; l.style.maxWidth = "";
         var r = l.getBoundingClientRect(), dx = 0, dy = 0, pad = 8;
+        if(r.width > fr.width - pad * 2){ l.style.whiteSpace = "normal"; l.style.maxWidth = (fr.width - pad * 2).toFixed(0) + "px"; r = l.getBoundingClientRect(); }
         if(r.left < fr.left + pad) dx = fr.left + pad - r.left; else if(r.right > fr.right - pad) dx = fr.right - pad - r.right;
         if(r.top < fr.top + pad) dy = fr.top + pad - r.top; else if(r.bottom > fr.bottom - pad) dy = fr.bottom - pad - r.bottom;
         if(dx) l.style.marginLeft = dx.toFixed(1) + "px"; if(dy) l.style.marginTop = dy.toFixed(1) + "px";
@@ -622,6 +623,7 @@
   function fit(){
     var gap = Math.max(12, Math.min(32, window.innerWidth * .02)), maxName = 0, maxThumb = 0;
     items.forEach(function(it){ var nm = it.querySelector(".td-name"), th = it.querySelector(".td-thumb"); if(nm) maxName = Math.max(maxName, nm.getBoundingClientRect().width); if(th){ var h = th.getBoundingClientRect().height, ar = (th.style.getPropertyValue("--ar") || "4/5").split("/"); maxThumb = Math.max(maxThumb, h * parseFloat(ar[0]) / parseFloat(ar[1] || 1)); } });
+    if(window.innerWidth <= 820){ list.style.paddingRight = ""; list.style.removeProperty("--tx"); list.style.removeProperty("--tmax"); return; }
     var free = window.innerWidth - list.getBoundingClientRect().left - maxName - gap * 2; var tw = Math.min(maxThumb, Math.max(40, free));
     list.style.setProperty("--tx", (maxName + gap).toFixed(1) + "px"); list.style.paddingRight = (tw + gap).toFixed(1) + "px"; list.style.setProperty("--tmax", tw.toFixed(1) + "px");
   }

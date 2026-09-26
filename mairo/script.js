@@ -25,6 +25,15 @@
     },
   ];
 
+  // The four chapters of the collection, in order. Frames are the carousel
+  // posts: 1 is the model in location, 2 the still-life, 3 the odd angle.
+  const CHAPTERS = [
+    { set: 'red', frames: ['red-1', 'red-2', 'red-3'] },
+    { set: 'cream', frames: ['cream-1', 'cream-2', 'cream-3'] },
+    { set: 'pink', frames: ['pink-1', 'pink-2', 'pink-3'] },
+    { set: 'purple', frames: ['purple-1-eyelevel', 'purple-2', 'purple-3'] },
+  ];
+
   // Prices aren't set yet; fill these in and they appear on the cards.
   const PRICES = { tank: '', bra: '', trouser: '' };
 
@@ -35,6 +44,16 @@
     'k.aqua': 'Aqua', 'k.taupe': 'Taupe', 'k.burgundy': 'Burgundy', 'k.lime': 'Lime',
     'k.red': 'Red', 'k.ivory': 'Ivory', 'k.rose': 'Rose', 'k.orchid': 'Orchid',
     'k.navy': 'Navy', 'k.black': 'Black', 'k.wine': 'Wine',
+    'ch.red.name': 'The Red Set', 'ch.cream.name': 'The Cream Set', 'ch.pink.name': 'The Pink Set', 'ch.purple.name': 'The Purple Set',
+    'ch.red.line': 'Red on navy. Aqua on top.',
+    'ch.cream.line': 'Cream on black. Taupe on top.',
+    'ch.pink.line': 'Pink on pink. Burgundy on burgundy.',
+    'ch.purple.line': 'Orchid on black. Lime on top.',
+    'ch.red.desc': 'A red racerback bra and fold-over waistband, navy wide-leg trousers and the aqua asymmetric tank. Plain at the front. The name sits once on the back.',
+    'ch.cream.desc': 'An ivory racerback bra and waistband with black wide-leg trousers, finished with the taupe asymmetric tank. The quietest of the four.',
+    'ch.pink.desc': 'A rose racerback bra and waistband, wine wide-leg trousers and the burgundy asymmetric tank. One colour family, three depths.',
+    'ch.purple.desc': 'An orchid racerback bra and waistband, black wide-leg trousers and the lime asymmetric tank. The loudest of the four.',
+    'ch.shop': 'Shop the set',
   };
 
   const AR = {
@@ -54,24 +73,23 @@
     'k.aqua': 'أزرق مائي', 'k.taupe': 'بنّي رمادي', 'k.burgundy': 'عنابي', 'k.lime': 'ليموني',
     'k.red': 'أحمر', 'k.ivory': 'عاجي', 'k.rose': 'وردي', 'k.orchid': 'أرجواني',
     'k.navy': 'كحلي', 'k.black': 'أسود', 'k.wine': 'خمري',
+    'coll.eyebrow': 'المجموعة رقم ٠١', 'coll.title': 'أربعة أطقم. شمس واحدة.',
+    'ch.red.name': 'الطقم الأحمر', 'ch.cream.name': 'الطقم الكريمي', 'ch.pink.name': 'الطقم الوردي', 'ch.purple.name': 'الطقم البنفسجي',
+    'ch.red.line': 'أحمر على كحلي. أزرق مائي فوقه.',
+    'ch.cream.line': 'كريمي على أسود. بنّي رمادي فوقه.',
+    'ch.pink.line': 'وردي على وردي. عنابي على عنابي.',
+    'ch.purple.line': 'أرجواني على أسود. ليموني فوقه.',
+    'ch.red.desc': 'حمّالة صدر رياضية حمراء وحزام خصر مطوي، بنطال كحلي واسع، والقميص غير المتماثل بلون أزرق مائي. الواجهة بلا أي علامة، والاسم مرة واحدة على الظهر.',
+    'ch.cream.desc': 'حمّالة صدر وحزام خصر بلون عاجي مع بنطال أسود واسع، والقميص غير المتماثل بلون بنّي رمادي. أهدأ الأطقم الأربعة.',
+    'ch.pink.desc': 'حمّالة صدر وحزام خصر بلون وردي، بنطال خمري واسع، والقميص غير المتماثل بلون عنابي. عائلة لونية واحدة بثلاث درجات.',
+    'ch.purple.desc': 'حمّالة صدر وحزام خصر بلون أرجواني، بنطال أسود واسع، والقميص غير المتماثل بلون ليموني. أجرأ الأطقم الأربعة.',
+    'ch.shop': 'تسوّق الطقم',
   };
 
   // Hero lines keep their line breaks, so they are swapped as HTML.
   const HERO_AR = {
-    'he.t1': 'المجموعة <br>رقم ٠١',
-    'he.t2': 'ملابس رياضية <br>بطقم واحد',
-    'he.t3': 'ثلاث قطع <br>أربعة ألوان',
-    'he.t4': 'عمّان <br>/ العالم',
-    'he.t5': 'إصدار <br>صيف ٢٠٢٦',
-    'he.head': 'لوح واحد.<br>لا شيء يتقاطع.',
-    'he.sub': 'مفصّلة<br>للضوء الحاد.',
-    'he.p1': 'قميص غير متماثل. حمّالة صدر رياضية بلوح خلفي واحد مغلق. بنطال واسع ينسدل حتى الأرض. لا شيء على الواجهة.',
-    'he.p2': 'صُنعت للظهيرة. جدران من الجصّ، وشمس حادة، وظلّ واحد نظيف. أربعة أطقم بألوانها الحقيقية: الأحمر والكريمي والوردي والبنفسجي. الاسم على الظهر مرة واحدة، صغيرًا.',
-    'he.tab1': 'الأطقم',
-    'he.tab2': 'القطع',
-    'he.v1': 'الظهر. قطعة واحدة.',
-    'he.v2': 'اطوِ كل شيء. لا شيء يتجعّد.',
-    'he.cta': 'تسوّق المجموعة &#8598;',
+    'he.line': 'ملابس رياضية بأربعة ألوان. مفصّلة لشمس حادة.',
+    'he.cta': 'المجموعة &#8595;',
   };
   const HERO_EN = {};
   $$('.he [data-i18n]').forEach((n) => (HERO_EN[n.dataset.i18n] = n.innerHTML));
@@ -113,12 +131,12 @@
       PIECES.forEach((p) => {
         const [hex, colour] = p.colours[set];
         const a = document.createElement('a');
-        a.className = 'card';
+        a.className = 'card rv';
         a.href = '#';
         a.dataset.set = set;
         a.hidden = filter !== 'all' && filter !== set;
         a.innerHTML = `
-          <div class="card__img ph"></div>
+          <div class="card__img ph wipe"></div>
           <div class="card__meta">
             <span class="card__name">${t('p.' + p.key)}</span>
             <span class="card__price">${PRICES[p.key]}</span>
@@ -130,6 +148,7 @@
         grid.appendChild(a);
       })
     );
+    watchReveals();
   }
 
   function setFilter(f) {
@@ -141,16 +160,80 @@
   $$('#filters button').forEach((b) => b.addEventListener('click', () => setFilter(b.dataset.f)));
   $$('[data-filter]').forEach((a) => a.addEventListener('click', () => setFilter(a.dataset.filter)));
 
+  // ---------- Collection ----------
+
+  function buildCollection() {
+    const host = $('#sets');
+    host.innerHTML = '';
+    CHAPTERS.forEach((c, i) => {
+      const col = (k) => PIECES.find((p) => p.key === k).colours[c.set];
+      const el = document.createElement('article');
+      el.className = 'chap';
+      el.innerHTML = `
+        <div class="chap__mainwrap rv"><div class="chap__main ph wipe drift" style="--ph:${col('bra')[0]}"></div></div>
+        <div class="chap__side">
+          <div class="chap__pair rv">
+            <div class="ph wipe" style="--ph:${col('tank')[0]};--d:.12s"></div>
+            <div class="ph wipe" style="--ph:${col('trouser')[0]};--d:.24s"></div>
+          </div>
+          <div class="chap__text rv">
+            <span class="chap__no lift">0${i + 1} / 04</span>
+            <h3 class="chap__name lift" style="--d:.08s">${t('ch.' + c.set + '.name')}</h3>
+            <p class="chap__line hand lift" style="--d:.16s">${t('ch.' + c.set + '.line')}</p>
+            <p class="chap__desc lift" style="--d:.24s">${t('ch.' + c.set + '.desc')}</p>
+            <div class="chap__chips lift" style="--d:.32s">
+              ${['bra', 'tank', 'trouser'].map((k) => `<span><i style="--c:${col(k)[0]}"></i>${t('k.' + col(k)[1])}</span>`).join('')}
+            </div>
+            <a class="chap__link lift" style="--d:.4s" href="#shop" data-filter="${c.set}">${t('ch.shop')}</a>
+          </div>
+        </div>`;
+      $('.chap__main', el).append(img(`assets/posts/${c.frames[0]}.jpg`));
+      $$('.chap__pair .ph', el).forEach((box, j) => box.append(img(`assets/posts/${c.frames[j + 1]}.jpg`)));
+      $('[data-filter]', el).addEventListener('click', () => setFilter(c.set));
+      host.appendChild(el);
+    });
+    watchReveals();
+  }
+
+  // Reveal on scroll: anything marked .rv gets .in once it is a fifth of
+  // the way into view, and keeps it.
+  const revealObs = 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries) => entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); }
+      }), { threshold: 0.2, rootMargin: '0px 0px -8% 0px' })
+    : null;
+
+  function watchReveals() {
+    $$('.rv:not(.in)').forEach((el) => (revealObs ? revealObs.observe(el) : el.classList.add('in')));
+  }
+
+  // The large frames drift a little against the scroll.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let ticking = false;
+  function drift() {
+    ticking = false;
+    const vh = window.innerHeight;
+    $$('.drift').forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      const p = (r.top + r.height / 2 - vh / 2) / vh;
+      el.style.setProperty('--py', (p * -40).toFixed(1) + 'px');
+    });
+  }
+  if (!reduceMotion) window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(drift); } }, { passive: true });
+
   // ---------- Campaign strip ----------
 
   function buildStrip() {
     const strip = $('#strip');
+    strip.classList.add('rv');
     for (let i = 1; i <= 17; i++) {
       const box = document.createElement('div');
-      box.className = 'ph';
+      box.className = 'ph wipe';
       box.append(img(`assets/moodboard/${String(i).padStart(2, '0')}.jpg`));
       strip.appendChild(box);
     }
+    watchReveals();
     let down = false, x0 = 0, s0 = 0;
     strip.addEventListener('pointerdown', (e) => {
       if (e.pointerType !== 'mouse') return;
@@ -175,6 +258,7 @@
     $$('[data-i18n-ph]').forEach((n) => (n.placeholder = t(n.dataset.i18nPh)));
     $('#lang').textContent = next === 'ar' ? 'English' : 'العربية';
     buildGrid();
+    buildCollection();
     playHero();
     try { localStorage.setItem('mairo-lang', next); } catch (e) {}
   }
@@ -228,8 +312,10 @@
 
   $('#year').textContent = new Date().getFullYear();
   buildGrid();
+  buildCollection();
   buildStrip();
   playHero();
+  watchReveals();
 
   let saved = null;
   try { saved = localStorage.getItem('mairo-lang'); } catch (e) {}

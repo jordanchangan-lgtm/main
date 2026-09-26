@@ -27,33 +27,20 @@
         <i class="hv-grain"></i><i class="hv-grad"></i>
       </div>
       <div class="he">
-        <p class="he-top js-rise" style="--d:.1s">
-          <span data-i18n="he.t1">Collection <br>No. 01</span>
-          <span data-i18n="he.t2">Activewear <br>&amp; set</span>
-          <span data-i18n="he.t3">Three pieces <br>Four colours</span>
-          <span data-i18n="he.t4">Amman <br>/ Worldwide</span>
-          <span data-i18n="he.t5">Edition <br>SS 2026</span>
-        </p>
-        <h1 class="he-head js-rise" style="--d:.25s" data-i18n="he.head">One panel.<br>Nothing crosses.</h1>
-        <p class="he-sub js-rise" style="--d:.45s" data-i18n="he.sub">Cut for<br>hard light.</p>
-        <p class="he-year js-rise" style="--d:.6s">&copy;20<br>26</p>
-        <i class="he-rule he-rule1 js-rule" style="--d:.5s"></i><i class="he-rule he-rule2 js-rule" style="--d:.65s"></i>
-        <p class="he-p he-p1 js-rise" style="--d:.7s" data-i18n="he.p1">An asymmetric tank. A racerback bra with one closed back panel. Wide trousers that fall to the floor. Nothing on the front.</p>
-        <p class="he-p he-p2 js-rise" style="--d:.85s" data-i18n="he.p2">Made for midday. Plaster walls, hard sun, one clean shadow. Four sets in true colour: red, cream, pink and purple. The name sits once on the back, small.</p>
-        <span class="he-tab he-tab1 js-rise" style="--d:.9s" data-i18n="he.tab1">The sets</span>
-        <span class="he-tab he-tab2 js-rise" style="--d:1s" data-i18n="he.tab2">The pieces</span>
-        <span class="he-v he-v1 js-rise" style="--d:.95s" data-i18n="he.v1">The back. One piece.</span>
-        <span class="he-v he-v2 js-rise" style="--d:1.05s" data-i18n="he.v2">Fold everything. Nothing creases.</span>
-        <a class="he-br js-rise" href="#shop" style="--d:1.15s" data-i18n="he.cta">Shop the collection &#8599;</a>
-        <img class="logo he-en js-fade" style="--d:1.2s" src="assets/logo/mairo-white.png" alt="Mairo" width="470" height="71" />
-        <img class="logo he-ar js-fade" style="--d:1.3s" src="assets/logo/mairo-ar-white.png" alt="مايرو" width="339" height="113" />
+        <!-- The wordmark pair where the headline was: English above Arabic, centred on each other. -->
+        <div class="he-marks js-fade" style="--d:.15s">
+          <img class="logo he-en" src="assets/logo/mairo-white.png" alt="Mairo" width="470" height="71" />
+          <img class="logo he-ar" src="assets/logo/mairo-ar-white.png" alt="مايرو" width="339" height="113" />
+        </div>
+        <p class="he-line js-rise" style="--d:.55s" data-i18n="he.line">Activewear in four colours. Cut for hard sun.</p>
+        <a class="he-br js-rise" href="#collection" style="--d:.8s" data-i18n="he.cta">The collection &#8595;</a>
       </div>
     </section>
 
     <header class="head" id="head">
       <nav class="head__nav">
         <a href="#shop" data-i18n="nav.shop">Shop</a>
-        <a href="#sets" data-i18n="nav.sets">Sets</a>
+        <a href="#collection" data-i18n="nav.sets">Sets</a>
         <a href="#campaign" data-i18n="nav.campaign">Campaign</a>
       </nav>
       <a class="head__mark" href="#top" aria-label="Mairo">
@@ -68,18 +55,13 @@
 
     <main>
 
-      <!-- Two-up, centred captions underneath -->
-      <section class="duo" id="sets">
-        <a class="duo__item" href="#shop" data-filter="cream">
-          <div class="ph duo__img"><img src="assets/posts/cream-1.jpg" alt="" loading="lazy" /></div>
-          <span class="duo__title" data-i18n="set.cream">The Cream Set</span>
-          <span class="duo__link" data-i18n="cta.discover">Discover</span>
-        </a>
-        <a class="duo__item" href="#shop" data-filter="pink">
-          <div class="ph duo__img"><img src="assets/posts/pink-1.jpg" alt="" loading="lazy" /></div>
-          <span class="duo__title" data-i18n="set.pink">The Pink Set</span>
-          <span class="duo__link" data-i18n="cta.discover">Discover</span>
-        </a>
+      <!-- The collection: one chapter per set. Images wipe up into place on scroll, the way the Latent site reveals its work. -->
+      <section class="coll" id="collection">
+        <header class="coll__head rv">
+          <span class="coll__eyebrow lift" data-i18n="coll.eyebrow">Collection No. 01</span>
+          <h2 class="coll__title hand lift" style="--d:.1s" data-i18n="coll.title">Four sets. One sun.</h2>
+        </header>
+        <div id="sets"></div>
       </section>
 
       <!-- Product listing -->
@@ -95,15 +77,6 @@
           </div>
         </div>
         <div class="grid" id="grid"></div>
-      </section>
-
-      <!-- Single centred editorial frame -->
-      <section class="solo">
-        <a class="solo__item" href="#campaign">
-          <div class="ph solo__img"><img src="assets/posts/purple-1-eyelevel.jpg" alt="" loading="lazy" /></div>
-          <span class="duo__title" data-i18n="set.purple">The Purple Set</span>
-          <span class="duo__link" data-i18n="cta.campaign">View campaign</span>
-        </a>
       </section>
 
       <!-- Campaign: the moodboard prints, drag to scroll -->

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-set="red">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mairo</title>
+    <meta name="description" content="Mairo activewear. Three pieces. Four colours." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Aref+Ruqaa:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header: the logo pair is always the drawn wordmark images, never a typeset name. -->
+    <header class="bar">
+      <a class="mark" href="#top" aria-label="Mairo">
+        <img class="logo logo--en" src="assets/logo/mairo-black.png" alt="Mairo" width="470" height="71" />
+      </a>
+      <nav class="nav">
+        <a href="#set" data-i18n="nav.set">The set</a>
+        <a href="#pieces" data-i18n="nav.pieces">The pieces</a>
+        <a href="#board" data-i18n="nav.board">Moodboard</a>
+      </nav>
+      <button class="lang" type="button" id="lang" aria-label="Switch language">عربي</button>
+    </header>
+
+    <main id="top">
+      <!-- Hero: peach ground, English mark above Arabic, centred. -->
+      <section class="hero">
+        <div class="hero__marks">
+          <img class="logo logo--hero" src="assets/logo/mairo-black.png" alt="Mairo" width="470" height="71" />
+          <img class="logo logo--hero-ar" src="assets/logo/mairo-ar-black.png" alt="مايرو" width="339" height="113" />
+        </div>
+        <p class="hand hero__line" data-i18n="hero.line">Three pieces. Four colours.</p>
+        <div class="hero__dots" aria-hidden="true">
+          <span style="--c: #d8382c"></span><span style="--c: #f3ece4"></span
+          ><span style="--c: #f698ac"></span><span style="--c: #d178d8"></span>
+        </div>
+      </section>
+
+      <!-- The set: pick a colourway, the whole block recolours. -->
+      <section class="set" id="set">
+        <div class="set__head">
+          <h2 class="hand" data-i18n="set.title">Pick a colour.</h2>
+          <div class="set__tabs" role="tablist">
+            <button role="tab" data-pick="red" aria-selected="true" data-i18n="c.red">Red</button>
+            <button role="tab" data-pick="cream" aria-selected="false" data-i18n="c.cream">Cream</button>
+            <button role="tab" data-pick="pink" aria-selected="false" data-i18n="c.pink">Pink</button>
+            <button role="tab" data-pick="purple" aria-selected="false" data-i18n="c.purple">Purple</button>
+          </div>
+        </div>
+
+        <div class="set__body">
+          <figure class="frame frame--hero">
+            <img id="setPhoto" alt="" loading="lazy" />
+          </figure>
+
+          <ul class="swatches">
+            <li class="swatch swatch--bra">
+              <span class="swatch__chip"></span>
+              <span class="swatch__name" data-i18n="p.bra">Sports bra</span>
+              <code class="swatch__hex" data-hex="bra"></code>
+            </li>
+            <li class="swatch swatch--tank">
+              <span class="swatch__chip"></span>
+              <span class="swatch__name" data-i18n="p.tank">Asymmetric tank</span>
+              <code class="swatch__hex" data-hex="tank"></code>
+            </li>
+            <li class="swatch swatch--trouser">
+              <span class="swatch__chip"></span>
+              <span class="swatch__name" data-i18n="p.trouser">Wide-leg trousers</span>
+              <code class="swatch__hex" data-hex="trouser"></code>
+            </li>
+          </ul>
+
+          <div class="frame-row">
+            <figure class="frame"><img id="setPhoto2" alt="" loading="lazy" /></figure>
+            <figure class="frame"><img id="setPhoto3" alt="" loading="lazy" /></figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- The pieces: three flat lines, one per garment. -->
+      <section class="pieces" id="pieces">
+        <article class="piece piece--tank">
+          <span class="piece__no">01</span>
+          <h3 data-i18n="p.tank">Asymmetric tank</h3>
+          <p class="hand" data-i18n="p.tank.line">One strap. One diagonal.</p>
+        </article>
+        <article class="piece piece--bra">
+          <span class="piece__no">02</span>
+          <h3 data-i18n="p.bra">Sports bra</h3>
+          <p class="hand" data-i18n="p.bra.line">The back. One piece.</p>
+        </article>
+        <article class="piece piece--trouser">
+          <span class="piece__no">03</span>
+          <h3 data-i18n="p.trouser">Wide-leg trousers</h3>
+          <p class="hand" data-i18n="p.trouser.line">Wide. Plain. To the floor.</p>
+        </article>
+      </section>
+
+      <!-- Moodboard: the 17 prints, scattered like they were pinned by hand. -->
+      <section class="board" id="board">
+        <h2 class="hand" data-i18n="board.title">Midday. Plaster. Colour.</h2>
+        <div class="board__grid" id="boardGrid"></div>
+      </section>
+    </main>
+
+    <!-- Footer: English mark bottom-left, Arabic bottom-right. No studio credit. -->
+    <footer class="foot">
+      <img class="logo logo--foot" src="assets/logo/mairo-black.png" alt="Mairo" width="470" height="71" />
+      <span class="foot__year">© <span id="year"></span></span>
+      <img class="logo logo--foot-ar" src="assets/logo/mairo-ar-black.png" alt="مايرو" width="339" height="113" />
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -8,112 +8,125 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Aref+Ruqaa:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Aref+Ruqaa&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Header: the logo pair is always the drawn wordmark images, never a typeset name. -->
-    <header class="bar">
-      <a class="mark" href="#top" aria-label="Mairo">
-        <img class="logo logo--en" src="assets/logo/mairo-black.png" alt="Mairo" width="470" height="71" />
-      </a>
-      <nav class="nav">
-        <a href="#set" data-i18n="nav.set">The set</a>
-        <a href="#pieces" data-i18n="nav.pieces">The pieces</a>
-        <a href="#board" data-i18n="nav.board">Moodboard</a>
+    <!-- Announcement ticker -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track" id="ticker"></div>
+    </div>
+
+    <!-- Header: nav left, wordmark centre, utilities right -->
+    <header class="head" id="head">
+      <nav class="head__nav">
+        <a href="#sets" data-i18n="nav.sets">The sets</a>
+        <a href="#pieces" data-i18n="nav.pieces">Pieces</a>
+        <a href="#campaign" data-i18n="nav.campaign">Campaign</a>
       </nav>
-      <button class="lang" type="button" id="lang" aria-label="Switch language">عربي</button>
+      <a class="head__mark" href="#top" aria-label="Mairo">
+        <img class="logo logo--white" src="assets/logo/mairo-white.png" alt="Mairo" width="470" height="71" />
+        <img class="logo logo--black" src="assets/logo/mairo-black.png" alt="Mairo" width="470" height="71" />
+      </a>
+      <div class="head__util">
+        <button class="linkbtn" id="lang" type="button">عربي</button>
+        <a href="#pieces" data-i18n="nav.bag">Bag (0)</a>
+      </div>
     </header>
 
     <main id="top">
-      <!-- Hero: peach ground, English mark above Arabic, centred. -->
-      <section class="hero">
-        <div class="hero__marks">
-          <img class="logo logo--hero" src="assets/logo/mairo-black.png" alt="Mairo" width="470" height="71" />
-          <img class="logo logo--hero-ar" src="assets/logo/mairo-ar-black.png" alt="مايرو" width="339" height="113" />
-        </div>
-        <p class="hand hero__line" data-i18n="hero.line">Three pieces. Four colours.</p>
-        <div class="hero__dots" aria-hidden="true">
-          <span style="--c: #d8382c"></span><span style="--c: #f3ece4"></span
-          ><span style="--c: #f698ac"></span><span style="--c: #d178d8"></span>
-        </div>
-      </section>
-
-      <!-- The set: pick a colourway, the whole block recolours. -->
-      <section class="set" id="set">
-        <div class="set__head">
-          <h2 class="hand" data-i18n="set.title">Pick a colour.</h2>
-          <div class="set__tabs" role="tablist">
-            <button role="tab" data-pick="red" aria-selected="true" data-i18n="c.red">Red</button>
-            <button role="tab" data-pick="cream" aria-selected="false" data-i18n="c.cream">Cream</button>
-            <button role="tab" data-pick="pink" aria-selected="false" data-i18n="c.pink">Pink</button>
-            <button role="tab" data-pick="purple" aria-selected="false" data-i18n="c.purple">Purple</button>
-          </div>
-        </div>
-
-        <div class="set__body">
-          <figure class="frame frame--hero">
-            <img id="setPhoto" alt="" loading="lazy" />
-          </figure>
-
-          <ul class="swatches">
-            <li class="swatch swatch--bra">
-              <span class="swatch__chip"></span>
-              <span class="swatch__name" data-i18n="p.bra">Sports bra</span>
-              <code class="swatch__hex" data-hex="bra"></code>
-            </li>
-            <li class="swatch swatch--tank">
-              <span class="swatch__chip"></span>
-              <span class="swatch__name" data-i18n="p.tank">Asymmetric tank</span>
-              <code class="swatch__hex" data-hex="tank"></code>
-            </li>
-            <li class="swatch swatch--trouser">
-              <span class="swatch__chip"></span>
-              <span class="swatch__name" data-i18n="p.trouser">Wide-leg trousers</span>
-              <code class="swatch__hex" data-hex="trouser"></code>
-            </li>
-          </ul>
-
-          <div class="frame-row">
-            <figure class="frame"><img id="setPhoto2" alt="" loading="lazy" /></figure>
-            <figure class="frame"><img id="setPhoto3" alt="" loading="lazy" /></figure>
+      <!-- 1. Full-bleed hero -->
+      <section class="hero ph" style="--ph: #d8382c">
+        <img src="assets/posts/red-1.jpg" alt="" />
+        <div class="hero__copy">
+          <p class="hand hero__line" data-i18n="hero.line">Three pieces. Four colours.</p>
+          <div class="hero__links">
+            <a href="#pieces" data-i18n="cta.shop">Shop the set</a>
+            <span></span>
+            <a href="#campaign" data-i18n="cta.campaign">View campaign</a>
           </div>
         </div>
       </section>
 
-      <!-- The pieces: three flat lines, one per garment. -->
+      <!-- 2. Two-up editorial split -->
+      <section class="split">
+        <a class="split__half ph" href="#sets" style="--ph: #f3ece4" data-pick="cream">
+          <img src="assets/posts/cream-1.jpg" alt="" loading="lazy" />
+          <span class="split__label"><b data-i18n="c.cream">Cream</b> <u data-i18n="cta.shopshort">Shop</u></span>
+        </a>
+        <a class="split__half ph" href="#sets" style="--ph: #f698ac" data-pick="pink">
+          <img src="assets/posts/pink-1.jpg" alt="" loading="lazy" />
+          <span class="split__label"><b data-i18n="c.pink">Pink</b> <u data-i18n="cta.shopshort">Shop</u></span>
+        </a>
+      </section>
+
+      <!-- 3. The four sets, edge to edge; hover swaps to frame 3 -->
+      <section class="sets" id="sets">
+        <div class="rowhead">
+          <h2 data-i18n="sets.title">The sets</h2>
+          <span data-i18n="sets.count">4 colourways</span>
+        </div>
+        <div class="sets__grid" id="setsGrid"></div>
+      </section>
+
+      <!-- 4. Colour story: sticky, recolours set by set as you scroll -->
+      <section class="story" id="story">
+        <div class="story__stage">
+          <p class="hand story__line" id="storyLine">One panel. Nothing crosses.</p>
+          <div class="story__meta">
+            <span id="storyName">Red</span>
+            <span class="story__dots"><i></i><i></i><i></i></span>
+          </div>
+        </div>
+        <div class="story__steps">
+          <div data-step="red"></div>
+          <div data-step="cream"></div>
+          <div data-step="pink"></div>
+          <div data-step="purple"></div>
+        </div>
+      </section>
+
+      <!-- 5. Product grid with colour swatches -->
       <section class="pieces" id="pieces">
-        <article class="piece piece--tank">
-          <span class="piece__no">01</span>
-          <h3 data-i18n="p.tank">Asymmetric tank</h3>
-          <p class="hand" data-i18n="p.tank.line">One strap. One diagonal.</p>
-        </article>
-        <article class="piece piece--bra">
-          <span class="piece__no">02</span>
-          <h3 data-i18n="p.bra">Sports bra</h3>
-          <p class="hand" data-i18n="p.bra.line">The back. One piece.</p>
-        </article>
-        <article class="piece piece--trouser">
-          <span class="piece__no">03</span>
-          <h3 data-i18n="p.trouser">Wide-leg trousers</h3>
-          <p class="hand" data-i18n="p.trouser.line">Wide. Plain. To the floor.</p>
-        </article>
+        <div class="rowhead">
+          <h2 data-i18n="pieces.title">The pieces</h2>
+          <span data-i18n="pieces.count">3 styles</span>
+        </div>
+        <div class="pieces__grid" id="piecesGrid"></div>
       </section>
 
-      <!-- Moodboard: the 17 prints, scattered like they were pinned by hand. -->
-      <section class="board" id="board">
-        <h2 class="hand" data-i18n="board.title">Midday. Plaster. Colour.</h2>
-        <div class="board__grid" id="boardGrid"></div>
+      <!-- 6. Campaign strip: the 17 prints, drag to scroll -->
+      <section class="campaign" id="campaign">
+        <div class="rowhead">
+          <h2 data-i18n="campaign.title">Campaign</h2>
+          <span class="hand campaign__hint" data-i18n="campaign.line">Midday. Plaster. Colour.</span>
+        </div>
+        <div class="campaign__strip" id="strip"></div>
       </section>
     </main>
 
-    <!-- Footer: English mark bottom-left, Arabic bottom-right. No studio credit. -->
+    <!-- Footer: sign-up, links, English mark bottom-left, Arabic bottom-right. No studio credit. -->
     <footer class="foot">
-      <img class="logo logo--foot" src="assets/logo/mairo-black.png" alt="Mairo" width="470" height="71" />
-      <span class="foot__year">© <span id="year"></span></span>
-      <img class="logo logo--foot-ar" src="assets/logo/mairo-ar-black.png" alt="مايرو" width="339" height="113" />
+      <div class="foot__top">
+        <form class="foot__form" onsubmit="return false">
+          <label for="email" data-i18n="foot.join">Join the list.</label>
+          <div class="foot__field">
+            <input id="email" type="email" placeholder="Email" />
+            <button type="submit" data-i18n="foot.submit">Sign up</button>
+          </div>
+        </form>
+        <ul class="foot__links">
+          <li><a href="#" data-i18n="foot.ig">Instagram</a></li>
+          <li><a href="#" data-i18n="foot.contact">Contact</a></li>
+          <li><a href="#" data-i18n="foot.shipping">Shipping</a></li>
+        </ul>
+      </div>
+      <div class="foot__marks">
+        <img class="logo foot__en" src="assets/logo/mairo-black.png" alt="Mairo" width="470" height="71" />
+        <img class="logo foot__ar" src="assets/logo/mairo-ar-black.png" alt="مايرو" width="339" height="113" />
+      </div>
     </footer>
 
     <script src="script.js"></script>

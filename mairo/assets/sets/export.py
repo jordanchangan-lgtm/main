@@ -1,5 +1,6 @@
 import sys
 from PIL import Image
+Image.MAX_IMAGE_PIXELS = None
 src, name = sys.argv[1], sys.argv[2]
 im = Image.open(src).convert('RGB')
 w, h = im.size

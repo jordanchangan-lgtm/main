@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mairo</title>
+    <title>Mairo — Shop</title>
     <meta name="description" content="Mairo. Collection 01." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,29 +14,6 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Hero: a looping film under small mono type, after the Latent studio hero.
-         The name appears only as the drawn wordmarks, English bottom-left, Arabic bottom-right. -->
-    <section class="hero" id="top">
-      <div class="hv" aria-hidden="true">
-        <video class="hv-v hv-d" muted loop playsinline autoplay preload="auto" poster="assets/hero/hero-poster.jpg">
-          <source src="assets/hero/hero-loop.mp4" type="video/mp4" />
-        </video>
-        <video class="hv-v hv-m" muted loop playsinline autoplay preload="auto" poster="assets/hero/hero-poster-m.jpg">
-          <source src="assets/hero/hero-loop-m.mp4" type="video/mp4" />
-        </video>
-        <i class="hv-grain"></i><i class="hv-grad"></i>
-      </div>
-      <div class="he">
-        <!-- The wordmark pair where the headline was: English above Arabic, centred on each other. -->
-        <div class="he-marks js-fade" style="--d:.15s">
-          <img class="logo he-en" src="assets/logo/mairo-white.png" alt="Mairo" width="470" height="71" />
-          <img class="logo he-ar" src="assets/logo/mairo-ar-white.png" alt="مايرو" width="339" height="113" />
-        </div>
-        <p class="he-line js-rise" style="--d:.55s" data-i18n="he.line">Activewear in four colours. Cut for hard sun.</p>
-        <a class="he-br js-rise" href="#collection" style="--d:.8s" data-i18n="he.cta">The collection &#8595;</a>
-      </div>
-    </section>
-
     <header class="head" id="head">
       <nav class="head__nav">
         <a href="shop.html" data-i18n="nav.shop">Shop</a>
@@ -51,23 +28,19 @@
       </div>
     </header>
 
-    <main>
-
-      <!-- The collection: one chapter per set. Images wipe up into place on scroll, the way the Latent site reveals its work. -->
-      <section class="coll" id="collection">
-        <header class="coll__head rv">
-          <span class="coll__eyebrow lift" data-i18n="coll.eyebrow">Collection No. 01</span>
-          <h2 class="coll__title hand lift" style="--d:.1s" data-i18n="coll.title">Four sets. One sun.</h2>
-        </header>
-        <div id="sets"></div>
+    <main class="shop-page">
+      <section class="sh-intro rv">
+        <span class="coll__eyebrow lift" data-i18n="shop.eyebrow">Collection No. 01</span>
+        <h1 class="sh-intro__title hand lift" style="--d:.08s" data-i18n="shop.title">The shop</h1>
+        <p class="sh-intro__lede lift" style="--d:.16s" data-i18n="shop.lede">Four sets, three pieces in each. Take the whole set or one piece.</p>
+        <nav class="sh-tabs lift" style="--d:.24s">
+          <a href="#red" data-i18n="c.red">Red</a>
+          <a href="#cream" data-i18n="c.cream">Cream</a>
+          <a href="#pink" data-i18n="c.pink">Pink</a>
+          <a href="#purple" data-i18n="c.purple">Purple</a>
+        </nav>
       </section>
-
-      <!-- The end of the landing page: one button into the shop. -->
-      <section class="end rv">
-        <span class="coll__eyebrow lift" data-i18n="end.eyebrow">Collection No. 01</span>
-        <h2 class="end__title hand lift" style="--d:.08s" data-i18n="end.title">Three pieces. Four colours.</h2>
-        <a class="end__btn lift" style="--d:.18s" href="shop.html" data-i18n="end.btn">Shop the collection</a>
-      </section>
+      <div id="shopSets"></div>
     </main>
 
     <footer class="foot">

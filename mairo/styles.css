@@ -84,8 +84,8 @@ a:hover, button:hover { text-decoration: underline; text-underline-offset: 3px; 
 .head__util { justify-content: flex-end; }
 .head__mark { width: 112px; }
 .head__mark .logo { width: 100%; height: auto; }
-#lang { font-family: 'IBM Plex Sans Arabic', sans-serif; }
-[lang='ar'] #lang { font-family: 'Inter', sans-serif; }
+.js-lang { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+[lang='ar'] .js-lang { font-family: 'Inter', sans-serif; }
 
 /* ---------- Hero ----------
    Same build as the Latent studio hero: a looping film under mono
@@ -293,6 +293,61 @@ a:hover, button:hover { text-decoration: underline; text-underline-offset: 3px; 
 .strip.is-drag { cursor: grabbing; }
 .strip .ph:nth-child(2) { --d: .08s; } .strip .ph:nth-child(3) { --d: .16s; } .strip .ph:nth-child(4) { --d: .24s; }
 .strip .ph { flex: 0 0 auto; height: min(62svh, 560px); aspect-ratio: 4 / 5; }
+
+/* ---------- End of the landing page ---------- */
+
+.end { display: grid; justify-items: center; gap: 18px; text-align: center; padding: clamp(40px, 6vw, 80px) var(--pad) clamp(120px, 16vw, 220px); }
+.end__title { font-size: clamp(44px, 6vw, 92px); }
+.end__btn {
+  margin-top: 14px;
+  display: inline-block;
+  padding: 18px 44px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.end__btn:hover { background: #d8382c; }
+[lang='ar'] .end__btn { letter-spacing: 0; font-size: 15px; }
+
+/* ---------- Shop page ---------- */
+
+.sh-intro { display: grid; justify-items: center; gap: 12px; text-align: center; padding: clamp(80px, 10vw, 140px) var(--pad) clamp(56px, 7vw, 96px); }
+.sh-intro__title { font-size: clamp(52px, 7vw, 104px); margin: 0; font-weight: 400; }
+.sh-intro__lede { max-width: 46ch; color: #3a3838; font-size: 14px; line-height: 1.6; }
+.sh-tabs { display: flex; gap: 22px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+.sh-tabs a { text-decoration: underline; text-underline-offset: 4px; }
+
+.sset { padding: 0 var(--pad); margin-bottom: clamp(100px, 12vw, 180px); scroll-margin-top: calc(var(--head-h) + 20px); }
+.sset__head { display: grid; gap: 6px; max-width: 60ch; margin-bottom: 26px; }
+.sset__name { font-size: clamp(26px, 2.6vw, 38px); font-weight: 400; margin: 4px 0 0; }
+.sset__line { font-size: clamp(28px, 3vw, 44px); margin: 0; }
+.sset__desc { font-size: 14px; line-height: 1.6; color: #3a3838; margin: 6px 0 0; }
+.sset__pair { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(6px, 0.6vw, 10px); }
+.sset__pair .ph { aspect-ratio: 4 / 5; }
+
+.pieces { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 clamp(20px, 3vw, 48px); margin-top: 36px; border-top: 1px solid var(--line); }
+.piece { display: grid; grid-template-columns: 34px 1fr; gap: 16px; padding: 26px 0; }
+.piece__swatch { width: 34px; height: 34px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12); }
+.piece__row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.piece__name { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin: 0; }
+[lang='ar'] .piece__name { letter-spacing: 0; font-size: 15px; }
+.piece__colour { display: block; color: var(--muted); margin-top: 2px; }
+.piece__desc { font-size: 13.5px; line-height: 1.6; color: #3a3838; margin: 12px 0 16px; }
+.piece__add { border: 1px solid var(--text); padding: 11px 22px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.25s, color 0.25s; }
+.piece__add:hover, .piece__add.is-added { background: var(--text); color: var(--bg); text-decoration: none; }
+[lang='ar'] .piece__add { letter-spacing: 0; font-size: 14px; }
+
+@media (max-width: 900px) {
+  .pieces { grid-template-columns: 1fr; }
+  .piece { border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 760px) {
+  .sset__pair { grid-template-columns: 1fr; }
+}
 
 /* ---------- Footer ---------- */
 

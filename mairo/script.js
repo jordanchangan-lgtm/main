@@ -1,4 +1,5 @@
-// Mairo — product grid, filters, campaign strip, EN/AR, asset fallbacks.
+// Mairo — shared by the landing page (index.html) and the shop (shop.html).
+// Hero, collection chapters, shop sets, scroll reveals, bag count, EN/AR.
 
 (function () {
   const root = document.documentElement;
@@ -25,24 +26,20 @@
     },
   ];
 
-  // The four chapters of the collection, in order. Frames are the carousel
-  // posts: 1 is the model in location, 2 the still-life, 3 the odd angle.
-  // The four chapters of the collection, two frames each, cleaned of their
-  // post overlays and rendered at 4K (assets/sets/).
-  const CHAPTERS = [
-    { set: 'red', frames: ['red-a', 'red-b'] },
-    { set: 'cream', frames: ['cream-a', 'cream-b'] },
-    { set: 'pink', frames: ['pink-a', 'pink-b'] },
-    { set: 'purple', frames: ['purple-a', 'purple-b'] },
-  ];
+  // Two frames per set, cleaned of their post overlays: a = the model,
+  // b = a place or object from the same shoot (assets/sets/).
+  const FRAMES = { red: ['red-a', 'red-b'], cream: ['cream-a', 'cream-b'], pink: ['pink-a', 'pink-b'], purple: ['purple-a', 'purple-b'] };
 
-  // Prices aren't set yet; fill these in and they appear on the cards.
+  // Prices aren't set yet; fill these in and they appear in the shop.
   const PRICES = { tank: '', bra: '', trouser: '' };
 
   // ---------- Copy ----------
 
   const EN = {
     'p.tank': 'Asymmetric Tank', 'p.bra': 'Racerback Sports Bra', 'p.trouser': 'Wide-Leg Trouser',
+    'pd.tank': 'One wide strap over the left shoulder. A single bound edge sweeps down to under the right arm, so the right shoulder stays bare.',
+    'pd.bra': 'A wide scoop front and a thick, smooth under-band. The back is one closed panel that tapers to a single strap at the nape. Nothing crosses.',
+    'pd.trouser': 'Cut genuinely wide and falling to the floor. A wide fold-over waistband sits high, just above the navel. No pockets, no seam down the front.',
     'k.aqua': 'Aqua', 'k.taupe': 'Taupe', 'k.burgundy': 'Burgundy', 'k.lime': 'Lime',
     'k.red': 'Red', 'k.ivory': 'Ivory', 'k.rose': 'Rose', 'k.orchid': 'Orchid',
     'k.navy': 'Navy', 'k.black': 'Black', 'k.wine': 'Wine',
@@ -56,26 +53,26 @@
     'ch.pink.desc': 'A rose racerback bra and waistband, wine wide-leg trousers and the burgundy asymmetric tank. One colour family, three depths.',
     'ch.purple.desc': 'An orchid racerback bra and waistband, black wide-leg trousers and the lime asymmetric tank. The loudest of the four.',
     'ch.shop': 'Shop the set',
+    'bag': 'Bag', 'add': 'Add to bag', 'added': 'Added',
   };
 
   const AR = {
-    notice: 'المجموعة ٠١. ثلاث قطع، أربعة ألوان.',
-    'nav.shop': 'تسوّق', 'nav.sets': 'الأطقم', 'nav.campaign': 'الحملة', 'nav.search': 'بحث', 'nav.bag': 'الحقيبة (0)',
-    'hero.credit': 'المجموعة ٠١', 'hero.word': 'الظهيرة', 'cta.shop': 'تسوّق',
-    'set.cream': 'الطقم الكريمي', 'set.pink': 'الطقم الوردي', 'set.purple': 'الطقم البنفسجي',
-    'cta.discover': 'اكتشف', 'cta.campaign': 'شاهد الحملة',
-    'shop.title': 'المجموعة ٠١', 'f.all': 'الكل',
+    'nav.shop': 'تسوّق', 'nav.sets': 'المجموعة', 'nav.search': 'بحث',
+    'coll.eyebrow': 'المجموعة رقم ٠١', 'coll.title': 'أربعة أطقم. شمس واحدة.',
+    'end.eyebrow': 'المجموعة رقم ٠١', 'end.title': 'ثلاث قطع. أربعة ألوان.', 'end.btn': 'تسوّق المجموعة',
+    'shop.eyebrow': 'المجموعة رقم ٠١', 'shop.title': 'المتجر', 'shop.lede': 'أربعة أطقم، ثلاث قطع في كل منها. اختر الطقم كاملًا أو قطعة واحدة.',
     'c.red': 'أحمر', 'c.cream': 'كريمي', 'c.pink': 'وردي', 'c.purple': 'بنفسجي',
-    'campaign.title': 'الحملة',
     'foot.lang': 'اللغة', 'foot.about': 'عن مايرو', 'foot.contact': 'تواصل',
     'foot.ig': 'إنستغرام', 'foot.shipping': 'الشحن', 'foot.returns': 'الإرجاع',
     'foot.faq': 'الأسئلة الشائعة', 'foot.legal': 'الشروط والخصوصية',
     'foot.news': 'اشترك في النشرة البريدية', 'foot.email': 'بريدك الإلكتروني',
     'p.tank': 'قميص غير متماثل', 'p.bra': 'حمّالة صدر رياضية', 'p.trouser': 'بنطال واسع',
+    'pd.tank': 'حمّالة عريضة واحدة على الكتف الأيسر، وحافة مائلة واحدة تنحدر حتى أسفل الذراع الأيمن، فيبقى الكتف الأيمن مكشوفًا.',
+    'pd.bra': 'واجهة مستديرة واسعة وحزام سفلي عريض وأملس. الظهر لوح واحد مغلق يضيق حتى حمّالة واحدة عند مؤخرة العنق. لا شيء يتقاطع.',
+    'pd.trouser': 'قصّة واسعة فعلًا تنسدل حتى الأرض. حزام خصر عريض مطوي يرتفع فوق السرّة بقليل. بلا جيوب، وبلا خياطة في المنتصف.',
     'k.aqua': 'أزرق مائي', 'k.taupe': 'بنّي رمادي', 'k.burgundy': 'عنابي', 'k.lime': 'ليموني',
     'k.red': 'أحمر', 'k.ivory': 'عاجي', 'k.rose': 'وردي', 'k.orchid': 'أرجواني',
     'k.navy': 'كحلي', 'k.black': 'أسود', 'k.wine': 'خمري',
-    'coll.eyebrow': 'المجموعة رقم ٠١', 'coll.title': 'أربعة أطقم. شمس واحدة.',
     'ch.red.name': 'الطقم الأحمر', 'ch.cream.name': 'الطقم الكريمي', 'ch.pink.name': 'الطقم الوردي', 'ch.purple.name': 'الطقم البنفسجي',
     'ch.red.line': 'أحمر على كحلي. أزرق مائي فوقه.',
     'ch.cream.line': 'كريمي على أسود. بنّي رمادي فوقه.',
@@ -86,9 +83,10 @@
     'ch.pink.desc': 'حمّالة صدر وحزام خصر بلون وردي، بنطال خمري واسع، والقميص غير المتماثل بلون عنابي. عائلة لونية واحدة بثلاث درجات.',
     'ch.purple.desc': 'حمّالة صدر وحزام خصر بلون أرجواني، بنطال أسود واسع، والقميص غير المتماثل بلون ليموني. أجرأ الأطقم الأربعة.',
     'ch.shop': 'تسوّق الطقم',
+    'bag': 'الحقيبة', 'add': 'أضف إلى الحقيبة', 'added': 'أُضيفت',
   };
 
-  // Hero lines keep their line breaks, so they are swapped as HTML.
+  // Hero lines keep their markup, so they are swapped as HTML.
   const HERO_AR = {
     'he.line': 'ملابس رياضية بأربعة ألوان. مفصّلة لشمس حادة.',
     'he.cta': 'المجموعة &#8595;',
@@ -101,15 +99,15 @@
 
   let lang = 'en';
   const t = (k) => (lang === 'ar' ? AR[k] : undefined) ?? EN[k] ?? k;
+  const colourOf = (set, key) => PIECES.find((p) => p.key === key).colours[set];
 
   // ---------- Images ----------
 
-  function img(src, cls) {
+  function img(src) {
     const el = new Image();
     el.alt = '';
     el.loading = 'lazy';
     el.decoding = 'async';
-    if (cls) el.className = cls;
     el.src = src;
     return el;
   }
@@ -118,85 +116,13 @@
     const el = e.target;
     if (!(el instanceof HTMLImageElement)) return;
     if (el.classList.contains('logo')) return el.classList.add('is-missing');
-    if (el.classList.contains('alt')) return el.remove();
     el.closest('.ph')?.classList.add('is-empty');
   }, true);
 
-  // ---------- Product grid ----------
+  // ---------- Reveal on scroll ----------
 
-  let filter = 'all';
-
-  function buildGrid() {
-    const grid = $('#grid');
-    grid.innerHTML = '';
-    SETS.forEach((set) =>
-      PIECES.forEach((p) => {
-        const [hex, colour] = p.colours[set];
-        const a = document.createElement('a');
-        a.className = 'card rv';
-        a.href = '#';
-        a.dataset.set = set;
-        a.hidden = filter !== 'all' && filter !== set;
-        a.innerHTML = `
-          <div class="card__img ph wipe"></div>
-          <div class="card__meta">
-            <span class="card__name">${t('p.' + p.key)}</span>
-            <span class="card__price">${PRICES[p.key]}</span>
-            <span class="card__colour">${t('k.' + colour)}</span>
-            <span class="chips">${SETS.map((s) => `<i class="${s === set ? 'on' : ''}" style="--c:${p.colours[s][0]}"></i>`).join('')}</span>
-          </div>`;
-        // Front on the card, back on hover.
-        $('.card__img', a).append(img(`assets/product/${p.key}-${set}.jpg`), img(`assets/product/${p.key}-${set}-back.jpg`, 'alt'));
-        grid.appendChild(a);
-      })
-    );
-    watchReveals();
-  }
-
-  function setFilter(f) {
-    filter = f;
-    $$('#filters button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.f === f)));
-    $$('.card').forEach((c) => (c.hidden = f !== 'all' && c.dataset.set !== f));
-  }
-
-  $$('#filters button').forEach((b) => b.addEventListener('click', () => setFilter(b.dataset.f)));
-  $$('[data-filter]').forEach((a) => a.addEventListener('click', () => setFilter(a.dataset.filter)));
-
-  // ---------- Collection ----------
-
-  function buildCollection() {
-    const host = $('#sets');
-    host.innerHTML = '';
-    CHAPTERS.forEach((c, i) => {
-      const col = (k) => PIECES.find((p) => p.key === k).colours[c.set];
-      const el = document.createElement('article');
-      el.className = 'chap';
-      el.innerHTML = `
-        <div class="chap__pair rv">
-          <div class="chap__img ph wipe drift" style="--ph:${col('bra')[0]}"></div>
-          <div class="chap__img ph wipe drift" style="--ph:${col('trouser')[0]};--d:.14s"></div>
-          <div class="chap__over">
-            <span class="chap__no lift" style="--d:.5s">0${i + 1} / 04</span>
-            <h3 class="chap__name lift" style="--d:.58s">${t('ch.' + c.set + '.name')}</h3>
-            <p class="chap__line hand lift" style="--d:.66s">${t('ch.' + c.set + '.line')}</p>
-          </div>
-        </div>
-        <div class="chap__text rv">
-          <p class="chap__desc lift">${t('ch.' + c.set + '.desc')}</p>
-          <div class="chap__chips lift" style="--d:.08s">
-            ${['bra', 'tank', 'trouser'].map((k) => `<span><i style="--c:${col(k)[0]}"></i>${t('k.' + col(k)[1])}</span>`).join('')}
-          </div>
-          <a class="chap__link lift" style="--d:.16s" href="#shop" data-filter="${c.set}">${t('ch.shop')}</a>
-        </div>`;
-      $$('.chap__img', el).forEach((box, j) => box.append(img(`assets/sets/${c.frames[j]}.jpg`)));
-      $('[data-filter]', el).addEventListener('click', () => setFilter(c.set));
-      host.appendChild(el);
-    });
-    watchReveals();
-  }
-
-  // Reveal on scroll: anything marked .rv gets .in once it is a fifth of
-  // the way into view, and keeps it.
+  // Anything marked .rv gets .in once it is a fifth of the way into view,
+  // and keeps it: nothing disappears again on the way back.
   const revealObs = 'IntersectionObserver' in window
     ? new IntersectionObserver((entries) => entries.forEach((e) => {
         if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); }
@@ -207,7 +133,7 @@
     $$('.rv:not(.in)').forEach((el) => (revealObs ? revealObs.observe(el) : el.classList.add('in')));
   }
 
-  // The large frames drift a little against the scroll.
+  // Large frames drift a little against the scroll.
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let ticking = false;
   function drift() {
@@ -222,54 +148,101 @@
   }
   if (!reduceMotion) window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(drift); } }, { passive: true });
 
-  // ---------- Campaign strip ----------
+  // ---------- Landing: collection chapters ----------
 
-  function buildStrip() {
-    const strip = $('#strip');
-    strip.classList.add('rv');
-    for (let i = 1; i <= 17; i++) {
-      const box = document.createElement('div');
-      box.className = 'ph wipe';
-      box.append(img(`assets/moodboard/${String(i).padStart(2, '0')}.jpg`));
-      strip.appendChild(box);
-    }
-    watchReveals();
-    let down = false, x0 = 0, s0 = 0;
-    strip.addEventListener('pointerdown', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      down = true; x0 = e.clientX; s0 = strip.scrollLeft;
-      strip.classList.add('is-drag');
+  function buildCollection() {
+    const host = $('#sets');
+    if (!host) return;
+    host.innerHTML = '';
+    SETS.forEach((set, i) => {
+      const el = document.createElement('article');
+      el.className = 'chap';
+      el.innerHTML = `
+        <div class="chap__pair rv">
+          <div class="chap__img ph wipe drift" style="--ph:${colourOf(set, 'bra')[0]}"></div>
+          <div class="chap__img ph wipe drift" style="--ph:${colourOf(set, 'trouser')[0]};--d:.14s"></div>
+          <div class="chap__over">
+            <span class="chap__no lift" style="--d:.5s">0${i + 1} / 04</span>
+            <h3 class="chap__name lift" style="--d:.58s">${t('ch.' + set + '.name')}</h3>
+            <p class="chap__line hand lift" style="--d:.66s">${t('ch.' + set + '.line')}</p>
+          </div>
+        </div>
+        <div class="chap__text rv">
+          <p class="chap__desc lift">${t('ch.' + set + '.desc')}</p>
+          <div class="chap__chips lift" style="--d:.08s">
+            ${['bra', 'tank', 'trouser'].map((k) => `<span><i style="--c:${colourOf(set, k)[0]}"></i>${t('k.' + colourOf(set, k)[1])}</span>`).join('')}
+          </div>
+          <a class="chap__link lift" style="--d:.16s" href="shop.html#${set}">${t('ch.shop')}</a>
+        </div>`;
+      $$('.chap__img', el).forEach((box, j) => box.append(img(`assets/sets/${FRAMES[set][j]}.jpg`)));
+      host.appendChild(el);
     });
-    window.addEventListener('pointermove', (e) => down && (strip.scrollLeft = s0 - (e.clientX - x0)));
-    window.addEventListener('pointerup', () => { down = false; strip.classList.remove('is-drag'); });
   }
 
-  // ---------- Language ----------
+  // ---------- Shop: one section per set, a card per piece ----------
 
-  function setLang(next) {
-    lang = next;
-    root.lang = next;
-    root.dir = next === 'ar' ? 'rtl' : 'ltr';
-    $$('[data-i18n]').forEach((n) => {
-      const k = n.dataset.i18n;
-      if (k in HERO_EN) n.innerHTML = next === 'ar' ? HERO_AR[k] : HERO_EN[k];
-      else n.textContent = t(k);
+  function buildShop() {
+    const host = $('#shopSets');
+    if (!host) return;
+    host.innerHTML = '';
+    SETS.forEach((set, i) => {
+      const sec = document.createElement('section');
+      sec.className = 'sset';
+      sec.id = set;
+      sec.innerHTML = `
+        <header class="sset__head rv">
+          <span class="chap__no lift">0${i + 1} / 04</span>
+          <h2 class="sset__name lift" style="--d:.06s">${t('ch.' + set + '.name')}</h2>
+          <p class="sset__line hand lift" style="--d:.12s">${t('ch.' + set + '.line')}</p>
+          <p class="sset__desc lift" style="--d:.18s">${t('ch.' + set + '.desc')}</p>
+        </header>
+        <div class="sset__pair rv">
+          <div class="ph wipe" style="--ph:${colourOf(set, 'bra')[0]}"></div>
+          <div class="ph wipe" style="--ph:${colourOf(set, 'trouser')[0]};--d:.14s"></div>
+        </div>
+        <ul class="pieces">
+          ${PIECES.map((p, j) => {
+            const [hex, name] = p.colours[set];
+            return `
+            <li class="piece rv">
+              <div class="piece__swatch lift" style="--c:${hex};--d:${j * 0.08}s"></div>
+              <div class="piece__body lift" style="--d:${j * 0.08 + 0.06}s">
+                <div class="piece__row">
+                  <h3 class="piece__name">${t('p.' + p.key)}</h3>
+                  <span class="piece__price">${PRICES[p.key]}</span>
+                </div>
+                <span class="piece__colour">${t('k.' + name)}</span>
+                <p class="piece__desc">${t('pd.' + p.key)}</p>
+                <button type="button" class="piece__add" data-add="${set}-${p.key}">${t('add')}</button>
+              </div>
+            </li>`;
+          }).join('')}
+        </ul>`;
+      $$('.sset__pair .ph', sec).forEach((box, j) => box.append(img(`assets/sets/${FRAMES[set][j]}.jpg`)));
+      host.appendChild(sec);
     });
-    $$('[data-i18n-ph]').forEach((n) => (n.placeholder = t(n.dataset.i18nPh)));
-    $('#lang').textContent = next === 'ar' ? 'English' : 'العربية';
-    buildGrid();
-    buildCollection();
-    playHero();
-    try { localStorage.setItem('mairo-lang', next); } catch (e) {}
   }
 
-  const toggle = () => setLang(lang === 'ar' ? 'en' : 'ar');
-  $('#lang').addEventListener('click', toggle);
-  $('#lang2').addEventListener('click', toggle);
+  // ---------- Bag ----------
+
+  let bag = 0;
+  try { bag = Number(sessionStorage.getItem('mairo-bag')) || 0; } catch (e) {}
+  const drawBag = () => $$('[data-bag]').forEach((el) => (el.textContent = `${t('bag')} (${bag})`));
+
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-add]');
+    if (!b) return;
+    bag += 1;
+    try { sessionStorage.setItem('mairo-bag', String(bag)); } catch (err) {}
+    drawBag();
+    b.textContent = t('added');
+    b.classList.add('is-added');
+    setTimeout(() => { b.textContent = t('add'); b.classList.remove('is-added'); }, 1600);
+  });
 
   // ---------- Hero ----------
 
-  // Wrap every word of a rising line in its own mask. <br> is kept.
+  // Wrap every word of a rising line in its own mask.
   function splitWords(el) {
     let w = 0;
     const walk = (node) => {
@@ -293,14 +266,41 @@
   }
 
   function playHero() {
+    if (!$('.hero')) return;
     $$('.hero .js-rise').forEach((el) => { el.classList.remove('in'); splitWords(el); });
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      $$('.hero .js-rise, .hero .js-rule, .hero .js-fade').forEach((el) => el.classList.add('in'));
+      $$('.hero .js-rise, .hero .js-fade').forEach((el) => el.classList.add('in'));
     }));
   }
 
-  // Start whichever film matches the screen; muted autoplay is allowed.
   $$('.hv-v').forEach((v) => { v.muted = true; v.play?.().catch(() => {}); });
+
+  // ---------- Language ----------
+
+  function build() {
+    buildCollection();
+    buildShop();
+    drawBag();
+    watchReveals();
+  }
+
+  function setLang(next) {
+    lang = next;
+    root.lang = next;
+    root.dir = next === 'ar' ? 'rtl' : 'ltr';
+    $$('[data-i18n]').forEach((n) => {
+      const k = n.dataset.i18n;
+      if (k in HERO_EN) n.innerHTML = next === 'ar' ? HERO_AR[k] : HERO_EN[k];
+      else n.textContent = t(k);
+    });
+    $$('[data-i18n-ph]').forEach((n) => (n.placeholder = t(n.dataset.i18nPh)));
+    $$('.js-lang').forEach((b) => (b.textContent = next === 'ar' ? 'English' : 'العربية'));
+    build();
+    playHero();
+    try { localStorage.setItem('mairo-lang', next); } catch (e) {}
+  }
+
+  $$('.js-lang, #lang2').forEach((b) => b.addEventListener('click', () => setLang(lang === 'ar' ? 'en' : 'ar')));
 
   // ---------- Init ----------
 
@@ -310,14 +310,16 @@
     else el.closest('.ph')?.classList.add('is-empty');
   });
 
-  $('#year').textContent = new Date().getFullYear();
-  buildGrid();
-  buildCollection();
-  buildStrip();
+  const year = $('#year');
+  if (year) year.textContent = new Date().getFullYear();
+
+  build();
   playHero();
-  watchReveals();
 
   let saved = null;
   try { saved = localStorage.getItem('mairo-lang'); } catch (e) {}
   if (saved === 'ar') setLang('ar');
+
+  // Arriving at shop.html#set: scroll there once the sets exist.
+  if (location.hash && $(location.hash)) $(location.hash).scrollIntoView();
 })();

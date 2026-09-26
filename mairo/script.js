@@ -27,11 +27,13 @@
 
   // The four chapters of the collection, in order. Frames are the carousel
   // posts: 1 is the model in location, 2 the still-life, 3 the odd angle.
+  // The four chapters of the collection, two frames each, cleaned of their
+  // post overlays and rendered at 4K (assets/sets/).
   const CHAPTERS = [
-    { set: 'red', frames: ['red-1', 'red-2', 'red-3'] },
-    { set: 'cream', frames: ['cream-1', 'cream-2', 'cream-3'] },
-    { set: 'pink', frames: ['pink-1', 'pink-2', 'pink-3'] },
-    { set: 'purple', frames: ['purple-1-eyelevel', 'purple-2', 'purple-3'] },
+    { set: 'red', frames: ['red-a', 'red-b'] },
+    { set: 'cream', frames: ['cream-a', 'cream-b'] },
+    { set: 'pink', frames: ['pink-a', 'pink-b'] },
+    { set: 'purple', frames: ['purple-a', 'purple-b'] },
   ];
 
   // Prices aren't set yet; fill these in and they appear on the cards.
@@ -170,25 +172,23 @@
       const el = document.createElement('article');
       el.className = 'chap';
       el.innerHTML = `
-        <div class="chap__mainwrap rv"><div class="chap__main ph wipe drift" style="--ph:${col('bra')[0]}"></div></div>
-        <div class="chap__side">
-          <div class="chap__pair rv">
-            <div class="ph wipe" style="--ph:${col('tank')[0]};--d:.12s"></div>
-            <div class="ph wipe" style="--ph:${col('trouser')[0]};--d:.24s"></div>
+        <div class="chap__pair rv">
+          <div class="chap__img ph wipe drift" style="--ph:${col('bra')[0]}"></div>
+          <div class="chap__img ph wipe drift" style="--ph:${col('trouser')[0]};--d:.14s"></div>
+          <div class="chap__over">
+            <span class="chap__no lift" style="--d:.5s">0${i + 1} / 04</span>
+            <h3 class="chap__name lift" style="--d:.58s">${t('ch.' + c.set + '.name')}</h3>
+            <p class="chap__line hand lift" style="--d:.66s">${t('ch.' + c.set + '.line')}</p>
           </div>
-          <div class="chap__text rv">
-            <span class="chap__no lift">0${i + 1} / 04</span>
-            <h3 class="chap__name lift" style="--d:.08s">${t('ch.' + c.set + '.name')}</h3>
-            <p class="chap__line hand lift" style="--d:.16s">${t('ch.' + c.set + '.line')}</p>
-            <p class="chap__desc lift" style="--d:.24s">${t('ch.' + c.set + '.desc')}</p>
-            <div class="chap__chips lift" style="--d:.32s">
-              ${['bra', 'tank', 'trouser'].map((k) => `<span><i style="--c:${col(k)[0]}"></i>${t('k.' + col(k)[1])}</span>`).join('')}
-            </div>
-            <a class="chap__link lift" style="--d:.4s" href="#shop" data-filter="${c.set}">${t('ch.shop')}</a>
+        </div>
+        <div class="chap__text rv">
+          <p class="chap__desc lift">${t('ch.' + c.set + '.desc')}</p>
+          <div class="chap__chips lift" style="--d:.08s">
+            ${['bra', 'tank', 'trouser'].map((k) => `<span><i style="--c:${col(k)[0]}"></i>${t('k.' + col(k)[1])}</span>`).join('')}
           </div>
+          <a class="chap__link lift" style="--d:.16s" href="#shop" data-filter="${c.set}">${t('ch.shop')}</a>
         </div>`;
-      $('.chap__main', el).append(img(`assets/posts/${c.frames[0]}.jpg`));
-      $$('.chap__pair .ph', el).forEach((box, j) => box.append(img(`assets/posts/${c.frames[j + 1]}.jpg`)));
+      $$('.chap__img', el).forEach((box, j) => box.append(img(`assets/sets/${c.frames[j]}.jpg`)));
       $('[data-filter]', el).addEventListener('click', () => setFilter(c.set));
       host.appendChild(el);
     });
@@ -217,7 +217,7 @@
       const r = el.getBoundingClientRect();
       if (r.bottom < 0 || r.top > vh) return;
       const p = (r.top + r.height / 2 - vh / 2) / vh;
-      el.style.setProperty('--py', (p * -40).toFixed(1) + 'px');
+      el.style.setProperty('--py', (p * -28).toFixed(1) + 'px');
     });
   }
   if (!reduceMotion) window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(drift); } }, { passive: true });

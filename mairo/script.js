@@ -26,8 +26,7 @@
     },
   ];
 
-  // Two frames per set, cleaned of their post overlays: a = the model,
-  // b = a place or object from the same shoot (assets/sets/).
+  // Two images per set (assets/sets/).
   const FRAMES = { red: ['red-a', 'red-b'], cream: ['cream-a', 'cream-b'], pink: ['pink-a', 'pink-b'], purple: ['purple-a', 'purple-b'] };
 
   // Prices aren't set yet; fill these in and they appear in the shop.
@@ -49,24 +48,25 @@
     'ch.pink.line': 'Pink on pink. Burgundy on burgundy.',
     'ch.purple.line': 'Orchid on black. Lime on top.',
     'ch.red.desc': 'A red racerback bra and fold-over waistband, navy wide-leg trousers and the aqua asymmetric tank. Plain at the front. The name sits once on the back.',
-    'ch.cream.desc': 'An ivory racerback bra and waistband with black wide-leg trousers, finished with the taupe asymmetric tank. The quietest of the four.',
-    'ch.pink.desc': 'A rose racerback bra and waistband, wine wide-leg trousers and the burgundy asymmetric tank. One colour family, three depths.',
-    'ch.purple.desc': 'An orchid racerback bra and waistband, black wide-leg trousers and the lime asymmetric tank. The loudest of the four.',
+    'ch.cream.desc': 'An ivory racerback bra and waistband with black wide-leg trousers, finished with the taupe asymmetric tank.',
+    'ch.pink.desc': 'A rose racerback bra and waistband, wine wide-leg trousers and the burgundy asymmetric tank.',
+    'ch.purple.desc': 'An orchid racerback bra and waistband, black wide-leg trousers and the lime asymmetric tank.',
     'ch.shop': 'Shop the set',
     'bag': 'Bag', 'add': 'Add to bag', 'added': 'Added',
   };
 
   const AR = {
     'nav.shop': 'تسوّق', 'nav.sets': 'عن مايرو', 'nav.search': 'بحث',
+    'mz.shop': 'تسوّق',
     'cap.red': 'الطقم الأحمر', 'cap.cream': 'الطقم الكريمي', 'cap.pink': 'الطقم الوردي', 'cap.purple': 'الطقم البنفسجي',
     'st.who.l': 'من نحن', 'st.who.h': 'ثلاث قطع. لا أكثر.',
     'st.who.b': 'مايرو ملابس رياضية مختزلة في ثلاث قطع: قميص غير متماثل، وحمّالة صدر رياضية، وبنطال واسع. كل قطعة مفصّلة مرة واحدة، ببساطة، لتُلبس معًا.',
-    'st.what.l': 'ما نصنعه', 'st.what.h': 'أربعة ألوان. شمس واحدة.',
-    'st.what.b': 'تأتي القطع في أربعة أطقم: الأحمر والكريمي والوردي والبنفسجي. كل طقم عائلة لونية واحدة، مصوّرة في ضوء الظهيرة الحاد أمام الجصّ والحجر والماء.',
-    'st.point.l': 'الفكرة', 'st.point.h': 'الواجهة بسيطة. دائمًا.',
-    'st.point.b': 'لا شيء يتقاطع، لا شيء يتجعّد، ولا طباعة على الواجهة. الاسم مرة واحدة، صغيرًا، على الظهر. واللون يقول الباقي.',
+    'st.what.l': 'الأطقم', 'st.what.h': 'أربعة أطقم. نسّقها كما تشاء.',
+    'st.what.b': 'كل قطعة متوفرة في أربعة أطقم: الأحمر والكريمي والوردي والبنفسجي. البس الطقم كاملًا، أو نسّق القطع بين الأطقم.',
+    'st.point.l': 'القصّة', 'st.point.h': 'الواجهة بسيطة. دائمًا.',
+    'st.point.b': 'لا شيء يتقاطع، لا شيء يتجعّد، ولا طباعة على الواجهة. الاسم مرة واحدة، صغيرًا، على الظهر.',
     'coll.eyebrow': 'المجموعة رقم ٠١', 'coll.title': 'أربعة أطقم. شمس واحدة.',
-    'end.eyebrow': 'المجموعة رقم ٠١', 'end.title': 'ثلاث قطع. أربعة ألوان.', 'end.btn': 'تسوّق المجموعة',
+    'end.eyebrow': 'المجموعة رقم ٠١', 'end.title': 'أربعة أطقم. نسّقها كما تشاء.', 'line.text': 'ثلاث قطع. أربعة ألوان. لا شيء يتقاطع.', 'end.btn': 'تسوّق المجموعة',
     'shop.eyebrow': 'المجموعة رقم ٠١', 'shop.title': 'المتجر', 'shop.lede': 'أربعة أطقم، ثلاث قطع في كل منها. اختر الطقم كاملًا أو قطعة واحدة.',
     'c.red': 'أحمر', 'c.cream': 'كريمي', 'c.pink': 'وردي', 'c.purple': 'بنفسجي',
     'foot.lang': 'اللغة', 'foot.about': 'عن مايرو', 'foot.contact': 'تواصل',
@@ -86,16 +86,16 @@
     'ch.pink.line': 'وردي على وردي. عنابي على عنابي.',
     'ch.purple.line': 'أرجواني على أسود. ليموني فوقه.',
     'ch.red.desc': 'حمّالة صدر رياضية حمراء وحزام خصر مطوي، بنطال كحلي واسع، والقميص غير المتماثل بلون أزرق مائي. الواجهة بلا أي علامة، والاسم مرة واحدة على الظهر.',
-    'ch.cream.desc': 'حمّالة صدر وحزام خصر بلون عاجي مع بنطال أسود واسع، والقميص غير المتماثل بلون بنّي رمادي. أهدأ الأطقم الأربعة.',
-    'ch.pink.desc': 'حمّالة صدر وحزام خصر بلون وردي، بنطال خمري واسع، والقميص غير المتماثل بلون عنابي. عائلة لونية واحدة بثلاث درجات.',
-    'ch.purple.desc': 'حمّالة صدر وحزام خصر بلون أرجواني، بنطال أسود واسع، والقميص غير المتماثل بلون ليموني. أجرأ الأطقم الأربعة.',
+    'ch.cream.desc': 'حمّالة صدر وحزام خصر بلون عاجي مع بنطال أسود واسع، والقميص غير المتماثل بلون بنّي رمادي.',
+    'ch.pink.desc': 'حمّالة صدر وحزام خصر بلون وردي، بنطال خمري واسع، والقميص غير المتماثل بلون عنابي.',
+    'ch.purple.desc': 'حمّالة صدر وحزام خصر بلون أرجواني، بنطال أسود واسع، والقميص غير المتماثل بلون ليموني.',
     'ch.shop': 'تسوّق الطقم',
     'bag': 'الحقيبة', 'add': 'أضف إلى الحقيبة', 'added': 'أُضيفت',
   };
 
   // Hero lines keep their markup, so they are swapped as HTML.
   const HERO_AR = {
-    'he.line': 'ملابس رياضية بأربعة ألوان. مفصّلة لشمس حادة.',
+    'he.line': 'ملابس رياضية بثلاث قطع وأربعة ألوان.',
     'he.cta': 'من نحن &#8595;',
   };
   const HERO_EN = {};

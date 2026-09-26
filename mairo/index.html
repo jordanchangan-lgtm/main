@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mairo</title>
-    <meta name="description" content="Mairo. Collection 01." />
+    <meta name="description" content="Mairo activewear. An asymmetric tank, a racerback bra and wide-leg trousers in four colours." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,8 +14,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Hero: a looping film under small mono type, after the Latent studio hero.
-         The name appears only as the drawn wordmarks, English bottom-left, Arabic bottom-right. -->
+    <!-- Hero: looping film, the wordmark pair and one line. -->
     <section class="hero" id="top">
       <div class="hv" aria-hidden="true">
         <video class="hv-v hv-d" muted loop playsinline autoplay preload="auto" poster="assets/hero/hero-poster.jpg">
@@ -32,7 +31,7 @@
           <img class="logo he-en" src="assets/logo/mairo-white.png" alt="Mairo" width="470" height="71" />
           <img class="logo he-ar" src="assets/logo/mairo-ar-white.png" alt="مايرو" width="339" height="113" />
         </div>
-        <p class="he-line js-rise" style="--d:.55s" data-i18n="he.line">Activewear in four colours. Cut for hard sun.</p>
+        <p class="he-line js-rise" style="--d:.55s" data-i18n="he.line">Activewear in three pieces and four colours.</p>
         <a class="he-br js-rise" href="#collection" style="--d:.8s" data-i18n="he.cta">Who we are &#8595;</a>
       </div>
     </section>
@@ -53,76 +52,48 @@
 
     <main>
 
-      <!-- Brand story. Two full-bleed 2x2 mosaics (two films and two stills,
-           then four stills), after the Zara home page, with the wordmark laid
-           across the first and three short blocks of copy between them. -->
+      <!-- Two 2x2 mosaics with the sets; every tile links to that set in the shop. -->
       <section class="mosaic rv" id="collection">
         <div class="mz-grid">
-          <figure class="mz-tile ph wipe" style="--d:0s">
+          <a class="mz-tile ph wipe" href="shop.html#red" style="--d:0s">
             <video class="mz-v" muted loop playsinline autoplay preload="metadata" poster="assets/sets/red-a.jpg"><source src="assets/mosaic/red-a.mp4" type="video/mp4" /></video>
-            <figcaption data-i18n="cap.red">The Red Set</figcaption>
-          </figure>
-          <figure class="mz-tile ph wipe" style="--d:.1s">
+            <span class="mz-cap" data-i18n="cap.red">The Red Set <u data-i18n="mz.shop">Shop</u></span>
+          </a>
+          <a class="mz-tile ph wipe" href="shop.html#pink" style="--d:.1s">
             <img src="assets/sets/pink-b.jpg" alt="" loading="lazy" />
-            <figcaption data-i18n="cap.pink">The Pink Set</figcaption>
-          </figure>
-          <figure class="mz-tile ph wipe" style="--d:.15s">
+            <span class="mz-cap" data-i18n="cap.pink">The Pink Set <u data-i18n="mz.shop">Shop</u></span>
+          </a>
+          <a class="mz-tile ph wipe" href="shop.html#cream" style="--d:.15s">
             <img src="assets/sets/cream-b.jpg" alt="" loading="lazy" />
-            <figcaption data-i18n="cap.cream">The Cream Set</figcaption>
-          </figure>
-          <figure class="mz-tile ph wipe" style="--d:.25s">
+            <span class="mz-cap" data-i18n="cap.cream">The Cream Set <u data-i18n="mz.shop">Shop</u></span>
+          </a>
+          <a class="mz-tile ph wipe" href="shop.html#purple" style="--d:.25s">
             <video class="mz-v" muted loop playsinline autoplay preload="metadata" poster="assets/sets/purple-a.jpg"><source src="assets/mosaic/purple-a.mp4" type="video/mp4" /></video>
-            <figcaption data-i18n="cap.purple">The Purple Set</figcaption>
-          </figure>
+            <span class="mz-cap" data-i18n="cap.purple">The Purple Set <u data-i18n="mz.shop">Shop</u></span>
+          </a>
         </div>
         <div class="mz-mark" aria-hidden="true">
           <img class="logo" src="assets/logo/mairo-white.png" alt="" width="470" height="71" />
         </div>
       </section>
 
-      <section class="about">
-        <div class="ab-col rv">
-          <span class="ab-label lift" data-i18n="st.who.l">Who we are</span>
-          <h2 class="ab-head hand lift" style="--d:.08s" data-i18n="st.who.h">Three pieces. Nothing more.</h2>
-          <p class="ab-body lift" style="--d:.16s" data-i18n="st.who.b">Mairo is activewear reduced to three pieces: an asymmetric tank, a racerback bra and wide-leg trousers. Each is cut once, plainly, and made to be worn together.</p>
-        </div>
-        <div class="ab-col rv">
-          <span class="ab-label lift" data-i18n="st.what.l">What we make</span>
-          <h2 class="ab-head hand lift" style="--d:.08s" data-i18n="st.what.h">Four colours. One sun.</h2>
-          <p class="ab-body lift" style="--d:.16s" data-i18n="st.what.b">The pieces come in four sets: red, cream, pink and purple. Each set is one colour family, shot in hard midday light against plaster, stone and water.</p>
-        </div>
-        <div class="ab-col rv">
-          <span class="ab-label lift" data-i18n="st.point.l">The point</span>
-          <h2 class="ab-head hand lift" style="--d:.08s" data-i18n="st.point.h">Plain at the front. Always.</h2>
-          <p class="ab-body lift" style="--d:.16s" data-i18n="st.point.b">Nothing crosses, nothing creases, nothing is printed on the front. The name sits once, small, on the back. The colour does the rest.</p>
-        </div>
+      <!-- One line in the brand's voice. -->
+      <section class="line rv">
+        <h2 class="line__text hand lift" data-i18n="line.text">Three pieces. Four colours. Nothing crosses.</h2>
       </section>
 
-      <section class="mosaic rv">
-        <div class="mz-grid">
-          <figure class="mz-tile ph wipe" style="--d:0s">
-            <img src="assets/sets/cream-a.jpg" alt="" loading="lazy" />
-            <figcaption data-i18n="cap.cream">The Cream Set</figcaption>
-          </figure>
-          <figure class="mz-tile ph wipe" style="--d:.1s">
-            <img src="assets/sets/red-b.jpg" alt="" loading="lazy" />
-            <figcaption data-i18n="cap.red">The Red Set</figcaption>
-          </figure>
-          <figure class="mz-tile ph wipe" style="--d:.15s">
-            <img src="assets/sets/purple-b.jpg" alt="" loading="lazy" />
-            <figcaption data-i18n="cap.purple">The Purple Set</figcaption>
-          </figure>
-          <figure class="mz-tile ph wipe" style="--d:.25s">
-            <img src="assets/sets/pink-a.jpg" alt="" loading="lazy" />
-            <figcaption data-i18n="cap.pink">The Pink Set</figcaption>
-          </figure>
-        </div>
+      <!-- The crouch, full width. -->
+      <section class="wide rv">
+        <a class="wide__img ph wipe" href="shop.html#purple">
+          <img src="assets/sets/purple-wide.jpg" alt="" loading="lazy" />
+          <span class="mz-cap"><span data-i18n="cap.purple">The Purple Set</span> <u data-i18n="mz.shop">Shop</u></span>
+        </a>
       </section>
 
-      <!-- The end of the landing page: one button into the shop. -->
+      <!-- One button into the shop. -->
       <section class="end rv">
         <span class="coll__eyebrow lift" data-i18n="end.eyebrow">Collection No. 01</span>
-        <h2 class="end__title hand lift" style="--d:.08s" data-i18n="end.title">Three pieces. Four colours.</h2>
+        <h2 class="end__title hand lift" style="--d:.08s" data-i18n="end.title">Four sets. Mix them freely.</h2>
         <a class="end__btn lift" style="--d:.18s" href="shop.html" data-i18n="end.btn">Shop the collection</a>
       </section>
     </main>

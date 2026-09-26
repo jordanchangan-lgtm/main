@@ -108,6 +108,14 @@ High angled camera looking down, eye level, and side-on are all fine.
 Model is locked: the same East Asian woman across every frame — identical face, long
 straight black hair, slim build, barefoot.
 
+The locked identity reference is `assets/model/model-ref.png` (front, three-quarter,
+profile) and `assets/model/model-ref-faces.png` (face close-ups). Attach both to every
+generation. Edits on an old image keep the old face; build the frame from the
+reference instead. Barefoot always, even though the reference wears trainers.
+
+Films play start to end and restart; no start=end loops. Real handheld camera and
+natural body movement.
+
 ---
 
 ## Typography

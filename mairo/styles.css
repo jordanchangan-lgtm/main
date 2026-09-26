@@ -97,7 +97,7 @@ a:hover, button:hover { text-decoration: underline; text-underline-offset: 3px; 
   height: 100svh;
   min-height: 560px;
   overflow: hidden;
-  background: #0b0b0d;
+  background: #0b0b0d url('assets/hero/hero-poster.jpg') center / cover no-repeat;
   color: #f2efe7;
   --hx: clamp(20px, 4.7vw, 68px);
 }
@@ -110,7 +110,7 @@ a:hover, button:hover { text-decoration: underline; text-underline-offset: 3px; 
   background-size: 150px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-.hv-grad { background: linear-gradient(180deg, rgba(11, 11, 13, 0.35) 0%, rgba(11, 11, 13, 0) 22%, rgba(11, 11, 13, 0) 50%, rgba(11, 11, 13, 0.7) 100%); }
+.hv-grad { background: linear-gradient(180deg, rgba(30, 8, 12, 0.42) 0%, rgba(30, 8, 12, 0.14) 24%, rgba(30, 8, 12, 0.14) 60%, rgba(30, 8, 12, 0.6) 100%); }
 
 .he {
   position: absolute;
@@ -120,30 +120,30 @@ a:hover, button:hover { text-decoration: underline; text-underline-offset: 3px; 
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: rgba(242, 239, 231, 0.92);
-  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 1px 2px rgba(40, 8, 14, 0.35), 0 0 18px rgba(40, 8, 14, 0.3);
 }
 .he > * { position: absolute; margin: 0; }
 
-.he-top { left: var(--hx); right: var(--hx); top: clamp(18px, 3.6vh, 34px); display: flex; justify-content: space-between; gap: 12px; font-size: 10.5px; line-height: 1.35; color: rgba(242, 239, 231, 0.7); }
-.he-top span { white-space: nowrap; }
-.he-top span:first-child { color: #fff; font-weight: 500; }
+.he-top { left: var(--hx); right: var(--hx); top: clamp(18px, 3.6vh, 34px); display: flex; justify-content: space-between; gap: 12px; font-size: 10.5px; line-height: 1.35; color: rgba(255, 252, 246, 0.94); }
+.he-top > span { white-space: nowrap; }
+.he-top > span:first-child { color: #fff; font-weight: 500; }
 .he-head { left: var(--hx); top: 23%; font-size: clamp(24px, 3vw, 46px); line-height: 1.02; letter-spacing: 0.01em; font-weight: 500; color: #fff; }
-.he-sub { left: var(--hx); top: 47%; font-size: clamp(13px, 1.3vw, 19px); line-height: 1.15; color: rgba(242, 239, 231, 0.6); }
+.he-sub { left: var(--hx); top: 47%; font-size: clamp(13px, 1.3vw, 19px); line-height: 1.15; color: rgba(255, 252, 246, 0.94); }
 .he-year { direction: ltr; left: 34%; top: 46%; font-size: clamp(26px, 3vw, 44px); line-height: 1; letter-spacing: 0.04em; color: #fff; }
 
-.he-rule { top: 6%; bottom: 9%; width: 1px; background: rgba(242, 239, 231, 0.55); transform: scaleY(0); transform-origin: 50% 0; transition: transform 1.2s cubic-bezier(0.76, 0, 0.24, 1) var(--d, 0s); }
+.he-rule { top: 6%; bottom: 9%; width: 1px; background: rgba(255, 252, 246, 0.8); transform: scaleY(0); transform-origin: 50% 0; transition: transform 1.2s cubic-bezier(0.76, 0, 0.24, 1) var(--d, 0s); }
 .he-rule1 { left: 50%; }
 .he-rule2 { left: 69%; }
 .he-rule.in { transform: scaleY(1); }
 
-.he-p { font-size: 10.5px; line-height: 1.5; color: rgba(242, 239, 231, 0.85); }
+.he-p { font-size: 10.5px; line-height: 1.5; color: #fffcf6; }
 .he-p1 { left: 51%; top: 44%; width: 15%; }
 .he-p2 { left: 70%; top: 40%; width: 19%; }
 
 .he-tab { font-size: 9.5px; letter-spacing: 0.14em; color: #14141a; background: #f2efe7; padding: 8px 4px; writing-mode: vertical-rl; transform: rotate(180deg); line-height: 1; text-shadow: none; }
 .he-tab1 { left: calc(69% - 8px); top: 10%; }
 .he-tab2 { left: calc(50% - 8px); bottom: 9%; }
-.he-v { font-size: 9.5px; letter-spacing: 0.14em; writing-mode: vertical-rl; transform: rotate(180deg); color: rgba(242, 239, 231, 0.75); }
+.he-v { font-size: 9.5px; letter-spacing: 0.14em; writing-mode: vertical-rl; transform: rotate(180deg); color: rgba(255, 252, 246, 0.94); }
 .he-v1 { left: calc(69% + 6px); top: 62%; }
 .he-v2 { left: var(--hx); bottom: 16%; }
 
@@ -168,10 +168,11 @@ a:hover, button:hover { text-decoration: underline; text-underline-offset: 3px; 
 @media (max-width: 1180px) and (min-width: 821px) { .he-p1 { width: 16%; } .he-p2 { width: 20%; } .he-year { left: 32%; } }
 
 @media (max-width: 820px) {
+  .hero { background-image: url('assets/hero/hero-poster-m.jpg'); }
   .hv-d { display: none; }
   .hv-m { display: block; }
   .he-top { font-size: 11px; }
-  .he-top span:nth-child(2), .he-top span:nth-child(3), .he-top span:nth-child(4) { display: none; }
+  .he-top > span:nth-child(2), .he-top > span:nth-child(3), .he-top > span:nth-child(4) { display: none; }
   .he-top br { display: none; }
   .he-head { top: 22%; font-size: clamp(26px, 7.6vw, 34px); }
   .he-sub { top: 40%; font-size: 13px; }

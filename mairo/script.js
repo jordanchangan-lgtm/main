@@ -57,7 +57,14 @@
   };
 
   const AR = {
-    'nav.shop': 'تسوّق', 'nav.sets': 'المجموعة', 'nav.search': 'بحث',
+    'nav.shop': 'تسوّق', 'nav.sets': 'عن مايرو', 'nav.search': 'بحث',
+    'cap.red': 'الطقم الأحمر', 'cap.cream': 'الطقم الكريمي', 'cap.pink': 'الطقم الوردي', 'cap.purple': 'الطقم البنفسجي',
+    'st.who.l': 'من نحن', 'st.who.h': 'ثلاث قطع. لا أكثر.',
+    'st.who.b': 'مايرو ملابس رياضية مختزلة في ثلاث قطع: قميص غير متماثل، وحمّالة صدر رياضية، وبنطال واسع. كل قطعة مفصّلة مرة واحدة، ببساطة، لتُلبس معًا.',
+    'st.what.l': 'ما نصنعه', 'st.what.h': 'أربعة ألوان. شمس واحدة.',
+    'st.what.b': 'تأتي القطع في أربعة أطقم: الأحمر والكريمي والوردي والبنفسجي. كل طقم عائلة لونية واحدة، مصوّرة في ضوء الظهيرة الحاد أمام الجصّ والحجر والماء.',
+    'st.point.l': 'الفكرة', 'st.point.h': 'الواجهة بسيطة. دائمًا.',
+    'st.point.b': 'لا شيء يتقاطع، لا شيء يتجعّد، ولا طباعة على الواجهة. الاسم مرة واحدة، صغيرًا، على الظهر. واللون يقول الباقي.',
     'coll.eyebrow': 'المجموعة رقم ٠١', 'coll.title': 'أربعة أطقم. شمس واحدة.',
     'end.eyebrow': 'المجموعة رقم ٠١', 'end.title': 'ثلاث قطع. أربعة ألوان.', 'end.btn': 'تسوّق المجموعة',
     'shop.eyebrow': 'المجموعة رقم ٠١', 'shop.title': 'المتجر', 'shop.lede': 'أربعة أطقم، ثلاث قطع في كل منها. اختر الطقم كاملًا أو قطعة واحدة.',
@@ -89,7 +96,7 @@
   // Hero lines keep their markup, so they are swapped as HTML.
   const HERO_AR = {
     'he.line': 'ملابس رياضية بأربعة ألوان. مفصّلة لشمس حادة.',
-    'he.cta': 'المجموعة &#8595;',
+    'he.cta': 'من نحن &#8595;',
   };
   const HERO_EN = {};
   $$('.he [data-i18n]').forEach((n) => (HERO_EN[n.dataset.i18n] = n.innerHTML));
@@ -121,12 +128,12 @@
 
   // ---------- Reveal on scroll ----------
 
-  // Anything marked .rv gets .in once it is a fifth of the way into view,
+  // Anything marked .rv gets .in once its top is 15% up the screen,
   // and keeps it: nothing disappears again on the way back.
   const revealObs = 'IntersectionObserver' in window
     ? new IntersectionObserver((entries) => entries.forEach((e) => {
         if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); }
-      }), { threshold: 0.2, rootMargin: '0px 0px -8% 0px' })
+      }), { threshold: 0, rootMargin: '0px 0px -15% 0px' })
     : null;
 
   function watchReveals() {
@@ -196,10 +203,6 @@
           <p class="sset__line hand lift" style="--d:.12s">${t('ch.' + set + '.line')}</p>
           <p class="sset__desc lift" style="--d:.18s">${t('ch.' + set + '.desc')}</p>
         </header>
-        <div class="sset__pair rv">
-          <div class="ph wipe" style="--ph:${colourOf(set, 'bra')[0]}"></div>
-          <div class="ph wipe" style="--ph:${colourOf(set, 'trouser')[0]};--d:.14s"></div>
-        </div>
         <ul class="pieces">
           ${PIECES.map((p, j) => {
             const [hex, name] = p.colours[set];
@@ -218,7 +221,6 @@
             </li>`;
           }).join('')}
         </ul>`;
-      $$('.sset__pair .ph', sec).forEach((box, j) => box.append(img(`assets/sets/${FRAMES[set][j]}.jpg`)));
       host.appendChild(sec);
     });
   }
@@ -273,7 +275,7 @@
     }));
   }
 
-  $$('.hv-v').forEach((v) => { v.muted = true; v.play?.().catch(() => {}); });
+  $$('.hv-v, .mz-v').forEach((v) => { v.muted = true; v.play?.().catch(() => {}); });
 
   // ---------- Language ----------
 

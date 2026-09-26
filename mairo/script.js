@@ -1,79 +1,70 @@
-// Mairo — sets, colour story, pieces, campaign strip, EN/AR, asset fallbacks.
+// Mairo — product grid, filters, campaign strip, EN/AR, asset fallbacks.
 
 (function () {
   const root = document.documentElement;
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-  // ---------- Data ----------
+  // ---------- Catalogue ----------
 
-  const SETS = {
-    red: { bra: '#D8382C', tank: '#80E0E6', trouser: '#1E2A47', frames: ['red-1', 'red-2', 'red-3'] },
-    cream: { bra: '#F3ECE4', tank: '#AB907B', trouser: '#1B191A', frames: ['cream-1', 'cream-2', 'cream-3'] },
-    pink: { bra: '#F698AC', tank: '#49121F', trouser: '#4D151B', frames: ['pink-1', 'pink-2', 'pink-3'] },
-    purple: { bra: '#D178D8', tank: '#E2EBBE', trouser: '#181617', frames: ['purple-1-eyelevel', 'purple-2', 'purple-3'] },
-  };
-  const ORDER = ['red', 'cream', 'pink', 'purple'];
+  const SETS = ['red', 'cream', 'pink', 'purple'];
 
+  // Each piece in each set: [hex, colour name key]. From the brief.
   const PIECES = [
-    { key: 'tank', name: 'p.tank', line: 'p.tank.line' },
-    { key: 'bra', name: 'p.bra', line: 'p.bra.line' },
-    { key: 'trouser', name: 'p.trouser', line: 'p.trouser.line' },
+    {
+      key: 'tank',
+      colours: { red: ['#80E0E6', 'aqua'], cream: ['#AB907B', 'taupe'], pink: ['#49121F', 'burgundy'], purple: ['#E2EBBE', 'lime'] },
+    },
+    {
+      key: 'bra',
+      colours: { red: ['#D8382C', 'red'], cream: ['#F3ECE4', 'ivory'], pink: ['#F698AC', 'rose'], purple: ['#D178D8', 'orchid'] },
+    },
+    {
+      key: 'trouser',
+      colours: { red: ['#1E2A47', 'navy'], cream: ['#1B191A', 'black'], pink: ['#4D151B', 'wine'], purple: ['#181617', 'black'] },
+    },
   ];
 
-  const STORY = {
-    red: 'story.red',
-    cream: 'story.cream',
-    pink: 'story.pink',
-    purple: 'story.purple',
-  };
+  // Prices aren't set yet; fill these in and they appear on the cards.
+  const PRICES = { tank: '', bra: '', trouser: '' };
+
+  // ---------- Copy ----------
 
   const EN = {
-    'c.red': 'Red', 'c.cream': 'Cream', 'c.pink': 'Pink', 'c.purple': 'Purple',
-    'p.tank': 'Asymmetric tank', 'p.bra': 'Racerback sports bra', 'p.trouser': 'Wide-leg trousers',
-    'p.tank.line': 'One strap. One diagonal.',
-    'p.bra.line': 'The back. One piece.',
-    'p.trouser.line': 'Wide. Plain. To the floor.',
-    'story.red': 'One panel. Nothing crosses.',
-    'story.cream': 'The back. One piece.',
-    'story.pink': 'Fold everything. Nothing creases.',
-    'story.purple': 'Wide to the floor.',
-    'set.suffix': 'set',
-    'ticker': ['Three pieces. Four colours.', 'Red. Cream. Pink. Purple.', 'Midday. Plaster. Colour.'],
+    'p.tank': 'Asymmetric Tank', 'p.bra': 'Racerback Sports Bra', 'p.trouser': 'Wide-Leg Trouser',
+    'k.aqua': 'Aqua', 'k.taupe': 'Taupe', 'k.burgundy': 'Burgundy', 'k.lime': 'Lime',
+    'k.red': 'Red', 'k.ivory': 'Ivory', 'k.rose': 'Rose', 'k.orchid': 'Orchid',
+    'k.navy': 'Navy', 'k.black': 'Black', 'k.wine': 'Wine',
   };
 
   const AR = {
-    'nav.sets': 'الأطقم', 'nav.pieces': 'القطع', 'nav.campaign': 'الحملة', 'nav.bag': 'الحقيبة (0)',
-    'hero.line': 'ثلاث قطع. أربعة ألوان.',
-    'cta.shop': 'تسوّق الطقم', 'cta.campaign': 'شاهد الحملة', 'cta.shopshort': 'تسوّق',
-    'sets.title': 'الأطقم', 'sets.count': '٤ ألوان',
-    'pieces.title': 'القطع', 'pieces.count': '٣ تصاميم',
-    'campaign.title': 'الحملة', 'campaign.line': 'الظهيرة. الجصّ. اللون.',
-    'foot.join': 'انضمّ إلى القائمة.', 'foot.submit': 'اشترك',
-    'foot.ig': 'إنستغرام', 'foot.contact': 'تواصل', 'foot.shipping': 'الشحن',
+    notice: 'المجموعة ٠١. ثلاث قطع، أربعة ألوان.',
+    'nav.shop': 'تسوّق', 'nav.sets': 'الأطقم', 'nav.campaign': 'الحملة', 'nav.search': 'بحث', 'nav.bag': 'الحقيبة (0)',
+    'hero.credit': 'المجموعة ٠١', 'hero.word': 'الظهيرة', 'cta.shop': 'تسوّق',
+    'set.cream': 'الطقم الكريمي', 'set.pink': 'الطقم الوردي', 'set.purple': 'الطقم البنفسجي',
+    'cta.discover': 'اكتشف', 'cta.campaign': 'شاهد الحملة',
+    'shop.title': 'المجموعة ٠١', 'f.all': 'الكل',
     'c.red': 'أحمر', 'c.cream': 'كريمي', 'c.pink': 'وردي', 'c.purple': 'بنفسجي',
+    'campaign.title': 'الحملة',
+    'foot.lang': 'اللغة', 'foot.about': 'عن مايرو', 'foot.contact': 'تواصل',
+    'foot.ig': 'إنستغرام', 'foot.shipping': 'الشحن', 'foot.returns': 'الإرجاع',
+    'foot.faq': 'الأسئلة الشائعة', 'foot.legal': 'الشروط والخصوصية',
+    'foot.news': 'اشترك في النشرة البريدية', 'foot.email': 'بريدك الإلكتروني',
     'p.tank': 'قميص غير متماثل', 'p.bra': 'حمّالة صدر رياضية', 'p.trouser': 'بنطال واسع',
-    'p.tank.line': 'حمّالة واحدة. خطّ مائل واحد.',
-    'p.bra.line': 'الظهر. قطعة واحدة.',
-    'p.trouser.line': 'واسع. بسيط. حتى الأرض.',
-    'story.red': 'لوح واحد. لا شيء يتقاطع.',
-    'story.cream': 'الظهر. قطعة واحدة.',
-    'story.pink': 'اطوِ كل شيء. لا شيء يتجعّد.',
-    'story.purple': 'واسع حتى الأرض.',
-    'set.suffix': 'طقم',
-    'ticker': ['ثلاث قطع. أربعة ألوان.', 'أحمر. كريمي. وردي. بنفسجي.', 'الظهيرة. الجصّ. اللون.'],
+    'k.aqua': 'أزرق مائي', 'k.taupe': 'بنّي رمادي', 'k.burgundy': 'عنابي', 'k.lime': 'ليموني',
+    'k.red': 'أحمر', 'k.ivory': 'عاجي', 'k.rose': 'وردي', 'k.orchid': 'أرجواني',
+    'k.navy': 'كحلي', 'k.black': 'أسود', 'k.wine': 'خمري',
   };
 
-  // Static strings in the HTML become the English dictionary.
   $$('[data-i18n]').forEach((n) => (EN[n.dataset.i18n] ??= n.textContent));
+  $$('[data-i18n-ph]').forEach((n) => (EN[n.dataset.i18nPh] ??= n.placeholder));
 
   let lang = 'en';
-  const t = (k) => (lang === 'ar' ? AR[k] : undefined) ?? EN[k];
+  const t = (k) => (lang === 'ar' ? AR[k] : undefined) ?? EN[k] ?? k;
 
-  // ---------- Image helper ----------
+  // ---------- Images ----------
 
-  // Every photo sits on a colour field; a missing file just leaves the field.
-  function img(src, cls = '') {
+  function img(src, cls) {
     const el = new Image();
     el.alt = '';
     el.loading = 'lazy';
@@ -83,148 +74,63 @@
     return el;
   }
 
-  function markLoaded(el) {
-    const box = el.closest('.ph');
-    if (!box) return;
-    if (el.naturalWidth) box.classList.add('has-img');
-  }
-
-  document.addEventListener('load', (e) => e.target instanceof HTMLImageElement && markLoaded(e.target), true);
   document.addEventListener('error', (e) => {
     const el = e.target;
     if (!(el instanceof HTMLImageElement)) return;
     if (el.classList.contains('logo')) return el.classList.add('is-missing');
-    const box = el.closest('.ph');
-    if (box && !el.classList.contains('alt')) box.classList.add('is-empty');
-    else el.remove();
+    if (el.classList.contains('alt')) return el.remove();
+    el.closest('.ph')?.classList.add('is-empty');
   }, true);
 
-  // ---------- Ticker ----------
+  // ---------- Product grid ----------
 
-  function buildTicker() {
-    const track = $('#ticker');
-    const lines = t('ticker');
-    const dots = ORDER.map((s) => SETS[s].bra);
-    let html = '';
-    for (let r = 0; r < 4; r++) {
-      lines.forEach((l, i) => (html += `<span style="--dot:${dots[(i + r) % 4]}">${l}</span>`));
-    }
-    track.innerHTML = html;
-  }
+  let filter = 'all';
 
-  // ---------- Sets grid ----------
-
-  function buildSets() {
-    const grid = $('#setsGrid');
+  function buildGrid() {
+    const grid = $('#grid');
     grid.innerHTML = '';
-    ORDER.forEach((name) => {
-      const s = SETS[name];
-      const a = document.createElement('a');
-      a.href = '#pieces';
-      a.className = 'setcard';
-      a.dataset.pick = name;
-      a.innerHTML = `
-        <div class="setcard__img ph" style="--ph:${s.bra}">
-          <div class="setcard__blocks"><i style="background:${s.bra}"></i><i style="background:${s.tank}"></i><i style="background:${s.trouser}"></i></div>
-        </div>
-        <div class="setcard__info">
-          <span class="setcard__name">${t('c.' + name)} ${t('set.suffix')}</span>
-          <span class="dots"><i style="background:${s.bra}"></i><i style="background:${s.tank}"></i><i style="background:${s.trouser}"></i></span>
-        </div>`;
-      const box = $('.setcard__img', a);
-      box.append(img(`assets/posts/${s.frames[0]}.jpg`), img(`assets/posts/${s.frames[2]}.jpg`, 'alt'));
-      grid.appendChild(a);
-    });
+    SETS.forEach((set) =>
+      PIECES.forEach((p) => {
+        const [hex, colour] = p.colours[set];
+        const a = document.createElement('a');
+        a.className = 'card';
+        a.href = '#';
+        a.dataset.set = set;
+        a.hidden = filter !== 'all' && filter !== set;
+        a.innerHTML = `
+          <div class="card__img ph"></div>
+          <div class="card__meta">
+            <span class="card__name">${t('p.' + p.key)}</span>
+            <span class="card__price">${PRICES[p.key]}</span>
+            <span class="card__colour">${t('k.' + colour)}</span>
+            <span class="chips">${SETS.map((s) => `<i class="${s === set ? 'on' : ''}" style="--c:${p.colours[s][0]}"></i>`).join('')}</span>
+          </div>`;
+        // Front on the card, back on hover.
+        $('.card__img', a).append(img(`assets/product/${p.key}-${set}.jpg`), img(`assets/product/${p.key}-${set}-back.jpg`, 'alt'));
+        grid.appendChild(a);
+      })
+    );
   }
 
-  // ---------- Pieces ----------
-
-  const chosen = { tank: 'red', bra: 'red', trouser: 'red' };
-
-  function pieceImage(card, piece, set) {
-    const box = $('.piece__img', card);
-    box.style.setProperty('--ph', SETS[set][piece.key]);
-    box.classList.remove('is-empty', 'has-img');
-    $$('img', box).forEach((i) => i.remove());
-    box.append(img(`assets/product/${piece.key}-${set}.jpg`));
-    $$('.swatches button', card).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.set === set)));
+  function setFilter(f) {
+    filter = f;
+    $$('#filters button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.f === f)));
+    $$('.card').forEach((c) => (c.hidden = f !== 'all' && c.dataset.set !== f));
   }
 
-  function buildPieces() {
-    const grid = $('#piecesGrid');
-    grid.innerHTML = '';
-    PIECES.forEach((p) => {
-      const card = document.createElement('article');
-      card.className = 'piece';
-      card.innerHTML = `
-        <div class="piece__img ph"></div>
-        <div class="piece__info">
-          <span class="piece__name">${t(p.name)}</span>
-          <span class="swatches">${ORDER.map(
-            (s) => `<button type="button" data-set="${s}" style="--c:${SETS[s][p.key]}" aria-label="${t('c.' + s)}"></button>`
-          ).join('')}</span>
-          <span class="piece__line">${t(p.line)}</span>
-        </div>`;
-      $$('.swatches button', card).forEach((b) =>
-        b.addEventListener('click', () => {
-          chosen[p.key] = b.dataset.set;
-          pieceImage(card, p, b.dataset.set);
-        })
-      );
-      pieceImage(card, p, chosen[p.key]);
-      grid.appendChild(card);
-    });
-  }
-
-  // Picking a set anywhere sets all three pieces to it.
-  document.addEventListener('click', (e) => {
-    const pick = e.target.closest('[data-pick]');
-    if (!pick) return;
-    PIECES.forEach((p) => (chosen[p.key] = pick.dataset.pick));
-    buildPieces();
-  });
-
-  // ---------- Colour story ----------
-
-  let storySet = 'red';
-
-  function setStory(name) {
-    storySet = name;
-    const stage = $('.story__stage');
-    stage.dataset.set = name;
-    const line = $('#storyLine');
-    line.classList.add('is-out');
-    setTimeout(() => {
-      line.textContent = t(STORY[name]);
-      $('#storyName').textContent = t('c.' + name);
-      line.classList.remove('is-out');
-    }, 250);
-  }
-
-  const io = new IntersectionObserver(
-    (entries) => entries.forEach((en) => en.isIntersecting && en.target.dataset.step !== storySet && setStory(en.target.dataset.step)),
-    { rootMargin: '-50% 0px -50% 0px' }
-  );
-  $$('[data-step]').forEach((s) => io.observe(s));
+  $$('#filters button').forEach((b) => b.addEventListener('click', () => setFilter(b.dataset.f)));
+  $$('[data-filter]').forEach((a) => a.addEventListener('click', () => setFilter(a.dataset.filter)));
 
   // ---------- Campaign strip ----------
 
   function buildStrip() {
     const strip = $('#strip');
-    const colours = ORDER.flatMap((s) => [SETS[s].bra, SETS[s].tank, SETS[s].trouser]).concat('#F0AB96');
-    const shapes = ['p', 's', 'p', 'l', 'p', 's'];
     for (let i = 1; i <= 17; i++) {
-      const no = String(i).padStart(2, '0');
-      const f = document.createElement('figure');
-      f.className = `print ph print--${shapes[i % shapes.length]}`;
-      f.style.margin = '0';
-      f.style.setProperty('--ph', colours[(i * 5) % colours.length]);
-      f.append(img(`assets/moodboard/${no}.jpg`));
-      f.insertAdjacentHTML('beforeend', `<span class="print__no">${no} / 17</span>`);
-      strip.appendChild(f);
+      const box = document.createElement('div');
+      box.className = 'ph';
+      box.append(img(`assets/moodboard/${String(i).padStart(2, '0')}.jpg`));
+      strip.appendChild(box);
     }
-
-    // Drag to scroll on desktop.
     let down = false, x0 = 0, s0 = 0;
     strip.addEventListener('pointerdown', (e) => {
       if (e.pointerType !== 'mouse') return;
@@ -235,13 +141,6 @@
     window.addEventListener('pointerup', () => { down = false; strip.classList.remove('is-drag'); });
   }
 
-  // ---------- Header ----------
-
-  const head = $('#head');
-  const hero = $('.hero');
-  const onScroll = () => head.classList.toggle('is-solid', hero.getBoundingClientRect().bottom <= head.offsetHeight);
-  window.addEventListener('scroll', onScroll, { passive: true });
-
   // ---------- Language ----------
 
   function setLang(next) {
@@ -249,33 +148,27 @@
     root.lang = next;
     root.dir = next === 'ar' ? 'rtl' : 'ltr';
     $$('[data-i18n]').forEach((n) => (n.textContent = t(n.dataset.i18n)));
-    $('#lang').textContent = next === 'ar' ? 'English' : 'عربي';
-    buildTicker();
-    buildSets();
-    buildPieces();
-    $('#storyLine').textContent = t(STORY[storySet]);
-    $('#storyName').textContent = t('c.' + storySet);
+    $$('[data-i18n-ph]').forEach((n) => (n.placeholder = t(n.dataset.i18nPh)));
+    $('#lang').textContent = next === 'ar' ? 'English' : 'العربية';
+    buildGrid();
     try { localStorage.setItem('mairo-lang', next); } catch (e) {}
   }
 
-  $('#lang').addEventListener('click', () => setLang(lang === 'ar' ? 'en' : 'ar'));
+  const toggle = () => setLang(lang === 'ar' ? 'en' : 'ar');
+  $('#lang').addEventListener('click', toggle);
+  $('#lang2').addEventListener('click', toggle);
 
   // ---------- Init ----------
 
-  // Mark images already present in the HTML.
   $$('img').forEach((el) => {
-    if (!el.complete) return;
-    if (el.naturalWidth) markLoaded(el);
-    else if (el.classList.contains('logo')) el.classList.add('is-missing');
+    if (!el.complete || el.naturalWidth) return;
+    if (el.classList.contains('logo')) el.classList.add('is-missing');
     else el.closest('.ph')?.classList.add('is-empty');
   });
 
-  buildTicker();
-  buildSets();
-  buildPieces();
+  $('#year').textContent = new Date().getFullYear();
+  buildGrid();
   buildStrip();
-  $('.story__stage').dataset.set = 'red';
-  onScroll();
 
   let saved = null;
   try { saved = localStorage.getItem('mairo-lang'); } catch (e) {}

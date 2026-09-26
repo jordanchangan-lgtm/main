@@ -17,25 +17,28 @@ blocks for photos), but the real files go here, copied from `Desktop\Mairo`:
 | `assets/posts/pink-1.jpg` … `pink-3.jpg` | `02 Posts/Pink/` |
 | `assets/posts/purple-1-eyelevel.jpg`, `purple-2.jpg`, `purple-3.jpg` | `02 Posts/Purple/` |
 | `assets/moodboard/01.jpg` … `17.jpg` | `03 Moodboard reel/tiles/` |
-| `assets/product/{tank,bra,trouser}-{red,cream,pink,purple}.jpg` | Product shots, one per piece per colour, 3:4. None exist yet; crops of the 360° turn videos would work |
+| `assets/product/{tank,bra,trouser}-{red,cream,pink,purple}.jpg` (+ `-back.jpg`) | Product shots on a light grey or white ground, 5:7. None exist yet; front and back stills from the 360° turn videos would work |
 
 If a file is `.png`, change the extension in `script.js` (`POSTS`, and the
 moodboard loop).
 
 ## What's on the page
 
-Built on the pattern current fashion sites share (Sporty & Rich, SET,
-Girlfriend Collective, Bode): full-bleed photography, a small centred
-wordmark, sentence-case type in small sizes, square corners, underlined text links.
+Modelled on luxury ready-to-wear sites: The Row, Khaite, Toteme, Loewe.
+The page is white with black type at 12–13px. Navigation is text only, the
+wordmark is centred, photos run full width, product tiles are grey, and
+corners are square. Colour comes only from the photos and the small swatch
+chips.
 
-1. **Ticker**: a black strip of short lines, each with a set-coloured dot.
-2. **Header**: transparent over the hero with the white wordmark, then turns peach with the black wordmark once you scroll past it.
-3. **Hero**: full-bleed `red-1`, with a Caveat line and "Shop the set | View campaign".
-4. **Split**: Cream and Pink frame 1, edge to edge.
-5. **The sets**: four portrait cards. Hovering swaps frame 1 for frame 3. With no photo, a card shows the set as colour blocks (bra, tank, trousers).
-6. **Colour story**: a full-screen sticky panel that changes to each set's colour, with one line each, as you scroll.
-7. **The pieces**: three product cards with colour dots for switching the colourway.
-8. **Campaign**: the 17 prints in a horizontal strip you can drag.
-9. **Footer**: an email sign-up, the English wordmark large at bottom-left and the Arabic at bottom-right. No studio credit.
+1. **Notice bar**: one black line.
+2. **Header**: Shop / Sets / Campaign on the left, wordmark in the centre, Search / العربية / Bag (0) on the right.
+3. **Hero**: full-bleed `red-1`, with a small caption on the right: "Collection 01", *Midday* in Caveat, and "Shop".
+4. **Two-up**: the Cream and Pink sets, each with its name and "Discover" centred underneath.
+5. **Collection 01**: a product grid of 12 cards (3 pieces × 4 colours). Each card has the name in uppercase, the colour name and four colour chips. Filters for All / Red / Cream / Pink / Purple. Hovering shows the back view.
+6. **Solo frame**: the Purple set, centred on its own.
+7. **Campaign**: the 17 prints in a strip you can drag.
+8. **Footer**: a thin rule, link columns and a newsletter line ending in ">". The English wordmark sits bottom-left and the Arabic bottom-right. No studio credit.
 
-EN / عربي switches the whole page to right-to-left Arabic.
+Prices are empty in `script.js` (`PRICES`); fill them in and they appear.
+Product shots go in `assets/product/{tank,bra,trouser}-{set}.jpg`, with the back
+view as `…-{set}-back.jpg` for the hover.

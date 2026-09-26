@@ -56,6 +56,26 @@
     'k.navy': 'كحلي', 'k.black': 'أسود', 'k.wine': 'خمري',
   };
 
+  // Hero lines keep their line breaks, so they are swapped as HTML.
+  const HERO_AR = {
+    'he.t1': 'المجموعة <br>رقم ٠١',
+    'he.t2': 'ملابس رياضية <br>بطقم واحد',
+    'he.t3': 'ثلاث قطع <br>أربعة ألوان',
+    'he.t4': 'عمّان <br>/ العالم',
+    'he.t5': 'إصدار <br>صيف ٢٠٢٦',
+    'he.head': 'لوح واحد.<br>لا شيء يتقاطع.',
+    'he.sub': 'مفصّلة<br>للضوء الحاد.',
+    'he.p1': 'قميص غير متماثل. حمّالة صدر رياضية بلوح خلفي واحد مغلق. بنطال واسع ينسدل حتى الأرض. لا شيء على الواجهة.',
+    'he.p2': 'صُنعت للظهيرة. جدران من الجصّ، وشمس حادة، وظلّ واحد نظيف. أربعة أطقم بألوانها الحقيقية: الأحمر والكريمي والوردي والبنفسجي. الاسم على الظهر مرة واحدة، صغيرًا.',
+    'he.tab1': 'الأطقم',
+    'he.tab2': 'القطع',
+    'he.v1': 'الظهر. قطعة واحدة.',
+    'he.v2': 'اطوِ كل شيء. لا شيء يتجعّد.',
+    'he.cta': 'تسوّق المجموعة &#8598;',
+  };
+  const HERO_EN = {};
+  $$('.he [data-i18n]').forEach((n) => (HERO_EN[n.dataset.i18n] = n.innerHTML));
+
   $$('[data-i18n]').forEach((n) => (EN[n.dataset.i18n] ??= n.textContent));
   $$('[data-i18n-ph]').forEach((n) => (EN[n.dataset.i18nPh] ??= n.placeholder));
 
@@ -147,16 +167,56 @@
     lang = next;
     root.lang = next;
     root.dir = next === 'ar' ? 'rtl' : 'ltr';
-    $$('[data-i18n]').forEach((n) => (n.textContent = t(n.dataset.i18n)));
+    $$('[data-i18n]').forEach((n) => {
+      const k = n.dataset.i18n;
+      if (k in HERO_EN) n.innerHTML = next === 'ar' ? HERO_AR[k] : HERO_EN[k];
+      else n.textContent = t(k);
+    });
     $$('[data-i18n-ph]').forEach((n) => (n.placeholder = t(n.dataset.i18nPh)));
     $('#lang').textContent = next === 'ar' ? 'English' : 'العربية';
     buildGrid();
+    playHero();
     try { localStorage.setItem('mairo-lang', next); } catch (e) {}
   }
 
   const toggle = () => setLang(lang === 'ar' ? 'en' : 'ar');
   $('#lang').addEventListener('click', toggle);
   $('#lang2').addEventListener('click', toggle);
+
+  // ---------- Hero ----------
+
+  // Wrap every word of a rising line in its own mask. <br> is kept.
+  function splitWords(el) {
+    let w = 0;
+    const walk = (node) => {
+      [...node.childNodes].forEach((n) => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) return frag.append(part);
+            const m = document.createElement('span');
+            m.className = 'hm';
+            m.innerHTML = `<span class="hm-in" style="--w:${w++}"></span>`;
+            m.firstChild.textContent = part;
+            frag.append(m);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1 && n.tagName !== 'BR') walk(n);
+      });
+    };
+    walk(el);
+  }
+
+  function playHero() {
+    $$('.hero .js-rise').forEach((el) => { el.classList.remove('in'); splitWords(el); });
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      $$('.hero .js-rise, .hero .js-rule, .hero .js-fade').forEach((el) => el.classList.add('in'));
+    }));
+  }
+
+  // Start whichever film matches the screen; muted autoplay is allowed.
+  $$('.hv-v').forEach((v) => { v.muted = true; v.play?.().catch(() => {}); });
 
   // ---------- Init ----------
 
@@ -169,6 +229,7 @@
   $('#year').textContent = new Date().getFullYear();
   buildGrid();
   buildStrip();
+  playHero();
 
   let saved = null;
   try { saved = localStorage.getItem('mairo-lang'); } catch (e) {}

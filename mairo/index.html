@@ -8,13 +8,47 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Inter:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Aref+Ruqaa&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Aref+Ruqaa&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="notice" data-i18n="notice">Collection 01. Three pieces, four colours.</div>
+    <!-- Hero: a looping film under small mono type, after the Latent studio hero.
+         The name appears only as the drawn wordmarks, English bottom-left, Arabic bottom-right. -->
+    <section class="hero" id="top">
+      <div class="hv" aria-hidden="true">
+        <video class="hv-v hv-d" muted loop playsinline autoplay preload="auto" poster="assets/posts/red-1.jpg">
+          <source src="assets/hero/hero-loop.mp4" type="video/mp4" />
+        </video>
+        <video class="hv-v hv-m" muted loop playsinline autoplay preload="auto" poster="assets/posts/red-1.jpg">
+          <source src="assets/hero/hero-loop-m.mp4" type="video/mp4" />
+        </video>
+        <i class="hv-grain"></i><i class="hv-grad"></i>
+      </div>
+      <div class="he">
+        <p class="he-top js-rise" style="--d:.1s">
+          <span data-i18n="he.t1">Collection <br>No. 01</span>
+          <span data-i18n="he.t2">Activewear <br>&amp; set</span>
+          <span data-i18n="he.t3">Three pieces <br>Four colours</span>
+          <span data-i18n="he.t4">Amman <br>/ Worldwide</span>
+          <span data-i18n="he.t5">Edition <br>SS 2026</span>
+        </p>
+        <h1 class="he-head js-rise" style="--d:.25s" data-i18n="he.head">One panel.<br>Nothing crosses.</h1>
+        <p class="he-sub js-rise" style="--d:.45s" data-i18n="he.sub">Cut for<br>hard light.</p>
+        <p class="he-year js-rise" style="--d:.6s">&copy;20<br>26</p>
+        <i class="he-rule he-rule1 js-rule" style="--d:.5s"></i><i class="he-rule he-rule2 js-rule" style="--d:.65s"></i>
+        <p class="he-p he-p1 js-rise" style="--d:.7s" data-i18n="he.p1">An asymmetric tank. A racerback bra with one closed back panel. Wide trousers that fall to the floor. Nothing on the front.</p>
+        <p class="he-p he-p2 js-rise" style="--d:.85s" data-i18n="he.p2">Made for midday. Plaster walls, hard sun, one clean shadow. Four sets in true colour: red, cream, pink and purple. The name sits once on the back, small.</p>
+        <span class="he-tab he-tab1 js-rise" style="--d:.9s" data-i18n="he.tab1">The sets</span>
+        <span class="he-tab he-tab2 js-rise" style="--d:1s" data-i18n="he.tab2">The pieces</span>
+        <span class="he-v he-v1 js-rise" style="--d:.95s" data-i18n="he.v1">The back. One piece.</span>
+        <span class="he-v he-v2 js-rise" style="--d:1.05s" data-i18n="he.v2">Fold everything. Nothing creases.</span>
+        <a class="he-br js-rise" href="#shop" style="--d:1.15s" data-i18n="he.cta">Shop the collection &#8599;</a>
+        <img class="logo he-en js-fade" style="--d:1.2s" src="assets/logo/mairo-white.png" alt="Mairo" width="470" height="71" />
+        <img class="logo he-ar js-fade" style="--d:1.3s" src="assets/logo/mairo-ar-white.png" alt="مايرو" width="339" height="113" />
+      </div>
+    </section>
 
     <header class="head" id="head">
       <nav class="head__nav">
@@ -32,16 +66,7 @@
       </div>
     </header>
 
-    <main id="top">
-      <!-- Full-bleed hero, Khaite-style caption bottom-right -->
-      <section class="hero ph">
-        <img src="assets/posts/red-1.jpg" alt="" />
-        <div class="hero__cap">
-          <span data-i18n="hero.credit">Collection 01</span>
-          <em class="hand" data-i18n="hero.word">Midday</em>
-          <a href="#shop" data-i18n="cta.shop">Shop</a>
-        </div>
-      </section>
+    <main>
 
       <!-- Two-up, centred captions underneath -->
       <section class="duo" id="sets">

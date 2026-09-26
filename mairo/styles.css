@@ -292,6 +292,9 @@ a:hover, button:hover { text-decoration: underline; text-underline-offset: 3px; 
 
 /* ---------- End of the landing page ---------- */
 
+.coll__eyebrow { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+[lang='ar'] .coll__eyebrow { font-family: var(--sans); letter-spacing: 0; }
+
 .end { display: grid; justify-items: center; gap: 18px; text-align: center; padding: clamp(40px, 6vw, 80px) var(--pad) clamp(120px, 16vw, 220px); }
 .end__title { font-size: clamp(44px, 6vw, 92px); }
 .end__btn {

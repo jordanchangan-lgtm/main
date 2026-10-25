@@ -1,124 +1,141 @@
 /* ==========================================================================
-   Shopify connection — fill these in to make the store live.
+   Sudqi Planet — store data
+   Everything the landing page and the store page show lives here:
+   the Shopify connection, the hero films, the collections and the products.
    See README.md → "Connecting Shopify".
-
-   • storeDomain      your-store.myshopify.com (always the .myshopify.com one)
-   • storefrontToken  public Storefront API access token (Shopify admin →
-                      Settings → Apps → Develop apps, or the Headless channel)
-   • storefrontUrl    the public address of the Shopify store, used for
-                      "view product" links (e.g. https://shop.sudqiplanet.com)
-   • currency         shown on the sample products only
-
-   With storeDomain + storefrontToken set, the page loads real products, prices
-   and images from Shopify (Arabic and English via Shopify Translate & Adapt),
-   and "Order now" sends the customer straight to Shopify checkout.
-
-   Without them, the sample products below are shown. Give each one the
-   `handle` of the matching Shopify product and set storefrontUrl, and the
-   buttons will open that product on your Shopify store.
    ========================================================================== */
 window.SP_SHOP = {
+  /* ---------- Shopify ----------
+     storeDomain + storefrontToken  → real products, prices, stock and
+     checkout are loaded from Shopify (Arabic + English via Translate & Adapt).
+     storefrontUrl only             → buttons open each product on Shopify by handle. */
   storeDomain: "",
   storefrontToken: "",
   storefrontUrl: "",
   apiVersion: "2025-01",
   currency: { ar: "د.أ", en: "JOD" },
 
-  /* Filter chips. `tag` matches a Shopify product tag (lower-case). */
-  categories: [
-    { id: "all", ar: "الكل", en: "All" },
-    { id: "care", ar: "الترطيب", en: "Moisture", tag: "care" },
-    { id: "serum", ar: "السيروم والزيوت", en: "Serums & oils", tag: "serum" },
-    { id: "protect", ar: "التنظيف والحماية", en: "Cleanse & protect", tag: "protect" },
-    { id: "makeup", ar: "المكياج", en: "Makeup", tag: "makeup" },
-    { id: "gift", ar: "الهدايا", en: "Gifts", tag: "gift" }
+  /* ---------- Hero films (landing page) ----------
+     Three portrait films side by side on desktop; the first one on phones. */
+  hero: [
+    { video: "assets/video/vid14.mp4", poster: "assets/video/vid14.jpg" },
+    { video: "assets/video/vid01.mp4", poster: "assets/video/vid01.jpg" },
+    { video: "assets/video/vid02.mp4", poster: "assets/video/vid02.jpg" }
   ],
 
-  /* Sample catalogue — placeholders until Shopify is connected. */
+  /* ---------- Collections ----------
+     `kind` groups them: brand lines and skin concerns.
+     `tag` is the Shopify product tag that puts a product in the collection. */
+  collections: [
+    { id: "new", tag: "new", kind: "edit", ar: "الجديد", en: "New in", desc: { ar: "آخر ما وصل إلى كوكبنا.", en: "The latest to land on our planet." }, image: "assets/img/p/trio-2.jpg" },
+    { id: "dr-althea", tag: "dr-althea", kind: "brand", ar: "Dr. Althea", en: "Dr. Althea", desc: { ar: "عناية كورية مهدّئة بتركيبة ٣٤٥.", en: "Calming Korean care built on the 345 formula." }, image: "assets/img/p/mist-7.jpg" },
+    { id: "beauty-of-joseon", tag: "beauty-of-joseon", kind: "brand", ar: "Beauty of Joseon", en: "Beauty of Joseon", desc: { ar: "وصفات كورية تقليدية من الأرز والبرقوق.", en: "Traditional Korean recipes of rice and plum." }, image: "assets/img/p/sun-1.jpg" },
+    { id: "clinique", tag: "clinique", kind: "brand", ar: "Clinique", en: "Clinique", desc: { ar: "عناية غنية للجسم، بلا عطور.", en: "Rich body care, fragrance-free." }, image: "assets/img/p/butter-1.jpg" },
+    { id: "hydration", tag: "hydration", kind: "concern", ar: "الترطيب", en: "Hydration", desc: { ar: "لبشرةٍ عطشى تبحث عن الراحة.", en: "For thirsty skin that wants comfort." }, image: "assets/img/p/mist-3.jpg" },
+    { id: "calm", tag: "calm", kind: "concern", ar: "التهدئة", en: "Calming", desc: { ar: "للبشرة الحساسة والمتعبة.", en: "For sensitive, tired skin." }, image: "assets/img/p/mist-5.jpg" },
+    { id: "cleanse", tag: "cleanse", kind: "concern", ar: "التنظيف", en: "Cleansing", desc: { ar: "الخطوة الأولى في كل روتين.", en: "The first step of every routine." }, image: "assets/img/p/cleanser-1.jpg" },
+    { id: "sun", tag: "sun", kind: "concern", ar: "الحماية من الشمس", en: "Sun care", desc: { ar: "الخطوة الأخيرة والأهم كل صباح.", en: "The last step, and the most important." }, image: "assets/img/p/sun-3.jpg" },
+    { id: "body", tag: "body", kind: "concern", ar: "العناية بالجسم", en: "Body care", desc: { ar: "نعومة تمتد من الوجه إلى الجسم.", en: "Softness from face to body." }, image: "assets/img/p/trio-2.jpg" }
+  ],
+
+  /* ---------- Products ----------
+     Descriptions are written from the brands' and retailers' published
+     product information. price: null shows "السعر قريبًا / Price soon". */
   products: [
     {
-      handle: "lunar-moisture-cream",
-      category: "care",
-      badge: { ar: "الأكثر طلبًا", en: "Most loved" },
-      name: { ar: "كريم القمر المرطّب", en: "Lunar Moisture Cream" },
-      desc: { ar: "قوام خفيف يذوب في البشرة ويمنحها نعومة تدوم طوال اليوم.", en: "A light texture that melts in and keeps skin soft all day." },
-      price: 24,
-      image: "assets/img/p-jar.jpg",
-      hover: "assets/img/jar.jpg"
-    },
-    {
-      handle: "golden-drop-serum",
-      category: "serum",
+      handle: "dr-althea-345-relief-cream-mist",
+      brand: "Dr. Althea",
+      collections: ["new", "dr-althea", "hydration", "calm"],
+      bestseller: true,
       badge: { ar: "جديد", en: "New" },
-      name: { ar: "سيروم القطرة الذهبية", en: "Golden Drop Serum" },
-      desc: { ar: "قطرات مركّزة لإشراقة دافئة تبدأ من الداخل.", en: "Concentrated drops for a warm glow from within." },
-      price: 28,
-      image: "assets/img/serum-drop.jpg",
-      hover: "assets/img/p-dropper.jpg"
+      name: { ar: "بخاخ الكريم ٣٤٥ للتهدئة", en: "345 Relief Cream Mist" },
+      type: { ar: "بخاخ مرطّب · ١٠٠ مل", en: "Hydrating mist · 100 ml" },
+      tagline: { ar: "كريم وماء في بخّة واحدة", en: "Cream and water in one spray" },
+      desc: {
+        ar: "بخاخ بطبقتين يجمع قوام الكريم بخفّة الماء: طبقة كريمية بماء نخالة الأرز وحمض الهيالورونيك والبانثينول، وطبقة مائية بالسنتيلا والصبار والماديكاسوسيد. يرطّب ويهدّئ البشرة الجافة والحساسة في أي وقت من اليوم، حتى فوق المكياج.",
+        en: "A two-layer mist that pairs a cream layer of rice bran water, hyaluronic acid and panthenol with a water essence of centella, aloe and madecassoside. It hydrates and calms dry or sensitive skin at any time of day, even over makeup."
+      },
+      key: { ar: "ماء نخالة الأرز · حمض الهيالورونيك · بانثينول · سنتيلا", en: "Rice bran water · Hyaluronic acid · Panthenol · Centella" },
+      how: { ar: "رجّيه جيدًا، ثم رشّيه على بُعد ٢٠ سم من الوجه.", en: "Shake well, then spray about 20 cm from the face." },
+      price: null,
+      image: "assets/img/p/mist-1.jpg",
+      hover: "assets/img/p/mist-3.jpg",
+      gallery: ["assets/img/p/mist-1.jpg", "assets/img/p/mist-3.jpg", "assets/img/p/mist-5.jpg", "assets/img/p/mist-2.jpg"]
     },
     {
-      handle: "orbit-facial-oil",
-      category: "serum",
-      name: { ar: "زيت المدار للوجه", en: "Orbit Facial Oil" },
-      desc: { ar: "زيت خفيف يغذّي البشرة ويترك لمعة هادئة.", en: "A weightless oil that nourishes and leaves a quiet sheen." },
-      price: 26,
-      image: "assets/img/p-dropper.jpg",
-      hover: "assets/img/flatlay.jpg"
+      handle: "dr-althea-345-relief-cream",
+      brand: "Dr. Althea",
+      collections: ["new", "dr-althea", "calm", "hydration"],
+      bestseller: true,
+      name: { ar: "كريم ٣٤٥ للتهدئة", en: "345 Relief Cream" },
+      type: { ar: "كريم جل · ٥٠ مل", en: "Gel-cream · 50 ml" },
+      tagline: { ar: "لبشرةٍ هادئة ولونٍ موحّد", en: "For calm skin and an even tone" },
+      desc: {
+        ar: "كريم جل خفيف يجمع النياسيناميد والبانثينول وخلاصة التين الشوكي. يدعم حاجز البشرة، ويهدّئها بعد الحبوب، ويساعد على توحيد لونها. يمتصّ بسرعة ولا يترك أثرًا دهنيًا.",
+        en: "A light gel-cream with niacinamide, panthenol and prickly pear extract. It supports the skin barrier, soothes skin after breakouts and helps even out tone. It sinks in fast with no greasy finish."
+      },
+      key: { ar: "نياسيناميد · بانثينول · خلاصة التين الشوكي", en: "Niacinamide · Panthenol · Prickly pear extract" },
+      how: { ar: "ضعي كمية صغيرة كآخر خطوة في روتين الصباح والمساء.", en: "Apply a small amount as the last step, morning and night." },
+      price: null,
+      image: "assets/img/p/cream-1.jpg",
+      hover: "assets/img/p/cleanser-3.jpg",
+      gallery: ["assets/img/p/cream-1.jpg", "assets/img/p/cleanser-3.jpg", "assets/img/p/cream-2.jpg"]
     },
     {
-      handle: "daily-sun-veil",
-      category: "protect",
-      name: { ar: "واقي الشمس اليومي", en: "Daily Sun Veil" },
-      desc: { ar: "حماية خفيفة كل صباح، بلا أثر أبيض.", en: "Light protection every morning, with no white cast." },
-      price: 19,
-      image: "assets/img/p-tube.jpg",
-      hover: "assets/img/duo.jpg"
+      handle: "beauty-of-joseon-relief-sun-rice-probiotics",
+      brand: "Beauty of Joseon",
+      collections: ["new", "beauty-of-joseon", "sun"],
+      bestseller: true,
+      badge: { ar: "الأكثر طلبًا", en: "Bestseller" },
+      name: { ar: "واقي الشمس بالأرز والبروبيوتيك", en: "Relief Sun: Rice + Probiotics" },
+      type: { ar: "واقي شمس SPF50+ PA++++ · ٥٠ مل", en: "Sunscreen SPF50+ PA++++ · 50 ml" },
+      tagline: { ar: "حماية يومية بلا أثر أبيض", en: "Daily protection, no white cast" },
+      desc: {
+        ar: "واقي شمس كوري مرطّب يحمي من أشعة UVA وUVB كل يوم. خلاصة الأرز والبروبيوتيك تمنح البشرة نعومة وإشراقًا، والنياسيناميد والغليسرين يحافظان على ترطيبها. قوام كريمي خفيف يمتصّ بسرعة بلا لمعة ولا أثر أبيض.",
+        en: "A moisturising Korean sunscreen for everyday UVA and UVB protection. Rice extract and probiotics leave skin soft and bright, while niacinamide and glycerin keep it hydrated. A light cream that absorbs fast, with no shine and no white cast."
+      },
+      key: { ar: "خلاصة الأرز · بروبيوتيك · نياسيناميد · غليسرين", en: "Rice extract · Probiotics · Niacinamide · Glycerin" },
+      how: { ar: "ضعيه كآخر خطوة صباحًا، وجدّديه كل ساعتين تحت الشمس.", en: "Apply as the last morning step; reapply every two hours in the sun." },
+      price: null,
+      image: "assets/img/p/sun-1.jpg",
+      hover: "assets/img/p/sun-2.jpg",
+      gallery: ["assets/img/p/sun-1.jpg", "assets/img/p/sun-2.jpg", "assets/img/p/sun-3.jpg"]
     },
     {
-      handle: "soft-cloud-cleanser",
-      category: "protect",
-      name: { ar: "منظّف الغيمة الناعمة", en: "Soft Cloud Cleanser" },
-      desc: { ar: "رغوة كريمية تنظّف بلطف وتحافظ على راحة البشرة.", en: "A creamy foam that cleanses gently and keeps skin comfortable." },
-      price: 16,
-      image: "assets/img/cream.jpg",
-      hover: "assets/img/hand.jpg"
+      handle: "beauty-of-joseon-green-plum-refreshing-cleanser",
+      brand: "Beauty of Joseon",
+      collections: ["new", "beauty-of-joseon", "cleanse"],
+      name: { ar: "غسول البرقوق الأخضر المنعش", en: "Green Plum Refreshing Cleanser" },
+      type: { ar: "غسول جل · ١٠٠ مل", en: "Gel cleanser · 100 ml" },
+      tagline: { ar: "نظافة لطيفة بلا شدّ", en: "A gentle clean, no tightness" },
+      desc: {
+        ar: "غسول جل منخفض الحموضة بماء البرقوق الأخضر وخلاصة الماش. يزيل الشوائب والزيوت الزائدة بلطف، ويحافظ على توازن الماء والزيت، فتبقى البشرة منتعشة ومرتاحة بعد الغسل.",
+        en: "A low-pH gel cleanser made with green plum water and mung bean extract. It gently lifts impurities and excess oil while keeping the skin's water and oil in balance, so skin feels fresh and comfortable after washing."
+      },
+      key: { ar: "ماء البرقوق الأخضر · خلاصة الماش", en: "Green plum water · Mung bean extract" },
+      how: { ar: "دلّكي كمية صغيرة مع الماء على بشرة مبلّلة، ثم اشطفي.", en: "Lather a small amount with water on damp skin, then rinse." },
+      price: null,
+      image: "assets/img/p/cleanser-1.jpg",
+      hover: "assets/img/p/cleanser-2.jpg",
+      gallery: ["assets/img/p/cleanser-1.jpg", "assets/img/p/cleanser-2.jpg", "assets/img/p/duo-1.jpg"]
     },
     {
-      handle: "stardust-glow-powder",
-      category: "makeup",
-      name: { ar: "بودرة غبار النجوم", en: "Stardust Glow Powder" },
-      desc: { ar: "لمعة ناعمة تُظهر جمالكِ ولا تخفيه.", en: "A soft glow that reveals you rather than hides you." },
-      price: 22,
-      image: "assets/img/powder-orbit.jpg",
-      hover: "assets/img/skin-face.jpg"
-    },
-    {
-      handle: "small-world-essence",
-      category: "care",
-      name: { ar: "إسنس عالمكِ الصغير", en: "Small World Essence" },
-      desc: { ar: "خطوة ترطيب أولى تُهيّئ البشرة لما بعدها.", en: "A first layer of hydration that prepares skin for the rest." },
-      price: 21,
-      image: "assets/img/p-box.jpg",
-      hover: "assets/img/box.jpg"
-    },
-    {
-      handle: "routine-in-orbit-set",
-      category: "gift",
-      badge: { ar: "هدية", en: "Gift" },
-      name: { ar: "مجموعة روتينكِ في مدار", en: "Routine in Orbit Set" },
-      desc: { ar: "نظّفي، رطّبي، احمي — في علبة هدية واحدة.", en: "Cleanse, moisturise, protect — in one gift box." },
-      price: 59,
-      image: "assets/img/gift.jpg",
-      hover: "assets/img/thanks.jpg"
-    },
-    {
-      handle: "sudqi-planet-tote",
-      category: "gift",
-      name: { ar: "حقيبة صدقي بلانيت", en: "Sudqi Planet Tote" },
-      desc: { ar: "حقيبة قماشية تحمل كوكبكِ الصغير معكِ.", en: "A canvas tote to carry your small planet with you." },
-      price: 12,
-      image: "assets/img/tote.jpg",
-      hover: "assets/img/sphere.jpg"
+      handle: "clinique-deep-comfort-body-butter",
+      brand: "Clinique",
+      collections: ["clinique", "body", "hydration"],
+      name: { ar: "زبدة الجسم ديب كومفورت", en: "Deep Comfort Body Butter" },
+      type: { ar: "زبدة للجسم · ٢٠٠ مل", en: "Body butter · 200 ml" },
+      tagline: { ar: "راحة غنية للبشرة الجافة جدًا", en: "Rich comfort for very dry skin" },
+      desc: {
+        ar: "كريم جسم غني بزبدة الشيا يذوب في البشرة الجافة فورًا، مع فيتامين E وحمض الهيالورونيك. مثالي للمناطق الخشنة كالمرفقين والركبتين والكعبين، وخالٍ من العطور.",
+        en: "A rich, shea-butter body cream that melts straight into dry skin, with vitamin E and hyaluronic acid. Ideal for rough spots like elbows, knees and heels, and fragrance-free."
+      },
+      key: { ar: "زبدة الشيا · فيتامين E · حمض الهيالورونيك", en: "Shea butter · Vitamin E · Hyaluronic acid" },
+      how: { ar: "ضعيه على بشرة نظيفة بعد الاستحمام. للجسم فقط.", en: "Smooth over clean skin after a shower. For body only." },
+      price: null,
+      image: "assets/img/p/butter-1.jpg",
+      hover: "assets/img/p/trio-2.jpg",
+      gallery: ["assets/img/p/butter-1.jpg", "assets/img/p/trio-2.jpg", "assets/img/p/butter-2.jpg"]
     }
   ]
 };

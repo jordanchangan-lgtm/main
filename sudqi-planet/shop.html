@@ -2,22 +2,18 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>المتجر — صدقي بلانيت</title>
-  <meta name="description" content="متجر صدقي بلانيت: منتجات العناية بالبشرة والمكياج، مختارة بعناية من أفضل المختبرات الكورية والعالمية." />
-  <meta name="theme-color" content="#F3F0F2" />
-  <meta property="og:title" content="Sudqi Planet — صدقي بلانيت" />
-  <meta property="og:description" content="Care, in orbit. Korean skincare, chosen with care. — عناية في مدار" />
-  <meta property="og:image" content="assets/img/flatlay.jpg" />
+  <meta name="description" content="صدقي بلانيت: متجر عناية بالبشرة ومكياج كوري وعالمي، مختار بعناية ومقدّم بصدق. عناية في مدار." />
+  <meta name="theme-color" content="#17151C" />
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   <script>
-    /* Set language before first paint: ?lang=en|ar, then saved choice, else Arabic. */
     (function () {
       var l;
       try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("sp-lang"); } catch (e) {}
       if (l !== "en") l = "ar";
       var h = document.documentElement;
-      h.lang = l; h.dir = l === "ar" ? "rtl" : "ltr"; h.className = "js";
+      h.lang = l; h.dir = l === "ar" ? "rtl" : "ltr"; h.classList.add("js");
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,168 +21,129 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body data-title-ar="المتجر — صدقي بلانيت" data-title-en="Store — Sudqi Planet">
+<body data-page="shop" data-title-ar="المتجر — صدقي بلانيت" data-title-en="Shop — Sudqi Planet">
 
-  <!-- ============================== Header ============================== -->
-  <header class="header" id="top">
-    <div class="wrap header__inner">
-      <a class="brand" href="index.html" aria-label="Sudqi Planet — صدقي بلانيت">
-        <span class="mark" aria-hidden="true"></span>
-        <span class="brand__words">
-          <span class="brand__ar">صدقي بلانيت</span>
-          <span class="brand__en">sudqi planet</span>
-        </span>
-      </a>
-
-      <nav class="nav" aria-label="Main">
-        <a href="index.html#about"><span class="ar">من نحن</span><span class="en">About</span></a>
-        <a href="index.html#collection"><span class="ar">المجموعة</span><span class="en">Collection</span></a>
-        <a href="index.html#ritual"><span class="ar">روتينكِ</span><span class="en">Ritual</span></a>
-        <a href="shop.html" aria-current="page"><span class="ar">المتجر</span><span class="en">Store</span></a>
-      </nav>
-
-      <div class="header__actions">
-        <button class="lang-toggle" type="button" data-lang-toggle aria-label="Switch language">
-          <span class="ar num">EN</span><span class="en">عربي</span>
-        </button>
-        <a class="cta" href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a>
-        <button class="menu-btn" type="button" data-menu-toggle aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
-      </div>
+  <!-- ============================ Header ============================ -->
+  <div class="top" id="top">
+    <div class="announce" data-announce>
+      <p class="on"><span class="ar">منتجات كورية وعالمية أصلية، مختارة بعناية</span><span class="en">Authentic Korean &amp; international beauty, chosen with care</span></p>
+      <p><span class="ar">كل طلب يصلكِ مغلّفًا كهدية</span><span class="en">Every order arrives wrapped like a gift</span></p>
+      <p><span class="ar">وصلت المجموعة الجديدة — اكتشفيها الآن</span><span class="en">The new collection has landed — discover it now</span></p>
     </div>
-  </header>
+    <header class="head">
+      <div class="wrap head-in">
+        <nav class="head-nav" aria-label="Main">
+          <a href="shop.html" aria-current="page"><span class="ar">المتجر</span><span class="en">Shop</span></a>
+          <a href="index.html#new"><span class="ar">الجديد</span><span class="en">New in</span></a>
+          <a href="index.html#collections"><span class="ar">المجموعات</span><span class="en">Collections</span></a>
+          <a href="index.html#concern"><span class="ar">حسب البشرة</span><span class="en">By concern</span></a>
+          <a href="index.html#ritual"><span class="ar">روتينكِ</span><span class="en">Ritual</span></a>
+        </nav>
+        <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Menu" aria-expanded="false">
+          <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 7h14M3 13h14" /></svg>
+        </button>
+        <a class="brand" href="index.html" aria-label="Sudqi Planet — صدقي بلانيت">
+          <span class="mark" aria-hidden="true"></span>
+          <span class="brand-words"><span class="brand-ar">صدقي بلانيت</span><span class="brand-en">sudqi planet</span></span>
+        </a>
+        <div class="head-end">
+          <button class="lang-toggle" type="button" data-lang-toggle aria-label="Switch language"><span class="ar num">EN</span><span class="en">عربي</span></button>
+          <a class="icon-btn" href="shop.html" aria-label="Shop — المتجر">
+            <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 6.5h12l-1 11H5l-1-11Z" /><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" /></svg>
+            <span class="dot" aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+    </header>
+  </div>
 
-  <div class="mobile-menu" id="mobile-menu">
-    <div class="field" aria-hidden="true"></div>
+  <div class="sheet" id="sheet">
     <nav aria-label="Mobile">
-      <a href="index.html#about"><span class="num">01</span><span class="ar">من نحن</span><span class="en">About</span></a>
-      <a href="index.html#collection"><span class="num">02</span><span class="ar">المجموعة</span><span class="en">Collection</span></a>
-      <a href="index.html#ritual"><span class="num">03</span><span class="ar">روتينكِ</span><span class="en">Ritual</span></a>
-      <a href="shop.html"><span class="num">04</span><span class="ar">المتجر</span><span class="en">Store</span></a>
+      <a href="shop.html"><span class="num">01</span><span class="ar">المتجر</span><span class="en">Shop</span></a>
+      <a href="index.html#new"><span class="num">02</span><span class="ar">الجديد</span><span class="en">New in</span></a>
+      <a href="index.html#collections"><span class="num">03</span><span class="ar">المجموعات</span><span class="en">Collections</span></a>
+      <a href="index.html#concern"><span class="num">04</span><span class="ar">حسب البشرة</span><span class="en">By concern</span></a>
+      <a href="index.html#ritual"><span class="num">05</span><span class="ar">روتينكِ</span><span class="en">Ritual</span></a>
     </nav>
-    <a class="cta cta--lg" href="shop.html"><span class="ar">تسوّقي الآن</span><span class="en">Shop now</span></a>
+    <div class="sheet-cols" data-collection-links></div>
   </div>
 
   <main>
-    <section class="store-hero" aria-labelledby="store-title">
+    <section class="s-hero">
       <div class="field" aria-hidden="true"></div>
-      <div class="wrap store-hero__grid">
+      <div class="wrap s-hero-in">
         <div>
-          <nav class="crumbs reveal" aria-label="Breadcrumb">
-            <a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a>
-            <span aria-hidden="true">/</span>
-            <span><span class="ar">المتجر</span><span class="en">Store</span></span>
+          <nav class="crumbs rv" aria-label="Breadcrumb">
+            <a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span aria-hidden="true">/</span><span><span class="ar">المتجر</span><span class="en">Shop</span></span>
           </nav>
-          <h1 class="dual reveal" id="store-title" style="--d:.1s">
-            <span class="ar">المتجر</span>
-            <span class="en">The store.</span>
-          </h1>
+          <h1 data-split class="in-load"><span class="ar">المتجر</span><span class="en">The shop</span></h1>
         </div>
-        <div class="head__meta reveal" style="--d:.2s">
-          <span><span class="tag"><span class="ar">عناية في مدار</span><span class="en">Care, in orbit</span></span></span>
-          <p>
-            <span class="ar">كل ما يدور حول بشرتكِ في مكانٍ واحد. منتجات مختارة بعناية من أفضل المختبرات الكورية والعالمية، تصلكِ مغلّفة كهدية.</span>
-            <span class="en">Everything that orbits your skin, in one place. Products chosen with care from the best Korean and international labs, delivered wrapped like a gift.</span>
-          </p>
-        </div>
+        <p class="rv" style="--d:.3s"><span class="ar">كل ما يدور حول بشرتكِ في مكانٍ واحد: عناية كورية وعالمية مختارة بعناية، تصلكِ مغلّفة كهدية.</span><span class="en">Everything that orbits your skin, in one place: Korean and international care chosen with care, delivered wrapped like a gift.</span></p>
       </div>
+      <div class="s-cols" id="cols" role="group" aria-label="Collections"></div>
     </section>
 
-    <div class="toolbar">
-      <div class="wrap toolbar__inner">
-        <div class="chips" id="chips" role="group" aria-label="Categories"></div>
-        <span class="toolbar__count" id="count" aria-live="polite"></span>
+    <div class="s-bar">
+      <div class="wrap s-bar-in">
+        <h2 id="col-title"></h2>
+        <span class="s-count" id="count" aria-live="polite"></span>
       </div>
     </div>
 
     <div class="wrap">
-      <div class="products" id="products"></div>
-
+      <div class="s-grid" id="products"></div>
       <p class="store-note" id="store-note" hidden>
         <span>
-          <span class="ar">متجرنا الإلكتروني قيد الإطلاق. إلى ذلك الحين، يسعدنا استقبال طلبكِ عبر <a class="ltr" href="https://instagram.com/sudqiplanet" target="_blank" rel="noopener" style="text-decoration:underline">@sudqiplanet</a>.</span>
+          <span class="ar">متجرنا الإلكتروني قيد الإطلاق. إلى ذلك الحين، يسعدنا استقبال طلبكِ عبر إنستغرام <a class="ltr" href="https://instagram.com/sudqiplanet" target="_blank" rel="noopener" style="text-decoration:underline">@sudqiplanet</a>.</span>
           <span class="en">Our online store is launching soon. Until then, we’d love to take your order on Instagram at <a href="https://instagram.com/sudqiplanet" target="_blank" rel="noopener" style="text-decoration:underline">@sudqiplanet</a>.</span>
         </span>
       </p>
-
-      <section class="bundle reveal" aria-labelledby="bundle-title">
-        <div class="bundle__text">
-          <div class="field" aria-hidden="true"></div>
-          <span><span class="tag tag--light"><span class="ar">بطاقة العناية</span><span class="en">Care card</span></span></span>
-          <h2 class="dual" id="bundle-title">
-            <span class="ar">روتينكِ في مدار</span>
-            <span class="en">Your routine, in orbit.</span>
-          </h2>
-          <p>
-            <span class="ar">نظّفي، رطّبي، احمي. ثلاث خطوات في علبة هدية واحدة، مع بطاقة تشرح لكِ كل خطوة.</span>
-            <span class="en">Cleanse, moisturise, protect. Three steps in a single gift box, with a card that walks you through each one.</span>
-          </p>
-          <button class="cta cta--champagne" type="button" data-cat-jump="gift"><span class="ar">تسوّقي الهدايا</span><span class="en">Shop gifts</span></button>
-        </div>
-        <div class="bundle__media">
-          <img src="assets/img/box.jpg" alt="علبة منتج صدقي بلانيت على قاعدة داكنة" width="1312" height="712" loading="lazy" />
-        </div>
-      </section>
     </div>
   </main>
 
-  <!-- ============================== Footer ============================== -->
+  <!-- ============================ Footer ============================ -->
   <footer class="footer">
     <div class="wrap">
-      <div class="footer__top">
-        <div class="footer__brand">
+      <div class="f-top">
+        <div class="f-brand">
           <a class="brand" href="index.html" aria-label="Sudqi Planet — صدقي بلانيت">
             <span class="mark" aria-hidden="true"></span>
-            <span class="brand__words">
-              <span class="brand__ar">صدقي بلانيت</span>
-              <span class="brand__en">sudqi planet</span>
-            </span>
+            <span class="brand-words"><span class="brand-ar">صدقي بلانيت</span><span class="brand-en">sudqi planet</span></span>
           </a>
           <p><span class="ar">عالمٌ صغير للعناية والجمال، من عمّان إلى كوكبكِ.</span><span class="en">A small world of care and beauty — from Amman to your planet.</span></p>
         </div>
         <div>
-          <h4><span class="ar">المتجر</span><span class="en">Store</span></h4>
-          <ul>
-            <li><a href="shop.html"><span class="ar">كل المنتجات</span><span class="en">All products</span></a></li>
-            <li><a href="shop.html#care"><span class="ar">الترطيب</span><span class="en">Moisture</span></a></li>
-            <li><a href="shop.html#serum"><span class="ar">السيروم والزيوت</span><span class="en">Serums &amp; oils</span></a></li>
-            <li><a href="shop.html#makeup"><span class="ar">المكياج</span><span class="en">Makeup</span></a></li>
-          </ul>
+          <h4><span class="ar">المتجر</span><span class="en">Shop</span></h4>
+          <ul data-footer-cols></ul>
         </div>
         <div>
           <h4><span class="ar">صدقي بلانيت</span><span class="en">Sudqi Planet</span></h4>
           <ul>
-            <li><a href="index.html#about"><span class="ar">من نحن</span><span class="en">About</span></a></li>
+            <li><a href="index.html#story"><span class="ar">من نحن</span><span class="en">About</span></a></li>
             <li><a href="index.html#ritual"><span class="ar">روتينكِ</span><span class="en">Ritual</span></a></li>
-            <li><a href="index.html#promise"><span class="ar">وعدنا</span><span class="en">Our promise</span></a></li>
+            <li><a href="index.html#concern"><span class="ar">حسب البشرة</span><span class="en">By concern</span></a></li>
           </ul>
         </div>
         <div>
           <h4><span class="ar">تواصلي معنا</span><span class="en">Contact</span></h4>
           <ul>
-            <li><a class="ltr" href="mailto:hello@sudqiplanet.com">hello@sudqiplanet.com</a></li>
+            <li><span class="ltr">hello@sudqiplanet.com</span></li>
             <li><a class="ltr" href="https://instagram.com/sudqiplanet" target="_blank" rel="noopener">@sudqiplanet</a></li>
             <li><span class="ar">عمّان، الأردن</span><span class="en">Amman, Jordan</span></li>
           </ul>
         </div>
       </div>
-      <div class="footer__bottom">
+      <p class="f-word" data-split><span class="ar">عناية في مدار</span><span class="en">Care, in orbit.</span></p>
+      <div class="f-bottom">
         <span><span class="ar">© <span data-year>٢٠٢٦</span> صدقي بلانيت — جميع الحقوق محفوظة</span><span class="en">© <span data-year>2026</span> Sudqi Planet — All rights reserved</span></span>
         <span class="mark" aria-hidden="true"></span>
-        <span><span class="ar">عناية في مدار</span><span class="en">Care, in orbit.</span></span>
       </div>
     </div>
   </footer>
 
-  <script src="assets/js/main.js" defer></script>
   <script src="assets/js/shop-config.js" defer></script>
+  <script src="assets/js/catalog.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
   <script src="assets/js/shop.js" defer></script>
-  <script>
-    document.addEventListener("click", function (e) {
-      var b = e.target.closest("[data-cat-jump]");
-      if (!b) return;
-      var chip = document.querySelector('.chip[data-cat="' + b.getAttribute("data-cat-jump") + '"]');
-      if (chip) { chip.click(); document.getElementById("chips").scrollIntoView({ behavior: "smooth", block: "center" }); }
-    });
-  </script>
 </body>
 </html>

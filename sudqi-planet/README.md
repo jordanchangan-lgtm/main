@@ -28,8 +28,8 @@ Open `assets/js/shop-config.js`. There are two levels:
 2. **Live catalogue (recommended).** Set `storeDomain` (`your-store.myshopify.com`) and `storefrontToken`, a *public* Storefront API token from Shopify admin → Settings → Apps and sales channels → Develop apps, or from the Headless channel. The store page then loads:
    - the real products, prices, images and stock, with sold-out items shown automatically;
    - Arabic and English titles and descriptions, through Shopify **Translate & Adapt**;
-   - the category for each product, taken from product **tags**: `care`, `serum`, `protect`, `makeup` and `gift`. A `new` tag adds a "جديد / New" badge.
+   - the collection for each product, taken from product **tags**. The tags match the `tag` values in `shop-config.js`: `new`, `dr-althea`, `beauty-of-joseon`, `clinique`, `hydration`, `calm`, `cleanse`, `sun` and `body`. A `new` tag also adds a "جديد / New" badge, and a `bestseller` tag puts a product in the Bestsellers rail.
 
    **Order now** uses a Shopify cart permalink, so the customer goes straight to Shopify checkout.
 
-Until Shopify is connected, the page shows a sample catalogue. Its names and prices are placeholders. If a customer clicks **Order now** at that stage, they see a short note that sends them to Instagram.
+Until Shopify is connected, the page shows the five products listed in `shop-config.js`, with "Price soon" in place of a price. Add a `price` (a number in JOD) to each product to show it. If a customer clicks **Order now** at that stage, they see a short note that sends them to Instagram.

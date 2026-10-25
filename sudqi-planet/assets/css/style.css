@@ -942,8 +942,8 @@ html[lang="en"] .bundle h2 > .ar { color: rgba(243, 240, 242, 0.6); }
 
 /* ---------- Reveal on scroll -------------------------------------------- */
 .js .reveal {
-  opacity: 0;
-  transform: translateY(28px);
+  opacity: 0.35;
+  transform: translateY(18px);
   transition: opacity 1.1s var(--ease), transform 1.1s var(--ease);
   transition-delay: var(--d, 0s);
 }

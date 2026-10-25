@@ -64,8 +64,9 @@
     updateCount();
     if (push) {
       var url = new URL(location.href);
-      if (active === "all") url.searchParams.delete("c"); else url.searchParams.set("c", active);
-      history.replaceState(null, "", url);
+      url.searchParams.delete("c");
+      url.hash = active === "all" ? "" : active;
+      try { history.replaceState(null, "", url); } catch (e) {}
     }
   }
 
@@ -205,7 +206,9 @@
   }
 
   /* ---------- Boot ---------- */
-  var initial = new URLSearchParams(location.search).get("c") || "all";
+  // Category comes from #serum-style hashes (or the older ?c=serum).
+  var initial = location.hash.slice(1) || new URLSearchParams(location.search).get("c") || "all";
+  window.addEventListener("hashchange", function () { setCategory(location.hash.slice(1) || "all", false); });
   active = initial;
   renderChips();
 

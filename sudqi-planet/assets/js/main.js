@@ -8,7 +8,7 @@
     root.lang = lang;
     root.dir = lang === "ar" ? "rtl" : "ltr";
     try { localStorage.setItem("sp-lang", lang); } catch (e) {}
-    var title = body.getAttribute("data-title-" + lang);
+    var title = (document.querySelector("[data-title-ar]") || body).getAttribute("data-title-" + lang);
     if (title) document.title = title;
     // Keep ?lang= in the URL in sync so shared links open in the same language.
     try {

@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>صدقي بلانيت — عناية في مدار</title>
+  <meta name="description" content="صدقي بلانيت: عالمٌ صغير للعناية والجمال. منتجات كورية وعالمية للعناية بالبشرة والمكياج، مختارة بعناية ومقدّمة بصدق." />
+  <meta name="theme-color" content="#F3F0F2" />
+  <meta property="og:title" content="Sudqi Planet — صدقي بلانيت" />
+  <meta property="og:description" content="Care, in orbit. Korean skincare, chosen with care. — عناية في مدار" />
+  <meta property="og:image" content="assets/img/flatlay.jpg" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <script>
+    /* Set language before first paint: ?lang=en|ar, then saved choice, else Arabic. */
+    (function () {
+      var l;
+      try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("sp-lang"); } catch (e) {}
+      if (l !== "en") l = "ar";
+      var h = document.documentElement;
+      h.lang = l; h.dir = l === "ar" ? "rtl" : "ltr"; h.className = "js";
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-title-ar="صدقي بلانيت — عناية في مدار" data-title-en="Sudqi Planet — Care, in orbit.">
+
+  <!-- ============================== Header ============================== -->
+  <header class="header" id="top">
+    <div class="wrap header__inner">
+      <a class="brand" href="index.html" aria-label="Sudqi Planet — صدقي بلانيت">
+        <span class="mark" aria-hidden="true"></span>
+        <span class="brand__words">
+          <span class="brand__ar">صدقي بلانيت</span>
+          <span class="brand__en">sudqi planet</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Main">
+        <a href="#about"><span class="ar">من نحن</span><span class="en">About</span></a>
+        <a href="#collection"><span class="ar">المجموعة</span><span class="en">Collection</span></a>
+        <a href="#ritual"><span class="ar">روتينكِ</span><span class="en">Ritual</span></a>
+        <a href="shop.html"><span class="ar">المتجر</span><span class="en">Store</span></a>
+      </nav>
+
+      <div class="header__actions">
+        <button class="lang-toggle" type="button" data-lang-toggle aria-label="Switch language">
+          <span class="ar num">EN</span><span class="en">عربي</span>
+        </button>
+        <a class="cta" href="shop.html"><span class="ar">تسوّقي الآن</span><span class="en">Shop now</span></a>
+        <button class="menu-btn" type="button" data-menu-toggle aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="field" aria-hidden="true"></div>
+    <nav aria-label="Mobile">
+      <a href="#about"><span class="num">01</span><span class="ar">من نحن</span><span class="en">About</span></a>
+      <a href="#collection"><span class="num">02</span><span class="ar">المجموعة</span><span class="en">Collection</span></a>
+      <a href="#ritual"><span class="num">03</span><span class="ar">روتينكِ</span><span class="en">Ritual</span></a>
+      <a href="shop.html"><span class="num">04</span><span class="ar">المتجر</span><span class="en">Store</span></a>
+    </nav>
+    <a class="cta cta--lg" href="shop.html"><span class="ar">تسوّقي الآن</span><span class="en">Shop now</span></a>
+  </div>
+
+  <main>
+    <!-- =============================== Hero =============================== -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="field" aria-hidden="true"></div>
+      <div class="wrap hero__grid">
+        <div class="hero__text">
+          <p class="hero__eyebrow reveal">
+            <span class="tag"><span class="ar">عناية كورية مختارة بعناية</span><span class="en">Korean skincare, chosen with care</span></span>
+          </p>
+          <h1 class="dual reveal" id="hero-title" style="--d:.1s">
+            <span class="ar">عناية في مدار</span>
+            <span class="en">Care, in orbit.</span>
+          </h1>
+          <p class="hero__lede reveal" style="--d:.2s">
+            <span class="ar">مرحبًا بكِ في صدقي بلانيت، عالمٌ صغير تدور فيه العناية حولكِ أنتِ. هنا نختار كل منتج بعناية، ونقدّمه بصدق، لتكون بشرتكِ أجمل نسخةٍ من نفسها.</span>
+            <span class="en">Welcome to Sudqi Planet — a small world where care revolves around you. Every product is chosen with care and offered honestly, so your skin can be the best version of itself.</span>
+          </p>
+          <div class="hero__actions reveal" style="--d:.3s">
+            <a class="cta cta--lg" href="#collection"><span class="ar">اكتشفي المجموعة</span><span class="en">Discover the collection</span></a>
+            <a class="link-arrow" href="#about"><span class="ar">من نحن</span><span class="en">Who we are</span></a>
+          </div>
+        </div>
+
+        <figure class="hero__media" style="margin:0">
+          <img src="assets/img/dune.jpg" alt="كثيب رملي هادئ تحت هلال القمر" width="462" height="592" fetchpriority="high" />
+          <figcaption class="hero__caption">
+            <span><span class="ar">عالمكِ الصغير</span><span class="en">Your small world</span></span>
+            <span class="num">N° 01</span>
+          </figcaption>
+        </figure>
+
+        <!-- The orbit from brand page 02: one thin ellipse crossing image and text, a champagne moon riding it -->
+        <svg class="hero__orbit" viewBox="0 0 1000 320" aria-hidden="true">
+          <g transform="rotate(-9 500 160)">
+            <ellipse class="draw" cx="500" cy="160" rx="490" ry="120" fill="none" />
+            <path id="hero-orbit-path" d="M10 160a490 120 0 1 0 980 0a490 120 0 1 0 -980 0" fill="none" />
+            <circle r="7">
+              <animateMotion dur="26s" repeatCount="indefinite" rotate="auto"><mpath href="#hero-orbit-path" /></animateMotion>
+            </circle>
+          </g>
+        </svg>
+      </div>
+
+      <div class="wrap">
+        <div class="hero__foot">
+          <span><span class="ar">صدقي بلانيت — عمّان</span><span class="en">Sudqi Planet — Amman</span></span>
+          <span class="scroll-cue"><i></i><span class="ar">مرّري للأسفل</span><span class="en">Scroll</span></span>
+          <span class="hide-sm"><span class="ar">بشرة تشبهكِ</span><span class="en">Skin that looks like you</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ Taglines ============================== -->
+    <div class="ribbon" aria-hidden="true">
+      <div class="ribbon__track">
+        <span class="ar keep">عناية في مدار</span><span class="en keep">Care, in orbit.</span>
+        <span class="ar keep">بشرة تشبهك</span><span class="en keep">Skin that looks like you.</span>
+        <span class="ar keep">عالمك الصغير</span><span class="en keep">Your small world.</span>
+        <span class="ar keep">عناية في مدار</span><span class="en keep">Care, in orbit.</span>
+        <span class="ar keep">بشرة تشبهك</span><span class="en keep">Skin that looks like you.</span>
+        <span class="ar keep">عالمك الصغير</span><span class="en keep">Your small world.</span>
+      </div>
+    </div>
+
+    <!-- ========================== 01 · About ============================== -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="wrap about__grid">
+        <figure class="about__visual reveal" style="margin:0">
+          <img src="assets/img/sphere.jpg" alt="كرة هادئة في ضوء الشمس داخل مدار من الرمل" width="462" height="592" loading="lazy" />
+        </figure>
+
+        <div class="about__text">
+          <div class="head__meta reveal" style="margin-bottom:clamp(28px,3vw,44px)">
+            <span class="head__num">01</span>
+            <span><span class="tag"><span class="ar">من نحن</span><span class="en">About</span></span></span>
+          </div>
+          <h2 class="dual reveal" id="about-title">
+            <span class="ar">من نحن؟</span>
+            <span class="en">Who we are?</span>
+          </h2>
+          <p class="body reveal">
+            <span class="ar">صدقي بلانيت عالمٌ صغير للعناية والجمال، وُلد من شغف صدقي بكل ما يجعل البشرة تشبه صاحبتها. نختار منتجاتنا بعناية من أفضل المختبرات الكورية والعالمية، ونقدّمها بلغةٍ بسيطةٍ وصادقة؛ لأن الجمال عندنا ليس قناعًا يُخفي، بل مدارٌ يدور حولكِ أنتِ.</span>
+            <span class="en">Sudqi Planet is a small world of care and beauty, born from Sudqi’s passion for everything that lets skin look like itself. We choose every product carefully from the best Korean and international labs, and present it simply and honestly — because beauty, to us, is not a mask. It is an orbit that turns around you.</span>
+          </p>
+          <p class="body reveal">
+            <span class="ar">نؤمن أن البشرة الجميلة ليست بشرةً مثالية، بل بشرةٌ مرتاحة تشبه صاحبتها. لذلك نختار القليل، ونختاره جيدًا.</span>
+            <span class="en">We believe beautiful skin isn’t perfect skin — it’s comfortable skin that looks like you. So we choose little, and we choose it well.</span>
+          </p>
+
+          <div class="pillars">
+            <div class="pillar reveal">
+              <span class="num">01</span>
+              <h3><span class="ar">مختارة بعناية</span><span class="en">Carefully chosen</span></h3>
+              <p><span class="ar">من أفضل المختبرات الكورية والعالمية، بعد أن نجرّبها ونثق بها.</span><span class="en">From the finest Korean and international labs — tried first, then trusted.</span></p>
+            </div>
+            <div class="pillar reveal" style="--d:.1s">
+              <span class="num">02</span>
+              <h3><span class="ar">بصدق</span><span class="en">Honestly</span></h3>
+              <p><span class="ar">مكوّنات واضحة ووعود بسيطة، بلا مبالغة ولا أقنعة.</span><span class="en">Clear ingredients and simple promises. No exaggeration, no masks.</span></p>
+            </div>
+            <div class="pillar reveal" style="--d:.2s">
+              <span class="num">03</span>
+              <h3><span class="ar">حولكِ أنتِ</span><span class="en">Around you</span></h3>
+              <p><span class="ar">روتين هادئ يدور حول بشرتكِ، خطوةً بخطوة.</span><span class="en">A calm routine that orbits your skin, one step at a time.</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== 02 · Collection =========================== -->
+    <section class="section collection" id="collection" aria-labelledby="collection-title">
+      <div class="wrap">
+        <div class="head">
+          <div class="head__meta reveal">
+            <span class="head__num">02</span>
+            <h2 class="dual" id="collection-title">
+              <span class="ar">عالمكِ الصغير</span>
+              <span class="en">Your small world.</span>
+            </h2>
+          </div>
+          <div class="head__meta reveal" style="--d:.1s">
+            <span><span class="tag"><span class="ar">المجموعة</span><span class="en">The collection</span></span></span>
+            <p>
+              <span class="ar">من الترطيب اليومي إلى قطرات السيروم الذهبية، كل قطعة في مجموعتنا اختيرت لتجد مكانها في مدار روتينكِ.</span>
+              <span class="en">From daily moisture to golden drops of serum, every piece in our collection was chosen to find its place in the orbit of your routine.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="cats">
+          <article class="cat reveal">
+            <a class="cat__media" href="shop.html?c=care" aria-label="الترطيب اليومي — Daily moisture">
+              <img src="assets/img/jar.jpg" alt="مرطّب صدقي بلانيت في عبوة زجاجية تحت ضوء جانبي" width="462" height="592" loading="lazy" />
+            </a>
+            <div class="cat__body">
+              <span class="num">2.1</span>
+              <h3 class="dual"><span class="ar">الترطيب اليومي</span><span class="en">Daily moisture</span></h3>
+              <p><span class="ar">كريمات خفيفة تذوب في البشرة كضوء القمر على رملٍ هادئ؛ نعومة تدوم من الصباح حتى المساء.</span><span class="en">Light creams that melt into skin like moonlight on quiet sand — softness that lasts from morning to night.</span></p>
+              <a class="link-arrow" href="shop.html?c=care"><span class="ar">تسوّقي الترطيب</span><span class="en">Shop moisture</span></a>
+            </div>
+          </article>
+
+          <article class="cat reveal">
+            <a class="cat__media" href="shop.html?c=serum" aria-label="السيروم والزيوت — Serums & oils">
+              <img src="assets/img/serum-drop.jpg" alt="قطرة سيروم ذهبية تلمع في الضوء" width="462" height="592" loading="lazy" />
+            </a>
+            <div class="cat__body">
+              <span class="num">2.2</span>
+              <h3 class="dual"><span class="ar">السيروم والزيوت</span><span class="en">Serums &amp; oils</span></h3>
+              <p><span class="ar">قطرات مركّزة بلون الذهب، تمنح بشرتكِ إشراقة دافئة تبدأ من الداخل.</span><span class="en">Concentrated drops the colour of gold, for a warm glow that begins within.</span></p>
+              <a class="link-arrow" href="shop.html?c=serum"><span class="ar">تسوّقي السيروم</span><span class="en">Shop serums</span></a>
+            </div>
+          </article>
+
+          <article class="cat reveal">
+            <a class="cat__media" href="shop.html?c=protect" aria-label="التنظيف والحماية — Cleanse & protect">
+              <img src="assets/img/duo.jpg" alt="مرطّب وأنبوب واقي شمس من صدقي بلانيت بجانب أوراق المريمية" width="462" height="592" loading="lazy" />
+            </a>
+            <div class="cat__body">
+              <span class="num">2.3</span>
+              <h3 class="dual"><span class="ar">التنظيف والحماية</span><span class="en">Cleanse &amp; protect</span></h3>
+              <p><span class="ar">تنظيف لطيف في المساء، وواقٍ خفيف كل صباح؛ لأن العناية الحقيقية تبدأ بالأساسيات.</span><span class="en">A gentle cleanse at night, a light shield every morning — real care starts with the basics.</span></p>
+              <a class="link-arrow" href="shop.html?c=protect"><span class="ar">تسوّقي الحماية</span><span class="en">Shop protection</span></a>
+            </div>
+          </article>
+
+          <article class="cat reveal">
+            <a class="cat__media" href="shop.html?c=makeup" aria-label="المكياج — Makeup">
+              <img src="assets/img/powder-orbit.jpg" alt="مدار من البودرة اللامعة على خلفية داكنة" width="462" height="592" loading="lazy" />
+            </a>
+            <div class="cat__body">
+              <span class="num">2.4</span>
+              <h3 class="dual"><span class="ar">المكياج</span><span class="en">Makeup</span></h3>
+              <p><span class="ar">لمسات ناعمة تُظهر جمالكِ ولا تخفيه؛ ألوان هادئة كغبار النجوم.</span><span class="en">Soft touches that reveal you rather than hide you — quiet shades, like stardust.</span></p>
+              <a class="link-arrow" href="shop.html?c=makeup"><span class="ar">تسوّقي المكياج</span><span class="en">Shop makeup</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Statement · Real skin ======================== -->
+    <section class="section statement" aria-labelledby="skin-title">
+      <div class="field" aria-hidden="true"></div>
+      <div class="wrap statement__grid">
+        <div>
+          <p class="reveal" style="margin:0 0 clamp(28px,3vw,44px)"><span class="tag tag--light"><span class="ar">بشرة حقيقية</span><span class="en">Real skin</span></span></p>
+          <h2 class="dual reveal" id="skin-title">
+            <span class="ar">بشرة تشبهكِ</span>
+            <span class="en">Skin that looks like you.</span>
+          </h2>
+          <p class="reveal">
+            <span class="ar">لا نَعِدكِ ببشرةٍ أخرى. نَعِدكِ ببشرتكِ أنتِ، أكثر راحةً ونعومةً وإشراقًا. ملمسٌ حقيقي، وقوامٌ تحبين لمسه، ونتيجةٌ تشبهكِ.</span>
+            <span class="en">We don’t promise you different skin. We promise your own — calmer, softer, brighter. Real texture, formulas you love to touch, and results that look like you.</span>
+          </p>
+        </div>
+        <div class="statement__media">
+          <figure class="f1 reveal"><img src="assets/img/skin-face.jpg" alt="وجه في ضوء الشمس مع لمسة كريم على الخد" width="462" height="592" loading="lazy" /></figure>
+          <figure class="f2 reveal" style="--d:.15s"><img src="assets/img/hand.jpg" alt="لمسة كريم على راحة اليد" width="462" height="592" loading="lazy" /></figure>
+          <span class="statement__dot" aria-hidden="true"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================== 03 · Ritual ============================= -->
+    <section class="section ritual" id="ritual" aria-labelledby="ritual-title">
+      <div class="field" aria-hidden="true"></div>
+      <div class="wrap ritual__grid">
+        <div>
+          <div class="head__meta reveal" style="margin-bottom:clamp(28px,3vw,44px)">
+            <span class="head__num">03</span>
+            <span><span class="tag"><span class="ar">روتينكِ</span><span class="en">Your ritual</span></span></span>
+          </div>
+          <h2 class="dual reveal" id="ritual-title" style="font-size:clamp(40px,5.6vw,88px);line-height:1.12">
+            <span class="ar">روتينكِ في مدار</span>
+            <span class="en">Your routine, in orbit.</span>
+          </h2>
+          <p class="reveal" style="color:var(--ink-soft);margin:clamp(20px,2vw,28px) 0 clamp(36px,4vw,56px);max-width:32em">
+            <span class="ar">ثلاث خطوات بسيطة، كل يوم. لا تحتاج بشرتكِ أكثر من ذلك لتشعر بالعناية.</span>
+            <span class="en">Three simple steps, every day. That’s all your skin needs to feel cared for.</span>
+          </p>
+
+          <ol class="steps">
+            <li class="step reveal">
+              <span class="step__n"><span class="ar">١</span><span class="en num">1</span></span>
+              <div>
+                <h3><span class="ar">نظّفي</span><span class="en">Cleanse</span></h3>
+                <p><span class="ar">نظّفي بشرتكِ بلطف بماءٍ فاتر، لتستعد لكل ما يأتي بعدها.</span><span class="en">Cleanse gently with lukewarm water, so your skin is ready for everything that follows.</span></p>
+              </div>
+            </li>
+            <li class="step reveal" style="--d:.1s">
+              <span class="step__n"><span class="ar">٢</span><span class="en num">2</span></span>
+              <div>
+                <h3><span class="ar">رطّبي</span><span class="en">Moisturise</span></h3>
+                <p><span class="ar">ضعي السيروم ثم المرطّب بحركاتٍ دائرية، كمدارٍ صغير حول وجهكِ.</span><span class="en">Serum, then moisturiser, pressed in small circles — a little orbit around your face.</span></p>
+              </div>
+            </li>
+            <li class="step reveal" style="--d:.2s">
+              <span class="step__n"><span class="ar">٣</span><span class="en num">3</span></span>
+              <div>
+                <h3><span class="ar">احمي</span><span class="en">Protect</span></h3>
+                <p><span class="ar">لا تنسي واقي الشمس كل صباح؛ هو آخر خطوة وأهمها.</span><span class="en">Never skip sunscreen in the morning — the last step, and the most important one.</span></p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <figure class="ritual__media reveal" style="margin:0">
+          <img src="assets/img/cream.jpg" alt="قوام كريم ناعم وكثيف" width="462" height="592" loading="lazy" />
+          <figcaption class="ritual__card">
+            <span class="mark" aria-hidden="true"></span>
+            <span><span class="ar">شكرًا لأنكِ جزءٌ من كوكبنا.</span><span class="en">Thank you for being part of our planet.</span></span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ========================== 04 · Promise ============================ -->
+    <section class="section" id="promise" aria-labelledby="promise-title">
+      <div class="wrap">
+        <div class="head">
+          <div class="head__meta reveal">
+            <span class="head__num">04</span>
+            <h2 class="dual" id="promise-title">
+              <span class="ar">كيف نختار؟</span>
+              <span class="en">How we choose.</span>
+            </h2>
+          </div>
+          <div class="head__meta reveal" style="--d:.1s">
+            <span><span class="tag"><span class="ar">وعدنا</span><span class="en">Our promise</span></span></span>
+            <p>
+              <span class="ar">قبل أن يصل أي منتج إلى كوكبكِ، يمرّ بأسئلة بسيطة نطرحها بصدق.</span>
+              <span class="en">Before any product reaches your planet, it passes a few simple questions we ask honestly.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="promise__list">
+          <div class="promise__row reveal">
+            <span class="num">01</span>
+            <h3><span class="ar">من المختبر إلى كوكبكِ</span><span class="en">From the lab to your planet</span></h3>
+            <p><span class="ar">نتعامل مع مختبرات كورية وعالمية موثوقة، ونختار منها ما يستحق مكانًا في عالمكِ.</span><span class="en">We work with trusted Korean and international labs, and keep only what deserves a place in your world.</span></p>
+            <i aria-hidden="true"></i>
+          </div>
+          <div class="promise__row reveal">
+            <span class="num">02</span>
+            <h3><span class="ar">مكوّنات واضحة</span><span class="en">Clear ingredients</span></h3>
+            <p><span class="ar">نشرح كل منتج بلغةٍ بسيطة: ماذا يفعل، ولمن يناسب، وكيف تستخدمينه.</span><span class="en">Every product explained simply: what it does, who it suits, and how to use it.</span></p>
+            <i aria-hidden="true"></i>
+          </div>
+          <div class="promise__row reveal">
+            <span class="num">03</span>
+            <h3><span class="ar">ملمس تحبينه</span><span class="en">A texture you love</span></h3>
+            <p><span class="ar">القوام جزءٌ من التجربة؛ نختار ما يذوب بسهولة ويترك البشرة مرتاحة.</span><span class="en">Texture is part of the ritual — we choose formulas that melt in and leave skin at ease.</span></p>
+            <i aria-hidden="true"></i>
+          </div>
+          <div class="promise__row reveal">
+            <span class="num">04</span>
+            <h3><span class="ar">أصلي ومحفوظ بعناية</span><span class="en">Authentic, kept with care</span></h3>
+            <p><span class="ar">كل منتج أصلي، ومحفوظ بعناية حتى يصل إلى بابكِ.</span><span class="en">Every product is authentic, and stored with care until it reaches your door.</span></p>
+            <i aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== 05 · Gift ============================== -->
+    <section class="section" style="padding-top:0" aria-labelledby="gift-title">
+      <div class="wrap">
+        <div class="head">
+          <div class="head__meta reveal">
+            <span class="head__num">05</span>
+            <h2 class="dual" id="gift-title">
+              <span class="ar">يصلكِ كهدية</span>
+              <span class="en">It arrives like a gift.</span>
+            </h2>
+          </div>
+          <div class="head__meta reveal" style="--d:.1s">
+            <span><span class="tag"><span class="ar">التغليف</span><span class="en">Unboxing</span></span></span>
+            <p>
+              <span class="ar">كل طلب يُغلَّف بعناية في علبةٍ تحمل مدارنا، مع بطاقة صغيرة تقول ما نشعر به حقًا.</span>
+              <span class="en">Every order is wrapped with care in a box that carries our orbit, with a small card that says what we truly feel.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="gift__grid">
+          <figure class="gift__main reveal">
+            <img src="assets/img/gift.jpg" alt="حقيبة تسوّق وعلبة هدية من صدقي بلانيت مع شريط يحمل الرمز" width="1312" height="712" loading="lazy" />
+          </figure>
+          <div class="gift__side">
+            <figure class="reveal" style="--d:.1s">
+              <img src="assets/img/thanks.jpg" alt="بطاقة شكر من صدقي بلانيت على قماش كتان" width="1312" height="712" loading="lazy" />
+            </figure>
+            <div class="gift__note reveal" style="--d:.2s">
+              <h3 class="dual"><span class="ar">شكرًا لأنكِ هنا</span><span class="en">Thank you for being here.</span></h3>
+              <p><span class="ar">كل قطعة في هذا الصندوق اختيرت لتليق بكوكبكِ الصغير.</span><span class="en">Every piece in this box was chosen to suit your small planet.</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================== Explore more ============================ -->
+    <section class="explore" aria-labelledby="explore-title">
+      <div class="field" aria-hidden="true"></div>
+      <div class="explore__orbit" aria-hidden="true">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+          <path id="explore-orbit" d="M140 450a660 210 0 1 0 1320 0a660 210 0 1 0 -1320 0" fill="none" transform="rotate(-14 800 450)" />
+          <circle r="9">
+            <animateMotion dur="32s" repeatCount="indefinite"><mpath href="#explore-orbit" /></animateMotion>
+          </circle>
+        </svg>
+      </div>
+      <div class="wrap explore__inner">
+        <span class="mark reveal" aria-hidden="true"></span>
+        <h2 class="dual reveal" id="explore-title">
+          <span class="ar">استكشفي المزيد</span>
+          <span class="en">Explore more.</span>
+        </h2>
+        <p class="reveal">
+          <span class="ar">ادخلي متجرنا، واختاري ما يدور حول بشرتكِ.</span>
+          <span class="en">Step into our store, and choose what orbits your skin.</span>
+        </p>
+        <a class="cta cta--pearl cta--lg reveal" href="shop.html"><span class="ar">ادخلي المتجر</span><span class="en">Enter the store</span></a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================== Footer ============================== -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="brand" href="index.html" aria-label="Sudqi Planet — صدقي بلانيت">
+            <span class="mark" aria-hidden="true"></span>
+            <span class="brand__words">
+              <span class="brand__ar">صدقي بلانيت</span>
+              <span class="brand__en">sudqi planet</span>
+            </span>
+          </a>
+          <p><span class="ar">عالمٌ صغير للعناية والجمال، من عمّان إلى كوكبكِ.</span><span class="en">A small world of care and beauty — from Amman to your planet.</span></p>
+        </div>
+        <div>
+          <h4><span class="ar">المتجر</span><span class="en">Store</span></h4>
+          <ul>
+            <li><a href="shop.html"><span class="ar">كل المنتجات</span><span class="en">All products</span></a></li>
+            <li><a href="shop.html?c=care"><span class="ar">الترطيب</span><span class="en">Moisture</span></a></li>
+            <li><a href="shop.html?c=serum"><span class="ar">السيروم والزيوت</span><span class="en">Serums &amp; oils</span></a></li>
+            <li><a href="shop.html?c=makeup"><span class="ar">المكياج</span><span class="en">Makeup</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4><span class="ar">صدقي بلانيت</span><span class="en">Sudqi Planet</span></h4>
+          <ul>
+            <li><a href="#about"><span class="ar">من نحن</span><span class="en">About</span></a></li>
+            <li><a href="#ritual"><span class="ar">روتينكِ</span><span class="en">Ritual</span></a></li>
+            <li><a href="#promise"><span class="ar">وعدنا</span><span class="en">Our promise</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4><span class="ar">تواصلي معنا</span><span class="en">Contact</span></h4>
+          <ul>
+            <li><a class="ltr" href="mailto:hello@sudqiplanet.com">hello@sudqiplanet.com</a></li>
+            <li><a class="ltr" href="https://instagram.com/sudqiplanet" target="_blank" rel="noopener">@sudqiplanet</a></li>
+            <li><span class="ar">عمّان، الأردن</span><span class="en">Amman, Jordan</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span><span class="ar">© <span data-year>٢٠٢٦</span> صدقي بلانيت — جميع الحقوق محفوظة</span><span class="en">© <span data-year>2026</span> Sudqi Planet — All rights reserved</span></span>
+        <span class="mark" aria-hidden="true"></span>
+        <span><span class="ar">عناية في مدار</span><span class="en">Care, in orbit.</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

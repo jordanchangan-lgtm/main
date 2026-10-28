@@ -75,7 +75,17 @@
     var ix = document.querySelector("[data-index]");
     var float = document.querySelector("[data-ix-float]");
     if (ix) {
-      var items = news;
+      // Up to 8 picks: products marked `featured` first, then the rest in catalogue order.
+      var items = news.filter(function (p) { return p.featured; }).concat(news.filter(function (p) { return !p.featured; })).slice(0, 8);
+      var countEl = document.querySelector("[data-count]");
+      if (countEl) countEl.textContent = String(products.length);
+      var brandsEl = document.querySelector("[data-brands]");
+      if (brandsEl) {
+        var brands = [];
+        news.forEach(function (p) { if (p.brand && brands.indexOf(p.brand) < 0) brands.push(p.brand); });
+        brandsEl.innerHTML = brands.slice(0, 3).map(esc).join(" <i></i> ") +
+          (brands.length ? ' <i></i> <span class="ar">والمزيد</span><span class="en">&amp; more</span>' : "");
+      }
       var arrow = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg>';
       ix.innerHTML = items.map(function (p, i) {
         return '<button type="button" class="ix-row rv" data-qv="' + esc(p.handle) + '" data-i="' + i + '" style="--k:' + (i % 5) + '">' +

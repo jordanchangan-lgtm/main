@@ -10,6 +10,7 @@ The layout below comes from studying modern beauty stores: Rhode, Sulwhasoo, Glo
 Reference build: `sudqi-planet/` in this repo. Use `index.html`, `shop.html`, `assets/js/{shop-config,catalog,main,home,shop}.js` and `assets/css/style.css` as working code to copy from.
 
 ## Before building
+0. **Write copy that scales.** Store-level copy (hero, announcement bar, headings, meta description, brand story) never states how many products there are ("five pieces") or limits the origin ("Korean beauty") unless the client says that is the store's identity. Catalogues grow; describe the brand, not today's stock. Product-level copy may name a product's real origin. Lists on the landing page show "featured" picks (at most 8) and link to the full shop with a live count.
 0. **Check the length.** Count the sections before you build. If two sections show the same products or make the same point, cut one.
 1. **Read the brand book completely.** Take the palette, the typefaces and the voice from it, plus taglines and approved copy you can quote.
 2. **Get the real products.** Read the names off the product photos and labels. Then search the web for each product (size, key ingredients, texture, how to use) and write the descriptions from what you find. Never invent products. If prices are not given, show "Price soon" (`price: null`).

@@ -548,9 +548,10 @@ html[lang="ar"] .qv-price .ar { font-family: var(--font-ar); }
   .films.in .film { clip-path: inset(0 0 0 0); }
   .film:nth-child(n + 2) { display: none; }
   .hero-brands { display: none; }
-  .qv-body { grid-template-columns: minmax(0, 1fr); }
+  .qv-body { grid-template-columns: minmax(0, 1fr); grid-auto-rows: max-content; align-content: start; }
   .qv-gal { flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; padding-top: calc(70px + env(safe-area-inset-top, 0px)); }
-  .qv-gal figure { flex: 0 0 78%; scroll-snap-align: center; }
+  .qv-gal { align-items: flex-start; }
+  .qv-gal figure { flex: 0 0 auto; width: 74vw; height: calc(74vw * 1.25); max-height: 62svh; aspect-ratio: auto; scroll-snap-align: center; }
   .qv-info { position: static; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -617,6 +618,9 @@ html[lang="ar"] .ix-price .ar { font-family: var(--font-ar); }
   .ix-row .ix-price { grid-column: 2; grid-row: 2; font-size: 14px; }
   .ix-row .ix-thumb { grid-column: 3; grid-row: 1 / span 2; }
 }
+
+/* with the menu open the header sits on night: light icons */
+body.menu-open .top .head { color: var(--on-dark) !important; background: var(--night) !important; box-shadow: none !important; }
 
 /* ---------- packages ---------- */
 .packages { background: var(--white); overflow: hidden; }

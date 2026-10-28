@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>المتجر — صدقي بلانيت</title>
+  <meta name="description" content="صدقي بلانيت: متجر للعناية بالبشرة والجسم والمكياج من أفضل العلامات حول العالم، مختارة بعناية ومقدّمة بصدق. عناية في مدار." />
+  <meta name="theme-color" content="#17151C" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <script>
+    (function () {
+      var l;
+      try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("sp-lang"); } catch (e) {}
+      if (l !== "en") l = "ar";
+      var h = document.documentElement;
+      h.lang = l; h.dir = l === "ar" ? "rtl" : "ltr"; h.classList.add("js");
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="shop" data-title-ar="المتجر — صدقي بلانيت" data-title-en="Shop — Sudqi Planet">
+
+  <!-- ============================ Header ============================ -->
+  <div class="top" id="top">
+    <div class="announce" data-announce>
+      <p class="on"><span class="ar">منتجات أصلية من علامات حول العالم، مختارة بعناية</span><span class="en">Authentic beauty from brands around the world, chosen with care</span></p>
+      <p><span class="ar">كل طلب يصلكِ مغلّفًا كهدية</span><span class="en">Every order arrives wrapped like a gift</span></p>
+      <p><span class="ar">وصلت المجموعة الجديدة — اكتشفيها الآن</span><span class="en">The new collection has landed — discover it now</span></p>
+    </div>
+    <header class="head">
+      <div class="wrap head-in">
+        <nav class="head-nav" aria-label="Main">
+          <a href="shop.html" aria-current="page"><span class="ar">المتجر</span><span class="en">Shop</span></a>
+          <a href="index.html#story"><span class="ar">من نحن</span><span class="en">About</span></a>
+          <a href="index.html#products"><span class="ar">منتجاتنا</span><span class="en">Products</span></a>
+          <a href="index.html#packages"><span class="ar">الباقات</span><span class="en">Packages</span></a>
+        </nav>
+        <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Menu" aria-expanded="false">
+          <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 7h14M3 13h14" /></svg>
+        </button>
+        <a class="brand" href="index.html" aria-label="Sudqi Planet — صدقي بلانيت">
+          <span class="mark" aria-hidden="true"></span>
+          <span class="brand-words"><span class="brand-ar">صدقي بلانيت</span><span class="brand-en">sudqi planet</span></span>
+        </a>
+        <div class="head-end">
+          <button class="lang-toggle" type="button" data-lang-toggle aria-label="Switch language"><span class="ar num">EN</span><span class="en">عربي</span></button>
+          <a class="icon-btn" href="shop.html" aria-label="Shop — المتجر">
+            <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 6.5h12l-1 11H5l-1-11Z" /><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" /></svg>
+            <span class="dot" aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <nav aria-label="Mobile">
+      <a href="shop.html"><span class="num">01</span><span class="ar">المتجر</span><span class="en">Shop</span></a>
+      <a href="index.html#story"><span class="num">02</span><span class="ar">من نحن</span><span class="en">About</span></a>
+      <a href="index.html#products"><span class="num">03</span><span class="ar">منتجاتنا</span><span class="en">Products</span></a>
+      <a href="index.html#packages"><span class="num">04</span><span class="ar">الباقات</span><span class="en">Packages</span></a>
+    </nav>
+    <div class="sheet-cols" data-collection-links></div>
+  </div>
+
+  <main>
+    <section class="s-hero">
+      <div class="field" aria-hidden="true"></div>
+      <div class="wrap s-hero-in">
+        <div>
+          <nav class="crumbs rv" aria-label="Breadcrumb">
+            <a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span aria-hidden="true">/</span><span><span class="ar">المتجر</span><span class="en">Shop</span></span>
+          </nav>
+          <h1 data-split class="in-load"><span class="ar">المتجر</span><span class="en">The shop</span></h1>
+        </div>
+        <p class="rv" style="--d:.3s"><span class="ar">كل ما يدور حول بشرتكِ في مكانٍ واحد: عناية بالبشرة والجسم ومكياج من أفضل العلامات حول العالم، مختارة بعناية وتصلكِ مغلّفة كهدية.</span><span class="en">Everything that orbits your skin, in one place: skincare, body care and makeup from the best brands around the world, chosen with care and delivered wrapped like a gift.</span></p>
+      </div>
+      <div class="s-cols" id="cols" role="group" aria-label="Collections"></div>
+    </section>
+
+    <div class="s-bar">
+      <div class="wrap s-bar-in">
+        <h2 id="col-title"></h2>
+        <span class="s-count" id="count" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="s-grid" id="products"></div>
+      <p class="store-note" id="store-note" hidden>
+        <span>
+          <span class="ar">متجرنا الإلكتروني قيد الإطلاق. إلى ذلك الحين، يسعدنا استقبال طلبكِ عبر إنستغرام <a class="ltr" href="https://instagram.com/sudqiplanet" target="_blank" rel="noopener" style="text-decoration:underline">@sudqiplanet</a>.</span>
+          <span class="en">Our online store is launching soon. Until then, we’d love to take your order on Instagram at <a href="https://instagram.com/sudqiplanet" target="_blank" rel="noopener" style="text-decoration:underline">@sudqiplanet</a>.</span>
+        </span>
+      </p>
+    </div>
+  </main>
+
+  <!-- ============================ Footer ============================ -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="f-top">
+        <div class="f-brand">
+          <a class="brand" href="index.html" aria-label="Sudqi Planet — صدقي بلانيت">
+            <span class="mark" aria-hidden="true"></span>
+            <span class="brand-words"><span class="brand-ar">صدقي بلانيت</span><span class="brand-en">sudqi planet</span></span>
+          </a>
+          <p><span class="ar">عالمٌ صغير للعناية والجمال، من عمّان إلى كوكبكِ.</span><span class="en">A small world of care and beauty — from Amman to your planet.</span></p>
+        </div>
+        <div>
+          <h4><span class="ar">المتجر</span><span class="en">Shop</span></h4>
+          <ul data-footer-cols></ul>
+        </div>
+        <div>
+          <h4><span class="ar">صدقي بلانيت</span><span class="en">Sudqi Planet</span></h4>
+          <ul>
+            <li><a href="index.html#story"><span class="ar">من نحن</span><span class="en">About</span></a></li>
+            <li><a href="index.html#products"><span class="ar">منتجاتنا</span><span class="en">Products</span></a></li>
+            <li><a href="index.html#packages"><span class="ar">الباقات</span><span class="en">Packages</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4><span class="ar">تواصلي معنا</span><span class="en">Contact</span></h4>
+          <ul>
+            <li><span class="ltr">hello@sudqiplanet.com</span></li>
+            <li><a class="ltr" href="https://instagram.com/sudqiplanet" target="_blank" rel="noopener">@sudqiplanet</a></li>
+            <li><span class="ar">عمّان، الأردن</span><span class="en">Amman, Jordan</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="f-word" data-split><span class="ar">عناية في مدار</span><span class="en">Care, in orbit.</span></p>
+      <div class="f-bottom">
+        <span><span class="ar">© <span data-year>٢٠٢٦</span> صدقي بلانيت — جميع الحقوق محفوظة</span><span class="en">© <span data-year>2026</span> Sudqi Planet — All rights reserved</span></span>
+        <span class="mark" aria-hidden="true"></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/shop-config.js" defer></script>
+  <script src="assets/js/catalog.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/shop.js" defer></script>
+</body>
+</html>

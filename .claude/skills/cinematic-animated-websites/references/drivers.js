@@ -267,4 +267,18 @@
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", onScroll); window.addEventListener("load", onScroll); frame();
 })();
 
-// missing: /* the things list: the thumbnails
+/* the things list: the thumbnails sit in one column past the widest word and the list keeps room for them, so none
+   runs off the edge of the screen */
+(function(){
+  var sec = document.querySelector(".js-td"); if(!sec) return;
+  var list = sec.querySelector(".td-list"), items = [].slice.call(sec.querySelectorAll(".td-item")); if(!list || !items.length) return;
+  function fit(){
+    var gap = Math.max(12, Math.min(32, window.innerWidth * .02)), maxName = 0, maxThumb = 0;
+    items.forEach(function(it){ var nm = it.querySelector(".td-name"), th = it.querySelector(".td-thumb"); if(nm) maxName = Math.max(maxName, nm.getBoundingClientRect().width); if(th){ var h = th.getBoundingClientRect().height, ar = (th.style.getPropertyValue("--ar") || "4/5").split("/"); maxThumb = Math.max(maxThumb, h * parseFloat(ar[0]) / parseFloat(ar[1] || 1)); } });
+    if(window.innerWidth <= 820){ list.style.paddingRight = ""; list.style.removeProperty("--tx"); list.style.removeProperty("--tmax"); return; }
+    var free = window.innerWidth - list.getBoundingClientRect().left - maxName - gap * 2; var tw = Math.min(maxThumb, Math.max(40, free));
+    list.style.setProperty("--tx", (maxName + gap).toFixed(1) + "px"); list.style.paddingRight = (tw + gap).toFixed(1) + "px"; list.style.setProperty("--tmax", tw.toFixed(1) + "px");
+  }
+  window.addEventListener("resize", fit); window.addEventListener("load", fit); if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit); fit();
+})();
+

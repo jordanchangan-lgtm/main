@@ -27,6 +27,7 @@
   <div class="top" id="top">
     <div class="announce" data-announce>
       <p class="on"><span class="ar">منتجات كورية وعالمية أصلية، مختارة بعناية</span><span class="en">Authentic Korean &amp; international beauty, chosen with care</span></p>
+      <p><span class="ar">كل الأسعار تشمل التوصيل</span><span class="en">All prices include delivery</span></p>
       <p><span class="ar">كل طلب يصلكِ مغلّفًا كهدية</span><span class="en">Every order arrives wrapped like a gift</span></p>
       <p><span class="ar">وصلت المجموعة الجديدة — اكتشفيها الآن</span><span class="en">The new collection has landed — discover it now</span></p>
     </div>
@@ -70,9 +71,13 @@
 
   <main>
     <!-- ============================= Hero ============================= -->
-    <section class="hero" aria-label="Sudqi Planet">
-      <div class="films" data-films aria-hidden="true"></div>
-      <div class="hero-scrim" aria-hidden="true"></div>
+    <section class="hero hero--light" aria-label="Sudqi Planet">
+      <figure class="hero-media" aria-hidden="true">
+        <picture>
+          <source media="(max-width: 760px)" srcset="assets/img/ai/hero-m.jpg" />
+          <img src="assets/img/ai/hero.jpg" alt="" fetchpriority="high" />
+        </picture>
+      </figure>
       <div class="hero-grain" aria-hidden="true"></div>
 
       <div class="wrap hero-in">
@@ -86,8 +91,8 @@
         </div>
         <div class="hero-foot ent" style="--d:1.7s">
           <div class="hero-ctas">
-            <a class="btn" href="shop.html#new"><span class="ar">تسوّقي الجديد</span><span class="en">Shop new in</span><span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg></span></a>
-            <a class="btn btn--ghost" href="#collections"><span class="ar">كل المجموعات</span><span class="en">All collections</span></a>
+            <a class="btn btn--dark" href="shop.html#new"><span class="ar">تسوّقي الجديد</span><span class="en">Shop new in</span><span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg></span></a>
+            <a class="btn btn--line" href="#packages"><span class="ar">الباقات</span><span class="en">Packages</span></a>
           </div>
           <p class="hero-brands num">Dr. Althea <i></i> Beauty of Joseon <i></i> Clinique</p>
         </div>
@@ -95,7 +100,7 @@
     </section>
 
     <!-- =========================== New in ============================= -->
-    <section class="sec newin wipe" id="new" style="--prev:var(--night)">
+    <section class="sec newin" id="new">
       <div class="wrap sec-head">
         <div>
           <p class="eyebrow rv"><span class="ar">وصل حديثًا</span><span class="en">Just landed</span></p>
@@ -155,28 +160,28 @@
         </div>
         <div class="cn-grid">
           <a class="cn rv" href="shop.html#hydration" style="--k:0">
-            <img src="assets/img/p/butter-1.jpg" alt="" loading="lazy" />
+            <img src="assets/img/ai/butter.jpg" alt="" loading="lazy" />
             <span class="go"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg></span>
             <span class="num">01</span>
             <h3><span class="ar">الجفاف</span><span class="en">Dryness</span></h3>
             <p><span class="ar">ترطيب غني يعيد للبشرة راحتها ونعومتها.</span><span class="en">Rich moisture that brings back comfort and softness.</span></p>
           </a>
           <a class="cn rv" href="shop.html#calm" style="--k:1">
-            <img src="assets/img/p/mist-3.jpg" alt="" loading="lazy" />
+            <img src="assets/img/ai/mist.jpg" alt="" loading="lazy" />
             <span class="go"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg></span>
             <span class="num">02</span>
             <h3><span class="ar">الحساسية</span><span class="en">Sensitivity</span></h3>
             <p><span class="ar">بخّات وكريمات تهدّئ البشرة المتعبة.</span><span class="en">Mists and creams that calm tired skin.</span></p>
           </a>
           <a class="cn rv" href="shop.html#cleanse" style="--k:2">
-            <img src="assets/img/p/cleanser-2.jpg" alt="" loading="lazy" />
+            <img src="assets/img/ai/cleanser.jpg" alt="" loading="lazy" />
             <span class="go"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg></span>
             <span class="num">03</span>
             <h3><span class="ar">الشوائب</span><span class="en">Impurities</span></h3>
             <p><span class="ar">غسول لطيف ينظّف بلا شدّ.</span><span class="en">A gentle wash that cleans without tightness.</span></p>
           </a>
           <a class="cn rv" href="shop.html#sun" style="--k:3">
-            <img src="assets/img/p/sun-2.jpg" alt="" loading="lazy" />
+            <img src="assets/img/ai/sun.jpg" alt="" loading="lazy" />
             <span class="go"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg></span>
             <span class="num">04</span>
             <h3><span class="ar">الحماية</span><span class="en">Protection</span></h3>
@@ -203,15 +208,29 @@
       </div>
     </section>
 
+    <!-- =========================== Packages =========================== -->
+    <section class="sec packages wipe" id="packages" style="--prev:var(--pearl)">
+      <div class="field" aria-hidden="true"></div>
+      <div class="wrap sec-head">
+        <div>
+          <p class="eyebrow rv"><span class="ar">الباقات</span><span class="en">Packages</span></p>
+          <h2 class="h2" data-split><span class="ar">روتين كامل، بسعرٍ أقل</span><span class="en">A full routine, for less</span></h2>
+          <p class="sec-lede rv"><span class="ar">باقات مختارة من منتجاتنا، والتوصيل مشمول في كل سعر.</span><span class="en">Routines put together from our products, with delivery included in every price.</span></p>
+        </div>
+        <a class="more rv" href="shop.html#packages"><span class="ar">كل الباقات</span><span class="en">All packages</span><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg></a>
+      </div>
+      <div class="wrap pk-grid" data-packages></div>
+    </section>
+
     <!-- ============================ Ritual ============================ -->
-    <section class="sec ritual wipe" id="ritual" style="--prev:var(--pearl)">
+    <section class="sec ritual wipe" id="ritual" style="--prev:var(--white)">
       <div class="field" aria-hidden="true"></div>
       <div class="wrap rt">
         <div class="rt-pics" data-rt-pics>
-          <figure class="rt-pic on"><img src="assets/img/p/mist-6.jpg" alt="" loading="lazy" /><figcaption><span class="mark" aria-hidden="true"></span><span><span class="ar">روتينكِ في مدار</span><span class="en">Your routine, in orbit</span></span></figcaption></figure>
-          <figure class="rt-pic"><img src="assets/img/p/cleanser-1.jpg" alt="" loading="lazy" /></figure>
-          <figure class="rt-pic"><img src="assets/img/p/mist-4.jpg" alt="" loading="lazy" /></figure>
-          <figure class="rt-pic"><img src="assets/img/p/sun-1.jpg" alt="" loading="lazy" /></figure>
+          <figure class="rt-pic on"><img src="assets/img/ai/bundle-4.jpg" alt="" loading="lazy" /><figcaption><span class="mark" aria-hidden="true"></span><span><span class="ar">روتينكِ في مدار</span><span class="en">Your routine, in orbit</span></span></figcaption></figure>
+          <figure class="rt-pic"><img src="assets/img/ai/cleanser.jpg" alt="" loading="lazy" /></figure>
+          <figure class="rt-pic"><img src="assets/img/ai/mist.jpg" alt="" loading="lazy" /></figure>
+          <figure class="rt-pic"><img src="assets/img/ai/sun.jpg" alt="" loading="lazy" /></figure>
         </div>
         <div class="rt-steps">
           <div class="rt-intro">

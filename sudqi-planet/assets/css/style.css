@@ -559,6 +559,59 @@ html[lang="ar"] .qv-price .ar { font-family: var(--font-ar); }
 }
 
 /* ==========================================================================
+   Light hero — a pearl campaign image, dark type
+   ========================================================================== */
+.hero--light { --hero-ground: #e4dfdd; background: var(--hero-ground); color: var(--ink); }
+/* the picture fills the top of the hero and fades into its own floor colour;
+   the type sits on that floor below the products */
+.hero--light .hero-media { bottom: auto; height: 78%; -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 100%); mask-image: linear-gradient(180deg, #000 78%, transparent 100%); }
+.hero--light .hero-in { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: end; align-items: end; gap: 20px 48px; }
+.hero--light .hero-title { font-size: clamp(52px, 7.6vw, 132px); }
+.hero--light .hero-foot { flex-direction: column; align-items: flex-end; margin: 0; }
+.hero--light .hero-kicker { margin-bottom: 14px; }
+@media (max-width: 760px) {
+  .hero--light .hero-media { height: 100%; -webkit-mask-image: none; mask-image: none; }
+  .hero--light .hero-in { grid-template-columns: minmax(0, 1fr); }
+  .hero--light .hero-foot { align-items: stretch; }
+}
+.hero-media { position: absolute; inset: 0; z-index: -2; margin: 0; overflow: hidden; clip-path: inset(0 0 100% 0); transition: clip-path 1.5s var(--ease-io) 0.1s; }
+.loaded .hero-media, .hero-media.in { clip-path: inset(0 0 0 0); }
+.hero-media picture, .hero-media img { width: 100%; height: 100%; }
+.hero-media img { object-fit: cover; object-position: 50% 40%; transform: scale(1.12); transition: transform 2.6s var(--ease) 0.1s; }
+.loaded .hero-media img { transform: scale(1); animation: breathe 18s ease-in-out 2.7s infinite alternate; }
+@keyframes breathe { to { transform: scale(1.04); } }
+.hero--light .hero-grain { opacity: 0.05; mix-blend-mode: multiply; }
+.hero--light .hero-kicker { border-color: var(--rule); background: rgba(243, 240, 242, 0.6); }
+.hero--light .hero-text { color: var(--ink-soft); }
+.hero--light .hero-text .cyc { color: var(--plum); }
+.hero--light .hero-brands { color: var(--ink-soft); }
+.hero--light .hero-in { justify-content: flex-end; }
+.btn--line { background: transparent; color: var(--ink); border: 1px solid currentColor; padding-inline: 24px; }
+.btn--line:hover { background: var(--night); color: var(--pearl); }
+/* header over a light hero: dark type from the start */
+body[data-page="home"] .top .head { color: var(--ink); }
+
+/* ---------- prices ---------- */
+.was { color: var(--ink-mute); font-size: 0.86em; margin-inline-start: 6px; text-decoration-thickness: 1px; }
+.save { display: inline-block; margin-inline-start: 8px; padding: 1px 9px; border-radius: 999px; background: var(--champagne); color: var(--night); font-size: 12px; font-family: var(--font-en); vertical-align: 1px; }
+html[lang="ar"] .save .ar, html[lang="ar"] .was .ar { font-family: var(--font-ar); }
+.qv-ship { display: block; margin-top: 4px; font-size: 13px; color: var(--ink-mute); }
+
+/* concern tiles on light pictures: a pearl veil and dark type */
+.cn { color: var(--ink); }
+.cn::before { background: linear-gradient(180deg, rgba(243, 240, 242, 0) 45%, rgba(243, 240, 242, 0.94) 100%); }
+.cn .num, .cn p { color: var(--ink-soft); }
+.cn .go { background: var(--night); color: var(--pearl); }
+.store-note[hidden] { display: none; }
+
+/* ---------- packages ---------- */
+.packages { background: var(--white); overflow: hidden; }
+.packages .field { color: rgba(23, 21, 28, 0.04); }
+.pk-grid { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(14px, 1.6vw, 24px); }
+@media (max-width: 1100px) { .pk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; } }
+@media (max-width: 560px) { .pk-grid { gap: 10px; row-gap: 30px; } }
+
+/* ==========================================================================
    Responsive
    ========================================================================== */
 @media (max-width: 1100px) {

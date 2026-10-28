@@ -22,7 +22,7 @@
     var n = Number(amount);
     if (!currency) {
       var c = (cfg.currency || {})[lang] || "";
-      var num = lang === "ar" ? n.toLocaleString("ar-EG") : n.toLocaleString("en");
+      var num = lang === "ar" ? n.toLocaleString("ar-EG", { maximumFractionDigits: 2 }) : n.toLocaleString("en", { maximumFractionDigits: 2 });
       return lang === "ar" ? num + " " + c : c + " " + num;
     }
     try {
@@ -30,14 +30,22 @@
     } catch (e) { return currency + " " + n; }
   }
 
+  /* Price with the original struck through and the saving, when there is one */
+  function priceHtml(p) {
+    if (p.price == null) return bi({ ar: "السعر قريبًا", en: "Price soon" }, "soon");
+    var now = bi({ ar: money(p.price, p.currencyCode, "ar"), en: money(p.price, p.currencyCode, "en") });
+    if (!p.compareAt || p.compareAt <= p.price) return now;
+    var save = Math.round((p.compareAt - p.price) * 10) / 10;
+    return now + ' <s class="was">' + bi({ ar: money(p.compareAt, p.currencyCode, "ar"), en: money(p.compareAt, p.currencyCode, "en") }) + "</s>" +
+      ' <span class="save">' + bi({ ar: "وفّري " + money(save, p.currencyCode, "ar"), en: "Save " + money(save, p.currencyCode, "en") }) + "</span>";
+  }
+
   /* ---------- product card ---------- */
   function card(p, i) {
     var viewHref = p.url || (storeBase() ? storeBase() + "/products/" + encodeURIComponent(p.handle) : "#");
     var buyHref = p.buyUrl || viewHref;
     var ext = function (h) { return h === "#" ? "" : ' target="_blank" rel="noopener"'; };
-    var price = p.price != null
-      ? bi({ ar: money(p.price, p.currencyCode, "ar"), en: money(p.price, p.currencyCode, "en") })
-      : bi({ ar: "السعر قريبًا", en: "Price soon" }, "soon");
+    var price = priceHtml(p);
     var soldOut = p.available === false;
     return (
       '<article class="pc" style="--i:' + (i || 0) + '" data-cols="' + esc((p.collections || []).join(" ")) + '">' +
@@ -67,7 +75,7 @@
     "  products(first: 100, sortKey: BEST_SELLING) { nodes {" +
     "    handle title description productType vendor tags onlineStoreUrl availableForSale" +
     "    images(first: 2) { nodes { url(transform: { maxWidth: 1000 }) altText } }" +
-    "    priceRange { minVariantPrice { amount currencyCode } }" +
+    "    priceRange { minVariantPrice { amount currencyCode } } compareAtPriceRange { maxVariantPrice { amount } }" +
     "    variants(first: 1) { nodes { id } }" +
     "  } }" +
     "}";
@@ -106,6 +114,7 @@
         desc: { ar: short(ar.description), en: short(en.description) },
         price: Number(ar.priceRange.minVariantPrice.amount),
         currencyCode: ar.priceRange.minVariantPrice.currencyCode,
+        compareAt: ar.compareAtPriceRange ? Number(ar.compareAtPriceRange.maxVariantPrice.amount) || null : null,
         image: imgs[0] ? imgs[0].url : "assets/img/p-box.jpg",
         hover: imgs[1] ? imgs[1].url : null,
         available: ar.availableForSale,
@@ -149,7 +158,7 @@
     var buyHref = p.buyUrl || viewHref;
     var ext = function (h) { return h === "#" ? "" : ' target="_blank" rel="noopener"'; };
     var gal = (p.gallery && p.gallery.length ? p.gallery : [p.image, p.hover].filter(Boolean));
-    var price = p.price != null ? bi({ ar: money(p.price, p.currencyCode, "ar"), en: money(p.price, p.currencyCode, "en") }) : bi({ ar: "السعر قريبًا", en: "Price soon" });
+    var price = priceHtml(p) + (p.price != null ? '<span class="qv-ship">' + bi({ ar: "شامل التوصيل", en: "Delivery included" }) + "</span>" : "");
     drawer.querySelector(".qv-body").innerHTML =
       '<div class="qv-gal">' + gal.map(function (g, i) { return '<figure style="--i:' + i + '"><img src="' + esc(g) + '" alt="" /></figure>'; }).join("") + "</div>" +
       '<div class="qv-info">' +

@@ -47,6 +47,11 @@
       SP.railProgress(rail);
     }
     var newRail = document.getElementById("new-rail");
+    var pk = document.querySelector("[data-packages]");
+    if (pk) {
+      pk.innerHTML = products.filter(function (p) { return (p.collections || []).indexOf("packages") > -1; }).map(C.card).join("");
+      SP.revealCards(pk);
+    }
     var bestRail = document.getElementById("best-rail");
     if (newRail) fill(newRail, news);
     if (bestRail) fill(bestRail, best);

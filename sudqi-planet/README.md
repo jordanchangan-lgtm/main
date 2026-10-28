@@ -33,3 +33,18 @@ Open `assets/js/shop-config.js`. There are two levels:
    **Order now** uses a Shopify cart permalink, so the customer goes straight to Shopify checkout.
 
 Until Shopify is connected, the site shows the products listed in `shop-config.js`. Add as many as you like: each needs a `handle`, `brand`, `collections`, a bilingual `name`, `type`, `tagline` and `desc`, a `price` in JOD (delivery included) and its images. Mark up to 8 with `featured: true` to choose which ones the landing page lists first. If a customer clicks **Order now** at that stage, they see a short note that sends them to Instagram.
+
+## Deploying to Cloudflare Pages
+1. Build the bundle (after any change):
+   ```
+   pip install pillow   # once
+   python3 tools/build.py
+   ```
+   This creates `dist/` and `sudqi-planet-cloudflare.zip`:
+   - images are converted to WebP;
+   - every image, CSS and JS file gets a content hash in its name;
+   - `_headers` caches those files for a year (`immutable`) while the pages always revalidate. A new deploy shows at once, and visitors never download an unchanged image twice;
+   - the hero image is preloaded.
+2. In Cloudflare: **Workers & Pages → Create → Pages → Upload assets**. Name the project (e.g. `sudqi-planet`), then upload the zip, or drag in the `dist` folder.
+3. **Custom domains → Set up a domain**, and enter your domain. If the domain is already on Cloudflare, the DNS record is added for you.
+4. To update the site later: run the build again, then **Create new deployment** on the same project and upload the new zip.

@@ -71,29 +71,30 @@
       }, 350);
     });
 
-    /* ---------- Collections index ---------- */
+    /* ---------- Products index: hover a row, its picture follows the cursor ---------- */
     var ix = document.querySelector("[data-index]");
     var float = document.querySelector("[data-ix-float]");
     if (ix) {
-      var cols = cfg.collections || [];
-      ix.innerHTML = cols.map(function (c, i) {
-        var n = products.filter(function (p) { return (p.collections || []).indexOf(c.id) > -1; }).length;
-        return '<a class="ix-row rv" href="shop.html#' + esc(c.id) + '" data-i="' + i + '" style="--k:' + (i % 4) + '">' +
+      var items = news;
+      var arrow = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg>';
+      ix.innerHTML = items.map(function (p, i) {
+        return '<button type="button" class="ix-row rv" data-qv="' + esc(p.handle) + '" data-i="' + i + '" style="--k:' + (i % 5) + '">' +
           '<span class="ix-n num">' + String(i + 1).padStart(2, "0") + "</span>" +
-          '<span class="ix-name">' + bi(c) + "<sup>" + String(n).padStart(2, "0") + "</sup></span>" +
-          '<span class="ix-desc">' + bi(c.desc || {}) + "</span>" +
-          '<span class="ix-thumb"><img src="' + esc(c.image) + '" alt="" loading="lazy" /></span>' +
-          '<span class="ix-go"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5" /></svg></span>' +
-          "</a>";
+          '<span class="ix-name"><small class="ix-brand">' + esc(p.brand || "") + "</small>" + bi(p.name) + "</span>" +
+          '<span class="ix-desc">' + bi(p.tagline || p.type || {}) + "</span>" +
+          '<span class="ix-thumb"><img src="' + esc(p.image) + '" alt="" loading="lazy" /></span>' +
+          '<span class="ix-price">' + C.priceHtml(p) + "</span>" +
+          '<span class="ix-go">' + arrow + "</span>" +
+          "</button>";
       }).join("");
       ix.querySelectorAll(".rv").forEach(SP.reveal);
       if (float) {
-        float.innerHTML = cols.map(function (c) { return '<img src="' + esc(c.image) + '" alt="" />'; }).join("");
+        float.innerHTML = items.map(function (p) { return '<img src="' + esc(p.image) + '" alt="" />'; }).join("");
         var imgs = float.querySelectorAll("img");
         ix.addEventListener("mousemove", function (e) {
-          var w = float.offsetWidth, h = float.offsetHeight;
+          var w = float.offsetWidth, hh = float.offsetHeight;
           float.style.setProperty("--x", e.clientX - w / 2 + "px");
-          float.style.setProperty("--y", e.clientY - h / 2 + "px");
+          float.style.setProperty("--y", e.clientY - hh / 2 + "px");
           var row = e.target.closest(".ix-row");
           if (!row) return;
           var i = +row.getAttribute("data-i");
@@ -101,6 +102,7 @@
           float.classList.add("on");
         });
         ix.addEventListener("mouseleave", function () { float.classList.remove("on"); });
+        ix.addEventListener("click", function () { float.classList.remove("on"); });
       }
     }
   });

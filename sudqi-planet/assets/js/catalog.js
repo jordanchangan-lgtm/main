@@ -201,5 +201,5 @@
     else location.href = "shop.html#launch";
   });
 
-  window.SPCatalog = { load: load, card: card, bi: bi, esc: esc, connected: connected, cfg: cfg };
+  window.SPCatalog = { load: load, card: card, priceHtml: priceHtml, bi: bi, esc: esc, connected: connected, cfg: cfg };
 })();

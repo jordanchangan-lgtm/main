@@ -1,5 +1,12 @@
 /* Sudqi Planet — store page: collection tiles as filters, product grid. */
 (function () {
+  // Always open the store at the top, whichever page or scroll position we came from.
+  try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+  var toTop = function () { window.scrollTo(0, 0); };
+  toTop();
+  window.addEventListener("pageshow", toTop);
+  window.addEventListener("load", toTop);
+
   var SP = window.SP, C = window.SPCatalog, cfg = C.cfg;
   var bi = C.bi, esc = C.esc;
   var grid = document.getElementById("products");
@@ -68,5 +75,6 @@
     var start = location.hash.slice(1) || new URLSearchParams(location.search).get("c") || "all";
     if (start === "launch") { document.getElementById("store-note").hidden = false; start = "all"; }
     setCol(start, false);
+    toTop();
   });
 })();

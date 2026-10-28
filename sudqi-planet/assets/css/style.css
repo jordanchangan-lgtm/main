@@ -604,6 +604,20 @@ html[lang="ar"] .save .ar, html[lang="ar"] .was .ar { font-family: var(--font-ar
 .cn .go { background: var(--night); color: var(--pearl); }
 .store-note[hidden] { display: none; }
 
+/* ---------- products index ---------- */
+button.ix-row { width: 100%; border: 0; border-bottom: 1px solid var(--rule); background: none; font: inherit; color: inherit; text-align: start; cursor: pointer; }
+.ix-row { grid-template-columns: 3.2em minmax(0, 1fr) minmax(0, 0.8fr) auto auto; }
+#products .ix-name { font-size: clamp(24px, 3vw, 46px); line-height: 1.25; }
+.ix-brand { display: block; font-family: var(--font-en); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); line-height: 1.6; }
+.ix-price { font-family: var(--font-en); font-size: 15px; white-space: nowrap; }
+html[lang="ar"] .ix-price .ar { font-family: var(--font-ar); }
+.ix-price .save { display: none; }
+@media (max-width: 860px) {
+  .ix-row { grid-template-columns: 2.2em minmax(0, 1fr) auto; }
+  .ix-row .ix-price { grid-column: 2; grid-row: 2; font-size: 14px; }
+  .ix-row .ix-thumb { grid-column: 3; grid-row: 1 / span 2; }
+}
+
 /* ---------- packages ---------- */
 .packages { background: var(--white); overflow: hidden; }
 .packages .field { color: rgba(23, 21, 28, 0.04); }

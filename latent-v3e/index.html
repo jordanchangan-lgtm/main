@@ -2512,6 +2512,19 @@ html.pg-snap{scroll-snap-type:y proximity}
 .ow-pic img{width:100%;height:100%;object-fit:cover;display:block}
 @media(hover:hover){.ow-row:hover .ow-pic{opacity:1;transform:translateY(-50%) rotate(0) scale(1)}}
 @media(max-width:820px){.ow-row{grid-template-columns:2.2em minmax(0,1fr) auto;gap:6px 10px;padding:16px 0}.ow-n{grid-column:1;grid-row:1;padding-top:.5em}.ow-name{grid-column:2;grid-row:1;font-size:clamp(22px,6.6vw,30px);text-align:left}.ow-kind{grid-column:2;grid-row:2;font-size:11px}.ow-go{grid-column:3;grid-row:1/3;align-self:center}.ow-pic{display:none}.ow-in .cf-p{margin-bottom:28px}}
+
+/* our work: client rows reveal their pieces below */
+.ow-gal{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(8px,1.2vw,16px);padding:clamp(14px,2.4vh,26px) 0 clamp(20px,3vh,34px);border-bottom:1px solid rgba(20,20,26,.14)}
+.ow-gal[hidden]{display:none}
+.ow-piece{position:relative;margin:0;aspect-ratio:var(--ar,4/5);overflow:hidden;border-radius:6px;background:#EFECE4;cursor:pointer;opacity:1;transform:none;transition:clip-path .9s cubic-bezier(.76,0,.24,1) calc(var(--k,0) * .08s)}
+.ow-piece.pg-l{clip-path:inset(0 100% 0 0 round 6px)}.ow-piece.pg-r{clip-path:inset(0 0 0 100% round 6px)}
+.ow-piece.in{clip-path:inset(0 0 0 0 round 6px)}
+.ow-piece img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+.ow-piece:hover img{transform:scale(1.03)}
+.ow-piece .play{position:absolute;left:10px;bottom:8px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .3s;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.ow-piece:hover .play{opacity:1}
+.ow-row.open .ow-go i{transform:rotate(180deg)}
+@media(max-width:820px){.ow-gal{grid-template-columns:repeat(3,1fr);gap:8px}.ow-piece .play{font-size:11px}}
 </style>
 </head>
 <body>
@@ -2634,12 +2647,21 @@ html.pg-snap{scroll-snap-type:y proximity}
 <section class="sec light cf js-cf js-path ow-sec" id="ourwork">
   <div class="inner cf-in cf-short ow-in">
     <h2 class="cf-h js-words">Our work.</h2>
-    <p class="cf-p js-words">Things we made for ourselves and for clients. Click one to open it.</p>
+    <p class="cf-p js-words">Things we made for ourselves and for clients. Open a site, or reveal a campaign.</p>
     <div class="ow">
       <a class="ow-row rv js-ow-row" href="https://latent-studio-ai.com" target="_blank" rel="noopener" style="--k:0"><b class="ow-n">01</b><span class="ow-name">Latent Studio</span><span class="ow-kind">Identity, brand film, website</span><span class="ow-go">Open<i>&#8599;</i></span><span class="ow-pic" style="--ar:4/5"><img src="media/18-b1760e8edf.jpg" alt="" loading="lazy" decoding="async"></span></a>
       <a class="ow-row rv js-ow-row" href="#" data-soon="1" style="--k:1"><b class="ow-n">02</b><span class="ow-name">Buraq Al Omur</span><span class="ow-kind">Website</span><span class="ow-go">Soon<i>&#8599;</i></span></a>
       <a class="ow-row rv js-ow-row" href="#" data-soon="1" style="--k:2"><b class="ow-n">03</b><span class="ow-name">Sudqi Planet</span><span class="ow-kind">Website</span><span class="ow-go">Soon<i>&#8599;</i></span></a>
       <a class="ow-row rv js-ow-row" href="#" data-soon="1" style="--k:3"><b class="ow-n">04</b><span class="ow-name">Rawabina Al Khadraa</span><span class="ow-kind">Editorial website</span><span class="ow-go">Soon<i>&#8599;</i></span><span class="ow-pic" style="--ar:16/10"><img src="media/19-de56f4747b.jpg" alt="" loading="lazy" decoding="async"></span></a>
+      <a class="ow-row rv js-ow-row js-ow-client" href="#" style="--k:4" role="button" aria-expanded="false"><b class="ow-n">05</b><span class="ow-name">AS Abaya</span><span class="ow-kind">Campaign · Abayat Al-Dawam</span><span class="ow-go js-ow-go">Reveal<i>&#8599;</i></span><span class="ow-pic" style="--ar:4/5"><img src="media/27-755e8167ae.jpg" alt="" loading="lazy" decoding="async"></span></a>
+      <div class="ow-gal js-ow-gal" hidden>
+        <figure class="ow-piece rv js-film pg-l" style="--k:0;--ar:4/5" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Cover · Six frames · Riyadh · 2026" data-img="1"><img src="media/21-7ad07c68ee.jpg" alt="Cover" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+        <figure class="ow-piece rv js-film pg-r" style="--k:1;--ar:4/5" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="AS144 · Six frames · Riyadh · 2026" data-img="1"><img src="media/22-6c88ee8a80.jpg" alt="AS144" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+        <figure class="ow-piece rv js-film pg-l" style="--k:2;--ar:4/5" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="AS097 · Six frames · Riyadh · 2026" data-img="1"><img src="media/23-992c79d3d9.jpg" alt="AS097" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+        <figure class="ow-piece rv js-film pg-r" style="--k:3;--ar:4/5" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="AS155 · Six frames · Riyadh · 2026" data-img="1"><img src="media/24-cf0f4dec6d.jpg" alt="AS155" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+        <figure class="ow-piece rv js-film pg-l" style="--k:4;--ar:4/5" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="AS093 · Six frames · Riyadh · 2026" data-img="1"><img src="media/25-1aecabd487.jpg" alt="AS093" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+        <figure class="ow-piece rv js-film pg-r" style="--k:5;--ar:4/5" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="AS073 · Six frames · Riyadh · 2026" data-img="1"><img src="media/26-fb958e26c0.jpg" alt="AS073" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      </div>
     </div>
   </div>
 </section>
@@ -4487,6 +4509,18 @@ html.pg-snap{scroll-snap-type:y proximity}
 
 /* our work: a row marked soon tells instead of leaving */
 (function(){ [].forEach.call(document.querySelectorAll(".js-ow-row[data-soon]"), function(a){ a.addEventListener("click", function(e){ e.preventDefault(); var g=a.querySelector(".ow-go"); if(g){ g.textContent="Link coming"; } }); }); })();
+
+/* our work: a client row opens its pieces below it with the side wipe, and closes them again */
+(function(){
+  [].forEach.call(document.querySelectorAll(".js-ow-client"), function(a){
+    var gal = a.nextElementSibling, go = a.querySelector(".js-ow-go"); if(!gal || !gal.classList.contains("js-ow-gal")) return;
+    var pieces = [].slice.call(gal.querySelectorAll(".ow-piece"));
+    function toggle(e){ e.preventDefault(); var open = !a.classList.contains("open"); a.classList.toggle("open", open); a.setAttribute("aria-expanded", open ? "true" : "false");
+      if(open){ gal.hidden = false; pieces.forEach(function(p){ p.classList.remove("in"); }); void gal.offsetWidth; requestAnimationFrame(function(){ pieces.forEach(function(p){ p.classList.add("in"); }); }); if(go) go.firstChild.textContent = "Close"; }
+      else { pieces.forEach(function(p){ p.classList.remove("in"); }); setTimeout(function(){ gal.hidden = true; }, 700); if(go) go.firstChild.textContent = "Reveal"; } }
+    a.addEventListener("click", toggle); a.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " ") toggle(e); });
+  });
+})();
 </script>
 </body>
 </html>

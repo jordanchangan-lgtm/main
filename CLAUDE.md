@@ -22,3 +22,8 @@ Read `.claude/skills/site-delivery/SKILL.md` before building or shipping any sit
   user deploys, `curl` the live site and confirm the new build is up. Tell them to hard-reload.
 - Deliverables: the deploy folder zipped (under 30 MB), the artifact preview built from the single-file
   copy, commit and push on the working branch.
+
+## How the site is designed and animated
+
+Read `.claude/skills/cinematic-animated-websites/SKILL.md` before building a new site or a new section: the
+principles, the section recipe, the scroll mechanisms, with the live drivers and CSS in its `references/`.

@@ -59,8 +59,8 @@ window.SP_SHOP = {
       how: { ar: "رجّيه جيدًا، ثم رشّيه على بُعد ٢٠ سم من الوجه.", en: "Shake well, then spray about 20 cm from the face." },
       price: 14,
       image: "assets/img/ai/mist.jpg",
-      hover: "assets/img/p/mist-1.jpg",
-      gallery: ["assets/img/ai/mist.jpg", "assets/img/p/mist-1.jpg", "assets/img/p/mist-3.jpg", "assets/img/p/mist-5.jpg", "assets/img/p/mist-2.jpg"]
+      hover: "assets/img/ai/mist-2.jpg",
+      gallery: ["assets/img/ai/mist.jpg", "assets/img/ai/mist-2.jpg", "assets/img/ai/mist-3.jpg"]
     },
     {
       handle: "dr-althea-345-whitening-cream",
@@ -78,8 +78,8 @@ window.SP_SHOP = {
       how: { ar: "ضعي كمية صغيرة كآخر خطوة في روتين الصباح والمساء.", en: "Apply a small amount as the last step, morning and night." },
       price: 10,
       image: "assets/img/ai/cream.jpg",
-      hover: "assets/img/p/cream-1.jpg",
-      gallery: ["assets/img/ai/cream.jpg", "assets/img/p/cream-1.jpg", "assets/img/p/cleanser-3.jpg", "assets/img/p/cream-2.jpg"]
+      hover: "assets/img/ai/cream-2.jpg",
+      gallery: ["assets/img/ai/cream.jpg", "assets/img/ai/cream-2.jpg", "assets/img/ai/cream-3.jpg"]
     },
     {
       handle: "beauty-of-joseon-relief-sun-rice-probiotics",
@@ -98,8 +98,8 @@ window.SP_SHOP = {
       how: { ar: "ضعيه كآخر خطوة صباحًا، وجدّديه كل ساعتين تحت الشمس.", en: "Apply as the last morning step; reapply every two hours in the sun." },
       price: 14,
       image: "assets/img/ai/sun.jpg",
-      hover: "assets/img/p/sun-1.jpg",
-      gallery: ["assets/img/ai/sun.jpg", "assets/img/p/sun-1.jpg", "assets/img/p/sun-2.jpg", "assets/img/p/sun-3.jpg"]
+      hover: "assets/img/ai/sun-2.jpg",
+      gallery: ["assets/img/ai/sun.jpg", "assets/img/ai/sun-2.jpg", "assets/img/ai/sun-3.jpg"]
     },
     {
       handle: "beauty-of-joseon-green-plum-refreshing-cleanser",
@@ -116,8 +116,8 @@ window.SP_SHOP = {
       how: { ar: "دلّكي كمية صغيرة مع الماء على بشرة مبلّلة، ثم اشطفي.", en: "Lather a small amount with water on damp skin, then rinse." },
       price: 12,
       image: "assets/img/ai/cleanser.jpg",
-      hover: "assets/img/p/cleanser-1.jpg",
-      gallery: ["assets/img/ai/cleanser.jpg", "assets/img/p/cleanser-1.jpg", "assets/img/p/cleanser-2.jpg", "assets/img/p/duo-1.jpg"]
+      hover: "assets/img/ai/cleanser-2.jpg",
+      gallery: ["assets/img/ai/cleanser.jpg", "assets/img/ai/cleanser-2.jpg", "assets/img/ai/cleanser-3.jpg"]
     },
     {
       handle: "clinique-deep-comfort-body-butter",
@@ -134,8 +134,8 @@ window.SP_SHOP = {
       how: { ar: "ضعيه على بشرة نظيفة بعد الاستحمام. للجسم فقط.", en: "Smooth over clean skin after a shower. For body only." },
       price: 9,
       image: "assets/img/ai/butter.jpg",
-      hover: "assets/img/p/butter-1.jpg",
-      gallery: ["assets/img/ai/butter.jpg", "assets/img/p/butter-1.jpg", "assets/img/p/trio-2.jpg", "assets/img/p/butter-2.jpg"]
+      hover: "assets/img/ai/butter-2.jpg",
+      gallery: ["assets/img/ai/butter.jpg", "assets/img/ai/butter-2.jpg", "assets/img/ai/butter-3.jpg"]
     },
     /* ---------- Packages ---------- */
     {

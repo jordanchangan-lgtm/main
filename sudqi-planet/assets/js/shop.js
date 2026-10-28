@@ -13,7 +13,7 @@
   var colsEl = document.getElementById("cols");
   var titleEl = document.getElementById("col-title");
   var countEl = document.getElementById("count");
-  var all = { id: "all", ar: "كل المنتجات", en: "All products", image: "assets/img/p/trio-1.jpg" };
+  var all = { id: "all", ar: "كل المنتجات", en: "All products", image: "assets/img/ai/hero-m.jpg" };
   var cols = [all].concat(cfg.collections || []);
   var active = "all";
 

@@ -33,7 +33,7 @@
 
   /* ---------- Products ---------- */
   C.load().then(function (products) {
-    var news = products.filter(function (p) { return (p.collections || []).indexOf("new") > -1; });
+    var news = products.filter(function (p) { return (p.collections || []).indexOf("packages") < 0; });
     var best = products.filter(function (p) { return p.bestseller; });
     if (!news.length) news = products.slice(0, 8);
     if (!best.length) best = products.slice(0, 8);

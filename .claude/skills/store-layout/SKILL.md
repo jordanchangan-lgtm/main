@@ -10,28 +10,24 @@ The layout below comes from studying modern beauty stores: Rhode, Sulwhasoo, Glo
 Reference build: `sudqi-planet/` in this repo. Use `index.html`, `shop.html`, `assets/js/{shop-config,catalog,main,home,shop}.js` and `assets/css/style.css` as working code to copy from.
 
 ## Before building
+0. **Check the length.** Count the sections before you build. If two sections show the same products or make the same point, cut one.
 1. **Read the brand book completely.** Take the palette, the typefaces and the voice from it, plus taglines and approved copy you can quote.
 2. **Get the real products.** Read the names off the product photos and labels. Then search the web for each product (size, key ingredients, texture, how to use) and write the descriptions from what you find. Never invent products. If prices are not given, show "Price soon" (`price: null`).
 3. **Use the client's own photos and films first.** Brand-book images are only a fallback. Portrait films become hero panels.
 4. **Use the stores' layout, not your own.** If the user says to follow a reference, follow it and add nothing of your own.
 
-## Landing page — section order
-1. **Announcement bar.** A thin night-coloured strip with 2–3 rotating messages (authenticity, gift wrapping, new arrivals). It hides on scroll down.
-2. **Header.** Main links on the start side (Shop · New in · Collections · By concern · Ritual), the logo in the centre, and on the end side the language toggle and a bag icon. It is transparent over the hero, then pearl with a blur after the hero.
-3. **Hero.**
-   - With portrait films: three side-by-side panels on desktop, one full-bleed panel on phones.
-   - With wide images: a carousel. Each slide has a kicker, a headline and a CTA, plus separate desktop and mobile images.
-   - The copy sits at the bottom start: kicker pill, a giant headline, a line with a word cycle, a primary and a ghost CTA, and the brand names.
-4. **New in rail.** A horizontal rail of product cards with drag, arrow buttons and a progress bar. Tabs switch between **New in** and **Bestsellers** (Tatcha pattern). End it with a "Shop all" link.
-5. **Collections.** An index list with a number, a large name, a product count in superscript, a short description and an arrow. On desktop a preview image floats with the cursor; on phones each row shows a thumbnail. Include both brand lines and concerns.
-6. **Brand statement.** A night section with a sticky stage, where the story sentence brightens word by word as the reader scrolls.
-7. **Shop by concern.** Four image tiles (Dryness, Sensitivity, Impurities, Protection…). Each has a number and name, and on hover a line and an arrow appear (Sulwhasoo pattern).
-8. **Bestsellers rail.**
-9. **Ritual.** A sticky arched picture on one side and three tall steps on the other. Each step has a number, a big verb, a sentence and a link to the real product for that step. The picture changes with the step in view.
-10. **Unboxing or gift band.** Night ground, a film or photo of the packaging, a heading, a sentence and a CTA.
-11. **Trust strip.** Four cells: authentic, gift-wrapped, clear ingredients, secure checkout.
-12. **"Explore more".** A giant heading, the logo, an orbiting dot and a CTA to the shop page.
-13. **Footer.** Brand, Shop links (built from collections), About links, contact details, a giant wordmark line, then © and the mark.
+## Landing page — keep it short
+The landing page is a front door, not a catalogue. **Every section must say something no other section says.** For a small catalogue (under about 15 products) use only these five, in this order:
+
+1. **Hero.** One campaign image (desktop and mobile versions), with a kicker, the headline, a word-cycle line, a primary CTA (shop now → the products section) and a secondary CTA (packages).
+2. **Products.** All single products in **one** rail. No New/Bestseller tabs and no second rail of the same items. End with a link to the store.
+3. **Packages or sets.** Only if the brand sells bundles. Show the price with the original struck through and the saving.
+4. **Brand story.** One statement that brightens as the reader scrolls. This is the only place the brand voice gets a full paragraph.
+5. **Explore more.** A giant heading and the CTA to the shop page.
+
+Then the footer. Put the announcement bar (2–3 rotating messages, such as "prices include delivery") and the header (Shop · Products · Packages · About, plus language and bag) on top.
+
+**Do not add** collections indexes, shop-by-concern tiles, bestseller rails, ritual steps, gift bands or trust strips to the landing page when they repeat the same products or the same message. Collections and filters belong on the shop page. Add one of those sections only when the catalogue is large enough that it shows something new, and never more than one.
 
 ## Shop page
 - A night hero with breadcrumbs, a giant "Shop" title and a lede.

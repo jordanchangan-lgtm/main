@@ -325,7 +325,7 @@ html[dir="rtl"] .ix-row:hover .ix-go { transform: rotate(45deg); }
 /* ==========================================================================
    Statement — the sentence brightens as it is read (scroll-scrubbed)
    ========================================================================== */
-.st-hold { position: relative; height: 220svh; background: var(--night); color: var(--on-dark); }
+.st-hold { position: relative; height: 170svh; background: var(--night); color: var(--on-dark); }
 .st-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; padding: calc(var(--head-h) + 48px) var(--gut) clamp(28px, 5vh, 52px); }
 .st-stage .field { color: rgba(243, 240, 242, 0.07); }
 .st-top { position: relative; display: flex; justify-content: space-between; color: var(--on-dark-mute); font-size: 13px; }

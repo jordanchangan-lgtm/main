@@ -43,7 +43,7 @@ CSS='''
 .ow-pic{position:absolute;right:16%;top:50%;width:clamp(120px,14vw,220px);aspect-ratio:var(--ar,4/5);border-radius:6px;overflow:hidden;background:#EFECE4;transform:translateY(-50%) rotate(-3deg) scale(.9);opacity:0;pointer-events:none;transition:opacity .35s ease,transform .5s cubic-bezier(.2,.8,.2,1);z-index:2;box-shadow:0 24px 50px -24px rgba(20,20,26,.45)}
 .ow-pic img{width:100%;height:100%;object-fit:cover;display:block}
 @media(hover:hover){.ow-row:hover .ow-pic{opacity:1;transform:translateY(-50%) rotate(0) scale(1)}}
-@media(max-width:820px){.ow-row{grid-template-columns:2.2em minmax(0,1fr) auto;gap:10px;padding:16px 0}.ow-kind{grid-column:2;grid-row:2;font-size:11px}.ow-name{font-size:clamp(22px,6.6vw,30px)}.ow-go{grid-row:1/3}.ow-pic{display:none}.ow-in .cf-p{margin-bottom:28px}}
+@media(max-width:820px){.ow-row{grid-template-columns:2.2em minmax(0,1fr) auto;gap:6px 10px;padding:16px 0}.ow-n{grid-column:1;grid-row:1;padding-top:.5em}.ow-name{grid-column:2;grid-row:1;font-size:clamp(22px,6.6vw,30px);text-align:left}.ow-kind{grid-column:2;grid-row:2;font-size:11px}.ow-go{grid-column:3;grid-row:1/3;align-self:center}.ow-pic{display:none}.ow-in .cf-p{margin-bottom:28px}}
 '''
 j=s.rfind('</style>'); s=s[:j]+CSS+s[j:]
 JS='''

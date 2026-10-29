@@ -5,9 +5,9 @@ import re, sys
 P='/home/user/main/latent-v3e/index.html'; s=open(P,encoding='utf-8').read()
 if 'id="ourwork"' in s: print('already patched'); sys.exit(0)
 WORK=[('Latent Studio','Identity, brand film, website','https://latent-studio-ai.com','media/18-b1760e8edf.jpg','4/5'),
-      ('Buraq Al Omur','Website','#','','16/10'),
-      ('Sudqi Planet','Website','#','','16/10'),
-      ('Rawabina Al Khadraa','Editorial website','#','media/19-de56f4747b.jpg','16/10')]
+      ('Buraq Al Omur','Website','https://buraqalomur.com','media/86-80bce51bcd.jpg','16/10'),
+      ('Sudqi Planet','Store website','https://sudqiplanet.com','media/87-75dd9cb46b.jpg','16/10'),
+      ('Rawabina Al Khadraa','Editorial website','https://rawabinaalkhadhraa.com','media/19-de56f4747b.jpg','16/10')]
 def words(t): return ' '.join('<span class="pgw"><span class="pgw-in" style="--w:%d">%s</span></span>'%(i,w) for i,w in enumerate(t.split()))
 rows=''
 for k,(n,kind,href,img,ar) in enumerate(WORK):

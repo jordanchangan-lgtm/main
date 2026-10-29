@@ -95,8 +95,9 @@ Build a new site in this order, swapping content, keeping the rhythm. Every sect
 6. **The film panel, dark**, with "What we skip." in bold.
 7. **What we make, the pinned list** on white: side words left, the numbered description centred, the eight
    words right, one bright at a time with its thumbnail. On phones the thumbnail shows under the description.
-8. **Our work**, a bold list of the studio's own projects, each row a link, a picture floating beside the row
-   under the pointer.
+8. **Our work**, the ledger: every project a huge right-aligned wordmark with its years in italics on the left; a row
+   opens in place with what we did, the place, the industry, the link and the story; a wash of pigment painted on a
+   canvas blooms behind the pointed row and stays behind the open one (`latent-v3-src/pel.js`).
 9. **The craft**, a short bold statement gathering on the same white run.
 10. **The blinds cut to dark. Four moves as gap lines.**
 11. **The price line** ("Priced inside the market.") gathering, then the ask rising through masks

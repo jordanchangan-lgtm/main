@@ -8,9 +8,17 @@ def small_film(f):
     out=os.path.join(CACHE,hashlib.md5(f.encode()).hexdigest()[:10]+'.mp4')
     if not os.path.exists(out): subprocess.run(['ffmpeg','-v','error','-y','-i',f,'-vf',"scale='min(960,iw)':-2",'-c:v','libx264','-crf','32','-preset','fast','-an','-movflags','+faststart',out],check=True)
     return out
+IMGCAP=int(os.environ.get('IMGCAP','220000'))
+def small_img(f):
+    from PIL import Image
+    out=os.path.join(CACHE,hashlib.md5(f.encode()).hexdigest()[:10]+'.jpg')
+    if not os.path.exists(out):
+        im=Image.open(f).convert('RGB'); im.thumbnail((1000,1000)); im.save(out,'JPEG',quality=68,optimize=True)
+    return out
 def rep(m):
     p=m.group(2); f=os.path.join(D,p)
     if not os.path.exists(f): return m.group(0)
+    if f.endswith(('.jpg','.jpeg','.png')) and os.path.getsize(f)>IMGCAP: f=small_img(f)
     if os.path.getsize(f)>CAP:
         if f.endswith('.mp4'): f=small_film(f)
         if os.path.getsize(f)>CAP: return m.group(0)

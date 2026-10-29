@@ -2526,26 +2526,29 @@ html.pg-snap{scroll-snap-type:y proximity}
 .ow-row.open .ow-go i{transform:rotate(180deg)}
 @media(max-width:820px){.ow-gal{grid-template-columns:repeat(3,1fr);gap:8px}.ow-piece .play{font-size:11px}}
 
-/* featured: the strip-wipe gallery */
-.sg{padding:0;background:var(--ink);color:var(--ivory)}
-.sg-hold{position:relative;height:calc(100svh + (var(--n) - 1) * var(--per) * 1vh + (var(--d0) + var(--d1)) * 1vh)}
-.sg-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
-.sg-images{position:absolute;inset:0}
-.sg-frame{position:absolute;inset:0;margin:0;transform:translateZ(0);backface-visibility:hidden}
-.sg-frame img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;transform-origin:center center;backface-visibility:hidden;mask-size:100% 100%;-webkit-mask-size:100% 100%;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;will-change:transform,mask-image}
-.sg-frame:not(:first-child) img{mask-image:linear-gradient(to bottom,transparent 0%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,transparent 100%)}
-.sg-band{position:absolute;left:0;top:50%;z-index:2;width:100%;transform:translateY(-50%);border-bottom:1px solid rgba(242,239,231,.2)}
-.sg-band-in{display:flex;gap:32px;padding:0 var(--gut) 10px;align-items:baseline}
-.sg-prefix,.sg-title-in,.sg-link{margin:0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(18px,2.5vw,36px);line-height:1;letter-spacing:-.02rem;color:#fff;text-shadow:0 1px 18px rgba(0,0,0,.35)}
-.sg-prefix{flex:1}
-.sg-title{position:relative;flex:2;height:1.15em;overflow:hidden;font-size:clamp(18px,2.5vw,36px)}
-.sg-title-in{will-change:transform;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
-.sg-title-in.out-up{transform:translateY(-120%)}.sg-title-in.out-down{transform:translateY(120%)}
-.sg-title-in.snap{transition:none}
-.sg-link{flex:1;display:flex;justify-content:flex-end;text-decoration:none;gap:.3em}.sg-link i{font-style:normal;transition:transform .3s cubic-bezier(.2,.8,.2,1)}.sg-link:hover i{transform:translate(2px,-2px)}
-.sg-count{position:absolute;left:var(--gut);top:clamp(72px,12vh,120px);margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--ember)}
-@media(max-width:820px){.sg-prefix{display:none}.sg-band-in{gap:16px;padding-bottom:8px}.sg-prefix,.sg-title-in,.sg-link,.sg-title{font-size:18px}}
-@media (prefers-reduced-motion:reduce){.sg-hold{height:auto}.sg-stage{position:relative}.sg-frame:not(:first-child){display:none}.sg-frame img{transform:none!important}}
+/* the chosen art pieces: a flight through space */
+.fy{padding:0;background:#000;color:var(--ivory)}
+.fy-hold{position:relative;height:calc(100svh + var(--n,6) * 170vh)}
+.fy-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#000;perspective:900px;perspective-origin:50% 50%}
+.fy-kick{position:absolute;left:var(--gut);top:clamp(72px,12vh,120px);z-index:5;color:var(--ivory);font-size:clamp(18px,2vw,28px)!important}
+.fy-world{position:absolute;inset:0;transform-style:preserve-3d}
+.fy-card{position:absolute;left:50%;top:50%;margin:0;width:calc(var(--w) * 1vw);aspect-ratio:var(--ar,4/5);border-radius:4px;overflow:hidden;background:#111;transform-style:preserve-3d;will-change:transform,opacity;opacity:0;cursor:pointer;box-shadow:0 30px 80px -30px rgba(0,0,0,.9)}
+.fy-card img{width:100%;height:100%;object-fit:cover;display:block}
+.fy-card .play{position:absolute;left:10px;bottom:8px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .3s;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.fy-card:hover .play{opacity:1}
+.fy-names{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:3}
+.fy-name{grid-area:1/1;text-align:center;opacity:0;transition:opacity .35s ease}
+.fy-name.on{opacity:1}
+.fy-h{margin:clamp(10px,2vh,18px) 0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:700;font-size:clamp(40px,8vw,132px);line-height:.95;letter-spacing:-.04em;text-transform:uppercase;color:#fff;text-shadow:0 2px 40px rgba(0,0,0,.6)}
+.fy-h .pgw{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .02em .12em;margin:0 -.02em -.12em}
+.fy-h .pgw-in{display:inline-block;transform:translateY(112%);transition:transform .8s cubic-bezier(.19,1,.22,1)}
+.fy-name.on .pgw-in{transform:none}
+.fy-name.off .pgw-in{transform:translateY(-112%);transition-duration:.45s}
+.fy-mono{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,239,231,.7)}
+.fy-mono b{font-weight:500;color:var(--ember)}
+.fy-hint{position:absolute;left:var(--gut);bottom:clamp(24px,5vh,48px);margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,231,.5);z-index:5}
+@media(max-width:820px){.fy-hold{height:calc(100svh + var(--n,6) * 130vh)}.fy-stage{perspective:700px}.fy-card{width:calc(var(--w) * 2.3vw)}.fy-ph{display:none}.fy-h{font-size:clamp(34px,11vw,52px)}.fy-kick{font-size:18px!important}.fy-hint{display:none}}
+@media (prefers-reduced-motion:reduce){.fy-hold{height:auto}.fy-stage{position:relative;height:auto;perspective:none;padding:120px var(--gut)}.fy-world{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.fy-card{position:relative;left:auto;top:auto;width:auto;opacity:1;transform:none!important}.fy-names{display:none}}
 </style>
 </head>
 <body>
@@ -2665,6 +2668,94 @@ html.pg-snap{scroll-snap-type:y proximity}
 
 
 
+<section class="sec dark fy js-fy" id="chosen">
+  <div class="fy-hold js-fy-hold" style="--n:7">
+    <div class="fy-stage">
+      <p class="fy-kick kb">Chosen art pieces.</p>
+      <div class="fy-world js-fy-world">
+      <figure class="fy-card js-fy-card js-film" data-i="0" style="--x:35.7;--y:30.5;--z:-117;--w:13.6;--ar:1400/875" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 01 · Amman · Jordan · 2026" data-img="1"><img src="media/57-255551adca.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="0" style="--x:2.5;--y:-25.1;--z:-243;--w:16.1;--ar:720/1280" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 02 · Amman · Jordan · 2026" data-img="1"><img src="media/18-b1760e8edf.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="0" style="--x:-23.4;--y:-3.1;--z:-440;--w:13.6;--ar:1000/1250" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 03 · Amman · Jordan · 2026" data-img="1"><img src="media/49-8c6bab5207.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="0" style="--x:17.6;--y:-5.4;--z:-722;--w:18.1;--ar:1000/1250" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 04 · Amman · Jordan · 2026" data-img="1"><img src="media/50-8bbf5eef82.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="0" style="--x:-11.8;--y:-30.1;--z:-975;--w:17.1;--ar:1000/1250" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 05 · Amman · Jordan · 2026" data-img="1"><img src="media/51-819f68055d.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="0" style="--x:39.5;--y:-9.3;--z:-1190;--w:15.6;--ar:1000/1250" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 06 · Amman · Jordan · 2026" data-img="1"><img src="media/52-72167351bf.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="0" style="--x:-15.6;--y:-28.2;--z:-1371;--w:18.0;--ar:1440/810" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 07 · Amman · Jordan · 2026" data-img="1"><img src="media/20-5683f4853b.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="0" style="--x:-27.0;--y:-12.0;--z:-1634;--w:14.4;--ar:1440/810" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 08 · Amman · Jordan · 2026" data-img="1"><img src="media/53-c268d9e9ea.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="0" style="--x:-32.4;--y:-27.3;--z:-1751;--w:14.9;--ar:1440/810" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 09 · Amman · Jordan · 2026" data-img="1"><img src="media/54-1fd4363325.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="0" style="--x:-17.8;--y:-13.3;--z:-2065;--w:16.8;--ar:1440/810" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 10 · Amman · Jordan · 2026" data-img="1"><img src="media/55-95c66ceea0.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="0" style="--x:-20.3;--y:-26.7;--z:-2284;--w:18.0;--ar:1440/810" data-title="Latent Studio" data-client="Identity · brand film · website" data-note="Piece 11 · Amman · Jordan · 2026" data-img="1"><img src="media/56-2bc7ce8c25.jpg" alt="Latent Studio" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="1" style="--x:27.6;--y:-17.8;--z:-2460;--w:19.4;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 01 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/21-7ad07c68ee.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="1" style="--x:7.8;--y:30.3;--z:-2603;--w:19.8;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 02 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/70-2e601fd268.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="1" style="--x:-37.3;--y:-5.7;--z:-2772;--w:18.7;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 03 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/71-fee1b898fc.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="1" style="--x:15.7;--y:32.2;--z:-3043;--w:19.6;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 04 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/21-7ad07c68ee.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="1" style="--x:3.2;--y:33.2;--z:-3221;--w:15.4;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 05 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/24-cf0f4dec6d.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="1" style="--x:39.8;--y:-8.4;--z:-3344;--w:13.5;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 06 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/25-1aecabd487.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="1" style="--x:36.4;--y:30.6;--z:-3532;--w:13.7;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 07 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/72-ba9d42b4bb.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="1" style="--x:2.4;--y:-22.5;--z:-3753;--w:18.7;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 08 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/73-e8f15ea4dd.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="1" style="--x:-20.7;--y:-5.3;--z:-3977;--w:16.1;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 09 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/74-95de6262f0.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="1" style="--x:-13.2;--y:26.7;--z:-4152;--w:19.3;--ar:1400/1750" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 10 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/75-a88db41609.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="1" style="--x:15.8;--y:-5.9;--z:-4323;--w:18.8;--ar:1400/1737" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 11 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/76-f530d3f112.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="1" style="--x:-17.2;--y:-6.1;--z:-4516;--w:16.9;--ar:1400/1737" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 12 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/77-5cf0d983a5.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="1" style="--x:4.2;--y:22.2;--z:-4627;--w:17.4;--ar:1080/1080" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="Piece 13 · Riyadh · Saudi Arabia · 2026" data-img="1"><img src="media/78-8e02ed82ce.jpg" alt="AS Abaya" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="2" style="--x:28.2;--y:-17.1;--z:-4881;--w:13.6;--ar:1400/875" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 01 · Amman · Jordan · 2026" data-img="1"><img src="media/81-53406dc03e.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="2" style="--x:-22.3;--y:4.1;--z:-4981;--w:16.1;--ar:1400/875" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 02 · Amman · Jordan · 2026" data-img="1"><img src="media/82-5644379463.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="2" style="--x:18.3;--y:-33.7;--z:-5114;--w:18.5;--ar:1400/875" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 03 · Amman · Jordan · 2026" data-img="1"><img src="media/83-27a7bfb2df.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="2" style="--x:-30.1;--y:25.0;--z:-5241;--w:17.8;--ar:1400/875" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 04 · Amman · Jordan · 2026" data-img="1"><img src="media/84-7ee771bd25.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="2" style="--x:-27.5;--y:-3.4;--z:-5400;--w:13.6;--ar:1027/1750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 05 · Amman · Jordan · 2026" data-img="1"><img src="media/85-8686f0c6e7.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:16.8;--y:-1.3;--z:-5564;--w:16.8;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 06 · Amman · Jordan · 2026" data-img="1"><img src="media/58-6060b14190.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:-17.0;--y:27.1;--z:-5654;--w:19.1;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 07 · Amman · Jordan · 2026" data-img="1"><img src="media/59-1fab143a8d.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:30.5;--y:-0.1;--z:-5854;--w:17.7;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 08 · Amman · Jordan · 2026" data-img="1"><img src="media/60-f12900ab22.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:-15.1;--y:-10.2;--z:-5955;--w:19.7;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 09 · Amman · Jordan · 2026" data-img="1"><img src="media/61-f8785d343e.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:-20.5;--y:-15.1;--z:-6078;--w:14.5;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 10 · Amman · Jordan · 2026" data-img="1"><img src="media/62-5c561bec59.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:-19.8;--y:24.0;--z:-6254;--w:13.8;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 11 · Amman · Jordan · 2026" data-img="1"><img src="media/63-56dcddc56e.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:-3.1;--y:-25.8;--z:-6401;--w:16.1;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 12 · Amman · Jordan · 2026" data-img="1"><img src="media/64-041edd9774.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:30.1;--y:-16.4;--z:-6566;--w:14.7;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 13 · Amman · Jordan · 2026" data-img="1"><img src="media/65-35752bac52.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:40.5;--y:9.1;--z:-6639;--w:18.7;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 14 · Amman · Jordan · 2026" data-img="1"><img src="media/66-6e3f0d00ca.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:-18.8;--y:-9.4;--z:-6789;--w:18.9;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 15 · Amman · Jordan · 2026" data-img="1"><img src="media/67-7cdabc093e.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:-34.4;--y:16.2;--z:-6951;--w:17.8;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 16 · Amman · Jordan · 2026" data-img="1"><img src="media/68-15e32d59bb.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="2" style="--x:-17.4;--y:-28.7;--z:-7136;--w:17.6;--ar:1334/750" data-title="Sudqi Planet" data-client="Store website · brand identity" data-note="Piece 17 · Amman · Jordan · 2026" data-img="1"><img src="media/69-343077d6ac.jpg" alt="Sudqi Planet" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="3" style="--x:-27.7;--y:32.4;--z:-7857;--w:14.3;--ar:1400/875" data-title="Buraq Al Omur" data-client="Website" data-note="Piece 01 · UAE · 2026" data-img="1"><img src="media/79-360d70bc9a.jpg" alt="Buraq Al Omur" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="3" style="--x:-40.4;--y:7.5;--z:-8500;--w:18.1;--ar:1027/1750" data-title="Buraq Al Omur" data-client="Website" data-note="Piece 02 · UAE · 2026" data-img="1"><img src="media/80-df5abb42d9.jpg" alt="Buraq Al Omur" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="4" style="--x:27.0;--y:7.0;--z:-9671;--w:15.3;--ar:1400/875" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 01 · Saudi Arabia · 2026" data-img="1"><img src="media/86-610f686580.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="4" style="--x:-30.7;--y:-27.7;--z:-9903;--w:14.4;--ar:1027/1750" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 02 · Saudi Arabia · 2026" data-img="1"><img src="media/87-fa4db1fb02.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="4" style="--x:30.2;--y:-4.3;--z:-10043;--w:17.6;--ar:1200/750" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 03 · Saudi Arabia · 2026" data-img="1"><img src="media/19-de56f4747b.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="4" style="--x:20.6;--y:28.9;--z:-10237;--w:19.2;--ar:1200/750" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 04 · Saudi Arabia · 2026" data-img="1"><img src="media/40-ad07964687.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="4" style="--x:40.4;--y:32.8;--z:-10416;--w:15.7;--ar:1200/490" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 05 · Saudi Arabia · 2026" data-img="1"><img src="media/41-a446e5fffe.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="4" style="--x:23.0;--y:22.5;--z:-10605;--w:15.8;--ar:1200/320" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 06 · Saudi Arabia · 2026" data-img="1"><img src="media/42-a4426a7a3a.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="4" style="--x:18.8;--y:17.6;--z:-10864;--w:14.5;--ar:1200/989" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 07 · Saudi Arabia · 2026" data-img="1"><img src="media/43-052e8e4c50.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="4" style="--x:-7.8;--y:-30.0;--z:-11038;--w:16.0;--ar:1200/577" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 08 · Saudi Arabia · 2026" data-img="1"><img src="media/44-2774406099.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="4" style="--x:27.1;--y:6.1;--z:-11250;--w:14.7;--ar:1200/450" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 09 · Saudi Arabia · 2026" data-img="1"><img src="media/45-96af1fc6aa.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="4" style="--x:-15.5;--y:11.6;--z:-11453;--w:14.2;--ar:1200/750" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 10 · Saudi Arabia · 2026" data-img="1"><img src="media/46-ec45da355b.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="4" style="--x:27.0;--y:5.1;--z:-11716;--w:16.8;--ar:1200/350" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 11 · Saudi Arabia · 2026" data-img="1"><img src="media/47-dce4465caf.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="4" style="--x:9.1;--y:28.5;--z:-11918;--w:17.6;--ar:1200/420" data-title="Rawabina Al Khadraa" data-client="Editorial website" data-note="Piece 12 · Saudi Arabia · 2026" data-img="1"><img src="media/48-4d21530e0e.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="5" style="--x:-5.9;--y:-29.7;--z:-12134;--w:15.7;--ar:720/1290" data-title="Atelier Rebul" data-client="Cinematic reels · posts" data-note="Piece 01 · Jordan · 2026" data-img="1"><img src="media/16-5f98d5f7c3.jpg" alt="Atelier Rebul" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="5" style="--x:-9.9;--y:-30.1;--z:-12272;--w:15.7;--ar:900/1612" data-title="Atelier Rebul" data-client="Cinematic reels · posts" data-note="Piece 02 · Jordan · 2026" data-img="1"><img src="media/14-e1887959c2.jpg" alt="Atelier Rebul" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="5" style="--x:39.9;--y:16.4;--z:-12647;--w:17.7;--ar:900/1612" data-title="Atelier Rebul" data-client="Cinematic reels · posts" data-note="Piece 03 · Jordan · 2026" data-img="1"><img src="media/30-15cb2fcfb2.jpg" alt="Atelier Rebul" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="5" style="--x:-19.1;--y:-22.5;--z:-12896;--w:13.4;--ar:900/1612" data-title="Atelier Rebul" data-client="Cinematic reels · posts" data-note="Piece 04 · Jordan · 2026" data-img="1"><img src="media/31-9b83c7175b.jpg" alt="Atelier Rebul" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="5" style="--x:3.6;--y:-25.7;--z:-13077;--w:16.3;--ar:900/1612" data-title="Atelier Rebul" data-client="Cinematic reels · posts" data-note="Piece 05 · Jordan · 2026" data-img="1"><img src="media/32-7ac7171781.jpg" alt="Atelier Rebul" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="5" style="--x:-29.8;--y:9.6;--z:-13383;--w:17.3;--ar:900/1612" data-title="Atelier Rebul" data-client="Cinematic reels · posts" data-note="Piece 06 · Jordan · 2026" data-img="1"><img src="media/33-14d9b4c44e.jpg" alt="Atelier Rebul" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="5" style="--x:21.0;--y:7.2;--z:-13685;--w:14.4;--ar:900/1612" data-title="Atelier Rebul" data-client="Cinematic reels · posts" data-note="Piece 07 · Jordan · 2026" data-img="1"><img src="media/34-af051ff8ef.jpg" alt="Atelier Rebul" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="5" style="--x:-12.8;--y:32.5;--z:-13910;--w:15.0;--ar:900/1612" data-title="Atelier Rebul" data-client="Cinematic reels · posts" data-note="Piece 08 · Jordan · 2026" data-img="1"><img src="media/35-ada447e653.jpg" alt="Atelier Rebul" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film fy-ph" data-i="5" style="--x:24.4;--y:-13.9;--z:-14287;--w:13.2;--ar:900/1612" data-title="Atelier Rebul" data-client="Cinematic reels · posts" data-note="Piece 09 · Jordan · 2026" data-img="1"><img src="media/36-75ece9e0cc.jpg" alt="Atelier Rebul" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="6" style="--x:24.4;--y:4.7;--z:-14660;--w:14.1;--ar:576/714" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Piece 01 · Amman · Jordan · 2026" data-img="1"><img src="media/15-7b1a9203b7.jpg" alt="Cube Coffee House" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="6" style="--x:15.9;--y:30.4;--z:-15072;--w:13.8;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Piece 02 · Amman · Jordan · 2026" data-img="1"><img src="media/17-e2990e6d14.jpg" alt="Cube Coffee House" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="6" style="--x:35.4;--y:31.9;--z:-15392;--w:18.8;--ar:576/714" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Piece 03 · Amman · Jordan · 2026" data-img="1"><img src="media/37-48d6c757ea.jpg" alt="Cube Coffee House" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="6" style="--x:-35.3;--y:-28.5;--z:-16069;--w:18.0;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Piece 04 · Amman · Jordan · 2026" data-img="1"><img src="media/38-36c5d6c78c.jpg" alt="Cube Coffee House" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      <figure class="fy-card js-fy-card js-film" data-i="6" style="--x:38.4;--y:9.0;--z:-16467;--w:14.9;--ar:800/993" data-title="Cube Coffee House" data-client="Identity + campaign" data-note="Piece 05 · Amman · Jordan · 2026" data-img="1"><img src="media/39-4499655a55.jpg" alt="Cube Coffee House" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
+      </div>
+      <div class="fy-names">
+      <div class="fy-name js-fy-name" data-i="0"><p class="fy-mono"><b>01</b> / 07 &middot; Identity · brand film · website</p><h2 class="fy-h"><span class="pgw"><span class="pgw-in js-fy-word">Latent Studio</span></span></h2><p class="fy-mono fy-meta">Amman · Jordan · 2026</p></div>
+      <div class="fy-name js-fy-name" data-i="1"><p class="fy-mono"><b>02</b> / 07 &middot; Campaign · Abayat Al-Dawam</p><h2 class="fy-h"><span class="pgw"><span class="pgw-in js-fy-word">AS Abaya</span></span></h2><p class="fy-mono fy-meta">Riyadh · Saudi Arabia · 2026</p></div>
+      <div class="fy-name js-fy-name" data-i="2"><p class="fy-mono"><b>03</b> / 07 &middot; Store website · brand identity</p><h2 class="fy-h"><span class="pgw"><span class="pgw-in js-fy-word">Sudqi Planet</span></span></h2><p class="fy-mono fy-meta">Amman · Jordan · 2026</p></div>
+      <div class="fy-name js-fy-name" data-i="3"><p class="fy-mono"><b>04</b> / 07 &middot; Website</p><h2 class="fy-h"><span class="pgw"><span class="pgw-in js-fy-word">Buraq Al Omur</span></span></h2><p class="fy-mono fy-meta">UAE · 2026</p></div>
+      <div class="fy-name js-fy-name" data-i="4"><p class="fy-mono"><b>05</b> / 07 &middot; Editorial website</p><h2 class="fy-h"><span class="pgw"><span class="pgw-in js-fy-word">Rawabina Al Khadraa</span></span></h2><p class="fy-mono fy-meta">Saudi Arabia · 2026</p></div>
+      <div class="fy-name js-fy-name" data-i="5"><p class="fy-mono"><b>06</b> / 07 &middot; Cinematic reels · posts</p><h2 class="fy-h"><span class="pgw"><span class="pgw-in js-fy-word">Atelier Rebul</span></span></h2><p class="fy-mono fy-meta">Jordan · 2026</p></div>
+      <div class="fy-name js-fy-name" data-i="6"><p class="fy-mono"><b>07</b> / 07 &middot; Identity + campaign</p><h2 class="fy-h"><span class="pgw"><span class="pgw-in js-fy-word">Cube Coffee House</span></span></h2><p class="fy-mono fy-meta">Amman · Jordan · 2026</p></div>
+      </div>
+      <p class="fy-hint">Scroll to fly through &middot; click a piece to open it</p>
+    </div>
+  </div>
+</section>
 <section class="sec light cf js-cf js-path ow-sec" id="ourwork">
   <div class="inner cf-in cf-short ow-in">
     <h2 class="cf-h js-words">Our work.</h2>
@@ -2683,27 +2774,6 @@ html.pg-snap{scroll-snap-type:y proximity}
         <figure class="ow-piece rv js-film pg-l" style="--k:4;--ar:4/5" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="AS093 · Six frames · Riyadh · 2026" data-img="1"><img src="media/25-1aecabd487.jpg" alt="AS093" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
         <figure class="ow-piece rv js-film pg-r" style="--k:5;--ar:4/5" data-title="AS Abaya" data-client="Campaign · Abayat Al-Dawam" data-note="AS073 · Six frames · Riyadh · 2026" data-img="1"><img src="media/26-fb958e26c0.jpg" alt="AS073" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>
       </div>
-    </div>
-  </div>
-</section>
-<section class="sec dark sg js-sg" id="featured" data-slides='[{"title": "Atelier Rebul", "sub": "Perfume \u00b7 Istanbul", "href": "#work"}, {"title": "Cube Coffee House", "sub": "Identity + campaign \u00b7 Amman", "href": "#work"}, {"title": "Rawabina Al Khadraa", "sub": "Editorial website \u00b7 Amman", "href": "#ourwork"}, {"title": "AS Abaya", "sub": "Campaign \u00b7 Abayat Al-Dawam", "href": "#ourwork"}, {"title": "Latent", "sub": "Identity + brand film \u00b7 Amman", "href": "https://latent-studio-ai.com"}]'>
-  <div class="sg-hold js-sg-hold" style="--n:5;--per:120;--d0:40;--d1:40">
-    <div class="sg-stage">
-      <div class="sg-images js-sg-images">
-      <figure class="sg-frame js-sg-frame" data-k="0"><img src="media/14-e1887959c2.jpg" alt="Atelier Rebul" loading="eager" decoding="async"></figure>
-      <figure class="sg-frame js-sg-frame" data-k="1"><img src="media/17-e2990e6d14.jpg" alt="Cube Coffee House" loading="lazy" decoding="async"></figure>
-      <figure class="sg-frame js-sg-frame" data-k="2"><img src="media/19-de56f4747b.jpg" alt="Rawabina Al Khadraa" loading="lazy" decoding="async"></figure>
-      <figure class="sg-frame js-sg-frame" data-k="3"><img src="media/21-7ad07c68ee.jpg" alt="AS Abaya" loading="lazy" decoding="async"></figure>
-      <figure class="sg-frame js-sg-frame" data-k="4"><img src="media/18-b1760e8edf.jpg" alt="Latent" loading="lazy" decoding="async"></figure>
-      </div>
-      <div class="sg-band">
-        <div class="sg-band-in">
-          <p class="sg-prefix">Featured</p>
-          <div class="sg-title"><p class="sg-title-in js-sg-title">Atelier Rebul</p></div>
-          <a class="sg-link js-sg-link" href="#work">Open <i>&#8599;</i></a>
-        </div>
-      </div>
-      <p class="sg-count js-sg-count">01 / 05</p>
     </div>
   </div>
 </section>
@@ -4564,39 +4634,26 @@ html.pg-snap{scroll-snap-type:y proximity}
   });
 })();
 
-/* featured: the strip-wipe gallery, after the 21st.dev ScrollGallery. Progress comes from the hold's position; each
-   transition spans --per vh after --d0 vh of lead; piece k wipes in through twenty strips during transition k-1 and
-   eases from 1.25 to 1 across two transitions; the title slides out and in once a transition passes 0.3 */
+/* the flight: the camera moves forward with the scroll; every card sits at its depth and slides toward the viewer,
+   fading in from far away and out as it passes; the name of the band the camera is in shows in the middle */
 (function(){
-  var sec = document.querySelector(".js-sg"); if(!sec) return;
-  var hold = sec.querySelector(".js-sg-hold"), frames = [].slice.call(sec.querySelectorAll(".js-sg-frame")), imgs = frames.map(function(f){ return f.querySelector("img"); }),
-      title = sec.querySelector(".js-sg-title"), link = sec.querySelector(".js-sg-link"), count = sec.querySelector(".js-sg-count"), slides = JSON.parse(sec.getAttribute("data-slides")),
-      reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, N = frames.length, STRIPS = 20, SPEED = 2, FROM = 1.25, TO = 1, STEP = (FROM - TO) / 2, THRESH = .3;
-  var per = parseFloat(hold.style.getPropertyValue("--per")), d0 = parseFloat(hold.style.getPropertyValue("--d0")), d1 = parseFloat(hold.style.getPropertyValue("--d1")), total = (N - 1) * per + d0 + d1;
-  var bounds = []; for(var j = 0; j < STRIPS; j++){ var pos = STRIPS - j - 1, st = 100 / STRIPS; bounds.push({ lower: (pos + 1) * st, upperGap: pos * st - .1, delay: (j / STRIPS) * .5 }); }
-  var HID = "linear-gradient(to bottom, transparent 0%, transparent 100%)", REV = "linear-gradient(to bottom, black 0%, black 100%)";
-  function mask(el, v){ el.style.maskImage = v; el.style.webkitMaskImage = v; }
-  function strip(p){ var iv = []; for(var j = 0; j < STRIPS; j++){ var b = bounds[j], adj = Math.max(0, Math.min(1, (p - b.delay) * SPEED)); if(adj <= 0) continue; var h = b.lower - b.upperGap; iv.push({ top: b.lower - adj * h, bottom: b.lower }); }
-    if(!iv.length) return HID; iv.sort(function(a, b){ return a.top - b.top; }); var m = [iv[0]]; for(var k = 1; k < iv.length; k++){ var l = m[m.length - 1], n = iv[k]; if(n.top <= l.bottom) l.bottom = Math.max(l.bottom, n.bottom); else m.push(n); }
-    var stops = [], cur = 0; m.forEach(function(r){ if(r.top > cur) stops.push("transparent " + cur + "%", "transparent " + r.top + "%"); stops.push("black " + r.top + "%", "black " + r.bottom + "%"); cur = r.bottom; }); if(cur < 100) stops.push("transparent " + cur + "%", "transparent 100%");
-    return "linear-gradient(to bottom, " + stops.join(", ") + ")"; }
-  function scaleFor(k, idx, p){ var d = idx + p - k; if(d <= 0) return FROM; if(d >= 2) return TO; return FROM - STEP * d; }
-  var cur = 0, busy = false, queued = null;
-  function setSlide(i){ if(link){ link.href = slides[i].href; if(/^https?:/.test(slides[i].href)){ link.target = "_blank"; link.rel = "noopener"; } else { link.removeAttribute("target"); link.removeAttribute("rel"); } } if(count) count.textContent = (i + 1 < 10 ? "0" : "") + (i + 1) + " / " + (N < 10 ? "0" : "") + N; }
-  function swapTitle(i, dir){ if(i === cur || !title) return; if(busy){ queued = i; return; } busy = true; setSlide(i);
-    title.classList.remove("snap"); title.classList.add(dir === "down" ? "out-up" : "out-down");
-    setTimeout(function(){ title.textContent = slides[i].title; title.classList.add("snap"); title.classList.remove("out-up", "out-down"); title.classList.add(dir === "down" ? "out-down" : "out-up"); void title.offsetWidth; title.classList.remove("snap"); title.classList.remove("out-up", "out-down");
-      setTimeout(function(){ cur = i; busy = false; if(queued !== null && queued !== cur){ var q = queued; queued = null; swapTitle(q, dir); } }, 320); }, 320); }
-  var last = 0;
-  function frame(){ ticking = false; if(reduce) return; var vh = window.innerHeight, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
-    var run = Math.max(1, hold.offsetHeight - vh), pr = Math.min(1, Math.max(0, -b.top / run)) * total, ip;
-    if(pr <= d0) ip = 0; else if(pr >= d0 + (N - 1) * per) ip = N - 1; else ip = (pr - d0) / per;
-    var idx = Math.floor(ip), p = ip - idx, dir = ip >= last ? "down" : "up"; last = ip;
-    var want = (p >= THRESH) ? Math.min(idx + 1, N - 1) : idx; if(want !== cur){ queued = want; if(!busy) swapTitle(want, dir); }
-    imgs.forEach(function(im, k){ im.style.transform = "translate3d(0,0,0) scale(" + scaleFor(k, idx, p).toFixed(4) + ")"; if(k === 0) return; var t = k - 1;
-      if(t < idx) mask(im, REV); else if(t === idx) mask(im, strip(p)); else mask(im, HID); });
+  var sec = document.querySelector(".js-fy"); if(!sec) return;
+  var hold = sec.querySelector(".js-fy-hold"), cards = [].slice.call(sec.querySelectorAll(".js-fy-card")), names = [].slice.call(sec.querySelectorAll(".js-fy-name")), N = names.length,
+      reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false, at = -1, DEPTH = 2400, FAR = 3200, NEAR = 140;
+  var C = cards.map(function(c){ return { el: c, x: parseFloat(c.style.getPropertyValue("--x")), y: parseFloat(c.style.getPropertyValue("--y")), z: parseFloat(c.style.getPropertyValue("--z")), i: +c.dataset.i }; });
+  function clamp(v){ return Math.min(1, Math.max(0, v)); }
+  function frame(){
+    ticking = false; if(reduce) return; var vh = window.innerHeight, vw = window.innerWidth, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
+    var run = Math.max(1, hold.offsetHeight - vh), p = clamp(-b.top / run), cam = p * (N * DEPTH + 600) - 300;
+    C.forEach(function(o){
+      var z = o.z + cam; if(z < -FAR - 50 || z > NEAR + 50){ o.el.style.opacity = 0; o.el.style.visibility = "hidden"; return; }
+      var op = clamp((z + FAR) / 900) * (1 - clamp((z + 60) / (NEAR + 60)));
+      o.el.style.visibility = op > 0.01 ? "visible" : "hidden"; o.el.style.opacity = op.toFixed(3);
+      o.el.style.transform = "translate3d(calc(-50% + " + (o.x * vw / 100).toFixed(1) + "px), calc(-50% + " + (o.y * vh / 100).toFixed(1) + "px), " + z.toFixed(1) + "px)";
+    });
+    var band = Math.min(N - 1, Math.max(0, Math.floor((cam + 700) / DEPTH)));
+    if(band !== at){ names.forEach(function(n, k){ n.classList.toggle("off", k === at); n.classList.toggle("on", k === band); }); at = band; }
   }
-  imgs.forEach(function(im, k){ im.style.transform = "translate3d(0,0,0) scale(" + FROM + ")"; if(k) mask(im, HID); });
   window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true }); window.addEventListener("resize", frame); window.addEventListener("load", frame); frame();
 })();
 </script>

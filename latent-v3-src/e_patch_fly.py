@@ -50,8 +50,8 @@ CSS='''
 .fy-h{margin:clamp(10px,2vh,18px) 0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:700;font-size:clamp(40px,8vw,132px);line-height:.95;letter-spacing:-.04em;text-transform:uppercase;color:#fff}
 .fy-h .pgw{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .02em .12em;margin:0 -.02em -.12em}
 .fy-h .pgw-in{display:inline-block;transform:translateY(112%);transition:none}
-.fy-name.on .pgw-in{transform:none;transition:transform 1.1s cubic-bezier(.16,1,.3,1) .5s}
-.fy-name.off .pgw-in{transform:translateY(-112%);transition:transform .5s cubic-bezier(.7,0,.3,1)}
+.fy-name.on .pgw-in{transform:none;transition:transform .65s cubic-bezier(.16,1,.3,1) .1s}
+.fy-name.off .pgw-in{transform:translateY(-112%);transition:transform .35s cubic-bezier(.7,0,.3,1)}
 .fy-mono{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,239,231,.7)}
 .fy-mono b{font-weight:500;color:var(--ember)}
 .fy-hint{position:absolute;left:var(--gut);bottom:clamp(24px,5vh,48px);margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,231,.5);z-index:5}
@@ -95,7 +95,7 @@ JS='''
       o.el.style.visibility = "visible";
       o.el.style.transform = "translate3d(calc(-50% + " + (o.x * vw / 100).toFixed(1) + "px), calc(-50% + " + (y * vh / 100).toFixed(1) + "px), 0)";
     });
-    var band = -1; for(var k = 0; k < bands.length; k++){ if(cam >= bands[k][0] - 1 && cam <= bands[k][1] + 1){ band = k; break; } }
+    var band = -1; for(var k = 0; k < bands.length; k++){ if(cam >= bands[k][0] - 12 && cam <= bands[k][1] + 1){ band = k; break; }   /* the name comes a beat before its first piece */ }
     if(band !== at){ names.forEach(function(n, k){ n.classList.toggle("off", k === at); n.classList.toggle("on", k === band); }); at = band; }
   }
   function tick(){

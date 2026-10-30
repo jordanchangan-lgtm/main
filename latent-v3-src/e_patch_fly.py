@@ -37,7 +37,7 @@ i=s.index('<section class="sec light cf js-cf js-path ow-sec" id="ourwork">'); s
 CSS='''
 /* the chosen art pieces: a flight through space */
 .fy{padding:0;background:#000;color:var(--ivory)}
-.fy-hold{position:relative;height:calc(100svh + var(--n,6) * 170vh)}
+.fy-hold{position:relative;height:calc(100svh + var(--n,6) * 190vh)}
 .fy-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#000}
 .fy-kick{position:absolute;left:var(--gut);top:clamp(72px,12vh,120px);z-index:5;color:var(--ivory);font-size:clamp(18px,2vw,28px)!important}
 .fy-world{position:absolute;inset:0}
@@ -56,31 +56,37 @@ CSS='''
 .fy-mono{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,239,231,.7)}
 .fy-mono b{font-weight:500;color:var(--ember)}
 .fy-hint{position:absolute;left:var(--gut);bottom:clamp(24px,5vh,48px);margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,231,.5);z-index:5}
-@media(max-width:820px){.fy-hold{height:calc(100svh + var(--n,6) * 130vh)}.fy-card{width:calc(var(--wm) * 1vw)}.fy-ph{display:none}.fy-h{font-size:clamp(34px,11vw,52px)}.fy-kick{font-size:18px!important}.fy-hint{display:none}}
+@media(max-width:820px){.fy-hold{height:calc(100svh + var(--n,6) * 150vh)}.fy-card{width:calc(var(--wm) * 1vw)}.fy-ph{display:none}.fy-h{font-size:clamp(34px,11vw,52px)}.fy-kick{font-size:18px!important}.fy-hint{display:none}}
 @media (prefers-reduced-motion:reduce){.fy-hold{height:auto}.fy-stage{position:relative;height:auto;padding:120px var(--gut)}.fy-world{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.fy-card{position:relative;left:auto;top:auto;width:auto;visibility:visible;transform:none!important}.fy-names{display:none}}
 '''
 j=s.rfind('</style>'); s=s[:j]+CSS+s[j:]
 JS='''
 /* the field: the scroll lifts every piece up through the pinned stage in lanes (three across on desktop, two on a
    phone), each lane at its own speed so the field has depth; inside a lane the pieces are stacked with a gap measured
-   from their real heights, so none ever sits on another; pieces enter from below and leave at the top; the name swaps
-   when the camera reaches the next project's band. Smoothed frame to frame so it feels filmed */
+   from their real heights, so none ever sits on another. One project at a time: its pieces enter from below, cross
+   the stage and leave at the top; then the stage is empty for a stretch, the name goes, and the next project's name
+   and pieces arrive. Smoothed frame to frame so it feels filmed */
 (function(){
   var sec = document.querySelector(".js-fy"); if(!sec) return;
   var hold = sec.querySelector(".js-fy-hold"), cards = [].slice.call(sec.querySelectorAll(".js-fy-card")), names = [].slice.call(sec.querySelectorAll(".js-fy-name")), N = names.length,
-      reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, at = -1, BAND = 100, GAP = 7, cur = -1, target = 0, raf = 0, laid = 0;
-  var C = cards.map(function(c){ return { el: c, i: +c.dataset.i, lane: +c.dataset.lane, c: 0, s: 1, x: 0, hidden: false }; });
+      reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, at = -1, GAP = 7, REST = 26, cur = -1, target = 0, raf = 0, laid = 0, total = 1, bands = [];
+  var C = cards.map(function(c){ return { el: c, i: +c.dataset.i, lane: +c.dataset.lane, c: 0, s: 1, x: 0, h: 0, hidden: false }; });
   function clamp(v){ return Math.min(1, Math.max(0, v)); }
   function layout(){
     var vh = window.innerHeight, vw = window.innerWidth, phone = vw < 820,
-        xs = phone ? [-24, 24] : [-33, 0, 33], sp = phone ? [1, .8] : [1, .76, 1.18], L = xs.length, cursor = xs.map(function(){ return 0; });
-    C.forEach(function(o){
-      o.hidden = getComputedStyle(o.el).display === "none"; if(o.hidden) return;
-      var l = o.lane % L; o.x = xs[l]; o.s = sp[l];
-      var h = o.el.offsetHeight / vh * 100, c = Math.max(cursor[l], o.i * BAND + 8);
-      o.c = c; cursor[l] = c + (h + GAP) / o.s;
-    });
-    laid = vw * 10000 + vh;
+        xs = phone ? [-24, 24] : [-33, 0, 33], sp = phone ? [1, .8] : [1, .76, 1.18], L = xs.length, cam0 = 0;
+    bands = [];
+    for(var pi = 0; pi < N; pi++){
+      var cursor = xs.map(function(){ return cam0; }), exit = cam0;
+      C.forEach(function(o){
+        if(o.i !== pi) return; o.hidden = getComputedStyle(o.el).display === "none"; if(o.hidden) return;
+        var l = o.lane % L; o.x = xs[l]; o.s = sp[l]; o.h = o.el.offsetHeight / vh * 100;
+        var edge = (50 + o.h / 2 + 3) / o.s, c = Math.max(cursor[l], cam0 + edge);   /* enters from below the screen once the band starts */
+        o.c = c; cursor[l] = c + (o.h + GAP) / o.s; exit = Math.max(exit, c + edge);   /* has left the top by here */
+      });
+      bands.push([cam0, exit]); cam0 = exit + REST;
+    }
+    total = Math.max(1, cam0 - REST + 6); laid = vw * 10000 + vh;
   }
   function place(cam){
     var vh = window.innerHeight, vw = window.innerWidth; if(laid !== vw * 10000 + vh) layout();
@@ -90,7 +96,7 @@ JS='''
       o.el.style.visibility = "visible";
       o.el.style.transform = "translate3d(calc(-50% + " + (o.x * vw / 100).toFixed(1) + "px), calc(-50% + " + (y * vh / 100).toFixed(1) + "px), 0)";
     });
-    var band = Math.min(N - 1, Math.max(0, Math.floor(cam / BAND)));
+    var band = -1; for(var k = 0; k < bands.length; k++){ if(cam >= bands[k][0] - 1 && cam <= bands[k][1] + 1){ band = k; break; } }
     if(band !== at){ names.forEach(function(n, k){ n.classList.toggle("off", k === at); n.classList.toggle("on", k === band); }); at = band; }
   }
   function tick(){
@@ -98,8 +104,9 @@ JS='''
     if(cur !== target) raf = requestAnimationFrame(tick);
   }
   function onScroll(){
-    if(reduce) return; var vh = window.innerHeight, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
-    var run = Math.max(1, hold.offsetHeight - vh), p = clamp(-b.top / run); target = p * N * BAND;
+    if(reduce) return; var vh = window.innerHeight, vw = window.innerWidth, b = hold.getBoundingClientRect(); if(b.bottom < -10 || b.top > vh + 10) return;
+    if(laid !== vw * 10000 + vh) layout();
+    var run = Math.max(1, hold.offsetHeight - vh), p = clamp(-b.top / run); target = p * total;
     if(cur < 0) cur = target; if(!raf) raf = requestAnimationFrame(tick);
   }
   window.addEventListener("scroll", onScroll, { passive:true }); window.addEventListener("resize", function(){ laid = 0; onScroll(); place(cur < 0 ? 0 : cur); });

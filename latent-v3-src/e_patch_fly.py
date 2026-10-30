@@ -6,12 +6,12 @@ import sys, json, random
 P='/home/user/main/latent-v3e/index.html'; s=open(P,encoding='utf-8').read()
 if 'js-fy' in s: print('already patched'); sys.exit(0)
 M=json.load(open('/home/user/main/latent-v3-src/fly_media.json'))
-ORDER=[('Latent Studio','Identity · brand film · website','Amman · Jordan · 2026'),('AS Abaya','Full social media package','Riyadh · Saudi Arabia · 2026'),('Sudqi Planet','Store website · identity · social package','Amman · Jordan · 2026'),('Buraq Al Omur','Website','UAE · 2026'),('Rawabina Al Khadraa','Editorial website','Saudi Arabia · 2026'),('Atelier Rebul','Cinematic reels · posts','Jordan · 2026'),('Cube Coffee House','Identity + campaign','Amman · Jordan · 2026')]
+ORDER=[('AS Abaya','Full social media package','Riyadh · Saudi Arabia · 2026'),('Sudqi Planet','Store website · identity · social package','Amman · Jordan · 2026'),('Buraq Al Omur','Website','UAE · 2026'),('Rawabina Al Khadraa','Editorial website','Saudi Arabia · 2026'),('Atelier Rebul','Cinematic reels · posts','Jordan · 2026')]
 random.seed(23); cards=''; names=''
 import math
 for pi,(name,kind,meta) in enumerate(ORDER):
     pieces=M[name][:7]; n=len(pieces)   # at most seven pieces a project
-    names+='      <div class="fy-name js-fy-name" data-i="%d"><p class="fy-mono"><b>%02d</b> / %02d &middot; %s</p><h2 class="fy-h"><span class="pgw"><span class="pgw-in js-fy-word">%s</span></span></h2><p class="fy-mono fy-meta">%s</p></div>\n'%(pi,pi+1,len(ORDER),kind,name,meta)
+    names+='      <div class="fy-name js-fy-name" data-i="%d"><h2 class="fy-h"><span class="pgw"><span class="pgw-in js-fy-word">%s</span></span></h2></div>\n'%(pi,name)
     S=random.uniform(12,14.5); start=random.randrange(3)
     for k,(path,w,h) in enumerate(pieces):
         # one size a project; a piece keeps its own ratio; a website screenshot (landscape) takes the width. Each piece
@@ -46,13 +46,13 @@ CSS='''
 .fy-card .play{position:absolute;left:10px;bottom:8px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .3s;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 .fy-card:hover .play{opacity:1}
 .fy-names{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:3;mix-blend-mode:difference}
-.fy-name{grid-area:1/1;text-align:center;opacity:0;transition:opacity .35s ease}
+.fy-name{grid-area:1/1;text-align:center;opacity:0;transition:opacity .9s ease}
 .fy-name.on{opacity:1}
 .fy-h{margin:clamp(10px,2vh,18px) 0;font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:700;font-size:clamp(40px,8vw,132px);line-height:.95;letter-spacing:-.04em;text-transform:uppercase;color:#fff}
 .fy-h .pgw{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .02em .12em;margin:0 -.02em -.12em}
-.fy-h .pgw-in{display:inline-block;transform:translateY(112%);transition:transform .8s cubic-bezier(.19,1,.22,1)}
+.fy-h .pgw-in{display:inline-block;transform:translateY(112%);transition:transform 1.5s cubic-bezier(.16,1,.3,1)}
 .fy-name.on .pgw-in{transform:none}
-.fy-name.off .pgw-in{transform:translateY(-112%);transition-duration:.45s}
+.fy-name.off .pgw-in{transform:translateY(-112%);transition:transform .9s cubic-bezier(.7,0,.3,1)}
 .fy-mono{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,239,231,.7)}
 .fy-mono b{font-weight:500;color:var(--ember)}
 .fy-hint{position:absolute;left:var(--gut);bottom:clamp(24px,5vh,48px);margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,231,.5);z-index:5}

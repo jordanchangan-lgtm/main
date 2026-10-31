@@ -42,7 +42,7 @@
 
   /* ---------- product card ---------- */
   function card(p, i) {
-    var viewHref = p.url || (storeBase() ? storeBase() + "/products/" + encodeURIComponent(p.handle) : "#");
+    var viewHref = p.url || (!connected && storeBase() ? storeBase() + "/products/" + encodeURIComponent(p.handle) : "#");
     var buyHref = p.buyUrl || viewHref;
     var ext = function (h) { return h === "#" ? "" : ' target="_blank" rel="noopener"'; };
     var price = priceHtml(p);
@@ -125,17 +125,42 @@
   }
 
   var loading = null;
+  /* Shopify is the source of truth for what is on sale, prices, stock and
+     checkout. A Shopify product whose handle matches one in shop-config.js
+     keeps the site's bilingual copy and studio photography. */
+  function merge(shopify) {
+    var local = {};
+    (cfg.products || []).forEach(function (p) { local[p.handle] = p; });
+    return shopify.map(function (s) {
+      var l = local[s.handle];
+      if (!l) return s;
+      var cols = (l.collections || []).slice();
+      (s.collections || []).forEach(function (c) { if (cols.indexOf(c) < 0) cols.push(c); });
+      return Object.assign({}, l, {
+        collections: cols,
+        price: s.price,
+        compareAt: s.compareAt,
+        currencyCode: s.currencyCode,
+        available: s.available,
+        url: s.url,
+        buyUrl: s.buyUrl
+      });
+    });
+  }
+
   function load() {
     if (loading) return loading;
     var samples = (cfg.products || []).slice();
-    if (!connected) return (loading = Promise.resolve(samples).then(function (l) { list = l; return l; }));
+    var done = function (l) { list = l; return l; };
+    if (!connected) return (loading = Promise.resolve(samples).then(done));
     loading = Promise.all([fetchLang("AR"), fetchLang("EN")])
       .then(function (res) { return fromShopify(res[0], res[1]); })
-      .then(function (l) { list = l; return l; })
-      .catch(function (err) { console.error("Shopify:", err); list = samples; return samples; });
+      // Until the store has products published to this channel, keep showing the site's list.
+      .then(function (l) { return l.length ? merge(l) : samples; })
+      .then(done)
+      .catch(function (err) { console.error("Shopify:", err); return done(samples); });
     return loading;
   }
-
 
   /* ---------- Quick view: a drawer with the full product story ---------- */
   var list = [];
@@ -154,7 +179,7 @@
     var p = list.filter(function (x) { return x.handle === handle; })[0];
     if (!p) return;
     if (!drawer) buildDrawer();
-    var viewHref = p.url || (storeBase() ? storeBase() + "/products/" + encodeURIComponent(p.handle) : "#");
+    var viewHref = p.url || (!connected && storeBase() ? storeBase() + "/products/" + encodeURIComponent(p.handle) : "#");
     var buyHref = p.buyUrl || viewHref;
     var ext = function (h) { return h === "#" ? "" : ' target="_blank" rel="noopener"'; };
     var gal = (p.gallery && p.gallery.length ? p.gallery : [p.image, p.hover].filter(Boolean));

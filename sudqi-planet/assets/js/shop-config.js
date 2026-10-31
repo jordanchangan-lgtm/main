@@ -9,9 +9,10 @@ window.SP_SHOP = {
      storeDomain + storefrontToken  → real products, prices, stock and
      checkout are loaded from Shopify (Arabic + English via Translate & Adapt).
      storefrontUrl only             → buttons open each product on Shopify by handle. */
-  storeDomain: "",
-  storefrontToken: "",
-  storefrontUrl: "",
+  storeDomain: "v11yfp-xe.myshopify.com",
+  // Public Storefront API token (Headless channel): meant to be visible in the page.
+  storefrontToken: "a7d50af32fab093cb579de6572543d90",
+  storefrontUrl: "https://v11yfp-xe.myshopify.com",
   apiVersion: "2025-01",
   currency: { ar: "د.أ", en: "JOD" },
 

@@ -32,7 +32,7 @@ Open `assets/js/shop-config.js`. There are two levels:
 
    **Order now** uses a Shopify cart permalink, so the customer goes straight to Shopify checkout.
 
-Until Shopify is connected, the site shows the products listed in `shop-config.js`. Add as many as you like: each needs a `handle`, `brand`, `collections`, a bilingual `name`, `type`, `tagline` and `desc`, a `price` in JOD (delivery included) and its images. Mark up to 8 with `featured: true` to choose which ones the landing page lists first. If a customer clicks **Order now** at that stage, they see a short note that sends them to Instagram.
+Until Shopify is connected, the site shows the products listed in `shop-config.js`. Add as many as you like: each needs a `handle`, `brand`, `collections`, a bilingual `name`, `type`, `tagline` and `desc`, a `price` in JOD (delivery, 1 JOD, is added at checkout by Shopify) and its images. Mark up to 8 with `featured: true` to choose which ones the landing page lists first. If a customer clicks **Order now** at that stage, they see a short note that sends them to Instagram.
 
 ## Deploying to Cloudflare Pages
 1. Build the bundle (after any change):

@@ -38,7 +38,7 @@ window.SP_SHOP = {
     { id: "dr-althea", tag: "dr-althea", kind: "brand", ar: "Dr. Althea", en: "Dr. Althea", desc: { ar: "عناية كورية مهدّئة بتركيبة ٣٤٥.", en: "Calming Korean care built on the 345 formula." }, image: "assets/img/ai/mist.jpg" },
     { id: "beauty-of-joseon", tag: "beauty-of-joseon", kind: "brand", ar: "Beauty of Joseon", en: "Beauty of Joseon", desc: { ar: "وصفات كورية تقليدية من الأرز والبرقوق.", en: "Traditional Korean recipes of rice and plum." }, image: "assets/img/ai/sun.jpg" },
     { id: "clinique", tag: "clinique", kind: "brand", ar: "Clinique", en: "Clinique", desc: { ar: "عناية غنية للجسم، بلا عطور.", en: "Rich body care, fragrance-free." }, image: "assets/img/ai/butter.jpg" },
-    { id: "packages", tag: "package", kind: "edit", ar: "الباقات", en: "Packages", desc: { ar: "روتين كامل بسعرٍ أقل، والتوصيل مشمول.", en: "A full routine for less, delivery included." }, image: "assets/img/ai/bundle-4.jpg" },
+    { id: "packages", tag: "package", kind: "edit", ar: "الباقات", en: "Packages", desc: { ar: "روتين كامل بسعرٍ أقل.", en: "A full routine for less." }, image: "assets/img/ai/bundle-4.jpg" },
     { id: "bright", tag: "bright", kind: "concern", ar: "التفتيح", en: "Brightening", desc: { ar: "لونٌ موحّد وبقعٌ أخف.", en: "A more even tone, softer spots." }, image: "assets/img/ai/cream.jpg" },
     { id: "hydration", tag: "hydration", kind: "concern", ar: "الترطيب", en: "Hydration", desc: { ar: "لبشرةٍ عطشى تبحث عن الراحة.", en: "For thirsty skin that wants comfort." }, image: "assets/img/ai/bundle-3.jpg" },
     { id: "calm", tag: "calm", kind: "concern", ar: "التهدئة", en: "Calming", desc: { ar: "للبشرة الحساسة والمتعبة.", en: "For sensitive, tired skin." }, image: "assets/img/ai/cream.jpg" },
@@ -49,7 +49,7 @@ window.SP_SHOP = {
 
   /* ---------- Products ----------
      Descriptions are written from the brands' and retailers' published
-     product information. Prices are in JOD and include delivery;
+     product information. Prices are in JOD; delivery is 1 JOD on top (set in Shopify shipping);
      compareAt shows the original price struck through. price: null shows
      "السعر قريبًا / Price soon". */
   products: [

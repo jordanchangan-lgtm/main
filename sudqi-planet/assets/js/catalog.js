@@ -183,7 +183,7 @@
     var buyHref = p.buyUrl || viewHref;
     var ext = function (h) { return h === "#" ? "" : ' target="_blank" rel="noopener"'; };
     var gal = (p.gallery && p.gallery.length ? p.gallery : [p.image, p.hover].filter(Boolean));
-    var price = priceHtml(p) + (p.price != null ? '<span class="qv-ship">' + bi({ ar: "شامل التوصيل", en: "Delivery included" }) + "</span>" : "");
+    var price = priceHtml(p) + (p.price != null ? '<span class="qv-ship">' + bi({ ar: "+ ١ د.أ توصيل", en: "+ 1 JOD delivery" }) + "</span>" : "");
     drawer.querySelector(".qv-body").innerHTML =
       '<div class="qv-gal">' + gal.map(function (g, i) { return '<figure style="--i:' + i + '"><img src="' + esc(g) + '" alt="" /></figure>'; }).join("") + "</div>" +
       '<div class="qv-info">' +

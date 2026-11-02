@@ -122,9 +122,9 @@ def main():
         "  Referrer-Policy: strict-origin-when-cross-origin\n"
     )
 
-    # 4b. Worker for /api/* only (live offer count); everything else stays static.
+    # 4b. Worker: answers /api/* (live offer count) and passes everything else to the
+    #     static files. (No _routes.json: dashboard uploads don't accept it.)
     shutil.copy(os.path.join(ROOT, "tools", "_worker.js"), os.path.join(DIST, "_worker.js"))
-    open(os.path.join(DIST, "_routes.json"), "w").write('{"version": 1, "include": ["/api/*"], "exclude": []}\n')
 
     # 5. Check nothing still points at an old (pre-build) file name.
     missing = []

@@ -1,7 +1,7 @@
 /* Sudqi Planet — Cloudflare Pages worker (copied to dist/_worker.js by build.py).
  *
- * It handles only /api/* (see _routes.json); every page and image is still
- * served straight from Pages with the _headers caching.
+ * It answers /api/*; every other request is passed to the static files
+ * (env.ASSETS) with the long-cache headers kept.
  *
  *   GET  /api/offer            → { code, percent, limit, used, remaining, live }
  *   POST /api/shopify/orders   ← Shopify "Order creation" webhook. Every order
@@ -19,9 +19,19 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/api/offer") return offer(env);
     if (url.pathname === "/api/shopify/orders" && request.method === "POST") return orderHook(request, env);
-    return env.ASSETS.fetch(request);
+    return withCache(url, await env.ASSETS.fetch(request));
   },
 };
+
+// Same rules as _headers, set here too so they hold whichever way the site is deployed:
+// fingerprinted files cache for a year, pages always revalidate.
+function withCache(url, res) {
+  if (res.status !== 200) return res;
+  const r = new Response(res.body, res);
+  if (url.pathname.startsWith("/assets/")) r.headers.set("Cache-Control", "public, max-age=31536000, immutable");
+  else if ((r.headers.get("content-type") || "").includes("text/html")) r.headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+  return r;
+}
 
 function settings(env) {
   return {

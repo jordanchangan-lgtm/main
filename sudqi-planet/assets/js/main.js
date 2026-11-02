@@ -93,13 +93,16 @@
 
   /* ---------- Header: announcement rotates, bar hides on scroll down ---------- */
   var top = document.querySelector(".top");
-  var ann = document.querySelectorAll("[data-announce] p");
-  if (ann.length > 1 && !reduce) {
-    var ai = 0;
+  // Messages are read on every turn, so one added later (the offer) joins in.
+  if (!reduce) {
     setInterval(function () {
+      var ann = document.querySelectorAll("[data-announce] p");
+      if (ann.length < 2) return;
+      var ai = 0;
+      ann.forEach(function (p, i) { if (p.classList.contains("on")) ai = i; });
       var cur = ann[ai]; cur.classList.remove("on"); cur.classList.add("out");
       setTimeout(function () { cur.classList.remove("out"); }, 700);
-      ai = (ai + 1) % ann.length; ann[ai].classList.add("on");
+      ann[(ai + 1) % ann.length].classList.add("on");
     }, 4200);
   }
   var lastY = 0;

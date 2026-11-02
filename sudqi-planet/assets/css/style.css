@@ -692,3 +692,77 @@ body.menu-open .top .head { color: var(--on-dark) !important; background: var(--
   .clip { clip-path: none; }
   .st-text .bw { opacity: 1; }
 }
+
+/* ==========================================================================
+   Opening offer — pop-up (once per visitor) + announcement message
+   ========================================================================== */
+.announce p.ann-offer b { font-weight: 500; letter-spacing: 0.08em; color: var(--champagne); }
+.announce p.ann-offer em { font-style: normal; color: var(--on-dark-soft); margin-inline-start: 8px; }
+.announce p.ann-offer em::before { content: "·"; margin-inline-end: 8px; }
+
+.offer {
+  position: fixed; z-index: 90; inset-inline-end: clamp(16px, 2.4vw, 32px); bottom: clamp(16px, 2.4vw, 32px);
+  width: min(400px, calc(100vw - 32px)); padding: 30px 28px 28px; border-radius: var(--r);
+  background: var(--night); color: var(--on-dark); overflow: hidden; isolation: isolate;
+  box-shadow: 0 30px 80px -20px rgba(23, 21, 28, 0.45);
+  clip-path: inset(100% 0 0 0 round var(--r)); visibility: hidden;
+  transition: clip-path 0.9s var(--ease-io), visibility 0s 0.9s;
+}
+.offer.in { clip-path: inset(0 0 0 0 round var(--r)); visibility: visible; transition: clip-path 0.9s var(--ease-io), visibility 0s; }
+.offer.out { clip-path: inset(0 0 100% 0 round var(--r)); visibility: visible; transition: clip-path 0.65s var(--ease-io); }
+.offer > *:not(.offer-ring):not(.offer-x) { opacity: 0; transform: translateY(18px); filter: blur(6px); transition: opacity 0.7s, transform 0.9s var(--ease), filter 0.8s; }
+.offer.in > * { opacity: 1 !important; transform: none !important; filter: none !important; }
+.offer.in > :nth-child(3) { transition-delay: 0.35s; }
+.offer.in > :nth-child(4) { transition-delay: 0.45s; }
+.offer.in > :nth-child(5) { transition-delay: 0.55s; }
+.offer.in > :nth-child(6) { transition-delay: 0.65s; }
+.offer.in > :nth-child(7) { transition-delay: 0.72s; }
+.offer.in > :nth-child(8) { transition-delay: 0.78s; }
+.offer.in > :nth-child(9) { transition-delay: 0.85s; }
+
+/* orbit motif: a champagne ring with a moon travelling on it */
+.offer-ring { position: absolute; z-index: -1; width: 260px; height: 260px; inset-inline-end: -110px; top: -120px; border: 1px solid rgba(217, 196, 161, 0.35); border-radius: 50%; animation: offer-spin 18s linear infinite; }
+.offer-ring i { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--champagne); left: 50%; bottom: -5px; transform: translateX(-50%); }
+@keyframes offer-spin { to { transform: rotate(360deg); } }
+
+.offer-x { position: absolute; top: 14px; inset-inline-end: 14px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: var(--on-dark); transition: background 0.3s; }
+.offer-x:hover { background: rgba(243, 240, 242, 0.1); }
+.offer-x span { position: absolute; width: 14px; height: 1.5px; background: currentColor; transform: rotate(45deg); }
+.offer-x span + span { transform: rotate(-45deg); }
+
+.offer-kick { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.06em; color: var(--champagne); text-transform: uppercase; }
+.offer-kick::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--champagne); }
+.offer-title { margin-top: 12px; font-size: clamp(28px, 3vw, 34px); line-height: 1.15; font-weight: 400; letter-spacing: -0.01em; padding-inline-end: 24px; }
+.offer-line { margin-top: 10px; font-size: 14px; color: var(--on-dark-soft); line-height: 1.7; }
+/* the code sits on the brand's story template: pearl ground, repeating lilac planets */
+.offer-code {
+  margin-top: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 72px; padding: 10px 10px 10px 22px; padding-inline: 22px 10px; border-radius: 16px;
+  background: var(--pearl) url("../img/symbol-tile.svg") 0 0 / 96px 78px repeat; color: var(--night);
+  animation: offer-drift 40s linear infinite;
+}
+@keyframes offer-drift { to { background-position: 96px 78px; } }
+.offer-code b { font-family: var(--font-en); font-weight: 500; font-size: 20px; letter-spacing: 0.18em; color: var(--night); background: var(--pearl); padding: 4px 10px; margin-inline-start: -10px; border-radius: 8px; }
+.offer-code button { height: 46px; padding-inline: 22px; border-radius: 999px; background: var(--night); color: var(--pearl); font-size: 14px; transition: background 0.3s; }
+.offer-code button:hover, .offer-code button.ok { background: var(--plum); }
+.offer-dots { margin-top: 18px; display: grid; grid-template-columns: repeat(20, 1fr); gap: 4px; }
+.offer-dots[hidden] { display: none; }
+.offer-dots i { height: 4px; border-radius: 2px; background: var(--champagne); transition: background 0.6s; }
+.offer-dots i.used { background: rgba(243, 240, 242, 0.16); }
+.offer-left { margin-top: 8px; font-size: 13px; color: var(--on-dark-soft); }
+.offer-left[hidden] { display: none; }
+.offer-go { margin-top: 20px; width: 100%; background: var(--pearl); color: var(--night); }
+.offer-go .arr { background: var(--night); color: var(--pearl); }
+.offer-go:hover { background: var(--champagne); }
+
+@media (max-width: 760px) {
+  .offer { inset-inline: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); width: auto; padding: 26px 22px 22px; }
+  .offer-title { font-size: 25px; }
+  .offer-line { font-size: 13px; }
+  .offer-ring { width: 200px; height: 200px; inset-inline-end: -120px; top: -130px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .offer, .offer.in, .offer.out { transition: none; }
+  .offer > * { transition: none !important; filter: none !important; transform: none !important; }
+  .offer-ring, .offer-code { animation: none; }
+}

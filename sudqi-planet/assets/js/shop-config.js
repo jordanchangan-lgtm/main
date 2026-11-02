@@ -16,6 +16,16 @@ window.SP_SHOP = {
   apiVersion: "2025-01",
   currency: { ar: "د.أ", en: "JOD" },
 
+  /* ---------- Opening offer ----------
+     Shown once to each visitor in a pop-up, and in the announcement bar.
+     "Order now" adds the code to the Shopify checkout automatically.
+     Shopify itself enforces the limit: create the code in Shopify admin →
+     Discounts (Percentage 20, "Limit number of times this discount can be used
+     in total" = 20, "Limit to one use per customer").
+     The live "codes left" count comes from /api/offer (tools/_worker.js);
+     without it the offer shows without a count. Set active: false to end it. */
+  offer: { active: true, code: "PLANET20", percent: 20, limit: 20 },
+
   /* ---------- Hero ----------
      The landing hero is assets/img/ai/hero.jpg (desktop) and hero-m.jpg (phones);
      replace those two files to change it. */

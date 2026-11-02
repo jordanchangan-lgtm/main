@@ -125,6 +125,8 @@ def main():
     # 4b. Worker: answers /api/* (live offer count) and passes everything else to the
     #     static files. (No _routes.json: dashboard uploads don't accept it.)
     shutil.copy(os.path.join(ROOT, "tools", "_worker.js"), os.path.join(DIST, "_worker.js"))
+    # When deployed as a Worker with wrangler (wrangler.jsonc), keep the script out of the public files.
+    open(os.path.join(DIST, ".assetsignore"), "w").write("_worker.js\n.assetsignore\n")
 
     # 5. Check nothing still points at an old (pre-build) file name.
     missing = []

@@ -1,0 +1,16 @@
+// Cloudflare Worker that serves sudqiplanet.com: the static site in dist/ plus /api/* (offer counter).
+// Deploy: python3 tools/build.py && npx wrangler deploy
+{
+  "name": "odd-salad-a514",
+  "main": "tools/_worker.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // only /api/* runs the script; pages and images are served directly with _headers caching
+    "run_worker_first": ["/api/*"]
+  },
+  "kv_namespaces": [
+    { "binding": "OFFER", "id": "KV_NAMESPACE_ID" }
+  ]
+}

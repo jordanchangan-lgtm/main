@@ -68,7 +68,7 @@ window.SP_SHOP = {
       },
       key: { ar: "ماء نخالة الأرز · حمض الهيالورونيك · بانثينول · سنتيلا", en: "Rice bran water · Hyaluronic acid · Panthenol · Centella" },
       how: { ar: "رجّيه جيدًا، ثم رشّيه على بُعد ٢٠ سم من الوجه.", en: "Shake well, then spray about 20 cm from the face." },
-      price: 14,
+      price: 13,
       image: "assets/img/ai/mist.jpg",
       hover: "assets/img/ai/mist-2.jpg",
       gallery: ["assets/img/ai/mist.jpg", "assets/img/ai/mist-2.jpg", "assets/img/ai/mist-3.jpg"]
@@ -87,7 +87,7 @@ window.SP_SHOP = {
       },
       key: { ar: "نياسيناميد · بانثينول · خلاصة التين الشوكي", en: "Niacinamide · Panthenol · Prickly pear extract" },
       how: { ar: "ضعي كمية صغيرة كآخر خطوة في روتين الصباح والمساء.", en: "Apply a small amount as the last step, morning and night." },
-      price: 10,
+      price: 9,
       image: "assets/img/ai/cream.jpg",
       hover: "assets/img/ai/cream-2.jpg",
       gallery: ["assets/img/ai/cream.jpg", "assets/img/ai/cream-2.jpg", "assets/img/ai/cream-3.jpg"]
@@ -125,7 +125,7 @@ window.SP_SHOP = {
       },
       key: { ar: "ماء البرقوق الأخضر · خلاصة الماش", en: "Green plum water · Mung bean extract" },
       how: { ar: "دلّكي كمية صغيرة مع الماء على بشرة مبلّلة، ثم اشطفي.", en: "Lather a small amount with water on damp skin, then rinse." },
-      price: 12,
+      price: 11,
       image: "assets/img/ai/cleanser.jpg",
       hover: "assets/img/ai/cleanser-2.jpg",
       gallery: ["assets/img/ai/cleanser.jpg", "assets/img/ai/cleanser-2.jpg", "assets/img/ai/cleanser-3.jpg"]
@@ -143,7 +143,7 @@ window.SP_SHOP = {
       },
       key: { ar: "زبدة الشيا · فيتامين E · حمض الهيالورونيك", en: "Shea butter · Vitamin E · Hyaluronic acid" },
       how: { ar: "ضعيه على بشرة نظيفة بعد الاستحمام. للجسم فقط.", en: "Smooth over clean skin after a shower. For body only." },
-      price: 9,
+      price: 8,
       image: "assets/img/ai/butter.jpg",
       hover: "assets/img/ai/butter-2.jpg",
       gallery: ["assets/img/ai/butter.jpg", "assets/img/ai/butter-2.jpg", "assets/img/ai/butter-3.jpg"]
@@ -161,7 +161,7 @@ window.SP_SHOP = {
       desc: { ar: "غسول البرقوق الأخضر لتنظيف لطيف، وواقي الشمس بالأرز والبروبيوتيك لحماية يومية بلا أثر أبيض. الخطوتان اللتان لا يستغني عنهما أي روتين.", en: "The Green Plum Cleanser for a gentle wash and Relief Sun: Rice + Probiotics for everyday protection with no white cast: the two steps every routine needs." },
       key: { ar: "Beauty of Joseon · قطعتان", en: "Beauty of Joseon · 2 pieces" },
       how: { ar: "الغسول صباحًا ومساءً، والواقي كآخر خطوة كل صباح.", en: "Cleanser morning and night; sunscreen as the last morning step." },
-      price: 23, compareAt: 26,
+      price: 22, compareAt: 26,
       image: "assets/img/ai/bundle-1.jpg",
       hover: "assets/img/ai/sun.jpg",
       gallery: ["assets/img/ai/bundle-1.jpg", "assets/img/ai/sun.jpg", "assets/img/ai/cleanser.jpg"]
@@ -177,7 +177,7 @@ window.SP_SHOP = {
       desc: { ar: "بخاخ الكريم ٣٤٥ لترطيب وتهدئة البشرة في أي وقت، مع واقي الشمس بالأرز والبروبيوتيك لحمايتها كل صباح.", en: "The 345 Relief Cream Mist to hydrate and calm skin at any time, with Relief Sun: Rice + Probiotics to protect it every morning." },
       key: { ar: "Dr. Althea · Beauty of Joseon · قطعتان", en: "Dr. Althea · Beauty of Joseon · 2 pieces" },
       how: { ar: "رشّي البخاخ متى احتجتِ، وضعي الواقي كل صباح.", en: "Mist whenever skin needs it; sunscreen every morning." },
-      price: 23, compareAt: 28,
+      price: 22, compareAt: 28,
       image: "assets/img/ai/bundle-3.jpg",
       hover: "assets/img/ai/mist.jpg",
       gallery: ["assets/img/ai/bundle-3.jpg", "assets/img/ai/mist.jpg", "assets/img/ai/sun.jpg"]
@@ -193,7 +193,7 @@ window.SP_SHOP = {
       desc: { ar: "نظّفي بغسول البرقوق الأخضر، وفتّحي ووحّدي لون البشرة بكريم ٣٤٥، واحميها بواقي الشمس بالأرز والبروبيوتيك.", en: "Cleanse with the Green Plum Cleanser, brighten and even out tone with the 345 Whitening Cream, and protect with Relief Sun: Rice + Probiotics." },
       key: { ar: "Dr. Althea · Beauty of Joseon · ٣ قطع", en: "Dr. Althea · Beauty of Joseon · 3 pieces" },
       how: { ar: "غسول، ثم كريم، ثم واقي الشمس صباحًا.", en: "Cleanser, then cream, then sunscreen in the morning." },
-      price: 30, compareAt: 35.5,
+      price: 29, compareAt: 35.5,
       image: "assets/img/ai/bundle-2.jpg",
       hover: "assets/img/ai/cream.jpg",
       gallery: ["assets/img/ai/bundle-2.jpg", "assets/img/ai/cleanser.jpg", "assets/img/ai/cream.jpg", "assets/img/ai/sun.jpg"]
@@ -210,7 +210,7 @@ window.SP_SHOP = {
       desc: { ar: "الروتين الكامل في علبة واحدة مغلّفة كهدية: غسول البرقوق الأخضر، وبخاخ الكريم ٣٤٥، وكريم ٣٤٥ للتفتيح، وواقي الشمس بالأرز والبروبيوتيك.", en: "The whole routine in one gift-wrapped box: the Green Plum Cleanser, the 345 Relief Cream Mist, the 345 Whitening Cream and Relief Sun: Rice + Probiotics." },
       key: { ar: "Dr. Althea · Beauty of Joseon · ٤ قطع", en: "Dr. Althea · Beauty of Joseon · 4 pieces" },
       how: { ar: "غسول، بخاخ، كريم، ثم واقي الشمس صباحًا.", en: "Cleanser, mist, cream, then sunscreen in the morning." },
-      price: 35, compareAt: 46,
+      price: 34, compareAt: 46,
       image: "assets/img/ai/bundle-4.jpg",
       hover: "assets/img/ai/hero.jpg",
       gallery: ["assets/img/ai/bundle-4.jpg", "assets/img/ai/mist.jpg", "assets/img/ai/cream.jpg", "assets/img/ai/cleanser.jpg", "assets/img/ai/sun.jpg"]

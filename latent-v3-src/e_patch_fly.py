@@ -33,7 +33,7 @@ SEC='''<section class="sec dark fy js-fy" id="chosen">
   </div>
 </section>
 '''%(len(ORDER),cards,names)
-i=s.index('<section class="sec light cf js-cf js-path ow-sec" id="ourwork">'); s=s[:i]+SEC+s[i:]
+i=s.index('<section class="sec light cf js-cf js-path ow-sec" id="ourwork">'); i=s.index('</section>',i)+10; s=s[:i]+'\n'+SEC+s[i:]   # right after the wall of the clients we worked for
 CSS='''
 /* the chosen art pieces: a flight through space */
 .fy{padding:0;background:#000;color:var(--ivory)}

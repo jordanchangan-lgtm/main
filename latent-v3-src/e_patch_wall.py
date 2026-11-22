@@ -11,7 +11,8 @@ ITEMS=[('AS Abaya','fashion','Fashion','Riyadh','https://asabaya.com',MK['abaya'
        ('Atelier Rebul','beauty','Beauty & care','Amman','https://www.atelierrebul.com.tr',MK['rebul'],''),
        ('Buraq Al Omur','trade','Trade & industry','Zarqa','https://buraqalomur.com',MK['buraq'],''),
        ('Rawabina Al Khadraa','green','Landscaping','Riyadh','https://rawabinaalkhadhraa.com',MK['rawabina'],' lw-ink'),
-       ('Cube Coffee House','food','Food & drink','Amman',None,MK['cube'],'')]
+       ('Cube Coffee House','food','Food & drink','Amman',None,MK['cube'],''),
+       ('One Point Solutions','build','BIM & construction','Riyadh','https://onepoint.com.sa',MK['onepoint'],'')]
 cats=[]; [cats.append((c,l)) for n,c,l,w,h,m,x in ITEMS if (c,l) not in cats]
 pills='      <button type="button" class="lw-f on js-lw-f" data-cat="all">All</button>\n'+''.join('      <button type="button" class="lw-f js-lw-f" data-cat="%s">%s</button>\n'%(c,l) for c,l in cats)
 cells=''
@@ -24,12 +25,10 @@ for k,(n,c,l,w,h,m,x) in enumerate(ITEMS):
       </%s>
 '''%(tag,c,k,attrs,m,n,(' class="lw-inkimg"' if x else ''),n,l,w,tag)
 WALL='''    <div class="lw js-lw">
-      <div class="lw-filters rv" style="--k:0">
-%s      </div>
       <div class="lw-grid js-lw-grid">
 %s      </div>
     </div>
-'''%(pills,cells)
+'''%(cells)
 i=s.index('<section class="sec light cf js-cf js-path ow-sec" id="ourwork">'); j=s.index('</section>',i); sec=s[i:j]
 a=sec.index('    <div class="pel-root js-pel">'); b=sec.rindex('    </div>\n  </div>\n')+len('    </div>\n')
 sec=sec[:a]+WALL+sec[b:]
@@ -38,7 +37,7 @@ sec=sec.replace('Things we made for ourselves and for clients, newest first. Ope
 s=s[:i]+sec+s[j:]
 CSS='''
 /* we worked for: the wall of marks */
-.lw{width:100%;margin-top:clamp(6px,1vh,12px)}
+.lw{width:100%;margin-top:clamp(10px,2vh,24px)}
 .lw-filters{display:flex;flex-wrap:wrap;gap:6px clamp(16px,2.2vw,30px);margin:0 0 clamp(14px,2.4vh,24px)}
 .lw-f{-webkit-appearance:none;appearance:none;background:none;border:0;padding:8px 0;margin:0;cursor:pointer;position:relative;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);transition:color .3s ease}
 .lw-f::after{content:'';position:absolute;left:0;right:0;bottom:4px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;transition:transform .45s cubic-bezier(.2,.8,.2,1)}

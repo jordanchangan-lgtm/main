@@ -19,7 +19,7 @@ for pi,(name,kind,meta) in enumerate(ORDER):
         # measured from their real heights, so no piece ever sits on another
         wide=w/h>=1.3; size=S*2.15 if wide else S; sizem=44 if wide else 30
         lane=(start+k)%3
-        cards+='      <figure class="fy-card js-fy-card js-film%s" data-i="%d" data-lane="%d" style="--w:%.1f;--wm:%d;--ar:%d/%d" data-title="%s" data-client="%s" data-note="%s" data-img="1"><img src="%s" alt="%s" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>\n'%(' fy-ph' if k>=5 else '',pi,lane,size,sizem,w,h,name,kind,'Piece %02d · %s'%(k+1,meta),path,name)
+        cards+='      <figure class="fy-card js-fy-card js-film%s" data-i="%d" data-lane="%d" style="--w:%.1f;--wm:%d;--ar:%d/%d" data-title="%s" data-client="%s" data-note="%s" data-img="1"><img src="%s" alt="%s" loading="lazy" decoding="async"><span class="play">[ Open ]</span></figure>\n'%(' fy-ph' if k>=5 else '',pi,lane,size,sizem,w,h,name,kind,'Piece %02d · %s'%(k+1,meta),path,'%s, %s, piece %02d of the work by Latent Studio'%(name,kind.lower(),k+1))
 SEC='''<section class="sec dark fy js-fy" id="chosen">
   <div class="fy-hold js-fy-hold" style="--n:%d">
     <div class="fy-stage">

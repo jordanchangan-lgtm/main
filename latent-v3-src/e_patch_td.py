@@ -16,4 +16,16 @@ def row(m):
     body=re.sub(r'(<img fetchpriority="low" src=")[^"]*(")', lambda k:k.group(1)+src+k.group(2), body)
     return '<div class="td-item js-td-item%s" data-i="%d">%s' % (m.group(3), i, body)
 s2,n=re.subn(r'<div class="td-item js-td-item( on)?" data-i="(\d)">(.*?)(?=<div class="td-item js-td-item|\n\s*</div>\s*\n\s*</div>)', lambda m: '<div class="td-item js-td-item%s" data-i="%s">%s' % (m.group(1) or '', m.group(2), re.sub(r'(<img fetchpriority="low" src=")[^"]*(")', lambda k:k.group(1)+PIC[int(m.group(2))][0]+k.group(2), re.sub(r'(<span class="td-thumb" style="--ar:)[^"]*(")', lambda k:k.group(1)+PIC[int(m.group(2))][1]+k.group(2), m.group(3)))), s, flags=re.S)
+import re as _re
+def _arn(m):
+    a,b=m.group(1).split('/'); return '--ar:%s;--arn:%.4f"'%(m.group(1), float(a)/float(b))
+s2=_re.sub(r'(?<=td-thumb" style=")--ar:(\d+/\d+)"', _arn, s2)
+if '/* list thumbs keep their ratio */' not in s2:
+    css='''
+/* the picture of the bright item sits under its description, whole, at its own ratio, on every screen */
+.td-thumb{display:none!important}
+@media(min-width:821px){.td-pv{display:block;grid-row:2;grid-column:1;margin-top:clamp(18px,3vh,32px);height:clamp(160px,34vh,360px);width:auto;max-width:100%;aspect-ratio:var(--ar,4/5);border-radius:6px;overflow:hidden;background:transparent;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .45s ease,transform .55s cubic-bezier(.2,.8,.2,1)}.td-pv.in{opacity:1;transform:none}.td-pv img{width:100%;height:100%;object-fit:contain;object-position:left center;display:block}}
+@media(max-width:820px){.td-pv{background:transparent}.td-pv img{object-fit:contain;object-position:left center}}
+'''
+    j=s2.rfind('</style>'); s2=s2[:j]+css+s2[j:]
 open(P,'w',encoding='utf-8').write(s2); print('td patched', n)

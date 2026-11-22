@@ -12,7 +12,7 @@ ITEMS=[('AS Abaya','fashion','Fashion','Riyadh','https://asabaya.com',MK['abaya'
        ('Buraq Al Omur','trade','Trade & industry','Zarqa','https://buraqalomur.com',MK['buraq'],''),
        ('Rawabina Al Khadraa','green','Landscaping','Riyadh','https://rawabinaalkhadhraa.com',MK['rawabina'],' lw-ink'),
        ('Cube Coffee House','food','Food & drink','Amman',None,MK['cube'],''),
-       ('One Point Solutions','build','BIM & construction','Riyadh','https://onepoint.com.sa',MK['onepoint'],'')]
+       ('OnePoint Solutions','marketing','Marketing agency','Edmonton','https://onepointsolution.ca',MK['onepoint'],'')]
 cats=[]; [cats.append((c,l)) for n,c,l,w,h,m,x in ITEMS if (c,l) not in cats]
 pills='      <button type="button" class="lw-f on js-lw-f" data-cat="all">All</button>\n'+''.join('      <button type="button" class="lw-f js-lw-f" data-cat="%s">%s</button>\n'%(c,l) for c,l in cats)
 cells=''
@@ -33,7 +33,7 @@ i=s.index('<section class="sec light cf js-cf js-path ow-sec" id="ourwork">'); j
 a=sec.index('    <div class="pel-root js-pel">'); b=sec.rindex('    </div>\n  </div>\n')+len('    </div>\n')
 sec=sec[:a]+WALL+sec[b:]
 sec=sec.replace('<h2 class="cf-h js-words">Our work.</h2>','<h2 class="cf-h js-words">We worked for.</h2>')
-sec=sec.replace('Things we made for ourselves and for clients, newest first. Open a row for the story and the link.','Brands in Jordan, Saudi Arabia and the Emirates that trust us with their identity, their feed and their site.')
+sec=sec.replace('Things we made for ourselves and for clients, newest first. Open a row for the story and the link.','Brands in Jordan, Saudi Arabia, the Emirates and Canada that trust us with their identity, their feed and their site.')
 s=s[:i]+sec+s[j:]
 CSS='''
 /* we worked for: the wall of marks */

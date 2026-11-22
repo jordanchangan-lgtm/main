@@ -9,6 +9,12 @@ for c in css: refs|=set(re.findall(r'media/(\d+-[0-9a-f]+\.(?:jpg|jpeg|png))', o
 done=0
 for f in sorted(refs):
     src=D+'media/'+f; w=f.rsplit('.',1)[0]+'.webp'; dst=D+'media/'+w
+    if os.path.exists(dst) and not os.path.exists(src):   # converted on an earlier run: point the page at it
+        s=s.replace('media/'+f,'media/'+w); done+=1
+        for c in css:
+            t=open(D+'media/'+c,encoding='utf-8').read()
+            if 'media/'+f in t: open(D+'media/'+c,'w',encoding='utf-8').write(t.replace('media/'+f,'media/'+w))
+        continue
     if not os.path.exists(src): continue
     im=Image.open(src)
     if f.endswith('.png') and im.mode in ('RGBA','LA','P'):

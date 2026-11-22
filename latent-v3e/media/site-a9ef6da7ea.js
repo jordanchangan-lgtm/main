@@ -1019,7 +1019,7 @@
         return;
       }
       var run = Math.max(1, g.run || 1), p = clamp01((window.scrollY - g.top) / run), n = g.items.length;
-      g.items.forEach(function(el, k){ el.classList.toggle("in", p >= .05 + .6 * (n > 1 ? k / (n - 1) : 0)); });
+      g.items.forEach(function(el, k){ el.classList.toggle("in", g === lks[0] || p >= .05 + .6 * (n > 1 ? k / (n - 1) : 0)); });
     });
   }
   if(lks.length){ lkMeasure(); window.addEventListener("resize", lkMeasure, { passive:true }); if(document.fonts && document.fonts.ready) document.fonts.ready.then(lkMeasure); }

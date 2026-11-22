@@ -13,4 +13,12 @@ for k,src,n in [('d_mp4',sys.argv[1],89),('d_jpg',sys.argv[2],88),('m_mp4',sys.a
     d=open(src,'rb').read(); name='%02d-%s.%s'%(n,hashlib.sha1(d).hexdigest()[:10],src.rsplit('.',1)[1]); open(M+name,'wb').write(d); new[k]='media/'+name
 for k in cur:
     if cur[k]!=new[k]: s=s.replace(cur[k],new[k])
+# the still under the film, as a real image: what the screen shows first, so the metric measures the picture and not
+# the paragraph that follows it. The film covers it the moment it plays.
+import re as _re
+s=_re.sub(r'<img class="pv-v pv-still-[dm]"[^>]*>\s*','',s)
+k=s.index('<video class="pv-v pv-d js-pv-v"')
+s=s[:k]+'<img class="pv-v pv-still-d" src="%s" alt="" fetchpriority="high" decoding="async" width="1920" height="1080">\n<img class="pv-v pv-still-m" src="%s" alt="" fetchpriority="high" decoding="async" width="1068" height="1920">\n'%(new['d_jpg'],new['m_jpg'])+s[k:]
+if '.pv-still-d{display:none}' not in s:
+    j=s.rfind('</style>'); s=s[:j]+'\n.pv-still-d{display:none}.pv-still-m{display:block}@media(min-width:821px){.pv-still-d{display:block}.pv-still-m{display:none}}\n'+s[j:]
 open(P,'w',encoding='utf-8').write(s); print(new)

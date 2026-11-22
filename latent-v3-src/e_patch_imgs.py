@@ -12,3 +12,9 @@ if 'html,body{overflow-x:clip}' not in s:
 s=open(P,encoding='utf-8').read()
 if '/* hero paragraph: capped stagger */' not in s:
     j=s.rfind('</style>'); s=s[:j]+'\n/* hero paragraph: capped stagger */\n.he-p{--d:.3s!important}\n.he-p .hm-in{transition-delay:calc(var(--d,0s) + min(calc(var(--w,0) * .04s), .5s))}\n'+s[j:]; open(P,'w',encoding='utf-8').write(s); print('hero stagger capped')
+
+# the hero is the first screen: its lines are in from the start, not from the first scroll or the fonts' arrival
+s=open(P,encoding='utf-8').read()
+a='el.classList.toggle("in", p >= .05 + .6 * (n > 1 ? k / (n - 1) : 0));'
+if a in s and 'g === lks[0] ||' not in s:
+    s=s.replace(a,'el.classList.toggle("in", g === lks[0] || p >= .05 + .6 * (n > 1 ? k / (n - 1) : 0));'); open(P,'w',encoding='utf-8').write(s); print('hero in from the start')

@@ -23,7 +23,7 @@ def small_img(f):
 def rep(m):
     p=m.group(2); f=os.path.join(D,p)
     if not os.path.exists(f): return m.group(0)
-    if f.endswith(('.jpg','.jpeg','.png')) and os.path.getsize(f)>IMGCAP: f=small_img(f)
+    if f.endswith(('.jpg','.jpeg','.png','.webp')) and os.path.getsize(f)>IMGCAP: f=small_img(f)
     if os.path.getsize(f)>CAP:
         if f.endswith('.mp4'): f=small_film(f)
         if os.path.getsize(f)>CAP: return m.group(0)

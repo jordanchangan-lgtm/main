@@ -7,3 +7,8 @@ open(P,'w',encoding='utf-8').write(s); print('imgs ok')
 s=open(P,encoding='utf-8').read()
 if 'html,body{overflow-x:clip}' not in s:
     j=s.rfind('</style>'); s=s[:j]+'\n@media(max-width:820px){.foot{font-size:11px}html,body{overflow-x:clip}}\n'+s[j:]; open(P,'w',encoding='utf-8').write(s); print('phone css ok')
+# the hero paragraph is the largest text on a phone: its words still rise one by one, but the stagger is capped so
+# the whole paragraph is on screen within about a second of the headline (the audit's LCP note)
+s=open(P,encoding='utf-8').read()
+if '/* hero paragraph: capped stagger */' not in s:
+    j=s.rfind('</style>'); s=s[:j]+'\n/* hero paragraph: capped stagger */\n.he-p{--d:.3s!important}\n.he-p .hm-in{transition-delay:calc(var(--d,0s) + min(calc(var(--w,0) * .04s), .5s))}\n'+s[j:]; open(P,'w',encoding='utf-8').write(s); print('hero stagger capped')

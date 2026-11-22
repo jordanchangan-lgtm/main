@@ -40,7 +40,7 @@ s=s[:b]+'\n'+LIST+s[b:]
 s=s.replace('<p class="cf-p js-words">Every package costs less than the same pieces bought one by one. Tell us what you are launching and the list is in your inbox the same day.</p>','<p class="cf-p js-words">Four packages, one price each. Tell us what you are launching and we answer the same day.</p>')
 CSS='''
 /* the packages, plainly */
-.pq-list{list-style:none;margin:clamp(6px,1vh,14px) 0 0;padding:0;width:100%;border-top:1px solid rgba(20,20,26,.14)}
+.pq-list{list-style:none;margin:clamp(6px,1vh,14px) 0 0;padding:0;width:100%;text-align:left;border-top:1px solid rgba(20,20,26,.14)}
 .pq-row{display:grid;grid-template-columns:3em minmax(0,.9fr) minmax(0,1.6fr) auto;gap:clamp(12px,2vw,36px);align-items:baseline;padding:clamp(14px,2.2vh,22px) 0;border-bottom:1px solid rgba(20,20,26,.14)}
 .pq-n{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:11px;letter-spacing:.16em;color:var(--marrow)}
 .pq-name{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(20px,2.2vw,32px);line-height:1;letter-spacing:-.03em;text-transform:uppercase;color:var(--ink)}
@@ -48,7 +48,7 @@ CSS='''
 .pq-desc small{display:block;margin-top:6px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;line-height:1.6;color:var(--stone)}
 .pq-price{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);white-space:nowrap}
 .pq-price b{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(20px,2.2vw,32px);letter-spacing:-.03em;color:var(--ink);margin-right:6px}
-.pq-note{margin:14px 0 clamp(28px,6vh,56px);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
+.pq-note{margin:14px 0 clamp(28px,6vh,56px);text-align:left;width:100%;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
 @media(max-width:820px){.pq-row{grid-template-columns:2.2em minmax(0,1fr) auto;gap:8px 12px}.pq-desc{grid-column:2/4;font-size:15px}.pq-price{justify-self:end}}
 '''
 j=s.rfind('</style>'); s=s[:j]+CSS+s[j:]

@@ -55,7 +55,16 @@ for i in range(0,len(parts),2):
     parts[i]=re.sub(r'>([^<>]+)<', tx, parts[i])
     parts[i]=re.sub(r'((?:placeholder|aria-label|title)=")([^"]*)(")', lambda m: m.group(1)+html.escape(ATTR.get(html.unescape(m.group(2)),html.unescape(m.group(2))),quote=True)+m.group(3), parts[i])
 body=''.join(parts)
-# the Arabic block from the English page is now redundant on this page: it stays, in Arabic it reads the same
+# gap lines: the mechanics stay left-to-right (left word slides in from the left, right word from the right), so the
+# first Arabic word goes into the right slot and the second into the left slot, and the line reads right to left
+def swap_gp(m):
+    row=m.group(0)
+    l=re.search(r'(<span class="gp-l">)(.*?)(</span>)', row, re.S); r=re.search(r'(<span class="gp-r">)(.*?)(</span>)', row, re.S)
+    if not l or not r: return row
+    row=row[:l.start()]+l.group(1)+r.group(2)+l.group(3)+row[l.end():]
+    r=re.search(r'(<span class="gp-r">)(.*?)(</span>)', row, re.S)
+    return row[:r.start()]+r.group(1)+l.group(2)+r.group(3)+row[r.end():]
+body=re.sub(r'<div class="gp-row">.*?</div>', swap_gp, body, flags=re.S)
 a=head+body
 # ---- Arabic type and right-to-left rules
 CSS='''
@@ -84,6 +93,10 @@ html[dir=rtl] .lw-cell, html[dir=rtl] .lw-mk img{align-items:flex-end;object-pos
 html[dir=rtl] .pq-list, html[dir=rtl] .pq-note, html[dir=rtl] .fq-in, html[dir=rtl] .ow-in, html[dir=rtl] .lw{text-align:right}
 html[dir=rtl] .bar-lang{font-family:"IBM Plex Mono",monospace!important}
 html[dir=rtl] .ar-block{display:none}
+html[dir=rtl] .gp-row{direction:ltr}
+html[dir=rtl] .gp-l,html[dir=rtl] .gp-r{direction:rtl;unicode-bidi:isolate;padding:0 .08em}
+html[dir=rtl] .ty2-c + .ty2-c{margin-inline-start:.22em}
+@media(max-width:820px){html[dir=rtl] .sk-li{font-size:11px;line-height:1.38;gap:5px}html[dir=rtl] .sk-list{gap:7px}html[dir=rtl] .sk-li b{padding-top:.15em}}
 '''
 a=a.replace('</head>','<style>'+CSS+'</style>\n</head>',1)
 open(D+'ar/index.html','w',encoding='utf-8').write(a); print('arabic page', len(a)//1024,'KB')

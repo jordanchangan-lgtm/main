@@ -6,7 +6,7 @@ open(P,'w',encoding='utf-8').write(s); print('imgs ok')
 # phone: the footer line at 11px, and no horizontal page scroll while gap lines slide in from the sides
 s=open(P,encoding='utf-8').read()
 if 'html,body{overflow-x:clip}' not in s:
-    j=s.rfind('</style>'); s=s[:j]+'\n@media(max-width:820px){.foot{font-size:11px}html,body{overflow-x:clip}}\n'+s[j:]; open(P,'w',encoding='utf-8').write(s); print('phone css ok')
+    j=s.rfind('</style>'); s=s[:j]+'\n@media(max-width:820px){.foot{font-size:11px}html,body{overflow-x:clip}.sk-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1.55fr)}.sk-list{gap:7px}.sk-li{line-height:1.36}}\n'+s[j:]; open(P,'w',encoding='utf-8').write(s); print('phone css ok')
 # the hero paragraph is the largest text on a phone: its words still rise one by one, but the stagger is capped so
 # the whole paragraph is on screen within about a second of the headline (the audit's LCP note)
 s=open(P,encoding='utf-8').read()

@@ -28,4 +28,9 @@ if '/* list thumbs keep their ratio */' not in s2:
 @media(max-width:820px){.td-pv{background:transparent}.td-pv img{object-fit:contain;object-position:left center}}
 '''
     j=s2.rfind('</style>'); s2=s2[:j]+css+s2[j:]
-open(P,'w',encoding='utf-8').write(s2); print('td patched', n)
+s2=s2.replace('<span class="td-name">','<h3 class="td-name">').replace('</span><span class="td-kind">','</h3><span class="td-kind">')
+import re as _r2
+s2=_r2.sub(r'<h3 class="td-name">([^<]*)</span>', r'<h3 class="td-name">\1</h3>', s2)
+if 'h3.td-name{' not in s2:
+    j=s2.rfind('</style>'); s2=s2[:j]+'\nh3.td-name{margin:0;font-weight:500}\n'+s2[j:]
+open(P,'w',encoding='utf-8').write(s2); print('td patched', n, 'headings', s2.count('<h3 class="td-name">'))

@@ -63,4 +63,49 @@ LD={"@context":"https://schema.org","@type":"ProfessionalService","@id":SITE+"/#
  "hasOfferCatalog":{"@type":"OfferCatalog","name":"What we make","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":n}} for n in ["Posts","Carousels","Reels","Campaigns","Brand identities","Websites","Portfolios","AI visuals and films"]]},
  "makesOffer":[{"@type":"Offer","name":name+" package","description":desc,"price":price,"priceCurrency":"JOD","availability":"https://schema.org/InStock","url":SITE+"/#prices"} for n,name,price,desc,feat in PACKS]}
 s=s.replace('</head>','<script type="application/ld+json">'+json.dumps(LD,ensure_ascii=False,separators=(',',':'))+'</script>\n</head>',1)
+# the H1 says what and where; the slogan stays the big line above it
+s=s.replace('<h1 class="he-head js-pu2" style="--d:.25s">Not your<br>average AI.</h1>','<p class="he-head js-pu2" style="--d:.25s">Not your<br>average AI.</p>')
+s=s.replace('<p class="he-sub js-pu2" style="--d:.45s">Directed<br>like film.</p>','<h1 class="he-sub js-pu2" style="--d:.45s">AI brand visuals, films and websites,<br>directed like film. Amman.</h1>')
+# every package in the four other currencies people search in, approximately
+FX={'200':('1,060','1,035','282','394'),'275':('1,455','1,425','388','542'),'375':('1,985','1,945','529','739'),'425':('2,250','2,200','599','837')}
+for jd,(sar,aed,usd,cad) in FX.items():
+    s=s.replace('<span class="pq-price"><b>%s</b> JD</span></li>'%jd,'<span class="pq-price"><b>%s</b> JD<small class="pq-fx">approx. SAR %s · AED %s · USD %s · CAD %s</small></span></li>'%(jd,sar,aed,usd,cad))
+s=s.replace('.pq-note{margin:14px 0 clamp(28px,6vh,56px);','.pq-fx{display:block;margin-top:6px;font-size:11px;letter-spacing:.08em;white-space:normal;max-width:16ch;line-height:1.5;color:var(--stone)}\n.pq-note{margin:14px 0 clamp(28px,6vh,56px);')
+# the studio's other profiles, and the site itself
+s=s.replace('"sameAs":["https://instagram.com/latentstudio.jo"]','"sameAs":["https://instagram.com/latentstudio.jo","https://www.linkedin.com/company/140003931/"]')
+WS={"@context":"https://schema.org","@type":"WebSite","@id":SITE+"/#site","url":SITE+"/","name":"Latent Studio","inLanguage":["en","ar"],"publisher":{"@id":SITE+"/#studio"}}
+s=s.replace('</head>','<script type="application/ld+json">'+json.dumps(WS,separators=(',',':'))+'</script>\n</head>',1)
 open(P,'w',encoding='utf-8').write(s); print('seo patched', len(s)//1024,'KB')
+open('/home/user/main/latent-v3e/llms.txt','w',encoding='utf-8').write("""# Latent Studio
+
+> An AI-native creative studio in Amman, Jordan. Brand visuals, films and websites made with generative tools in the hands of art directors, directed like film. Working in English and Arabic for brands in Jordan, Saudi Arabia, the UAE, the Gulf, the United States and Canada.
+
+- Site: https://latent-studio-ai.com/ (English), https://latent-studio-ai.com/ar/ (Arabic)
+- Email: latentstudio.jo@gmail.com
+- Phone and WhatsApp: +962 7 998 77131
+- Instagram: https://instagram.com/latentstudio.jo
+
+## What we make
+Posts, carousels, reels, campaigns, brand identities, websites, portfolios, and AI visuals and films for anything a camera cannot reach.
+
+## How we work
+Brief, direct, generate, select, craft, deliver. Light, lens, angle and story are decided before a frame is generated. Only frames that look shot leave the studio. Days, not weeks. No set, no crew, no reshoot day.
+
+## Packages (per package, Jordanian dinars, exclusive of tax)
+- Starter: 200 JD (approx. SAR 1,060 · AED 1,035 · USD 282 · CAD 394). 4 carousel posts, 3 reels of 15 s, showcase videos, 1080p.
+- Essential: 275 JD (approx. SAR 1,455 · AED 1,425 · USD 388 · CAD 542). 5 carousel posts, 4 reels of 15 s, showcase videos, 1080p.
+- Growth: 375 JD (approx. SAR 1,985 · AED 1,945 · USD 529 · CAD 739). 5 carousel posts, 3 cinematic reels of 15 s, a scripted film with edits and SFX, 1080p.
+- Signature: 425 JD (approx. SAR 2,250 · AED 2,200 · USD 599 · CAD 837). 6 carousel posts, 3 cinematic reels of 20 s, a scripted film with edits and SFX, 1080p.
+One-off pieces, brand identities and websites are quoted the same day.
+
+## Clients
+AS Abaya (Riyadh), Sudqi Planet (Amman), Atelier Rebul (Amman), Buraq Al Omur (Zarqa), Rawabina Al Khadraa (Riyadh), Cube Coffee House (Amman), OnePoint Solutions (Edmonton).
+
+## Questions
+- Cost: four packages from 200 JD; anything else quoted the same day.
+- Turnaround: posts and carousels in days; a reel in about a week; an identity or a website in two to four weeks.
+- Realism: every frame is directed before it is generated; skin keeps its texture, products keep their exact shape, label and colour.
+- Files: the client owns every delivered image and film, source files on request.
+- Arabic: yes, copy and design in Arabic and English.
+- Revisions: two rounds in every package.
+""")

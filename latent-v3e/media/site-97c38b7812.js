@@ -1573,7 +1573,7 @@ function __ch(t){ return document.documentElement.lang === "ar" ? (t.match(/\S+\
 (function(){
   var sec = document.querySelector(".js-gp"); if(!sec) return;
   var lines = [].slice.call(sec.querySelectorAll(".js-gp-line")), reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, ticking = false;
-  var L = lines.map(function(l){ return { el: l, a: l.querySelector(".gp-l"), b: l.querySelector(".gp-r"), t: l.querySelector(".gp-tile"), row: l.querySelector(".gp-row"), img: l.querySelector(".gp-tile img") }; });
+  var L = lines.map(function(l){ return { el: l, a: l.querySelector(".gp-l"), b: l.querySelector(".gp-r"), t: l.querySelector(".gp-tile"), row: l.querySelector(".gp-row"), img: l.querySelector(".gp-tile img"), v: l.querySelector(".gp-tile video") }; });
   var ease = function(t){ return t * t * (3 - 2 * t); }, clamp = function(v){ return Math.min(1, Math.max(0, v)); };
   function frame(){
     ticking = false; if(reduce) return; var vh = window.innerHeight, vw = window.innerWidth;
@@ -1582,7 +1582,8 @@ function __ch(t){ return document.documentElement.lang === "ar" ? (t.match(/\S+\
       if(r.bottom < -10 || r.top > vh + 10) return;
       var a = clamp((vh * .92 - r.top) / (vh * .5)), e = clamp((vh * .42 - r.bottom) / (vh * .3));
       var inR = ease(clamp(a / .55)), inL = ease(clamp((a - .12) / .55)), open = ease(clamp((a - .5) / .5)) * (1 - ease(e));
-      var fs = parseFloat(getComputedStyle(o.row).fontSize), tileW = fs * 2.0 * open;
+      var fs = parseFloat(getComputedStyle(o.row).fontSize), ar = parseFloat(o.t.getAttribute("data-ar")) || 0, tileW = (ar ? o.t.getBoundingClientRect().height * ar : fs * 2.0) * open;
+      if(o.v && !o.v.getAttribute("src") && r.top < vh * 1.6){ o.v.setAttribute("src", o.v.getAttribute("data-src")); o.v.load(); o.v.play().catch(function(){}); }
       o.b.style.transform = "translate3d(" + ((1 - inR) * vw * .7).toFixed(1) + "px,0,0)";
       o.a.style.transform = "translate3d(" + (-(1 - inL) * vw * .7).toFixed(1) + "px,0,0)";
       o.t.style.width = tileW.toFixed(1) + "px";

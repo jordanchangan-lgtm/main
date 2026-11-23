@@ -98,6 +98,9 @@ html[dir=rtl] .ar-block{display:none}
 html[dir=rtl] .gp-row{direction:ltr}
 html[dir=rtl] .gp-l,html[dir=rtl] .gp-r{direction:rtl;unicode-bidi:isolate;padding:0 .08em}
 html[dir=rtl] .ty2-c + .ty2-c{margin-inline-start:.22em}
+html[dir=rtl] .ty2-stack{line-height:1.6}
+html[dir=rtl] .pgw{padding:.14em .04em .26em!important;margin:-.14em -.04em -.26em!important}
+html[dir=rtl] .pq-name .pgw,html[dir=rtl] .fq-q .pgw{padding:.16em .04em .3em!important;margin:-.16em -.04em -.3em!important}
 @media(max-width:820px){html[dir=rtl] .sk-li{font-size:11px;line-height:1.38;gap:5px}html[dir=rtl] .sk-list{gap:7px}html[dir=rtl] .sk-li b{padding-top:.15em}}
 '''
 a=a.replace('</head>','<style>'+CSS+'</style>\n</head>',1)

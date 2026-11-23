@@ -21,6 +21,8 @@ css='''
 .method .c-bl{max-width:none}
 .method .c-br{text-align:start}
 .method-scrim{background:linear-gradient(180deg,rgba(20,20,26,.8),rgba(20,20,26,.64) 50%,rgba(20,20,26,.82))}
+.td-pv{width:100%;max-width:100%;height:auto;max-height:140px;aspect-ratio:var(--ar,4/5)}
+.td-pv img{object-fit:contain;object-position:top}
 }
 '''
 j=s.rfind('</style>'); s=s[:j]+css+s[j:]

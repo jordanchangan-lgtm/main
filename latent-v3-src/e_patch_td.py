@@ -7,7 +7,7 @@ PIC={0:('media/62-5c561bec59.jpg','1334/750'),   # Posts: Sudqi Planet feed post
      3:('media/21-7ad07c68ee.jpg','4/5'),        # Campaigns: AS Abaya
      4:('media/59-1fab143a8d.jpg','1334/750'),   # Brand identities: Sudqi Planet mark
      5:('media/81-53406dc03e.jpg','16/10'),      # Websites: Sudqi Planet store
-     6:('media/86-610f686580.jpg','16/10'),      # Portfolios: Rawabina Al Khadraa
+     6:('media/103-aa004961ba.webp','16/10'),      # Portfolios: Laith Al Qasem portfolio, laith-portfolio.latent-studio-ai.com
      7:('media/68-15e32d59bb.jpg','1334/750')}   # Anything AI: Sudqi Planet product shoot
 if 'media/62-5c561bec59.jpg" alt="" loading="lazy" decoding="async"></span>' in s and s.count('td-thumb" style="--ar:1334/750"')>=3: print('already patched'); sys.exit(0)
 def row(m):

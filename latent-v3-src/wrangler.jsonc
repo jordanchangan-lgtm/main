@@ -1,0 +1,7 @@
+{
+  // Deploys the E site as an assets-only Worker on the service that owns latent-studio-ai.com.
+  // Run from the repo root:  CLOUDFLARE_API_TOKEN=... CLOUDFLARE_ACCOUNT_ID=... npx -y wrangler@4 deploy -c latent-v3-src/wrangler.jsonc
+  "name": "latentstudioaicom",
+  "compatibility_date": "2026-11-23",
+  "assets": { "directory": "../latent-v3e" }
+}

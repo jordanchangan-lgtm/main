@@ -1632,8 +1632,10 @@ function __ch(t){ return document.documentElement.lang === "ar" ? (t.match(/\S+\
 (function(){
   var box = document.querySelector(".js-cb-box"); if(!box) return;
   var idea = box.querySelector(".js-cb-idea"), base = box.getAttribute("action");
-  function go(){ var t = (idea && idea.value || "").trim(); var href = base + (t ? encodeURIComponent(t + "\n\n") : "") + encodeURIComponent("Please send me the price list.\n\nThanks,\n"); window.location.href = href; }
-  box.addEventListener("submit", function(e){ e.preventDefault(); go(); });
+  function go(){ var kind = box.querySelector(".js-cb-kind"), t = (idea && idea.value || "").trim(); if(kind && kind.value) t = "Launching: " + kind.value + "\n" + t; var href = base + (t ? encodeURIComponent(t + "\n\n") : "") + encodeURIComponent("Please send me the price list.\n\nThanks,\n"); window.location.href = href; }
+  box.addEventListener("submit", function(e){ e.preventDefault(); go(); }); var plus = box.querySelector(".js-cb-plus"), send = box.querySelector(".js-cb-btn");
+  if(plus && idea) plus.addEventListener("click", function(){ var v = idea.value; idea.value = (v && !/\n$/.test(v) ? v + "\n" : v) + "Reference: "; idea.focus(); idea.setSelectionRange(idea.value.length, idea.value.length); if(send) send.classList.add("on"); });
+  if(idea && send){ var wake = function(){ send.classList.toggle("on", !!idea.value.trim()); }; idea.addEventListener("input", wake); wake(); }
   if(idea) idea.addEventListener("keydown", function(e){ if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); go(); } });
 })();
 /* the wall: the meta column follows whichever row sits mid-screen; a hovered tile prints its name at the top right;
@@ -1933,3 +1935,20 @@ function __ch(t){ return document.documentElement.lang === "ar" ? (t.match(/\S+\
   }); });
 })();
 
+
+;
+
+/* the language gate */
+(function(){
+  var g = document.querySelector(".js-lg"), h = document.documentElement; if(!g) return;
+  if(!h.classList.contains("lg-on")){ g.remove(); return; }
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ g.classList.add("in"); }); });
+  g.addEventListener("click", function(e){
+    var a = e.target.closest("a[data-l]"); if(!a) return; var l = a.getAttribute("data-l");
+    try{ localStorage.setItem("ls-lang", l); }catch(x){}
+    if(l !== (h.lang || "en").slice(0,2)) return;
+    e.preventDefault(); g.classList.add("out"); h.classList.remove("lg-on");
+    [].forEach.call(document.querySelectorAll("#top .in"), function(el){ el.classList.remove("in"); void el.offsetWidth; el.classList.add("in"); });
+    setTimeout(function(){ g.remove(); }, 750);
+  });
+})();

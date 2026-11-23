@@ -92,6 +92,8 @@ html[dir=rtl] .fy-kick, html[dir=rtl] .fy-hint{left:auto;right:var(--gut)}
 html[dir=rtl] .lw-cell, html[dir=rtl] .lw-mk img{align-items:flex-end;object-position:right center}
 html[dir=rtl] .pq-list, html[dir=rtl] .pq-note, html[dir=rtl] .fq-in, html[dir=rtl] .ow-in, html[dir=rtl] .lw{text-align:right}
 html[dir=rtl] .bar-lang{font-family:"IBM Plex Mono",monospace!important}
+html[dir=rtl] .lg-a[lang=en],html[dir=rtl] .lg-k>span:first-child,html[dir=rtl] .lg-f span{font-family:"IBM Plex Mono",monospace!important;text-transform:uppercase!important;letter-spacing:.14em!important}
+html[dir=rtl] .lg-a[lang=en]{letter-spacing:.04em!important}
 html[dir=rtl] .ar-block{display:none}
 html[dir=rtl] .gp-row{direction:ltr}
 html[dir=rtl] .gp-l,html[dir=rtl] .gp-r{direction:rtl;unicode-bidi:isolate;padding:0 .08em}

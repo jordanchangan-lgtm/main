@@ -23,6 +23,19 @@ css='''
 .method-scrim{background:linear-gradient(180deg,rgba(20,20,26,.8),rgba(20,20,26,.64) 50%,rgba(20,20,26,.82))}
 .td-pv{width:100%;max-width:100%;height:auto;max-height:140px;aspect-ratio:var(--ar,4/5)}
 .sk-steps{margin-right:0;margin-inline-end:calc(-1 * var(--gut) + 6px)}
+/* what we make on a phone: one column with air; the line, the picture, then the list */
+.td-grid{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto;gap:20px!important;align-content:center;align-items:start;padding:76px var(--gut) 36px!important}
+.td-quote{order:1!important;justify-self:stretch!important;max-width:none!important;grid-template-rows:auto auto;row-gap:14px}
+.td-q{font-size:14px;line-height:1.5;max-width:34ch}
+.td-pv{margin-top:0;height:120px;max-height:none;width:auto;max-width:100%}
+.td-list{order:2!important;justify-self:stretch!important;align-items:flex-start}
+.td-items{align-items:flex-start;gap:3px}
+.td-item{width:max-content;max-width:100%}
+.td-name{font-size:clamp(17px,5vw,20px);line-height:1.25;white-space:normal}
+}
+@media(max-width:820px) and (max-height:620px){
+.td-grid{align-content:start;padding-top:112px!important}
+.td-pv{height:100px}
 .td-pv img{object-fit:contain;object-position:top}
 }
 '''

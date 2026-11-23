@@ -26,18 +26,19 @@ i=s.index('<style>'); s=s[:i]+'<style>'+FACES+s[i+7:]
 # mono labels at AA contrast on white and ivory
 s=s.replace('--stone:#7C776E;','--stone:#6F6A62;')
 # the four packages, as real HTML under the price line
-PACKS=[('01','Starter','200','A first month of showing up, done properly.','4 carousel posts · 3 reels of 15 s · showcase videos · 1080p'),
-       ('02','Essential','275','The steady feed: more posts, more reels.','5 carousel posts · 4 reels of 15 s · showcase videos · 1080p'),
-       ('03','Growth','375','Scripted film enters the picture.','5 carousel posts · 3 cinematic reels of 15 s · scripted film with edits and SFX · 1080p'),
-       ('04','Signature','425','The full campaign, longer and louder.','6 carousel posts · 3 cinematic reels of 20 s · scripted film with edits and SFX · 1080p')]
-rows=''.join('      <li class="pq-row rv" style="--k:%d"><span class="pq-n">%s</span><span class="pq-name">%s</span><span class="pq-desc">%s<small>%s</small></span><span class="pq-price"><b>%s</b> JD</span></li>\n'%(k,n,name,desc,feat,price) for k,(n,name,price,desc,feat) in enumerate(PACKS))
+PACKS=[('01','Starter','200','A first month of showing up, done properly.','4 carousel posts · 3 cinematic reels of 15 s · showcase videos · 1080p'),
+       ('02','Essential','275','The steady feed: more posts, more reels.','5 carousel posts · 5 cinematic reels of 15 s · showcase videos · 1080p'),
+       ('03','Growth','375','Scripted film enters the picture.','5 carousel posts · 7 cinematic reels of 15 s · scripted film with edits and SFX · 1080p'),
+       ('04','Signature','425','The full campaign, longer and louder.','6 carousel posts · 10 cinematic reels of 20 s · scripted film with edits and SFX · 1080p'),
+       ('05','Custom','','Built around what you need, nothing you do not.','any mix of posts · carousels · cinematic reels · films · identity · website · quoted the same day')]
+rows=''.join('      <li class="pq-row rv" style="--k:%d"><span class="pq-n">%s</span><span class="pq-name">%s</span><span class="pq-desc">%s<small>%s</small></span><span class="pq-price">%s</span></li>\n'%(k,n,name,desc,feat,('<b>%s</b> JD'%price if price else '<b class="pq-ask">On request</b>')) for k,(n,name,price,desc,feat) in enumerate(PACKS))
 LIST='''    <ul class="pq-list" aria-label="Packages and prices">
 %s    </ul>
-    <p class="pq-note rv" style="--k:4">Per package, in Jordanian dinars. Every package costs less than the same pieces bought one by one.</p>
+    <p class="pq-note rv" style="--k:5">Per package, in Jordanian dinars. Every package costs less than the same pieces bought one by one. The custom one is priced the same day you write.</p>
 '''%rows
 a=s.index('id="prices"'); b=s.index('<p class="cf-p js-words">',a); b=s.index('</p>',b)+4
 s=s[:b]+'\n'+LIST+s[b:]
-s=s.replace('<p class="cf-p js-words">Every package costs less than the same pieces bought one by one. Tell us what you are launching and the list is in your inbox the same day.</p>','<p class="cf-p js-words">Four packages, one price each. Tell us what you are launching and we answer the same day.</p>')
+s=s.replace('<p class="cf-p js-words">Every package costs less than the same pieces bought one by one. Tell us what you are launching and the list is in your inbox the same day.</p>','<p class="cf-p js-words">Four packages, one price each, and a custom one built around you. Tell us what you are launching and we answer the same day.</p>')
 CSS='''
 /* the packages, plainly */
 .pq-list{list-style:none;margin:clamp(6px,1vh,14px) 0 0;padding:0;width:100%;text-align:left;border-top:1px solid rgba(20,20,26,.14)}
@@ -48,7 +49,7 @@ CSS='''
 .pq-desc small{display:block;margin-top:6px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;line-height:1.6;color:var(--stone)}
 .pq-price{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);white-space:nowrap}
 .pq-price b{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(20px,2.2vw,32px);letter-spacing:-.03em;color:var(--ink);margin-right:6px}
-.pq-note{margin:14px 0 clamp(28px,6vh,56px);text-align:left;width:100%;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
+.pq-ask{font-size:clamp(14px,1.2vw,18px)!important;letter-spacing:.06em!important;text-transform:uppercase;font-family:"IBM Plex Mono",monospace!important;font-weight:500!important}\n.pq-note{margin:14px 0 clamp(28px,6vh,56px);text-align:left;width:100%;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
 @media(max-width:820px){.pq-row{grid-template-columns:2.2em minmax(0,1fr) auto;gap:8px 12px}.pq-desc{grid-column:2/4;font-size:15px}.pq-price{justify-self:end}}
 '''
 j=s.rfind('</style>'); s=s[:j]+CSS+s[j:]
@@ -61,7 +62,7 @@ LD={"@context":"https://schema.org","@type":"ProfessionalService","@id":SITE+"/#
  "sameAs":["https://instagram.com/latentstudio.jo"],
  "knowsLanguage":["en","ar"],
  "hasOfferCatalog":{"@type":"OfferCatalog","name":"What we make","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":n}} for n in ["Posts","Carousels","Reels","Campaigns","Brand identities","Websites","Portfolios","AI visuals and films"]]},
- "makesOffer":[{"@type":"Offer","name":name+" package","description":desc,"price":price,"priceCurrency":"JOD","availability":"https://schema.org/InStock","url":SITE+"/#prices"} for n,name,price,desc,feat in PACKS]}
+ "makesOffer":[({"@type":"Offer","name":name+" package","description":desc,"price":price,"priceCurrency":"JOD","availability":"https://schema.org/InStock","url":SITE+"/#prices"} if price else {"@type":"Offer","name":name+" package","description":desc,"priceCurrency":"JOD","availability":"https://schema.org/InStock","url":SITE+"/#prices"}) for n,name,price,desc,feat in PACKS]}
 s=s.replace('</head>','<script type="application/ld+json">'+json.dumps(LD,ensure_ascii=False,separators=(',',':'))+'</script>\n</head>',1)
 # the H1 says what and where; the slogan stays the big line above it
 s=s.replace('<h1 class="he-head js-pu2" style="--d:.25s">Not your<br>average AI.</h1>','<p class="he-head js-pu2" style="--d:.25s">Not your<br>average AI.</p>')
@@ -70,7 +71,7 @@ s=s.replace('<p class="he-sub js-pu2" style="--d:.45s">Directed<br>like film.</p
 FX={'200':('1,060','1,035','282','394'),'275':('1,455','1,425','388','542'),'375':('1,985','1,945','529','739'),'425':('2,250','2,200','599','837')}
 for jd,(sar,aed,usd,cad) in FX.items():
     s=s.replace('<span class="pq-price"><b>%s</b> JD</span></li>'%jd,'<span class="pq-price"><b>%s</b> JD<small class="pq-fx">approx. SAR %s · AED %s · USD %s · CAD %s</small></span></li>'%(jd,sar,aed,usd,cad))
-s=s.replace('.pq-note{margin:14px 0 clamp(28px,6vh,56px);','.he-sub{max-width:min(28vw,23ch);font-size:clamp(12px,1.05vw,15px);line-height:1.35}\n@media(max-width:820px){.he-sub{max-width:58%;font-size:12px;top:38%}}\n.pq-fx{display:block;margin-top:6px;font-size:11px;letter-spacing:.08em;white-space:normal;max-width:16ch;line-height:1.5;color:var(--stone)}\n.pq-note{margin:14px 0 clamp(28px,6vh,56px);')
+s=s.replace('.pq-ask{font-size:clamp(14px,1.2vw,18px)!important;letter-spacing:.06em!important;text-transform:uppercase;font-family:"IBM Plex Mono",monospace!important;font-weight:500!important}\n.pq-note{margin:14px 0 clamp(28px,6vh,56px);','.he-sub{max-width:min(28vw,23ch);font-size:clamp(12px,1.05vw,15px);line-height:1.35}\n@media(max-width:820px){.he-sub{max-width:58%;font-size:12px;top:38%}}\n.pq-fx{display:block;margin-top:6px;font-size:11px;letter-spacing:.08em;white-space:normal;max-width:16ch;line-height:1.5;color:var(--stone)}\n.pq-ask{font-size:clamp(14px,1.2vw,18px)!important;letter-spacing:.06em!important;text-transform:uppercase;font-family:"IBM Plex Mono",monospace!important;font-weight:500!important}\n.pq-note{margin:14px 0 clamp(28px,6vh,56px);')
 # the studio's other profiles, and the site itself
 s=s.replace('"sameAs":["https://instagram.com/latentstudio.jo"]','"sameAs":["https://instagram.com/latentstudio.jo","https://www.linkedin.com/company/140003931/"]')
 WS={"@context":"https://schema.org","@type":"WebSite","@id":SITE+"/#site","url":SITE+"/","name":"Latent Studio","inLanguage":["en","ar"],"publisher":{"@id":SITE+"/#studio"}}
@@ -89,13 +90,14 @@ open('/home/user/main/latent-v3e/llms.txt','w',encoding='utf-8').write("""# Late
 Posts, carousels, reels, campaigns, brand identities, websites, portfolios, and AI visuals and films for anything a camera cannot reach.
 
 ## How we work
-Brief, direct, generate, select, craft, deliver. Light, lens, angle and story are decided before a frame is generated. Only frames that look shot leave the studio. Days, not weeks. No set, no crew, no reshoot day.
+Brief, direct, generate, select, craft, deliver. Light, lens, angle and story are decided before a frame is generated. Only frames that look shot leave the studio. Everything in days, not weeks. No set, no crew, no reshoot day.
 
 ## Packages (per package, Jordanian dinars, exclusive of tax)
-- Starter: 200 JD (approx. SAR 1,060 · AED 1,035 · USD 282 · CAD 394). 4 carousel posts, 3 reels of 15 s, showcase videos, 1080p.
-- Essential: 275 JD (approx. SAR 1,455 · AED 1,425 · USD 388 · CAD 542). 5 carousel posts, 4 reels of 15 s, showcase videos, 1080p.
-- Growth: 375 JD (approx. SAR 1,985 · AED 1,945 · USD 529 · CAD 739). 5 carousel posts, 3 cinematic reels of 15 s, a scripted film with edits and SFX, 1080p.
-- Signature: 425 JD (approx. SAR 2,250 · AED 2,200 · USD 599 · CAD 837). 6 carousel posts, 3 cinematic reels of 20 s, a scripted film with edits and SFX, 1080p.
+- Starter: 200 JD (approx. SAR 1,060 · AED 1,035 · USD 282 · CAD 394). 4 carousel posts, 3 cinematic reels of 15 s, showcase videos, 1080p.
+- Essential: 275 JD (approx. SAR 1,455 · AED 1,425 · USD 388 · CAD 542). 5 carousel posts, 5 cinematic reels of 15 s, showcase videos, 1080p.
+- Growth: 375 JD (approx. SAR 1,985 · AED 1,945 · USD 529 · CAD 739). 5 carousel posts, 7 cinematic reels of 15 s, a scripted film with edits and SFX, 1080p.
+- Signature: 425 JD (approx. SAR 2,250 · AED 2,200 · USD 599 · CAD 837). 6 carousel posts, 10 cinematic reels of 20 s, a scripted film with edits and SFX, 1080p.
+- Custom: any mix of posts, carousels, cinematic reels, films, identity and website, built around what you need and quoted the same day.
 One-off pieces, brand identities and websites are quoted the same day.
 
 ## Clients
@@ -103,7 +105,7 @@ AS Abaya (Riyadh), Sudqi Planet (Amman), Atelier Rebul (Amman), Buraq Al Omur (Z
 
 ## Questions
 - Cost: four packages from 200 JD; anything else quoted the same day.
-- Turnaround: posts and carousels in days; a reel in about a week; an identity or a website in two to four weeks.
+- Turnaround: everything in days, not weeks: posts, carousels and reels in a few days, a brand identity or a website in days too, scoped on the first call.
 - Realism: every frame is directed before it is generated; skin keeps its texture, products keep their exact shape, label and colour.
 - Files: the client owns every delivered image and film, source files on request.
 - Arabic: yes, copy and design in Arabic and English.

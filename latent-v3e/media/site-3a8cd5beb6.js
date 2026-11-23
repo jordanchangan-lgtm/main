@@ -235,13 +235,13 @@ function __ch(t){ return document.documentElement.lang === "ar" ? (t.match(/\S+\
      closes; the counter reads n / N. ---- */
   var PACKS = [
     { n:"01", name:"Starter", price:"200", desc:"A first month of showing up, done properly.",
-      feats:["4 carousel posts","3 reels · 15s each","Showcase videos, one to two shots","1080p HD delivery"] },
+      feats:["4 carousel posts","3 cinematic reels · 15s each","Showcase videos, one to two shots","1080p HD delivery"] },
     { n:"02", name:"Essential", price:"275", desc:"The steady feed: more posts, more reels.",
-      feats:["5 carousel posts","4 reels · 15s each","Showcase videos, one to two shots","1080p HD delivery"] },
+      feats:["5 carousel posts","5 cinematic reels · 15s each","Showcase videos, one to two shots","1080p HD delivery"] },
     { n:"03", name:"Growth", price:"375", desc:"Scripted film enters the picture.", pop:true,
-      feats:["5 carousel posts","3 cinematic reels · 15s each","Full scripted video, cinematics, edits + SFX","2–7 shots per reel","1080p HD delivery"] },
+      feats:["5 carousel posts","7 cinematic reels · 15s each","Full scripted video, cinematics, edits + SFX","2–7 shots per reel","1080p HD delivery"] },
     { n:"04", name:"Signature", price:"425", desc:"The full campaign, longer and louder.",
-      feats:["6 carousel posts","3 cinematic reels · 20s each","Full scripted video, cinematics, edits + SFX","2–7 shots per reel","1080p HD delivery"] }
+      feats:["6 carousel posts","10 cinematic reels · 20s each","Full scripted video, cinematics, edits + SFX","2–7 shots per reel","1080p HD delivery"] }
   ];
   var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
   var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';

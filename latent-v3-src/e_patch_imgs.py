@@ -30,3 +30,9 @@ s=open(P,encoding='utf-8').read()
 a='var WORDS = ["posts","carousels","reels","campaigns","identities","websites","portfolios"];'
 if a in s:
     s=s.replace(a,'var WORDS = document.documentElement.lang === "ar" ? ["منشورات","كاروسيل","ريلز","حملات","هويات","مواقع","بورتفوليو"] : ["posts","carousels","reels","campaigns","identities","websites","portfolios"];'); open(P,'w',encoding='utf-8').write(s); print('word cycle in Arabic')
+
+# the packages inside the drivers say the same as the page
+s=open(P,encoding='utf-8').read()
+for a,b in [('feats:["4 carousel posts","3 reels · 15s each"','feats:["4 carousel posts","3 cinematic reels · 15s each"'),('feats:["5 carousel posts","4 reels · 15s each"','feats:["5 carousel posts","5 cinematic reels · 15s each"'),('feats:["5 carousel posts","3 cinematic reels · 15s each"','feats:["5 carousel posts","7 cinematic reels · 15s each"'),('feats:["6 carousel posts","3 cinematic reels · 20s each"','feats:["6 carousel posts","10 cinematic reels · 20s each"')]:
+    s=s.replace(a,b)
+open(P,'w',encoding='utf-8').write(s)

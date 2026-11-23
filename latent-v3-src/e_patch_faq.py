@@ -5,7 +5,7 @@ import sys, json
 P='/home/user/main/latent-v3e/index.html'; s=open(P,encoding='utf-8').read()
 if 'id="faq"' in s: print('already patched'); sys.exit(0)
 QA=[('How much does it cost?','Four packages: Starter 200 JD, Essential 275 JD, Growth 375 JD and Signature 425 JD per package, exclusive of tax. A one-off piece, a brand identity or a website is quoted the same day you write to us.'),
-    ('How long does it take?','Posts and carousels in days, not weeks. A reel in about a week. A brand identity or a website in two to four weeks, depending on the scope.'),
+    ('How long does it take?','Everything is done in days, not weeks. Posts, carousels and reels in a few days; a brand identity or a website in days too, with the exact count agreed on the first call.'),
     ('Will it look real?','Yes. Every frame is directed before it is generated: light, lens, angle and story are decisions, not prompts. Skin keeps its texture, products keep their exact shape, label and colour, and nothing is smoothed or airbrushed.'),
     ('Who owns the files?','You do. Every delivered image and film is yours to use anywhere, for as long as you like, with the source files on request.'),
     ('Do you work in Arabic?','Yes. We write and design in Arabic and English, for Jordan, Saudi Arabia, the Emirates and the Gulf, with the right typography for each.'),

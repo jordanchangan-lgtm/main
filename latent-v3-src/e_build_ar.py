@@ -99,6 +99,10 @@ html[dir=rtl] .gp-row{direction:ltr}
 html[dir=rtl] .gp-l,html[dir=rtl] .gp-r{direction:rtl;unicode-bidi:isolate;padding:0 .08em}
 html[dir=rtl] .ty2-c + .ty2-c{margin-inline-start:.22em}
 html[dir=rtl] .ty2-stack{line-height:1.6}
+@keyframes mqrtl{to{transform:translateX(50%)}}
+html[dir=rtl] .mq-track{animation-name:mqrtl}
+html[dir=rtl] .mq-corner{margin:0 var(--gut) clamp(24px,4vh,40px) 0}
+html[dir=rtl] .mq-run{padding-right:0;padding-left:.35em}
 html[dir=rtl] .hm{padding:.3em .05em .34em!important;margin:-.3em -.05em -.34em!important}
 html[dir=rtl] .hm-in{transform:translateY(170%)}
 html[dir=rtl] .hero .js-pu2.out .hm-in{transform:translateY(-170%)}

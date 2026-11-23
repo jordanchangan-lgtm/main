@@ -1,4 +1,5 @@
 
+function __ch(t){ return document.documentElement.lang === "ar" ? (t.match(/\S+\s*/g) || []) : t.split(""); }
 /* Safari will not play a film carried as a data: URI (it wants byte ranges), so
    every film is handed over as a blob: URL held in memory before the page script runs */
 (function(){
@@ -44,7 +45,7 @@
   /* ---- hero word cycle (21st AnimatedTextCycle) ---- */
   var cyc = document.getElementById("cyc");
   if(cyc){
-    var WORDS = ["posts","carousels","reels","campaigns","identities","websites","portfolios"];
+    var WORDS = document.documentElement.lang === "ar" ? ["منشورات","كاروسيل","ريلز","حملات","هويات","مواقع","بورتفوليو"] : ["posts","carousels","reels","campaigns","identities","websites","portfolios"];
     var ci = 0;
 
     // measure every word once so the container can spring between widths
@@ -887,7 +888,7 @@
     var w = document.createElement("span"), n = 0; w.className = "w";
     txt.split(" ").forEach(function(word, wi, arr){
       var ws = document.createElement("span"); ws.className = "wd";
-      word.split("").forEach(function(ch){ var c = document.createElement("span"); c.className = "c"; c.textContent = ch; c.style.setProperty("--d", (n++ * .018).toFixed(3) + "s"); ws.appendChild(c); });
+      __ch(word).forEach(function(ch){ var c = document.createElement("span"); c.className = "c"; c.textContent = ch; c.style.setProperty("--d", (n++ * .018).toFixed(3) + "s"); ws.appendChild(c); });
       w.appendChild(ws); if(wi < arr.length - 1) w.appendChild(document.createTextNode(" "));
     });
     wkTitle.appendChild(w);
@@ -983,7 +984,7 @@
   var prisma = document.querySelector(".js-prisma");
   if(prisma){
     var pw = prisma.querySelector(".pw"), pvs = [].slice.call(prisma.querySelectorAll(".js-pv-v"));
-    if(pw){ var txt = pw.textContent; pw.textContent = ""; txt.split("").forEach(function(ch, k){ var c = document.createElement("span"); c.className = "c"; c.textContent = ch; c.style.setProperty("--d", (k * .08 + .12).toFixed(2) + "s"); pw.appendChild(c); }); }
+    if(pw){ var txt = pw.textContent; pw.textContent = ""; __ch(txt).forEach(function(ch, k){ var c = document.createElement("span"); c.className = "c"; c.textContent = ch; c.style.setProperty("--d", (k * .08 + .12).toFixed(2) + "s"); pw.appendChild(c); }); }
     function pvRun(){ pvs.forEach(function(v){ if(getComputedStyle(v).display === "none"){ v.pause(); } else vPlay(v); }); }
     pvRun(); window.addEventListener("resize", pvRun, { passive:true });
     if("IntersectionObserver" in window) new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) pvRun(); else pvs.forEach(function(v){ v.pause(); }); }); }, { threshold:.05 }).observe(prisma);
@@ -1298,7 +1299,7 @@
   var words = [].slice.call(document.querySelectorAll(".ty2-stack > span")); if(!words.length) return;
   words.forEach(function(w){
     var txt = w.textContent, inner = document.createElement("span"); inner.className = "ty2-in"; w.textContent = ""; w.setAttribute("aria-label", txt);
-    var chars = txt.split("").map(function(ch, i){
+    var chars = __ch(txt).map(function(ch, i){
       var c = document.createElement("span"); c.className = "ty2-c"; var a = document.createElement("span"), b = document.createElement("span");
       a.textContent = ch === " " ? "\u00a0" : ch; b.textContent = a.textContent; b.setAttribute("aria-hidden", "true"); c.appendChild(a); c.appendChild(b); inner.appendChild(c);
       c.addEventListener("mouseenter", function(){ chars.forEach(function(x, k){ x.style.setProperty("--d", Math.abs(k - i)); }); w.classList.add("roll"); });

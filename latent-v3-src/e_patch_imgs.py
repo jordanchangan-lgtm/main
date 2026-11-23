@@ -18,3 +18,15 @@ s=open(P,encoding='utf-8').read()
 a='el.classList.toggle("in", p >= .05 + .6 * (n > 1 ? k / (n - 1) : 0));'
 if a in s and 'g === lks[0] ||' not in s:
     s=s.replace(a,'el.classList.toggle("in", g === lks[0] || p >= .05 + .6 * (n > 1 ? k / (n - 1) : 0));'); open(P,'w',encoding='utf-8').write(s); print('hero in from the start')
+# effects that split text into letters split Arabic into words instead, so the letters stay joined
+s=open(P,encoding='utf-8').read()
+if '__ch(' not in s:
+    import re as _r
+    s=_r.sub(r'(\w+)\.split\(""\)', r'__ch(\1)', s)
+    s=s.replace('<script>\n/* Safari will not play', '<script>\nfunction __ch(t){ return document.documentElement.lang === "ar" ? (t.match(/\\S+\\s*/g) || []) : t.split(""); }\n/* Safari will not play',1)
+    open(P,'w',encoding='utf-8').write(s); print('letter splits are word splits in Arabic', s.count('__ch('))
+# the word cycle in Arabic
+s=open(P,encoding='utf-8').read()
+a='var WORDS = ["posts","carousels","reels","campaigns","identities","websites","portfolios"];'
+if a in s:
+    s=s.replace(a,'var WORDS = document.documentElement.lang === "ar" ? ["منشورات","كاروسيل","ريلز","حملات","هويات","مواقع","بورتفوليو"] : ["posts","carousels","reels","campaigns","identities","websites","portfolios"];'); open(P,'w',encoding='utf-8').write(s); print('word cycle in Arabic')

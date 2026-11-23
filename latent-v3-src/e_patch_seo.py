@@ -70,7 +70,7 @@ s=s.replace('<p class="he-sub js-pu2" style="--d:.45s">Directed<br>like film.</p
 FX={'200':('1,060','1,035','282','394'),'275':('1,455','1,425','388','542'),'375':('1,985','1,945','529','739'),'425':('2,250','2,200','599','837')}
 for jd,(sar,aed,usd,cad) in FX.items():
     s=s.replace('<span class="pq-price"><b>%s</b> JD</span></li>'%jd,'<span class="pq-price"><b>%s</b> JD<small class="pq-fx">approx. SAR %s · AED %s · USD %s · CAD %s</small></span></li>'%(jd,sar,aed,usd,cad))
-s=s.replace('.pq-note{margin:14px 0 clamp(28px,6vh,56px);','.pq-fx{display:block;margin-top:6px;font-size:11px;letter-spacing:.08em;white-space:normal;max-width:16ch;line-height:1.5;color:var(--stone)}\n.pq-note{margin:14px 0 clamp(28px,6vh,56px);')
+s=s.replace('.pq-note{margin:14px 0 clamp(28px,6vh,56px);','.he-sub{max-width:min(28vw,23ch);font-size:clamp(12px,1.05vw,15px);line-height:1.35}\n@media(max-width:820px){.he-sub{max-width:58%;font-size:12px;top:38%}}\n.pq-fx{display:block;margin-top:6px;font-size:11px;letter-spacing:.08em;white-space:normal;max-width:16ch;line-height:1.5;color:var(--stone)}\n.pq-note{margin:14px 0 clamp(28px,6vh,56px);')
 # the studio's other profiles, and the site itself
 s=s.replace('"sameAs":["https://instagram.com/latentstudio.jo"]','"sameAs":["https://instagram.com/latentstudio.jo","https://www.linkedin.com/company/140003931/"]')
 WS={"@context":"https://schema.org","@type":"WebSite","@id":SITE+"/#site","url":SITE+"/","name":"Latent Studio","inLanguage":["en","ar"],"publisher":{"@id":SITE+"/#studio"}}

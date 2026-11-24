@@ -99,6 +99,8 @@ html[dir=rtl] .gp-row{direction:ltr}
 html[dir=rtl] .gp-l,html[dir=rtl] .gp-r{direction:rtl;unicode-bidi:isolate;padding:0 .08em}
 html[dir=rtl] .ty2-c + .ty2-c{margin-inline-start:.22em}
 html[dir=rtl] .ty2-stack{line-height:1.6}
+html[dir=rtl] .cb-sel{line-height:1.6}
+html[dir=rtl] .cb-sel select{line-height:1.6;padding:5px 10px 5px 26px;height:auto}
 @keyframes mqrtl{to{transform:translateX(50%)}}
 html[dir=rtl] .mq-track{animation-name:mqrtl}
 html[dir=rtl] .mq-corner{margin:0 var(--gut) clamp(24px,4vh,40px) 0}

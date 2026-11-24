@@ -52,6 +52,6 @@ for p in [DST+'/index.html',DST+'/ar/index.html']+[DST+'/media/'+f for f in os.l
     used|=set(re.findall(r'fonts/([A-Za-z0-9_.-]+\.woff2)', open(p,encoding='utf-8').read()))
 removed=0
 for f in os.listdir(DST+'/media'):
-    if f=='fonts' or f=='og.jpg': continue
+    if f in ('fonts','svc','og.jpg') or os.path.isdir(DST+'/media/'+f): continue
     if f not in used: os.remove(DST+'/media/'+f); removed+=1
 print('pruned', removed, 'files; folder', sum(os.path.getsize(os.path.join(r,f)) for r,_,fs in os.walk(DST) for f in fs)//1024//1024, 'MB')

@@ -17,4 +17,68 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://latent-studio-ai.com/"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://latent-studio-ai.com/ar/"/>
   </url>
+  <url>
+    <loc>https://latent-studio-ai.com/ai-video-production/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://latent-studio-ai.com/ai-video-production/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://latent-studio-ai.com/ar/ai-video-production/"/>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://latent-studio-ai.com/ar/ai-video-production/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://latent-studio-ai.com/ai-video-production/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://latent-studio-ai.com/ar/ai-video-production/"/>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://latent-studio-ai.com/ai-product-photography/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://latent-studio-ai.com/ai-product-photography/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://latent-studio-ai.com/ar/ai-product-photography/"/>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://latent-studio-ai.com/ar/ai-product-photography/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://latent-studio-ai.com/ai-product-photography/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://latent-studio-ai.com/ar/ai-product-photography/"/>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://latent-studio-ai.com/brand-identity/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://latent-studio-ai.com/brand-identity/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://latent-studio-ai.com/ar/brand-identity/"/>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://latent-studio-ai.com/ar/brand-identity/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://latent-studio-ai.com/brand-identity/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://latent-studio-ai.com/ar/brand-identity/"/>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://latent-studio-ai.com/website-design/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://latent-studio-ai.com/website-design/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://latent-studio-ai.com/ar/website-design/"/>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://latent-studio-ai.com/ar/website-design/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://latent-studio-ai.com/website-design/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://latent-studio-ai.com/ar/website-design/"/>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

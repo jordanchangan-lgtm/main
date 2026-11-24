@@ -8,6 +8,6 @@ for f in os.listdir(M):
 refs=set(re.findall(r'media/([^"\')\s?#]+)', text)); keep={'og.jpg'}
 gone=0
 for f in sorted(os.listdir(M)):
-    if f=='fonts' or f in keep or f in refs or f.startswith('site-'): continue
+    if f=='fonts' or f=='svc' or os.path.isdir(M+f) or f in keep or f in refs or f.startswith('site-'): continue
     os.remove(M+f); gone+=1
 print('pruned', gone, 'files; media now', sum(os.path.getsize(M+f) for f in os.listdir(M) if os.path.isfile(M+f))//1024//1024, 'MB +', len(os.listdir(M+'fonts')), 'fonts')

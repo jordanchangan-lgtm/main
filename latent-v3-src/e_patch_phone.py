@@ -7,6 +7,10 @@ if 'e_patch_phone' in s: print('phone already'); raise SystemExit
 import re
 m=re.search(r'<div class="foot js-foot"[^>]*>.*?</div>\n?', s, re.S); foot=m.group(0); s=s[:m.start()]+s[m.end():]
 k=s.rfind('<script'); s=s[:k]+foot+s[k:]
+# with reduced motion on, the bar used to read the page geometry before it was measured; it now waits a frame
+old='if(reduce){ barTick(); window.addEventListener("scroll", barTick, { passive:true }); }'
+new='if(reduce){ window.addEventListener("scroll", barTick, { passive:true }); requestAnimationFrame(barTick); }'
+assert old in s, 'barTick reduce line'; s=s.replace(old,new,1)
 css='''
 /* e_patch_phone */
 @media(max-width:820px){

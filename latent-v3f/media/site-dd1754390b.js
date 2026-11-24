@@ -818,7 +818,7 @@ function __ch(t){ return document.documentElement.lang === "ar" ? (t.match(/\S+\
 
   }
 
-  if(reduce){ barTick(); window.addEventListener("scroll", barTick, { passive:true }); }
+  if(reduce){ window.addEventListener("scroll", barTick, { passive:true }); requestAnimationFrame(barTick); }
 
   function clamp01(n){ return n < 0 ? 0 : (n > 1 ? 1 : n); }
 

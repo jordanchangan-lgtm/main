@@ -7,9 +7,9 @@ P='/home/user/main/latent-v3e/index.html'; s=open(P,encoding='utf-8').read()
 if 'rel="canonical"' in s: print('already patched'); sys.exit(0)
 SITE='https://latent-studio-ai.com'
 # title and description
-s=re.sub(r'<title>.*?</title>','<title>Latent Studio — AI brand visuals, films and websites · Amman, Jordan</title>',s,count=1,flags=re.S)
+s=re.sub(r'<title>.*?</title>','<title>Latent Studio — AI brand visuals, films and websites · Amman</title>',s,count=1,flags=re.S)
 s=s.replace('<meta name="description" content="Latent Studio, Amman. Posts, carousels, reels, campaigns, brand identities, websites and portfolios — made with AI, directed like film. Prices for 2026 inside.">',
- '<meta name="description" content="Latent Studio, Amman: AI posts, carousels, reels, campaigns, brand identities, websites and portfolios for brands in Jordan, Saudi Arabia, the UAE, the US and Canada. Directed like film. Packages from 200 JD.">')
+ '<meta name="description" content="Latent Studio, Amman: AI posts, reels, campaigns, brand identities and websites for brands in Jordan, Saudi Arabia, the UAE, the US and Canada. From 200 JD.">')
 # canonical, share image, twitter card
 s=s.replace('<meta property="og:title" content="Latent Studio">','<link rel="canonical" href="%s/">\n<meta property="og:url" content="%s/">\n<meta property="og:site_name" content="Latent Studio">\n<meta property="og:title" content="Latent Studio — AI brand visuals, films and websites, Amman">\n<meta property="og:image" content="%s/media/og.jpg">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n<meta property="og:image:alt" content="Latent Studio. A man balancing an egg on his forehead against rust orange.">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="Latent Studio — AI brand visuals, films and websites, Amman">\n<meta name="twitter:image" content="%s/media/og.jpg">'%(SITE,SITE,SITE,SITE))
 # fonts: self hosted, swapped in, the display face preloaded; the Google stylesheet goes

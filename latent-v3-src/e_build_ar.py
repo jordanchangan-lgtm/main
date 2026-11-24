@@ -53,7 +53,7 @@ def tx(m):
     return m.group(0)
 for i in range(0,len(parts),2):
     parts[i]=re.sub(r'>([^<>]+)<', tx, parts[i])
-    parts[i]=re.sub(r'((?:placeholder|aria-label|title)=")([^"]*)(")', lambda m: m.group(1)+html.escape(ATTR.get(html.unescape(m.group(2)),html.unescape(m.group(2))),quote=True)+m.group(3), parts[i])
+    parts[i]=re.sub(r'((?:placeholder|aria-label|title|alt)=")([^"]*)(")', lambda m: m.group(1)+html.escape(ATTR.get(html.unescape(m.group(2)),html.unescape(m.group(2))),quote=True)+m.group(3), parts[i])
 body=''.join(parts)
 # gap lines: the mechanics stay left-to-right (left word slides in from the left, right word from the right), so the
 # first Arabic word goes into the right slot and the second into the left slot, and the line reads right to left

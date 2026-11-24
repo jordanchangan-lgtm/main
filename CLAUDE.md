@@ -22,6 +22,13 @@ Read `.claude/skills/site-delivery/SKILL.md` before building or shipping any sit
   user deploys, `curl` the live site and confirm the new build is up. Tell them to hard-reload.
 - Deliverables: the deploy folder zipped (under 30 MB), the artifact preview built from the single-file
   copy, commit and push on the working branch.
+- Search, AI search and trust: the 53-item fix list in `.claude/skills/site-delivery/references/` is the
+  standard for every site in every language (service pages, H1 with what and where, prices in plain HTML in
+  five currencies, questions with schema, full Arabic with hreflang, business schema with offers, Open Graph,
+  sitemap, robots, llms.txt, self-hosted fonts, WebP, security headers, alt text, WhatsApp, trust line).
+- The same test on every site: `node .claude/skills/site-delivery/scripts/site_audit.mjs <url>` (and
+  `--live` after deploy) on every page in every language, every line PASS, plus the mobile Lighthouse
+  targets. Nothing ships with a FAIL.
 
 ## How the site is designed and animated
 

@@ -11,8 +11,23 @@ k=s.rfind('<script'); s=s[:k]+foot+s[k:]
 old='if(reduce){ barTick(); window.addEventListener("scroll", barTick, { passive:true }); }'
 new='if(reduce){ window.addEventListener("scroll", barTick, { passive:true }); requestAnimationFrame(barTick); }'
 assert old in s, 'barTick reduce line'; s=s.replace(old,new,1)
+# every work image says what it is
+ALTS=['Step 01, Brief: the product, the palette and the mood arrive at Latent Studio','Step 02, Direct: light, lens, angle and story decided before a frame exists','Step 03, Generate: hundreds of frames made from the written direction','Step 04, Select: only the frames that look shot survive','Step 05, Craft: retouch, grade and type by hand','Step 06, Deliver: final files in every format, in days']
+n=[0]
+def alt(m):
+    a=ALTS[n[0]] if n[0]<len(ALTS) else 'Latent Studio work'; n[0]+=1; return m.group(1)+a+m.group(2)
+s=re.sub(r'(<(?:figure|span) class="wp-img js-sk-img"[^>]*><img[^>]*alt=")(")', alt, s)
+# the What we make thumbnail names its picture when it swaps
+old='pv.querySelector("img").src = ti.getAttribute("src");'
+new='pv.querySelector("img").src = ti.getAttribute("src"); pv.querySelector("img").alt = (items[i].querySelector(".td-name") || items[i]).textContent.trim() + (document.documentElement.lang === "ar" ? " — من أعمال لاتنت ستوديو" : " — work by Latent Studio");'
+assert old in s, 'td-pv src line'; s=s.replace(old,new,1)
+# the thumbnail is born with the first item's name, not an empty alt
+old2='''pvEl.innerHTML = '<img alt="" decoding="async">';'''
+new2='''pvEl.innerHTML = '<img alt="' + ((items[0] && (items[0].querySelector(".td-name") || items[0]).textContent.trim()) || "Latent Studio work") + (document.documentElement.lang === "ar" ? " — من أعمال لاتنت ستوديو" : " — work by Latent Studio") + '" decoding="async">';'''
+assert old2 in s, 'td-pv create line'; s=s.replace(old2,new2,1)
 css='''
 /* e_patch_phone */
+.fy-card .play{font-size:11px}
 @media(max-width:820px){
 .bar .brand{font-size:11px;letter-spacing:.1em;gap:7px}
 .bar nav{gap:9px;font-size:11px;letter-spacing:.04em}

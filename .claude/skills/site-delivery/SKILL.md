@@ -1,9 +1,12 @@
 ---
 name: site-delivery
-description: The delivery standard for every website built in this repo — media as files not inline, hero-first load order, Safari-safe films, phone and Arabic layout rules, the search, AI-search and trust fix list (sitemap, canonical, hreflang, schema, prices in HTML, WhatsApp, speed, security headers), the one audit script that runs the same tests on every site, and how to ship to Cloudflare. Use before building, changing or shipping any site, in any language.
+description: The delivery standard for every website Latent Studio builds, in any repo and any language — media as files not inline, hero-first load order, Safari-safe films, phone and Arabic layout rules, the search, AI-search and trust fix list (sitemap, canonical, hreflang, schema, prices in HTML, WhatsApp, speed, security headers), the one audit script that runs the same tests on every site, and how to ship to Cloudflare. Use before building, changing or shipping any site, in any language.
 ---
 
 # Site delivery standard
+
+Applies to every website, every page, every language. Read it before planning, building, changing or shipping
+a site; run `scripts/site_audit.mjs` on every page before any delivery message.
 
 Learned the hard way on the Latent site: a 14 MB single-file page meant ten seconds of black on a phone,
 films that Safari refused to play, and tiles laid over text. None of that ships again.

@@ -30,7 +30,9 @@ PACKS=[('01','Starter','200','A first month of showing up, done properly.','4 ca
        ('02','Essential','275','The steady feed: more posts, more reels.','5 carousel posts · 5 cinematic reels of 15 s · showcase videos · 1080p'),
        ('03','Growth','375','Scripted film enters the picture.','5 carousel posts · 7 cinematic reels of 15 s · scripted film with edits and SFX · 1080p'),
        ('04','Signature','425','The full campaign, longer and louder.','6 carousel posts · 10 cinematic reels of 20 s · scripted film with edits and SFX · 1080p'),
-       ('05','Custom','','Built around what you need, nothing you do not.','any mix of posts · carousels · cinematic reels · films · identity · website · quoted the same day')]
+       ('05','Brand identity','350','Logo, colour, type, brand book and packaging, in Arabic and Latin. From 350 JD.','logo · colour · type · brand book · packaging · Arabic and Latin'),
+       ('06','Website','250','A landing page or a store, cinematic and phone-first, in Arabic and English. From 250 JD.','landing page or store · cinematic, phone-first · Arabic and English · live in days'),
+       ('07','Custom','','Built around what you need, nothing you do not.','any mix of posts · carousels · cinematic reels · films · identity · website · quoted the same day')]
 rows=''.join('      <li class="pq-row rv" style="--k:%d"><span class="pq-n">%s</span><span class="pq-name">%s</span><span class="pq-desc">%s<small>%s</small></span><span class="pq-price">%s</span></li>\n'%(k,n,name,desc,feat,('<b>%s</b> JD'%price if price else '<b class="pq-ask">On request</b>')) for k,(n,name,price,desc,feat) in enumerate(PACKS))
 LIST='''    <ul class="pq-list" aria-label="Packages and prices">
 %s    </ul>
@@ -62,7 +64,7 @@ LD={"@context":"https://schema.org","@type":"ProfessionalService","@id":SITE+"/#
  "sameAs":["https://instagram.com/latentstudio.jo"],
  "knowsLanguage":["en","ar"],
  "hasOfferCatalog":{"@type":"OfferCatalog","name":"What we make","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":n}} for n in ["Posts","Carousels","Reels","Campaigns","Brand identities","Websites","Portfolios","AI visuals and films"]]},
- "makesOffer":[({"@type":"Offer","name":name+" package","description":desc,"price":price,"priceCurrency":"JOD","availability":"https://schema.org/InStock","url":SITE+"/#prices"} if price else {"@type":"Offer","name":name+" package","description":desc,"priceCurrency":"JOD","availability":"https://schema.org/InStock","url":SITE+"/#prices"}) for n,name,price,desc,feat in PACKS]}
+ "makesOffer":[({"@type":"Offer","name":name+("" if name in ("Brand identity","Website") else " package"),"description":desc,"price":price,"priceCurrency":"JOD","availability":"https://schema.org/InStock","url":SITE+"/#prices"} if price else {"@type":"Offer","name":name+" package","description":desc,"priceCurrency":"JOD","availability":"https://schema.org/InStock","url":SITE+"/#prices"}) for n,name,price,desc,feat in PACKS]}
 s=s.replace('</head>','<script type="application/ld+json">'+json.dumps(LD,ensure_ascii=False,separators=(',',':'))+'</script>\n</head>',1)
 # the H1 says what and where; the slogan stays the big line above it
 s=s.replace('<h1 class="he-head js-pu2" style="--d:.25s">Not your<br>average AI.</h1>','<p class="he-head js-pu2" style="--d:.25s">Not your<br>average AI.</p>')

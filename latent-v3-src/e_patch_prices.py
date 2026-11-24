@@ -8,16 +8,19 @@ ROWS=[('01','Starter','4 carousel posts · 3 cinematic reels of 15 s · showcase
       ('02','Essential','5 carousel posts · 5 cinematic reels of 15 s · showcase videos · 1080p','275','≈ USD 388'),
       ('03','Growth','5 carousel posts · 7 cinematic reels of 15 s · scripted film with edits and SFX · 1080p','375','≈ USD 529'),
       ('04','Signature','6 carousel posts · 10 cinematic reels of 20 s · scripted film with edits and SFX · 1080p','425','≈ USD 599'),
-      ('05','Custom','any mix of posts · carousels · cinematic reels · films · identity · website · quoted the same day',None,None)]
+      ('05','Brand identity','logo · colour · type · brand book · packaging · Arabic and Latin','350','≈ USD 494','from'),
+      ('06','Website','landing page or store · cinematic, phone-first · Arabic and English · live in days','250','≈ USD 353','from'),
+      ('07','Custom','any mix of posts · carousels · cinematic reels · films · identity · website · quoted the same day',None,None)]
 rows=''
-for n,name,feat,price,fx in ROWS:
-    pr=('<span class="pq-price"><b>%s</b> <i>JD</i><small class="pq-fx">%s</small></span>'%(price,fx)) if price else '<span class="pq-price"><b class="pq-ask">On request</b></span>'
+for row in ROWS:
+    n,name,feat,price,fx=row[:5]; frm=row[5] if len(row)>5 else ''
+    pr=('<span class="pq-price">%s<b>%s</b> <i>JD</i><small class="pq-fx">%s</small></span>'%(('<em class="pq-from">%s</em> '%frm) if frm else '',price,fx)) if price else '<span class="pq-price"><b class="pq-ask">On request</b></span>'
     rows+='      <li class="pq-row rv" style="--k:%d"><span class="pq-n">%s</span><span class="pq-main"><span class="pq-name"><span class="pgw"><span class="pgw-in">%s</span></span></span><small class="pq-feat">%s</small></span>%s</li>\n'%(int(n)-1,n,name,feat,pr)
 ul='<ul class="pq-list" aria-label="Packages and prices">\n'+rows+'    </ul>'
 s=re.sub(r'<ul class="pq-list".*?</ul>', lambda m: ul, s, count=1, flags=re.S)
 # the intro sentence becomes a mono kicker; the note a mono line
-s=re.sub(r'<p class="cf-p js-words">Four packages, one price each, and a custom one built around you\. Tell us what you are launching and we answer the same day\.</p>', '<p class="pq-kick">Five packages &middot; Jordanian dinars &middot; exclusive of tax</p>', s, count=1)
-note='<p class="pq-note rv" style="--k:5">&asymp; SAR 1,060 to 2,250 &middot; AED 1,035 to 2,200 &middot; CAD 394 to 837 across the four &middot; every package costs less than the same pieces bought one by one &middot; the custom one is priced the same day you write</p>'
+s=re.sub(r'<p class="cf-p js-words">Four packages, one price each, and a custom one built around you\. Tell us what you are launching and we answer the same day\.</p>', '<p class="pq-kick">Four packages, identity, website &middot; Jordanian dinars &middot; exclusive of tax</p>', s, count=1)
+note='<p class="pq-note rv" style="--k:7">&asymp; SAR 1,060 to 2,250 &middot; AED 1,035 to 2,200 &middot; CAD 394 to 837 across the four &middot; every package costs less than the same pieces bought one by one &middot; the custom one is priced the same day you write</p>'
 s=re.sub(r'<p class="pq-note rv"[^>]*>.*?</p>', lambda m: note, s, count=1, flags=re.S)
 # the questions: the same index, the question rising through a mask
 s=re.sub(r'<dt class="fq-q">([^<]*)</dt>', lambda m: '<dt class="fq-q"><span class="pgw"><span class="pgw-in">%s</span></span></dt>'%m.group(1), s)
@@ -60,6 +63,7 @@ css='''
 .pq-price b{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:clamp(26px,2.8vw,44px);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;text-transform:none}
 .pq-price i{font-style:normal;color:var(--stone);margin-inline-start:6px}
 .pq-fx{display:block;margin-top:8px;color:var(--stone);font-weight:400}
+.pq-from{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);margin-inline-end:6px}
 .pq-ask{font-family:"IBM Plex Mono",monospace!important;font-weight:500;font-size:11px!important;letter-spacing:.16em;text-transform:uppercase!important;color:var(--marrow);line-height:1.7}
 .pq-note{margin:clamp(18px,3vh,30px) 0 0;max-width:none;width:100%;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;line-height:1.8;text-transform:uppercase;color:var(--stone);text-align:start}
 .pq-row:hover .pq-name{color:var(--marrow)}

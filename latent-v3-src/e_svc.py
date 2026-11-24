@@ -23,8 +23,8 @@ if '## Service pages' not in ll:
     sec='''## Service pages
 - AI video production: https://latent-studio-ai.com/ai-video-production/ (Arabic: https://latent-studio-ai.com/ar/ai-video-production/). AI reels, ad films, product films and talking AI characters for brands in Jordan, Saudi Arabia and the Gulf. Directed like film, delivered in days. From 200 JD.
 - AI product photography: https://latent-studio-ai.com/ai-product-photography/ (Arabic: https://latent-studio-ai.com/ar/ai-product-photography/). AI product photos, campaign visuals, posts and carousels that keep your product exact. For brands in Jordan, Saudi Arabia and the Gulf. From 200 JD.
-- Brand identity design: https://latent-studio-ai.com/brand-identity/ (Arabic: https://latent-studio-ai.com/ar/brand-identity/). Logos, colour, type, brand books and packaging for brands in Jordan, Saudi Arabia and the Gulf, in Arabic and Latin. Latent Studio, Amman.
-- Website design: https://latent-studio-ai.com/website-design/ (Arabic: https://latent-studio-ai.com/ar/website-design/). Cinematic, fast, phone-first websites, online stores and portfolios for brands in Jordan, Saudi Arabia and the Gulf. Arabic and English. Latent Studio, Amman.
+- Brand identity design: https://latent-studio-ai.com/brand-identity/ (Arabic: https://latent-studio-ai.com/ar/brand-identity/). Logos, colour, type, brand books and packaging for brands in Jordan, Saudi Arabia and the Gulf, in Arabic and Latin. From 350 JD. Latent Studio, Amman.
+- Website design: https://latent-studio-ai.com/website-design/ (Arabic: https://latent-studio-ai.com/ar/website-design/). Cinematic, fast, phone-first websites, online stores and portfolios for brands in Jordan, Saudi Arabia and the Gulf. Arabic and English. From 250 JD. Latent Studio, Amman.
 
 '''
     ll=ll.replace('## Clients', sec+'## Clients',1) if '## Clients' in ll else ll+'\n'+sec
